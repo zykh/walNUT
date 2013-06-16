@@ -1,0 +1,98 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="P">
+<title>6. PREFERENCES</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="I"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>To fine tune <em>walNUT</em> to suit your needs you may want to change some options.</p>
+<figure>
+<media type="image" src="img/prefbtn.png"
+>
+<p>Preferences Button</p>
+</media>
+</figure>
+<p>You can access the preferences from the [<em style="strong">A</em>] preferences button in the <link xref="M">panel menu</link>.</p>
+<p>A new window will open, where you can set the various options.</p>
+<figure>
+<media type="image" src="img/pref.png"
+>
+<p>Preferences</p>
+</media>
+</figure>
+<table rules="rows"
+frame="top bottom"
+>
+<title>Available Options</title>
+<thead>
+<tr>
+<td><p># </p></td>
+<td><p>Option </p></td>
+<td><p>Description</p></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><em style="strong">1</em></p></td>
+<td><p>Seconds before next update</p></td>
+<td><p>The seconds after <em>walNUT</em> updates the data from the device. (<em>default: 15</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">2</em></p></td>
+<td><p>Temperature unit</p></td>
+<td><p>The unit (Centigrade or Fahrenheit) <em>walNUT</em> should display the temperature in. (<em>default: Centigrade</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">3</em></p></td>
+<td><p>Display not available devices</p></td>
+<td><p>Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">4</em></p></td>
+<td><p>Display raw data</p></td>
+<td><p>Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">5</em></p></td>
+<td><p>Display device&#8217;s commands</p></td>
+<td><p>Display device&#8217;s available commands. Requires upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">6</em></p></td>
+<td><p>Device&#8217;s commands in a combobox</p></td>
+<td><p>Whether the extension should display the device&#8217;s commands in a combobox or not (if not, commands are displayed in a sub menu). (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">7</em></p></td>
+<td><p>Display description of device&#8217;s commands (submenu)</p></td>
+<td><p>Display also a localized description of device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">8</em></p></td>
+<td><p>Hide password at credentials box</p></td>
+<td><p>Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">9</em></p></td>
+<td><p>Display load in panel icon</p></td>
+<td><p>Whether the device load should be displayed in panel icon or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">10</em></p></td>
+<td><p>Display load in panel label</p></td>
+<td><p>Whether the device load should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">11</em></p></td>
+<td><p>Display charge in panel label</p></td>
+<td><p>Whether the battery charge should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</page>

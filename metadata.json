@@ -1,0 +1,12 @@
+{
+	"description": "Monitors NUT (Network UPS Tools) and execute NUT's instant commands.",
+	"name": "walNUT",
+	"settings-schema": "org.gnome.shell.extensions.walnut",
+	"gettext-domain": "gnome-shell-extensions-walnut",
+	"shell-version": [
+		"3.6",
+		"3.8"
+	],
+	"url": "http://lists.alioth.debian.org/cgi-bin/mailman/listinfo/nut-upsdev",
+	"uuid": "walnut@networkupstools"
+}

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16.001593"
+   height="16.002001"
+   id="svg7121"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="nut-error-symbolic.svg">
+  <title
+     id="title3251">walNUT</title>
+  <defs
+     id="defs7123" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#3a3b39"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="32"
+     inkscape:cx="-1.881654"
+     inkscape:cy="7.6184129"
+     inkscape:current-layer="layer27"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     gridtolerance="10"
+     inkscape:window-width="1680"
+     inkscape:window-height="991"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:bbox-nodes="false"
+     inkscape:bbox-paths="false"
+     fit-margin-left="1"
+     fit-margin-top="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid7129"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="1px"
+       originy="0.0020003326px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7126">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>walNUT</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://artlibre.org/licence/lal" />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://artlibre.org/licence/lal">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="g15994"
+     inkscape:label="shell ring full cross w peaks"
+     style="display:inline"
+     transform="translate(1,0)"
+     sodipodi:insensitive="true">
+    <path
+       style="opacity:0.35;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:2.19089007;marker-start:none;marker-mid:none;marker-end:none;display:inline"
+       clip-path="none"
+       d="M 6.40625,0 C 5.9146662,0.04633037 5.5,0.47496039 5.5,1 l 0,0.21875 C 2.9109169,1.9948307 1,4.7372521 1,8 c 0,3.261704 1.9121769,6.004161 4.5,6.78125 L 5.5,15 c 0,0.52504 0.4146662,0.95367 0.90625,1 0.031227,0.0015 0.062523,0.0015 0.09375,0 l 1,0 c 0.5235845,-5.2e-5 0.9999429,-0.429538 1,-1 l 0,-0.21875 C 9.030746,14.62093 9.5375848,14.374017 10,14.0625 L 10,10 12.75,10 C 12.909959,9.3693494 13,8.6911696 13,8 13,4.737252 11.089083,1.9948307 8.5,1.21875 L 8.5,1 C 8.4999429,0.4295386 8.0235845,5.235e-5 7.5,0 l -1,0 C 6.468773,-0.0014652 6.437477,-0.0014652 6.40625,0 z"
+       transform="translate(-1,0)"
+       id="path15996"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer27"
+     inkscape:label="cross"
+     style="display:inline"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 10,11 11.375,11 12.5,12.09375 13.59375,11 15,11 15,12.46875 13.90625,13.53125 15,14.59375 15,16 13.5625,16 12.5,14.9375 11.4375,16 10,16 10,14.59375 11.0625,13.53125 10,12.46875 10,11 z"
+       id="path3761-2-3-5-4-8-9-8-0-1-7"
+       sodipodi:nodetypes="ccccccccccccccccc"
+       style="color:#bebebe;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible" />
+  </g>
+</svg>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16.001593"
+   height="16.002001"
+   id="svg7121"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="nut-battery-empty-load-good-caution-charging-symbolic.svg">
+  <title
+     id="title3251">walNUT</title>
+  <defs
+     id="defs7123" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#3a3b39"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.627417"
+     inkscape:cx="-5.4955712"
+     inkscape:cy="2.1448948"
+     inkscape:current-layer="layer40"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     gridtolerance="10"
+     inkscape:window-width="1680"
+     inkscape:window-height="991"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:bbox-nodes="false"
+     inkscape:bbox-paths="false"
+     fit-margin-left="1"
+     fit-margin-top="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid7129"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="1px"
+       originy="0.0020003326px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7126">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>walNUT</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://artlibre.org/licence/lal" />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://artlibre.org/licence/lal">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     style="display:inline"
+     inkscape:label="seed load 1/3 part"
+     id="g16060"
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       style="fill:#bebebe;fill-opacity:1;stroke:none;display:inline"
+       d="m 6.5,10 0,1.9375 C 6.6702612,11.899268 6.8408477,11.824408 7,11.75 L 7,11.15625 8.15625,10 6.5,10 z"
+       id="path16062"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     id="g16065"
+     inkscape:label="seed load 2/3 part"
+     inkscape:groupmode="layer"
+     style="display:inline"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       style="fill:#bebebe;fill-opacity:1;stroke:none;display:inline"
+       d="m 6.5,7 0,2 2.375,0 C 8.93713,8.6793505 9,8.3465316 9,8 L 8,8 8,7 6.5,7 z"
+       id="path16067"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="g15680"
+     inkscape:label="shell ring lightning alarm"
+     style="display:inline"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:1.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 6,1 C 2.5900482,1 0,4.2359249 0,8 c 0,3.764075 2.5900482,7 6,7 1.1447534,0 2.2007774,-0.373065 3.09375,-1 L 8,14 7,14 7,12.8125 C 6.676441,12.918782 6.3425013,13 6,13 3.8871045,13 2,10.863341 2,8 2,5.1366583 3.8871045,3 6,3 6.7168753,3 7.3999941,3.2506471 8,3.6875 L 8,1.40625 C 7.3791526,1.1512849 6.707136,1 6,1 z m 4,7 c 0,0.064542 0.0019,0.1237121 0,0.1875 L 10.1875,8 10,8 z"
+       id="path15682"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     style="display:inline"
+     inkscape:label="shell peak low lightning"
+     id="g15656"
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 5.3125,13 A 1.0001,1.0001 0 0 0 4.5,14 l 0,1 a 1.0001,1.0001 0 0 0 1,1 l 1,0 a 1.0001,1.0001 0 0 0 1,-1 L 7.5,14 7,14 7,13.125 A 1.0001,1.0001 0 0 0 6.5,13 l -1,0 A 1.0001,1.0001 0 0 0 5.40625,13 1.0001,1.0001 0 0 0 5.3125,13 z"
+       id="rect15658"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     transform="translate(1,0)"
+     style="display:inline"
+     inkscape:label="shell peak up"
+     id="g3483"
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true">
+    <rect
+       y="0.0020008087"
+       x="4.5"
+       height="3"
+       width="3"
+       id="rect3485"
+       style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+       ry="1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer26"
+     inkscape:label="lightning full"
+     style="display:inline"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 11.749857,8.0018598 a 1.0165249,1.016466 0 0 0 -0.468778,0.28125 L 8.2809049,11.283113 a 1.000158,1.0001 0 0 0 -0.2812663,0.90625 l 0,0.8125 1.000058,0 2.1251234,0 -0.843799,1.28125 a 1.0165249,1.016466 0 0 0 -0.281266,0.9375 l 0,0.78125 1.000058,0 a 1.0165249,1.016466 0 0 0 0.718792,-0.28125 l 3.000174,-3 a 1.000158,1.0001 0 0 0 0.281266,-0.71875 1.000158,1.0001 0 0 0 0,-0.125 l 0,-0.875 -0.843799,0 -0.0937,0 a 1.000158,1.0001 0 0 0 -0.0625,0 l -2.125123,0 0.843799,-1.2812532 a 1.0165249,1.016466 0 0 0 0.281266,-0.9375 l 0,-0.78125 -0.937554,0 a 1.0165249,1.016466 0 0 0 -0.312518,0 z"
+       id="path6217"
+       style="font-size:xx-small;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;color:#bebebe;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer40"
+     inkscape:label="alarm"
+     style="display:inline"
+     sodipodi:insensitive="true"
+     transform="translate(1,0)">
+    <path
+       class="warning"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#f57900;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 9.9062581,0.00109892 C 9.4146743,0.04742929 8.997879,0.50734124 9.0000081,1.0010989 l 0,5 c 5.24e-5,0.5235845 0.4764155,0.9999476 0.9999999,1 l 4,0 c 0.523585,-5.24e-5 0.999948,-0.4764155 1,-1 l 0,-5 c -5.2e-5,-0.52358445 -0.476415,-0.99994763 -1,-0.99999998 l -4,0 c -0.031227,-0.001465227 -0.062523,-0.001465227 -0.09375,0 z m 1.0937499,0.99999998 2,0 0,3 -2,0 0,-3 z m 0,4 2,0 0,1 -2,0 0,-1 z"
+       id="rect15469"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

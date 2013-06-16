@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<title>walNUT</title>
+<link rel="stylesheet" href="../ad/style/asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="../ad/style/custom.css" type="text/css" />
+</head>
+<body class="article" style="max-width:1024px">
+<div id="header">
+<h1>walNUT</h1>
+<span id="author">Daniele Pezzini</span><br />
+<span id="email"><code>&lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</code></span><br />
+<span id="revnumber">version 0.1,</span>
+<span id="revdate">May 2013</span>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<h2 id="_cos_è" class="float">COS'È?</h2>
+<div class="paragraph"><p><strong><em>walNUT</em></strong> non è niente di più che un&#8217;interfaccia fra voi e NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), usando <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a> e <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a> di NUT.
+Fornisce un pratico <a href="#M">menu del pannello</a> e un'<a href="#PI">icona</a> per monitorare i propri dispositivi ed eseguire i <a href="#DC">comandi</a> istantanei di NUT.</p></div>
+<div class="paragraph"><p>Prima di <a href="#IN">cominciare</a>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <a href="#F">fin da subito</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="IN">1. INSTALLAZIONE</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>È possibile installare questa estensione per il proprio utente eseguendo:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code></pre>
+</div></div>
+<div class="paragraph"><p>Dopo l&#8217;installazione è necessario riavviare Gnome Shell:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ALT</code>+<code>F2</code> per aprire il prompt dei comandi
+</p>
+</li>
+<li>
+<p>
+Inserire <code>r</code> per riavviare Gnome Shell
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Quindi è possibile attivare l&#8217;esensione attraverso <a href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</a> (Shell Extensions &#8594; walNUT &#8594; On) o tramite <a href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</a></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Oltre a NUT, è necessario anche <a href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</a> (vedi <a href="#I">problemi conosciuti</a>).</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="F">2. PRIMA ESECUZIONE</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Una volta che si è <a href="#IN">installato</a> <em>walNUT</em>, quando viene eseguito per la prima volta, o ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in <em>localhost:3493</em>.<br />
+Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disopnibili. In caso contrario, è necessario aggiungerli tramite il <a href="#FN">riquadro per trovare nuovi dispositivi</a>.</p></div>
+<div class="paragraph"><p>È importante comprendere come <em>walNUT</em> comunica e come può essere personalizzato: si prega di leggere le sezioni <a href="#PI">icona/etichetta del pannello</a>, <a href="#M">menu del pannello</a> e <a href="#P">preferenze</a>.<br />
+Non si dimentichi la sezione <a href="#I">problemi conosciuti</a>!</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="PI">3. ICONA/ETICHETTA DEL PANNELLO</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>L&#8217;icona e l&#8217;etichetta di <em>walNUT</em> sono personalizzabili tramite le <a href="#P">preferenze</a>.<br />
+Qui è spiegato come si comportano.</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<tbody>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icons.png" alt="Icona del pannello" />
+</span></p></td>
+<td align="left" valign="middle"><div><div class="paragraph"><p>L&#8217;icona del pannello normalmente mostra solo il livello di carica della batteria [<strong>A</strong>], ma può visualizzare anche il livello di carico del dispositivo [<strong>B</strong>], se disponibile.<br />
+In tal caso il &#8216;seme&#8217; della noce sarà diviso in due parti: quella più a sinistra [<strong>1</strong>] mostrerà il livello di carica della batteria, quella più a destra [<strong>2</strong>] il livello di carico del dispositivo.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Attenzione" />
+</td>
+<td class="content">Nal caso in cui si imposti anche <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> nelle <a href="#P">preferenze</a> <em>e</em> il livello di carica della batteria non sia disponibile, l&#8217;icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [<strong>A</strong>]: <em>si prega di prestare attenzione</em>.</td>
+</tr></table>
+</div></div></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_ol_ob.png" alt="Icona del pannello - in linea/a batteria + Carico/Caricando" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">L&#8217;icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l&#8217;elettricità non è assente, <code>ups.status</code>: <code>OL</code>) ci sarà un piccolo fulmine [<strong>C</strong>] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [<strong>D</strong>].<br />
+Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile <em>e</em> il dispositivo non ci sta dicendo che si sta caricando o scaricando (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) supporremo che sia carico e il fulmine sarà trasparente [<strong>E</strong>], altrimenti sarà a piena opacità [<strong>F</strong>].</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_caution.png" alt="Icona del pannello - Attenzione" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">Per gli altri stati (<code>ups.status</code>: <code>BYPASS</code>, <code>TRIM</code>, ..) o se si verifica un allarme (<code>ups.status</code>: <code>ALARM</code> + <code>ups.alarm</code>) ci sarà un punto esclamativo nell&#8217;angolo in alto a destra della noce.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_ghost.png" alt="Icona del pannello - Fantasma" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">Se il livello di carica della batteria non è disponibile oppure se anche l&#8217;opzione <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> è selezionata nelle <a href="#P">preferenze</a> <em>e</em> <strong>sia</strong> il livello di carico del dispositivo, <strong>sia</strong> il livello di carica della batteria non sono disponibili l&#8217;icona sarà una noce piena e trasparente.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_error.png" alt="Icona del pannello - Errore" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">Questa è l&#8217;icona visualizzata in caso di errori.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_labels.png" alt="Etichette sul pannello" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table"><em>walNUT</em> può anche mostrare un&#8217;etichetta, alla destra dell&#8217;icona sul pannello, con il livello di carica della batteria [<strong>G</strong>], il livello di carico del dispositivo [<strong>H</strong>] o entrambi [<strong>I</strong>], se disponibili.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">
+<div class="paragraph"><p>L&#8217;icona mostra il livello di carica della batteria e il livello di carico del dispositivo attraverso tre barre:</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<col />
+<thead>
+<tr>
+<th align="center" valign="middle">Icona </th>
+<th align="left" valign="middle">Barre </th>
+<th align="left" valign="middle">Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_3bars.png" alt="3 barre per livello di carica della batteria/livello del carico" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">3 barre</p></td>
+<td align="left" valign="middle"><p class="table">Più del 75%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_2bars.png" alt="2 barre per livello di carica della batteria/livello del carico" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">2 barre</p></td>
+<td align="left" valign="middle"><p class="table">Tra il 50% e il 75%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_1bar.png" alt="1 barra per livello di carica della batteria/livello del carico" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">1 barra</p></td>
+<td align="left" valign="middle"><p class="table">Tra il 25% e il 50%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_0bars.png" alt="Nessuna barra per livello di carica della batteria/livello del carico" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">nessuna barra</p></td>
+<td align="left" valign="middle"><p class="table">Meno del 25%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="M">4. MENU DEL PANNELLO</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Ecco una rapida panoramica del menu del pannello.<br />
+Di base il menu ha questo aspetto:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menustd.png" alt="Menu del pannello" />
+</div>
+</div>
+<div class="paragraph"><p>Con tutte le opzioni disponibili impostate:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menu.png" alt="Menu del pannello - Completo" />
+</div>
+</div>
+<div class="paragraph"><p>Il menu può essere suddiviso in varie sezioni:</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<tbody>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>A</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#L">Lista dei dispositivi</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>B</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DM">Modello del dispositivo</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>C</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DS">Stato del dispositivo</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>D</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DA">Allarme del dispositivo</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>E</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DT">Tabella dei dati</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>F</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#R">Dati grezzi</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>G</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DC">Comandi del dispositivo</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>H</strong></p></td>
+<td align="left" valign="top"><div><div class="paragraph"><p>Riquadro per le funzioni dei pulsanti di controllo</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#CB">Riquadro delle credenziali del dispositivo</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#FN">Riquadro per cercare nuovi dispositivi</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#DD">Riquadro per rimuovere un dispositivo</a>
+</p>
+</li>
+</ul></div></div></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>I</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#BB">Pulsanti di controllo</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>Nel caso di errore, il menu appare in questo modo:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menuerr.png" alt="Menu del pannello - Errore" />
+</div>
+</div>
+<div class="paragraph"><p>Dove la lista dei dispositivi [<strong>A</strong>] è visibile o meno, a seconda del tipo di errore [<strong>L</strong>].</p></div>
+<div class="sect2">
+<h3 id="L">4.1. LISTA DEI DISPOSITIVI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicelist.png" alt="Lista dei dispositivi" />
+</div>
+</div>
+<div class="paragraph"><p>I dispositivi sono elencati in ordine alfabetico di <em>hostname:porta</em> e quindi secondo l&#8217;ordine alfabetico dei loro nomi.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <strong>ogni volta</strong> che si cambia qualche opzione o quando gnome shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicelist_open.png" alt="Lista dei dispositivi aperta" />
+</div>
+</div>
+<div class="paragraph"><p>I dispositivi non disponibili sono segnalati con <strong>(N/D)</strong> [<strong>A</strong>] alla loro destra.
+È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <a href="#P">preferenze</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="DM">4.2. MODELLO DEL DISPOSITIVO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicemodel.png" alt="Modello del dispositivo" />
+</div>
+</div>
+<div class="paragraph"><p>Se disponibili, sia il produttore del dispositivo che il modello saranno mostrati qui.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
+</td>
+<td class="content">Se il dispositivo non sta fornendo uno fra produttore o modello oppure entrambi, o se si desidera un&#8217;etichetta più accattivante, è possibile sovrascriverne uno o entrambi in <a href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DS">4.3. STATO DEL DISPOSITIVO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicestatus.png" alt="Stato del dispositivo" />
+</div>
+</div>
+<div class="paragraph"><p>Lo stato del dispositivo mostrerà: lo stato della linea elettrica [<strong>A</strong>] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [<strong>B</strong>] (bypass, smorzamento, ..).</p></div>
+</div>
+<div class="sect2">
+<h3 id="DA">4.4. ALLARME DEL DISPOSITIVO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicealarm.png" alt="Allarme del dispositivo" />
+</div>
+</div>
+<div class="paragraph"><p>Se viene riportato un allarme (<code>ups.status</code>: <code>ALARM</code> e <code>ups.alarm</code>) sarà mostrato qui.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">L&#8217;allarme viene segnalato anche attraverso un &#8216;punto esclamativo&#8217; nell'<a href="#PI">icona del pannello</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DT">4.5. TABELLA DEI DATI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/datatable.png" alt="Tabella dei dati" />
+</div>
+</div>
+<div class="paragraph"><p>Se disponibili, [<strong>C</strong>] il livello di carica della batteria, [<strong>D</strong>] il tempo stimato di backup, [<strong>E</strong>] il livello di carico e [<strong>F</strong>] la temperatura del dispositivo saranno visualizzati qui.<br />
+L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<a href="#PI">icona del pannello</a>).</p></div>
+</div>
+<div class="sect2">
+<h3 id="R">4.6. DATI GREZZI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/raw.png" alt="Dati grezzi" />
+</div>
+</div>
+<div class="paragraph"><p>Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l&#8217;opzione <em>Mostra i dati grezzi</em> nelle <a href="#P">preferenze</a>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.</p></div>
+</div>
+<div class="sect2">
+<h3 id="DC">4.7. COMANDI DEL DISPOSITIVO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd.png" alt="Comandi del dispositivo - Menu a cascata" />
+</div>
+</div>
+<div class="paragraph"><p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <a href="#P">preferenze</a>.<br />
+È possibile scegliere di visualizzare i comandi istantanei del dispositivo sia in menu a cascata [<strong>A</strong>] che in un sotto-menu [<strong>B</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_sm.png" alt="Comandi del dispositivo - Sotto-menu" />
+</div>
+</div>
+<div class="paragraph"><p>Se si sceglie il menu a cascata [<strong>A</strong>], per prima cosa è necessario selezionare il comando, quindi si deve cliccare sul bottone [<strong>1</strong>] &#8216;esegui&#8217; alla destra della descrizione del comando [<strong>2</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmdchosen.png" alt="Comandi del dispositivo - Menu a cascata, selezionato" />
+</div>
+</div>
+<div class="paragraph"><p>Se si sceglie il sotto-menu [<strong>B</strong>], quando si clicca su un comando, quasto viene eseguito.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [<strong>C</strong>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<strong>D</strong>] nelle <a href="#P">preferenze</a>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_sm_vs.png" alt="Comandi del dispositivo - Sotto-menu, con o senza descrizione" />
+</div>
+</div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [<strong>E</strong>] oppure no [<strong>F</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_notify.png" alt="Comandi del dispositivo - Notifica" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Il principale vantaggio del menu a cascata è che si tratta di un processo in <strong>due fasi</strong>, mentre il sotto-menu fornisce un&#8217;interfaccia scorrevole se si dispone di limitato spazio in verticale.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="BB">4.8. PULSANTI DI CONTROLLO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns.png" alt="Pulsanti di controllo" />
+</div>
+</div>
+<div class="paragraph"><p>In fondo al <a href="#M">menu del pannello</a> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<strong>A</strong>] appena prima della riga dei pulsanti di controllo [<strong>B</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns_box.png" alt="Pulsanti di controllo + Riquadro di controllo" />
+</div>
+</div>
+<div class="paragraph"><p>I pulsanti mostreranno:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<a href="#P">Preferenze</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#CB">Riquadro delle credenziali del dispositivo</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#FN">Riquadro per cercare nuovi dispositivi</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#DD">Riquadro per rimuovere un dispositivo</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#H">Aiuto</a>
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2">
+<h3 id="CB">4.9. RIQUADRO DELLE CREDENZIALI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/credbox.png" alt="Riquadro delle credenziali" />
+</div>
+</div>
+<div class="paragraph"><p>Cliccando sul pulsante &#8216;credenziali&#8217; [<strong>A</strong>] si aprirà il riquadro delle credenziali [<strong>B</strong>] che è usato per memorizzare il nome utente e la password per i dispositivi in modo che non vengano richiesti ogni volta che si esegue un comando.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Se si desidera cancellare il nome utente, la password o entrambi (ad esempio in modo che da ora in avanti essi vengano richiesti), è necessario salvarli vuoti.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Se si clicca sul pulsante &#8216;annulla e chiudi&#8217; [<strong>1</strong>] qualsiasi modifica effettuata al nome utente o alla password prima di cliccare sul pulsante &#8216;salva&#8217; [<strong>2</strong>] verrà scartata.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
+</td>
+<td class="content">Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <a href="#P">preferenze</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="FN">4.10. TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/addbox.png" alt="Riquadro per trovare nuovi dispositivi" />
+</div>
+</div>
+<div class="paragraph"><p>Al fine di cercare nuovi dispositivi, una volta che si è cliccato sul pulsante &#8216;trova&#8217; [<strong>A</strong>], è necessario inserire l&#8217;hostname [<strong>1</strong>] e la porta [<strong>2</strong>] del dispositivo e quindi cliccare sul pulsante &#8216;inizia ricerca&#8217; [<strong>B</strong>].</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Se l&#8217;hostname non viene fornito sarà <em>localhost</em>, mentre la porta, se non indicata, sarà <em>3493</em>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Si verrà avvisati sia che nuovi dispositivi siano trovati [<strong>C</strong>] o meno [<strong>D</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/add_notify.png" alt="Trova nuovi dispositivi - Notifica" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DD">4.11. RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/delbox.png" alt="Riquadro per rimuovere un dispositivo" />
+</div>
+</div>
+<div class="paragraph"><p>Se si vuole rimuovere un dispositivo, per prima cosa è necessario selezionarlo dalla <a href="#L">lista dei dispositivi</a>, quindi è necessario cliccare sul pulsante &#8216;rimuovi&#8217; [<strong>A</strong>].<br />
+Un nuovo riquadro [<strong>B</strong>] apparirà chiedendo se si vuole davvero rimuoverlo [<strong>1</strong>] oppure no [<strong>2</strong>].</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l&#8217;opzione <em>Mostra i dispositivi non disponibili</em> nelle <a href="#P">preferenze</a>.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="C">5. CREDENZIALI DEL DISPOSITIVO</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Se si desidera eseguire i <a href="#C">comandi instantanei</a> di un dispositivo, è necessario fornire un nome utente e una password validi (<em>come impostati nel file di configurazione <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a></em>).
+È possibile salvarli tramite il <a href="#CB">riquadro delle credenziali</a> oppure si possono inserire nella <a href="#CD">finestra delle credenziali</a> <strong>ogni volta</strong> che si esegue un comando.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <a href="#CD">finestra delle credenziali</a>, qualora si provasse ad eseguire un comando.</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="CD">5.1. FINESTRA DELLE CREDENZIALI</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/creddialog.png" alt="Finestra delle credenziali" />
+</div>
+</div>
+<div class="paragraph"><p>La finestra delle credenziali vi chiederà di inserire un nome utente e una password validi sia che non siano stati salvati tramite il <a href="#CB">riquadro delle credenziali</a> sia che si siano dimostrati errati [<strong>A</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/creddialog_err.png" alt="Finestra delle credenziali - errore" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Il pulsante &#8216;esegui&#8217; [<strong>B</strong>] sarà selezionabile solo se sia il nome utente che la password non sono vuoti.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Attenzione" />
+</td>
+<td class="content">Dopo aver inserito nome utente e password, quando si clicca sul pulsante &#8216;esegui&#8217; [<strong>B</strong>] il comando sarà inviato al driver.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="P">6. PREFERENZE</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Per personalizzare <em>walNUT</em> in base alle proprie esigenze si può decidere di modificare alcune opzioni.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/prefbtn.png" alt="Pulsante delle preferenze" />
+</div>
+</div>
+<div class="paragraph"><p>È possibile accedere alle preferenze dal pulsante delle preferenze [<strong>A</strong>] nel <a href="#M">menu del pannello</a>.</p></div>
+<div class="paragraph"><p>Si aprirà una nuova finestra in cui è possibile impostare le varie opzioni.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/pref.png" alt="Preferenze" />
+</div>
+</div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<caption class="title">Opzioni disponibili</caption>
+<col />
+<col />
+<col />
+<thead>
+<tr>
+<th align="right" valign="top"># </th>
+<th align="left" valign="top">Opzione </th>
+<th align="left" valign="top">Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>1</strong></p></td>
+<td align="left" valign="top"><p class="table">Secondi prima del prossimo aggiornamento</p></td>
+<td align="left" valign="top"><p class="table">I secondi dopo i quali <em>walNUT</em> aggiorna i dati del dispositivo. (<em>default: 15</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>2</strong></p></td>
+<td align="left" valign="top"><p class="table">Unità di misura della temperatura</p></td>
+<td align="left" valign="top"><p class="table">L&#8217;unità di misura (Centigradi o Fahrenheit) in cui <em>walNUT</em> deve mostrare la temperatura. (<em>default: Centigradi</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>3</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra i dispositivi non disponibili</p></td>
+<td align="left" valign="top"><p class="table">Visualizza anche i dispositivi non disponibili nel menu a cascata nel menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra i dati grezzi</p></td>
+<td align="left" valign="top"><p class="table">Visualizza anche i dati grezzi in un sotto-menu. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra i comandi del disposivo</p></td>
+<td align="left" valign="top"><p class="table">Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="left" valign="top"><p class="table">Comandi del dispositivo in un menu a cascata</p></td>
+<td align="left" valign="top"><p class="table">Se l&#8217;estensione deve mostrare i comandi del dispositivo in un menu a cascata oppure no (se no, i comandi sono visualizzati in un sotto-menu). (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra la descrizione dei comandi del dispositivo (sotto-menu)</p></td>
+<td align="left" valign="top"><p class="table">Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili (sotto-menu). (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="left" valign="top"><p class="table">Nascondi la password nel riquadro delle credenziali</p></td>
+<td align="left" valign="top"><p class="table">Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra il carico del dispositivo nell&#8217;icona del pannello</p></td>
+<td align="left" valign="top"><p class="table">Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;icona sul pannello oppure no. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra il carico del dispositivo nel pannello</p></td>
+<td align="left" valign="top"><p class="table">Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
+<td align="left" valign="top"><p class="table">Mostra la carica della batteria nel pannello</p></td>
+<td align="left" valign="top"><p class="table">Se il livello di carica della batteria deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="I">7. PROBLEMI CONOSCIUTI</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Dal momento che <em>walNUT</em> si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l&#8217;host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così <strong>ogni volta</strong> che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo &#8216;problematico&#8217; è quello attualmente scelto, ogni volta che <em>walNUT</em> prova ad aggiornare le suo variabili, <em>potrebbe potenzialmente</em> <strong>congelare gnome shell</strong> per alcuni secondi (~3 per ogni dispositivo &#8216;problematico&#8217;).</p></div>
+<div class="paragraph"><p>Al fine di evitare questi blocchi, ogni invocazione di upsc/upscmd è effettuata attraverso un timeout di 150ms.<br />
+Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più di 150ms per rispondere), è possibile cambiare questo timeout modificando l&#8217;opzione <em>timeout</em> (<em>default: 0.150</em>) sia tramite <a href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</a> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) che eseguendo:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>gsettings set org.gnome.shell.extensions.walnut timeout N.NNN</code></pre>
+</div></div>
+<div class="paragraph"><p>Dove <code>N.NNN</code> è il timeout in secondi.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Attenzione" />
+</td>
+<td class="content">A prescindere da questo timeout, è meglio non giocare con il riquadro per trovare nuovi dispositivi e host &#8216;di fantasia&#8217; ed è <em>altamente</em> raccomandabile rimuovere dalla lista quei dispositivi il cui hostname:porta stia per non essere più risolvibile.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="H">8. AIUTO</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare dell&#8217;aiuto nella mailing list di NUT:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>NUT Users</strong> - <a href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser">http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Se volete aiutare, sarete i benvenuti nella mailing list di NUT e nella mailing list degli sviluppatori di NUT:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>NUT Developers</strong> - <a href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev">http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev</a>
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_traduttori">8.1. TRADUTTORI</h3>
+<div class="paragraph"><p>Una guida alla traduzione delle estensioni può essere trovata nelle <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a> sulle estensioni di gnome shell.</p></div>
+<div class="paragraph"><p>La documentazione di <em>walNUT</em> è scritta in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> e quindi elaborata sia per la versione in html che per la versione in <a href="http://projectmallard.org/">Mallard</a> per <a href="http://projects.gnome.org/yelp/">Yelp</a>.<br />
+Il file di aiuto deve essere messo nella cartella help dell&#8217;estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).</p></div>
+<div class="paragraph"><p>La versione in html deve essere compilata con:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend=xhtml11 \
+         -a lang=XX \
+         --out-file help.html \
+         manual.txt</code></pre>
+</div></div>
+<div class="paragraph"><p>Dove <code><strong>help.html</strong></code> è il nome che il file di aiuto <strong>deve</strong> avere, <code>manual.txt</code> è il nome del file sorgente e <code><strong>XX</strong></code> è il proprio language code (ad esempio <code>it</code>, <code>es</code>, ..).<br /></p></div>
+<div class="paragraph"><p>Mentre la versione in Mallard necessita di qualche ulteriore passaggio:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Scaricare <a href="https://docs.google.com/file/d/0BxWv_9cok7BKTnBWZTFjVDRyUE0/edit?usp=sharing">questo Mallard backend per AsciiDoc</a>
+</p>
+</li>
+<li>
+<p>
+Estrarlo
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>tar -xf mallard-backend.tar.gz</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Installare il backend
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend install mallard.zip</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Compilare il file sorgente (ad esempio <code>manual.txt</code>) con:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend=mallard \
+         -a chunked=1 \
+         -a toc \
+         --out-file temp.page \
+         manual.txt</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Dare allo script di bash <code>chunkenizer</code> i permessi di esecuzione:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>chmod +x chunkenizer</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>./chunkenizer --yelp temp.page outdir</code></pre>
+</div></div>
+<div class="paragraph"><p>Dove <code>outdir</code> è la cartella di destinazione con il nome del proprio locale (ad esempio <code>pt_BR</code>).</p></div>
+</li>
+</ol></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Se si desidera utilizzare le immagini del manuale inglese è necessario creare un collegamento simbolico alla loro cartella nella cartella del proprio locale:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ln -s ../C/img img</code></pre>
+</div></div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_autore">9. AUTORE</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Daniele Pezzini &lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</p></div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1<br />
+Last updated 2013-06-16 12:08:25 CEST
+</div>
+<div id="footer-badges">
+<a href="http://validator.w3.org/check?uri=referer">
+  <img style="border:0;width:88px;height:31px"
+    src="http://www.w3.org/Icons/valid-xhtml11-blue"
+    alt="Valid XHTML 1.1" height="31" width="88" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border:0;width:88px;height:31px"
+    src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+    alt="Valid CSS!" />
+</a>
+</div>
+</div>
+</body>
+</html>

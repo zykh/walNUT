@@ -1,0 +1,215 @@
+/* Credentials Dialog */
+.walnut-cred-dialog {
+	min-width: 33.34em;
+}
+
+.walnut-cred-dialog-icon {
+	icon-size: 5.44em;
+}
+
+.walnut-cred-dialog-headline {
+	text-align: right;
+}
+
+.walnut-cred-dialog-description {
+	text-align: right;
+}
+
+.walnut-cred-dialog-table {
+	spacing-rows: 1em;
+	spacing-columns: 1em;
+}
+
+.walnut-cred-dialog-error-box {
+	padding-top: 1em;
+	spacing: 0.333em;
+}
+
+.walnut-cred-dialog-error-icon {
+	icon-size: 1.63em;
+}
+
+.walnut-cred-dialog-error-label {
+	font-size: 0.818em;
+}
+
+/* Delete Device Box */
+.walnut-delbox-icon {
+	icon-size: 4.35em;
+	padding: 0 0.666em 0 0;
+}
+
+.walnut-delbox-desc {
+	font-weight: bold;
+	padding: 0.333em;
+	text-align: right;
+}
+
+.walnut-delbox-text {
+	padding: 0.333em;
+	text-align: right;	
+}
+
+.walnut-delbox-buttons-box {
+	spacing: 0.333em;
+	padding: 0.333em;
+}
+
+/* Credentials Box */
+.walnut-credbox-icon {
+	icon-size: 4.35em;
+	padding: 0 0.666em 0 0;
+}
+
+.walnut-credbox-desc {
+	font-weight: bold;
+	padding: 0.333em;
+	text-align: right;
+}
+
+.walnut-credbox-username {
+	max-width: 5.333em;
+	padding: 0.333em;
+}
+
+.walnut-credbox-userbox {
+	width: 5.333em;
+}
+
+.walnut-credbox-password {
+	max-width: 5.333em;
+	padding: 0.333em;
+}
+
+.walnut-credbox-pwbox {
+	width: 5.333em;
+}
+
+.walnut-credbox-buttons-box {
+	spacing: 0.333em;
+	padding: 0.333em;
+}
+
+/* Add Device Box*/
+.walnut-addbox-icon {
+	icon-size: 4.35em;
+	padding: 0 0.666em 0 0;
+}
+
+.walnut-addbox-desc {
+	font-weight: bold;
+	padding: 0.333em;
+	text-align: right;
+}
+
+.walnut-addbox-host {
+	max-width: 7.33em;
+	padding: 0.333em;
+}
+
+.walnut-addbox-hostbox {
+	width: 7.33em;
+}
+
+.walnut-addbox-port {
+	max-width: 3.333em;
+	padding: 0.333em;
+}
+
+.walnut-addbox-portbox {
+	width: 3.333em;
+}
+
+.walnut-addbox-buttons-box {
+	spacing: 0.333em;
+	padding: 0.333em;
+}
+
+/* Bottom Control Buttons*/
+.walnut-bottom-controls-box {
+	spacing: 0.666em;
+}
+
+/* Buttons */
+.walnut-buttons-icon-big {
+	height: 2.475em;
+	icon-size: 2.475em;
+	padding: 0;
+}
+
+.walnut-buttons-icon-small {
+	height: 1.1em;
+	icon-size: 1.1em;
+	padding: 0;
+}
+
+.walnut-buttons-big {
+	padding: 0.533em;
+}
+
+.walnut-buttons-small {
+	padding: 0.2em;
+}
+
+/* Device Data Table (Battery Charge, Backup Time, Device Load, Temperature) */
+.walnut-ups-data-table-icon {
+	icon-size: 3.3em;
+	padding: 0.333em;
+}
+
+.walnut-ups-data-table-label {
+	text-align: right;
+	font-weight: bold;
+	padding: 0.467em 0.333em 0 0;
+}
+
+.walnut-ups-data-table-text {
+	text-align: right;
+	padding: 0 0.333em 0.467em 0;
+}
+
+/* Device Top Data (Status/Alarm) */
+.walnut-ups-top-data-box {
+	min-width: 20em;
+}
+
+.walnut-ups-top-data-icon {
+	icon-size: 3.3em;
+	padding: 0 1.333em 0.333em 0;
+}
+
+.walnut-ups-top-data-label {
+	text-align: left;
+	font-weight: bold;
+}
+
+.walnut-ups-top-data-text {
+	text-align: left;
+}
+
+/* Device manufacturer/model */
+.walnut-ups-model {
+	text-align: center;
+	font-weight: bold;
+}
+
+/* Error Box */
+.walnut-error-icon {
+	icon-size: 3.3em;
+	padding-right: 0.625em;
+}
+
+.walnut-error-label {
+	font-weight: bold;
+}
+
+.walnut-error-desc {
+
+}
+
+/* walNUT Menu*/
+.walnut-menu {
+	min-width: 26.7em;
+}
+
+/* std gnome: 1em -> 15px (11pt) */

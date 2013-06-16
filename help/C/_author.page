@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="_author">
+<title>9. AUTHOR</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>Daniele Pezzini &lt;<link href="mailto:hyouko@gmail.com">hyouko@gmail.com</link>&gt;</p>
+</page>

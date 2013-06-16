@@ -1,0 +1,107 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="PI">
+<title>3. ICONA/ETICHETTA DEL PANNELLO</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="M"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>L&#8217;icona e l&#8217;etichetta di <em>walNUT</em> sono personalizzabili tramite le <link xref="P">preferenze</link>.
+Qui è spiegato come si comportano.</p>
+<table rules="rows"
+frame="top bottom"
+>
+<tbody>
+<tr>
+<td><p><media type="image" src="img/icons.png"
+>
+Icona del pannello</media></p></td>
+<td><p>L&#8217;icona del pannello normalmente mostra solo il livello di carica della batteria [<em style="strong">A</em>], ma può visualizzare anche il livello di carico del dispositivo [<em style="strong">B</em>], se disponibile.
+In tal caso il &#8216;seme&#8217; della noce sarà diviso in due parti: quella più a sinistra [<em style="strong">1</em>] mostrerà il livello di carica della batteria, quella più a destra [<em style="strong">2</em>] il livello di carico del dispositivo.</p>
+<note style="caution">
+<p>Nal caso in cui si imposti anche <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> nelle <link xref="P">preferenze</link> <em>e</em> il livello di carica della batteria non sia disponibile, l&#8217;icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [<em style="strong">A</em>]: <em>si prega di prestare attenzione</em>.</p>
+</note></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_ol_ob.png"
+>
+Icona del pannello - in linea/a batteria + Carico/Caricando</media></p></td>
+<td><p>L&#8217;icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l&#8217;elettricità non è assente, <code>ups.status</code>: <code>OL</code>) ci sarà un piccolo fulmine [<em style="strong">C</em>] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [<em style="strong">D</em>].
+Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile <em>e</em> il dispositivo non ci sta dicendo che si sta caricando o scaricando (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) supporremo che sia carico e il fulmine sarà trasparente [<em style="strong">E</em>], altrimenti sarà a piena opacità [<em style="strong">F</em>].</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_caution.png"
+>
+Icona del pannello - Attenzione</media></p></td>
+<td><p>Per gli altri stati (<code>ups.status</code>: <code>BYPASS</code>, <code>TRIM</code>, ..) o se si verifica un allarme (<code>ups.status</code>: <code>ALARM</code> + <code>ups.alarm</code>) ci sarà un punto esclamativo nell&#8217;angolo in alto a destra della noce.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_ghost.png"
+>
+Icona del pannello - Fantasma</media></p></td>
+<td><p>Se il livello di carica della batteria non è disponibile oppure se anche l&#8217;opzione <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> è selezionata nelle <link xref="P">preferenze</link> <em>e</em> <em style="strong">sia</em> il livello di carico del dispositivo, <em style="strong">sia</em> il livello di carica della batteria non sono disponibili l&#8217;icona sarà una noce piena e trasparente.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_error.png"
+>
+Icona del pannello - Errore</media></p></td>
+<td><p>Questa è l&#8217;icona visualizzata in caso di errori.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_labels.png"
+>
+Etichette sul pannello</media></p></td>
+<td><p><em>walNUT</em> può anche mostrare un&#8217;etichetta, alla destra dell&#8217;icona sul pannello, con il livello di carica della batteria [<em style="strong">G</em>], il livello di carico del dispositivo [<em style="strong">H</em>] o entrambi [<em style="strong">I</em>], se disponibili.</p></td>
+</tr>
+</tbody>
+</table>
+<note style="note">
+<p>L&#8217;icona mostra il livello di carica della batteria e il livello di carico del dispositivo attraverso tre barre:</p>
+<table rules="rows"
+frame="top bottom"
+>
+<thead>
+<tr>
+<td><p>Icona </p></td>
+<td><p>Barre </p></td>
+<td><p>Significato</p></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><media type="image" src="img/icon_3bars.png"
+>
+3 barre per livello di carica della batteria/livello del carico</media></p></td>
+<td><p>3 barre</p></td>
+<td><p>Più del 75%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_2bars.png"
+>
+2 barre per livello di carica della batteria/livello del carico</media></p></td>
+<td><p>2 barre</p></td>
+<td><p>Tra il 50% e il 75%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_1bar.png"
+>
+1 barra per livello di carica della batteria/livello del carico</media></p></td>
+<td><p>1 barra</p></td>
+<td><p>Tra il 25% e il 50%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_0bars.png"
+>
+Nessuna barra per livello di carica della batteria/livello del carico</media></p></td>
+<td><p>nessuna barra</p></td>
+<td><p>Meno del 25%</p></td>
+</tr>
+</tbody>
+</table>
+</note>
+</page>

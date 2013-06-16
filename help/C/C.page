@@ -1,0 +1,40 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="C">
+<title>5. DEVICE CREDENTIALS</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="P"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>If you want to execute device&#8217;s <link xref="C">instant commands</link> you have to provide a valid username and password (<em>as set in <link href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</link> configuration file</em>).
+You can either save them through <link xref="M#CB">credentials box</link> or insert them in <link xref="C#CD">credentials dialog</link> <em style="strong">every time</em> you execute a command.</p>
+<note style="note">
+<p>If the saved user and password prove to be wrong you will be prompted for them with <link xref="C#CD">credential dialog</link> when you try and execute a command.</p>
+</note>
+<section id="CD"><links type="section"/><links type="topic"/><title>5.1. CREDENTIALS DIALOG</title>
+<figure>
+<media type="image" src="img/creddialog.png"
+>
+<p>Credentials dialog</p>
+</media>
+</figure>
+<p>Credentials dialog will prompt you to insert a valid username or password either if they&#8217;ve not been saved through <link xref="M#CB">credentials box</link> or if they proved to be wrong [<em style="strong">A</em>].</p>
+<figure>
+<media type="image" src="img/creddialog_err.png"
+>
+<p>Credentials dialog - error</p>
+</media>
+</figure>
+<note style="note">
+<p>The [<em style="strong">B</em>] &#8216;execute&#8217; button will be sensitive only if both username and password are not void.</p>
+</note>
+<note style="caution">
+<p>Once you have inserted username and password, when you click on the [<em style="strong">B</em>] &#8216;execute&#8217; button, the command will be sent to the driver.</p>
+</note>
+</section>
+</page>

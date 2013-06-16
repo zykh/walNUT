@@ -1,0 +1,67 @@
+body {
+	margin: 1em auto;
+}
+
+/* Section titles */
+h1, h2, h3, h4, h5, h6 {
+	font-family: sans-serif;
+	margin-top: 0.5em;
+}
+
+h2, h3 {
+	border-bottom: 2px solid MediumSlateBlue;
+}
+
+#author {
+	color: MediumPurple;
+	font-family: sans-serif;
+}
+
+#email {
+	font-size: 0.9em;
+}
+
+#revnumber, #revdate {
+	font-family: sans-serif;
+	font-size: 0.8em;
+	color: grey;
+}
+
+/* Footer */
+div#footer {
+	font-family: sans-serif;
+	border-top: 2px solid MediumOrchid;
+}
+
+div#footer-text {
+	color: gray;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+	font-family: sans-serif;
+}
+
+/* Imageblock padding */
+div.imageblock div.content {
+	padding: 0.3em;
+}
+
+/* Table header */
+div.tableblock th {
+	background: AliceBlue;
+}
+
+thead, p.table.header {
+	font-family: sans-serif;
+}
+
+/* Alternating background color of tables' rows */
+div.tableblock tr:nth-of-type(odd) {
+	background: White;
+}
+
+div.tableblock tr:nth-of-type(even) {
+	background: WhiteSmoke;
+}
+

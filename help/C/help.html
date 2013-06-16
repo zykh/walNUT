@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<title>walNUT</title>
+<link rel="stylesheet" href="../ad/style/asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="../ad/style/custom.css" type="text/css" />
+</head>
+<body class="article" style="max-width:1024px">
+<div id="header">
+<h1>walNUT</h1>
+<span id="author">Daniele Pezzini</span><br />
+<span id="email"><code>&lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</code></span><br />
+<span id="revnumber">version 0.1,</span>
+<span id="revdate">May 2013</span>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<h2 id="_what_is_it" class="float">WHAT IS IT?</h2>
+<div class="paragraph"><p><strong><em>walNUT</em></strong> is nothing more than an interface between you and NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), using NUT&#8217;s own <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a> and <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>.
+It provides you a handy <a href="#M">panel menu</a> and <a href="#PI">icon</a> to monitor your devices and execute NUT&#8217;s instant <a href="#DC">commands</a>.</p></div>
+<div class="paragraph"><p>Before <a href="#IN">you start</a>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that <em>walNUT</em> will work right <a href="#F">out of the box</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="IN">1. INSTALLATION</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You can install this extension for your user by executing:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code></pre>
+</div></div>
+<div class="paragraph"><p>After the installation you&#8217;ll need to restart Gnome Shell:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ALT</code>+<code>F2</code> to open the command prompt
+</p>
+</li>
+<li>
+<p>
+Enter <code>r</code> to restart Gnome Shell
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Then you can enable the extension through <a href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</a> (Shell Extensions &#8594; walNUT &#8594; On) or through <a href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</a></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">In addition to NUT, you need also <a href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</a> (see <a href="#I">known issues</a>).</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="F">2. FIRST EXECUTION</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Once you&#8217;ve <a href="#IN">installed</a> <em>walNUT</em>, when it&#8217;s executed for the first time, or every time its device list is empty, it&#8217;ll try and search automatically for new devices at <em>localhost:3493</em>.<br />
+So, for most installations, it should have already found your devices. If not, you have to add them through the <a href="#FN">find new devices box</a>.</p></div>
+<div class="paragraph"><p>It&#8217;s important that you understand how <em>walNUT</em> communicates with you and how you can customize it: please read <a href="#PI">panel icon/label</a>, <a href="#M">panel menu</a> and <a href="#P">preferences</a> sections.<br />
+Don&#8217;t miss the <a href="#I">known issues</a> section!</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="PI">3. PANEL ICON/LABEL</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>walNUT</em>'s icon and label are customizable through the <a href="#P">preferences</a>.<br />
+Here is explained how they behave.</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<tbody>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icons.png" alt="Panel Icon" />
+</span></p></td>
+<td align="left" valign="middle"><div><div class="paragraph"><p>Panel icon standardly displays only battery charge [<strong>A</strong>], but it can display also device load [<strong>B</strong>], if available.<br />
+In that case the &#8216;seed&#8217; of the walnut will be split up in two pieces: the leftmost [<strong>1</strong>] will display battery charge, the rightmost [<strong>2</strong>] load level.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Caution" />
+</td>
+<td class="content">In case you set also to <em>Display load in panel icon</em> in <a href="#P">preferences</a> <em>and</em> battery charge is not available, the icon will be exactly the same as that for battery charge only [<strong>A</strong>]: <em>please pay attention</em>.</td>
+</tr></table>
+</div></div></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_ol_ob.png" alt="Panel Icon - Online/On Battery + Charged/Charging" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">Panel icon displays also the state of the line: if the device is on line (main is not absent, <code>ups.status</code>: <code>OL</code>) there will be a small lightning [<strong>C</strong>] at the right of the nut that wont be displayed if the device is on battery [<strong>D</strong>].<br />
+That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available <em>and</em> the device isn&#8217;t telling us it&#8217;s charging or discharging (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) we&#8217;ll assume it&#8217;s charged and the lightning will be transparent [<strong>E</strong>], otherwise it&#8217;ll be at full opacity [<strong>F</strong>].</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_caution.png" alt="Panel Icon - Caution" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">For other status (<code>ups.status</code>: <code>BYPASS</code>, <code>TRIM</code>, ..) or if an alarm arises (<code>ups.status</code>: <code>ALARM</code> + <code>ups.alarm</code>) there will be an exclamation mark on the right top angle of the nut.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_ghost.png" alt="Panel Icon - Ghost" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">If battery charge is not available or if also <em>Display load in panel icon</em> option is selected in <a href="#P">preferences</a> <em>and</em> <strong>both</strong> device load and battery charge aren&#8217;t available the icon will be a full transparent nut.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_error.png" alt="Panel Icon - Error" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">That&#8217;s the icon displayed in case of errors.</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_labels.png" alt="Panel Labels" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table"><em>walNUT</em> can also display a label, at the right of the icon in panel, with battery charge [<strong>G</strong>], device load [<strong>H</strong>] or both [<strong>I</strong>], if available.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Icon shows charge/load through 3 bars:</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<col />
+<thead>
+<tr>
+<th align="center" valign="middle">Icon </th>
+<th align="left" valign="middle">Bars </th>
+<th align="left" valign="middle">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_3bars.png" alt="3 bars for charge/load" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">3 bars</p></td>
+<td align="left" valign="middle"><p class="table">More than 75%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_2bars.png" alt="2 bars for charge/load" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">2 bars</p></td>
+<td align="left" valign="middle"><p class="table">Between 50% and 75%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_1bar.png" alt="1 bar for charge/load" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">1 bar</p></td>
+<td align="left" valign="middle"><p class="table">Between 25% and 50%</p></td>
+</tr>
+<tr>
+<td align="center" valign="middle"><p class="table"><span class="image">
+<img src="img/icon_0bars.png" alt="No bars for charge/load" />
+</span></p></td>
+<td align="left" valign="middle"><p class="table">no bars</p></td>
+<td align="left" valign="middle"><p class="table">Less than 25%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="M">4. PANEL MENU</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Here&#8217;s a quick overview of panel menu.<br />
+Standardly the menu look like this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menustd.png" alt="Panel Menu" />
+</div>
+</div>
+<div class="paragraph"><p>With all the available options set:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menu.png" alt="Panel Menu - Complete" />
+</div>
+</div>
+<div class="paragraph"><p>Menu can be split up in various sections:</p></div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<col />
+<col />
+<tbody>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>A</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#L">Device List</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>B</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DM">Device Model</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>C</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DS">Device Status</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>D</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DA">Device Alarm</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>E</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DT">Data Table</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>F</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#R">Raw Vars</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>G</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#DC">Device&#8217;s Commands</a></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>H</strong></p></td>
+<td align="left" valign="top"><div><div class="paragraph"><p>Box for control buttuns functions</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#CB">Device&#8217;s credentials box</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#FN">Find new devices box</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#DD">Delete device box</a>
+</p>
+</li>
+</ul></div></div></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><strong>I</strong></p></td>
+<td align="left" valign="top"><p class="table"><a href="#BB">Control Buttons</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>In case of an error, the menu appears like this:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menuerr.png" alt="Panel Menu - Error" />
+</div>
+</div>
+<div class="paragraph"><p>Where the device list [<strong>A</strong>] is visible or not, depending on the type of error [<strong>L</strong>].</p></div>
+<div class="sect2">
+<h3 id="L">4.1. DEVICE LIST</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicelist.png" alt="Device List" />
+</div>
+</div>
+<div class="paragraph"><p>Devices are listed in <em>hostname:port</em> alphabetical order and then alphabetically by their name.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">Every device stored in <em>walNUT</em>'s own list will be prompted for availability <strong>every time</strong> you change some option or gnome shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicelist_open.png" alt="Device List opened" />
+</div>
+</div>
+<div class="paragraph"><p>Not available devices are signaled with a <strong>(N/A)</strong> [<strong>A</strong>] at their right.
+You can choose either to display or not not available devices in <a href="#P">preferences</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="DM">4.2. DEVICE MODEL</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicemodel.png" alt="Device Model" />
+</div>
+</div>
+<div class="paragraph"><p>If available both device manufacturer and device model will be shown here.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">If your device isn&#8217;t providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in <a href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DS">4.3. DEVICE STATUS</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicestatus.png" alt="Device Status" />
+</div>
+</div>
+<div class="paragraph"><p>Device status will show: line status [<strong>A</strong>] (online/on battery), and then, on the second row, every status reported by the device [<strong>B</strong>] (bypass, trim, ..).</p></div>
+</div>
+<div class="sect2">
+<h3 id="DA">4.4. DEVICE ALARM</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicealarm.png" alt="Device Alarm" />
+</div>
+</div>
+<div class="paragraph"><p>If an alarm is set (<code>ups.status</code>: <code>ALARM</code> and <code>ups.alarm</code>) it&#8217;ll be showed here.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">An alarm will be signaled also through an &#8216;exclamation mark&#8217; on the <a href="#PI">panel icon</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DT">4.5. DATA TABLE</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/datatable.png" alt="Data Table" />
+</div>
+</div>
+<div class="paragraph"><p>If available, [<strong>C</strong>] battery charge, [<strong>D</strong>] backup time, [<strong>E</strong>] device load and [<strong>F</strong>] temperature will be shown here.<br />
+Battery icon [<strong>1</strong>] will display actual charge through the number of horizontal bars (as the ones of <a href="#PI">panel icon</a>).</p></div>
+</div>
+<div class="sect2">
+<h3 id="R">4.6. RAW VARS</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/raw.png" alt="Raw Vars" />
+</div>
+</div>
+<div class="paragraph"><p>If you want a deep dive in all the variables available for a device you have to select the <em>Display raw data</em> option in the <a href="#P">preferences</a>: raw vars will be displayed in a scrollable submenu.</p></div>
+</div>
+<div class="sect2">
+<h3 id="DC">4.7. DEVICE&#8217;S COMMANDS</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd.png" alt="Device's Commands - Combo Box" />
+</div>
+</div>
+<div class="paragraph"><p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in <a href="#P">preferences</a>.<br />
+You can choose to show device&#8217;s instant command either in a combo box [<strong>A</strong>] or as a submenu [<strong>B</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_sm.png" alt="Device's Commands - Sub Menu" />
+</div>
+</div>
+<div class="paragraph"><p>If combo box [<strong>A</strong>] is chosen, first you have to select the command, and then click on the [<strong>1</strong>] &#8216;execute&#8217; button on the right of command&#8217;s description [<strong>2</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmdchosen.png" alt="Device's Commands - Combo box, chosen" />
+</div>
+</div>
+<div class="paragraph"><p>If submenu [<strong>B</strong>] is chosen, when you click on a command, it&#8217;ll be executed.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Submenu standardly display also a localized description of commands [<strong>C</strong>], but if you think that it steals too much space you can set not to display it [<strong>D</strong>] in <a href="#P">preferences</a>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_sm_vs.png" alt="Device's Commands - Sub Menu, with or w/o description" />
+</div>
+</div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<strong>E</strong>] or not [<strong>F</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/cmd_notify.png" alt="Device's Commands - Notify" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">The main advantage of the combo box is that it&#8217;s a <strong>two-step</strong> process, while the submenu gives you a scrollable interface if you have limited vertical space.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="BB">4.8. CONTROL BUTTONS</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns.png" alt="Control Buttons" />
+</div>
+</div>
+<div class="paragraph"><p>At the bottom of <a href="#M">panel menu</a> there&#8217;s a handful of control buttons, some of which will open their own box [<strong>A</strong>] just before the controls row [<strong>B</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns_box.png" alt="Control Buttons + Control Box" />
+</div>
+</div>
+<div class="paragraph"><p>The buttons will show:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<a href="#P">Preferences</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#CB">Device&#8217;s crendetials box</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#FN">Find new devices box</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#DD">Delete devices box</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#H">Help</a>
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2">
+<h3 id="CB">4.9. CREDENTIALS BOX</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/credbox.png" alt="Credentials Box" />
+</div>
+</div>
+<div class="paragraph"><p>Clicking on the &#8216;credentials&#8217; button [<strong>A</strong>] credentials box [<strong>B</strong>] will open. This box is used to store username and password for devices so that you don&#8217;t have to be prompted for them every time you execute a command.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">If you want to delete username, password or both (e.g. so that you will be prompted for them from now on), you have to save them void.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>If you click on the [<strong>1</strong>] &#8216;undo and close&#8217; button any change you have made to user/password before clicking on [<strong>2</strong>] &#8216;save&#8217; button will be discarded.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">Standardly password is hidden, but if you want, you can choose not to hide it in <a href="#P">preferences</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="FN">4.10. FIND NEW DEVICES/FIND NEW DEVICES BOX</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/addbox.png" alt="Find new devices Box" />
+</div>
+</div>
+<div class="paragraph"><p>In order to find new devices, once you clicked on the [<strong>A</strong>] &#8216;find&#8217; button, you have to insert the devices' hostname [<strong>1</strong>] and port [<strong>2</strong>] and then click on the [<strong>B</strong>] &#8216;start search&#8217; button.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">If hostname isn&#8217;t given it&#8217;ll be <em>localhost</em>, while port, if not given, will fall back to <em>3493</em>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>You will be notified either if new devices are found [<strong>C</strong>] or not [<strong>D</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/add_notify.png" alt="Find new devices - Notify" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DD">4.11. DELETE DEVICES/DELETE DEVICES BOX</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/delbox.png" alt="Delete device Box" />
+</div>
+</div>
+<div class="paragraph"><p>If you want to delete a device, first you have to select it from <a href="#L">device list</a>, and then you have to click on the [<strong>A</strong>] &#8216;delete&#8217; button.<br />
+A new box [<strong>B</strong>] will appear asking you if you really want to delete it [<strong>1</strong>] or not [<strong>2</strong>].</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">If you want to delete a device that&#8217;s not currently available, check first to have enabled the <em>Display not available devices</em> option in <a href="#P">preferences</a>.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="C">5. DEVICE CREDENTIALS</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If you want to execute device&#8217;s <a href="#C">instant commands</a> you have to provide a valid username and password (<em>as set in <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> configuration file</em>).
+You can either save them through <a href="#CB">credentials box</a> or insert them in <a href="#CD">credentials dialog</a> <strong>every time</strong> you execute a command.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">If the saved user and password prove to be wrong you will be prompted for them with <a href="#CD">credential dialog</a> when you try and execute a command.</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="CD">5.1. CREDENTIALS DIALOG</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/creddialog.png" alt="Credentials dialog" />
+</div>
+</div>
+<div class="paragraph"><p>Credentials dialog will prompt you to insert a valid username or password either if they&#8217;ve not been saved through <a href="#CB">credentials box</a> or if they proved to be wrong [<strong>A</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/creddialog_err.png" alt="Credentials dialog - error" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">The [<strong>B</strong>] &#8216;execute&#8217; button will be sensitive only if both username and password are not void.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Caution" />
+</td>
+<td class="content">Once you have inserted username and password, when you click on the [<strong>B</strong>] &#8216;execute&#8217; button, the command will be sent to the driver.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="P">6. PREFERENCES</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To fine tune <em>walNUT</em> to suit your needs you may want to change some options.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/prefbtn.png" alt="Preferences Button" />
+</div>
+</div>
+<div class="paragraph"><p>You can access the preferences from the [<strong>A</strong>] preferences button in the <a href="#M">panel menu</a>.</p></div>
+<div class="paragraph"><p>A new window will open, where you can set the various options.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/pref.png" alt="Preferences" />
+</div>
+</div>
+<div class="tableblock">
+<table rules="rows"
+style="margin-left:auto; margin-right:auto;"
+frame="hsides"
+cellspacing="0" cellpadding="4">
+<caption class="title">Available Options</caption>
+<col />
+<col />
+<col />
+<thead>
+<tr>
+<th align="right" valign="top"># </th>
+<th align="left" valign="top">Option </th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>1</strong></p></td>
+<td align="left" valign="top"><p class="table">Seconds before next update</p></td>
+<td align="left" valign="top"><p class="table">The seconds after <em>walNUT</em> updates the data from the device. (<em>default: 15</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>2</strong></p></td>
+<td align="left" valign="top"><p class="table">Temperature unit</p></td>
+<td align="left" valign="top"><p class="table">The unit (Centigrade or Fahrenheit) <em>walNUT</em> should display the temperature in. (<em>default: Centigrade</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>3</strong></p></td>
+<td align="left" valign="top"><p class="table">Display not available devices</p></td>
+<td align="left" valign="top"><p class="table">Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
+<td align="left" valign="top"><p class="table">Display raw data</p></td>
+<td align="left" valign="top"><p class="table">Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="left" valign="top"><p class="table">Display device&#8217;s commands</p></td>
+<td align="left" valign="top"><p class="table">Display device&#8217;s available commands. Requires upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="left" valign="top"><p class="table">Device&#8217;s commands in a combobox</p></td>
+<td align="left" valign="top"><p class="table">Whether the extension should display the device&#8217;s commands in a combobox or not (if not, commands are displayed in a sub menu). (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="left" valign="top"><p class="table">Display description of device&#8217;s commands (submenu)</p></td>
+<td align="left" valign="top"><p class="table">Display also a localized description of device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="left" valign="top"><p class="table">Hide password at credentials box</p></td>
+<td align="left" valign="top"><p class="table">Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
+<td align="left" valign="top"><p class="table">Display load in panel icon</p></td>
+<td align="left" valign="top"><p class="table">Whether the device load should be displayed in panel icon or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
+<td align="left" valign="top"><p class="table">Display load in panel label</p></td>
+<td align="left" valign="top"><p class="table">Whether the device load should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
+<td align="left" valign="top"><p class="table">Display charge in panel label</p></td>
+<td align="left" valign="top"><p class="table">Whether the battery charge should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="I">7. KNOWN ISSUES</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Since <em>walNUT</em> relies on NUT&#8217;s upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn&#8217;t have an up and running NUT, upsc will take some time to tell us, so <strong>every time</strong> the devices list get updated or when a research for new devices is invoked or, if the &#8216;problematic&#8217; device is the currently chosen one, every time <em>walNUT</em> tries and update its variables, it <em>could potentially</em> <strong>freeze gnome shell</strong> for some seconds (~3 for every &#8216;problematic&#8217; device).</p></div>
+<div class="paragraph"><p>In order to prevent these freezes every invocation of upsc/upscmd is done through a timeout of 150ms.<br />
+If your device isn&#8217;t found (e.g. it needs more than 150ms to reply), you can change that timeout by changing the <em>timeout</em> setting (<em>default: 0.150</em>) either through <a href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</a> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) or executing:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>gsettings set org.gnome.shell.extensions.walnut timeout N.NNN</code></pre>
+</div></div>
+<div class="paragraph"><p>Where <code>N.NNN</code> is the timeout in seconds.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/caution.png" alt="Caution" />
+</td>
+<td class="content">Regardless of this timeout, it&#8217;s better not to play around with find new devices box and &#8216;fantasy&#8217; hosts and it&#8217;s <em>higly</em> recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="H">8. HELP</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If this manual doesn&#8217;t answer your questions or for every problem you may encounter, you can find some help at NUT&#8217;s list:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>NUT Users</strong> - <a href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser">http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>If you want to help, you are welcomed in NUT&#8217;s list and NUT&#8217;s developers list:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>NUT Developers</strong> - <a href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev">http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev</a>
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_translators">8.1. TRANSLATORS</h3>
+<div class="paragraph"><p>A guide to translate extensions can be found in gnome shell extensions <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a>.</p></div>
+<div class="paragraph"><p><em>walNUT</em>'s documentation is done in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> and then processed either to the html version and to the <a href="http://projectmallard.org/">Mallard</a> version for <a href="http://projects.gnome.org/yelp/">Yelp</a>.<br />
+Help file must be put in extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p></div>
+<div class="paragraph"><p>The html version must be compiled with:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend=xhtml11 \
+         -a lang=XX \
+         --out-file help.html \
+         manual.txt</code></pre>
+</div></div>
+<div class="paragraph"><p>Where <code><strong>help.html</strong></code> is the name the help file <strong>must</strong> have, <code><strong>manual.txt</strong></code> is the name of your source file and <code><strong>XX</strong></code> is the desired locale&#8217;s language code (e.g. <code>it</code>, <code>es</code>, ..).<br /></p></div>
+<div class="paragraph"><p>While the Mallard version needs some further steps:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Download <a href="https://docs.google.com/file/d/0BxWv_9cok7BKTnBWZTFjVDRyUE0/edit?usp=sharing">this Mallard backend for AsciiDoc</a>
+</p>
+</li>
+<li>
+<p>
+Extract it
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>tar -xf mallard-backend.tar.gz</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Install the backend
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend install mallard.zip</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Compile your source file (e.g. <code>manual.txt</code>) with:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>asciidoc --backend=mallard \
+         -a chunked=1 \
+         -a toc \
+         --out-file temp.page \
+         manual.txt</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Give <code>chunkenizer</code> bash script executable permissions:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>chmod +x chunkenizer</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Process the previously created temp file <code>temp.page</code> with it:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>./chunkenizer --yelp temp.page outdir</code></pre>
+</div></div>
+<div class="paragraph"><p>Where <code>outdir</code> is the output directory named after your locale (e.g. <code>pt_BR</code>).</p></div>
+</li>
+</ol></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">
+<div class="paragraph"><p>If you want to use english manual&#8217;s images you have to make a symbolic link to their directory in your locale dir:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ln -s ../C/img img</code></pre>
+</div></div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_author">9. AUTHOR</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Daniele Pezzini &lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</p></div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1<br />
+Last updated 2013-06-16 12:07:28 CEST
+</div>
+<div id="footer-badges">
+<a href="http://validator.w3.org/check?uri=referer">
+  <img style="border:0;width:88px;height:31px"
+    src="http://www.w3.org/Icons/valid-xhtml11-blue"
+    alt="Valid XHTML 1.1" height="31" width="88" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border:0;width:88px;height:31px"
+    src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+    alt="Valid CSS!" />
+</a>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extensions-walnut">
+
+	<schema path="/org/gnome/shell/extensions/walnut/" id="org.gnome.shell.extensions.walnut">
+
+		<!-- General options -->
+		<key type="i" name="update-time">
+			<default>15</default>
+			<summary>Seconds before next update</summary>
+			<description>The seconds after walNUT updates the data from the system.</description>
+		</key>
+
+		<key type="s" name="temp-unit">
+			<default>"Centigrade"</default>
+			<summary>Unit</summary>
+			<description>The unit ('Centigrade' or 'Fahrenheit', without quotes) the extension should display the temperature in.</description>
+		</key>
+
+		<!-- Device List Options -->
+		<key type="b" name="display-na">
+			<default>false</default>
+			<summary>Display not available UPSes</summary>
+			<description>Display also not available UPSes in combobox in panelmenu (chosen UPS will be always displayed, also if not available, in spite of this option).</description>
+		</key>
+
+		<!-- Raw Data -->
+		<key type="b" name="display-raw">
+			<default>false</default>
+			<summary>Display raw data</summary>
+			<description>Show also raw data.</description>
+		</key>
+
+		<!-- UPS Commands -->
+		<key type="b" name="display-cmd">
+			<default>false</default>
+			<summary>Display UPS commands</summary>
+			<description>Display available UPS commands.</description>
+		</key>
+
+		<key type="b" name="display-cmd-cb">
+			<default>true</default>
+			<summary>UPS commands in a combobox</summary>
+			<description>Whether the extension should display the UPS commands in a combobox or not (if not, commands are displayed in a sub menu).</description>
+		</key>
+
+		<key type="b" name="display-cmd-desc">
+			<default>true</default>
+			<summary>Display desc of UPS commands</summary>
+			<description>Display also a localized description of available UPS commands in the sub menu.</description>
+		</key>
+
+		<!-- Credentials Box Options -->
+		<key type="b" name="hide-pw">
+			<default>true</default>
+			<summary>Hide password at credentials box</summary>
+			<description>Whether the password at credentials box should be hidden or not.</description>
+		</key>
+
+		<!-- Panel button options -->
+		<key type="b" name="panel-icon-display-load">
+			<default>false</default>
+			<summary>Display load in panel icon</summary>
+			<description>Whether the device load should be displayed in panel icon or not.</description>
+		</key>
+
+		<key type="b" name="panel-text-display-load">
+			<default>false</default>
+			<summary>Display load in panel label</summary>
+			<description>Whether the device load should be displayed in panel label or not.</description>
+		</key>
+
+		<key type="b" name="panel-text-display-charge">
+			<default>false</default>
+			<summary>Display charge in panel label</summary>
+			<description>Whether the battery charge should be displayed in panel label or not.</description>
+		</key>
+
+		<!-- Device list -->
+		<key type="s" name="ups">
+			<default>'[]'</default>
+			<summary>UPS list</summary>
+			<description>List devices already found. UPS name, host, port, user and password. First in the array is the chosen one.</description>
+		</key>
+
+		<!-- Timeout -->
+		<key type="d" name="timeout">
+			<default>0.150</default>
+			<summary>Timeout</summary>
+			<description>The seconds after walNUT shuld give up when invoking upsc and upscmd.</description>
+		</key>
+
+	</schema>
+
+</schemalist>

@@ -1,0 +1,107 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="PI">
+<title>3. PANEL ICON/LABEL</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="M"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p><em>walNUT</em>'s icon and label are customizable through the <link xref="P">preferences</link>.
+Here is explained how they behave.</p>
+<table rules="rows"
+frame="top bottom"
+>
+<tbody>
+<tr>
+<td><p><media type="image" src="img/icons.png"
+>
+Panel Icon</media></p></td>
+<td><p>Panel icon standardly displays only battery charge [<em style="strong">A</em>], but it can display also device load [<em style="strong">B</em>], if available.
+In that case the &#8216;seed&#8217; of the walnut will be split up in two pieces: the leftmost [<em style="strong">1</em>] will display battery charge, the rightmost [<em style="strong">2</em>] load level.</p>
+<note style="caution">
+<p>In case you set also to <em>Display load in panel icon</em> in <link xref="P">preferences</link> <em>and</em> battery charge is not available, the icon will be exactly the same as that for battery charge only [<em style="strong">A</em>]: <em>please pay attention</em>.</p>
+</note></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_ol_ob.png"
+>
+Panel Icon - Online/On Battery + Charged/Charging</media></p></td>
+<td><p>Panel icon displays also the state of the line: if the device is on line (main is not absent, <code>ups.status</code>: <code>OL</code>) there will be a small lightning [<em style="strong">C</em>] at the right of the nut that wont be displayed if the device is on battery [<em style="strong">D</em>].
+That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available <em>and</em> the device isn&#8217;t telling us it&#8217;s charging or discharging (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) we&#8217;ll assume it&#8217;s charged and the lightning will be transparent [<em style="strong">E</em>], otherwise it&#8217;ll be at full opacity [<em style="strong">F</em>].</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_caution.png"
+>
+Panel Icon - Caution</media></p></td>
+<td><p>For other status (<code>ups.status</code>: <code>BYPASS</code>, <code>TRIM</code>, ..) or if an alarm arises (<code>ups.status</code>: <code>ALARM</code> + <code>ups.alarm</code>) there will be an exclamation mark on the right top angle of the nut.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_ghost.png"
+>
+Panel Icon - Ghost</media></p></td>
+<td><p>If battery charge is not available or if also <em>Display load in panel icon</em> option is selected in <link xref="P">preferences</link> <em>and</em> <em style="strong">both</em> device load and battery charge aren&#8217;t available the icon will be a full transparent nut.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_error.png"
+>
+Panel Icon - Error</media></p></td>
+<td><p>That&#8217;s the icon displayed in case of errors.</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_labels.png"
+>
+Panel Labels</media></p></td>
+<td><p><em>walNUT</em> can also display a label, at the right of the icon in panel, with battery charge [<em style="strong">G</em>], device load [<em style="strong">H</em>] or both [<em style="strong">I</em>], if available.</p></td>
+</tr>
+</tbody>
+</table>
+<note style="note">
+<p>Icon shows charge/load through 3 bars:</p>
+<table rules="rows"
+frame="top bottom"
+>
+<thead>
+<tr>
+<td><p>Icon </p></td>
+<td><p>Bars </p></td>
+<td><p>Meaning</p></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><media type="image" src="img/icon_3bars.png"
+>
+3 bars for charge/load</media></p></td>
+<td><p>3 bars</p></td>
+<td><p>More than 75%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_2bars.png"
+>
+2 bars for charge/load</media></p></td>
+<td><p>2 bars</p></td>
+<td><p>Between 50% and 75%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_1bar.png"
+>
+1 bar for charge/load</media></p></td>
+<td><p>1 bar</p></td>
+<td><p>Between 25% and 50%</p></td>
+</tr>
+<tr>
+<td><p><media type="image" src="img/icon_0bars.png"
+>
+No bars for charge/load</media></p></td>
+<td><p>no bars</p></td>
+<td><p>Less than 25%</p></td>
+</tr>
+</tbody>
+</table>
+</note>
+</page>

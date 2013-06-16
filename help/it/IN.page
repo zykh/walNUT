@@ -1,0 +1,37 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="IN">
+<title>1. INSTALLAZIONE</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="F"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>È possibile installare questa estensione per il proprio utente eseguendo:</p>
+<listing>
+<code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code>
+</listing>
+<p>Dopo l&#8217;installazione è necessario riavviare Gnome Shell:</p>
+<list>
+<item>
+<p>
+<code>ALT</code>+<code>F2</code> per aprire il prompt dei comandi
+</p>
+</item>
+<item>
+<p>
+Inserire <code>r</code> per riavviare Gnome Shell
+</p>
+</item>
+</list>
+<p>Quindi è possibile attivare l&#8217;esensione attraverso <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) o tramite <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
+<note style="note">
+<p>Oltre a NUT, è necessario anche <link href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</link> (vedi <link xref="I">problemi conosciuti</link>).</p>
+</note>
+</page>

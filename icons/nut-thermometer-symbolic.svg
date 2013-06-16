@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16px"
+   height="16px"
+   id="svg2985"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="nut-thermometer-symbolic.svg">
+  <title
+     id="title3009">walNUT</title>
+  <defs
+     id="defs2987" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#3a3b39"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="32"
+     inkscape:cx="5.484375"
+     inkscape:cy="9.2956364"
+     inkscape:current-layer="layer3"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="false"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-global="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-nodes="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="991"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2993"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>walNUT</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Daniele Pezzini</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license
+           rdf:resource="http://artlibre.org/licence/lal" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://artlibre.org/licence/lal">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     style="display:inline"
+     id="g3897"
+     inkscape:label="O path def"
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true">
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 7,8.125 C 5.285057,8.5754601 4,10.150301 4,12 c 0,2.197294 1.8027056,4 4,4 2.197294,0 4,-1.802706 4,-4 0,-1.850044 -1.284575,-3.4248732 -3,-3.875 l 0,2.125 c 0.597329,0.3433 1,1.002175 1,1.75 0,1.116414 -0.8835859,2 -2,2 C 6.8835859,14 6,13.116414 6,12 6,11.250946 6.401028,10.592876 7,10.25 L 7,8.125 z"
+       id="path3899"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     style="display:inline"
+     inkscape:groupmode="layer"
+     id="g3901"
+     inkscape:label="I path def"
+     sodipodi:insensitive="true">
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 8,0 C 6.3552972,0 5,1.3552972 5,3 l 0,7 2,0 0,-7 C 7,2.4287028 7.4287028,2 8,2 8.5712972,2 9,2.4287028 9,3 l 0,7 2,0 0,-7 C 11,1.3552972 9.6447028,0 8,0 z"
+       id="path3903"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="-"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero"
+       id="rect3772-0"
+       width="3.5"
+       height="1"
+       x="0.5"
+       y="2"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero"
+       id="rect3772-2"
+       width="2.5"
+       height="1"
+       x="1.5"
+       y="4"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-0-1"
+       width="3.5"
+       height="1"
+       x="0.5"
+       y="6"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-0-8"
+       width="3.5"
+       height="1"
+       x="12"
+       y="2"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-0-5"
+       width="3.5"
+       height="1"
+       x="12"
+       y="6"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-2-8"
+       width="2.5"
+       height="1"
+       x="1.5"
+       y="8"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-2-5"
+       width="2.5"
+       height="1"
+       x="12"
+       y="8"
+       ry="0" />
+    <rect
+       style="fill-opacity:1;fill-rule:nonzero;display:inline"
+       id="rect3772-2-7"
+       width="2.5"
+       height="1"
+       x="12"
+       y="4"
+       ry="0" />
+  </g>
+</svg>

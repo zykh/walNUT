@@ -1,0 +1,102 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="H">
+<title>8. HELP</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.1" date="May 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="_author"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>If this manual doesn&#8217;t answer your questions or for every problem you may encounter, you can find some help at NUT&#8217;s list:</p>
+<list>
+<item>
+<p>
+<em style="strong">NUT Users</em> - <link href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser">http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser</link>
+</p>
+</item>
+</list>
+<p>If you want to help, you are welcomed in NUT&#8217;s list and NUT&#8217;s developers list:</p>
+<list>
+<item>
+<p>
+<em style="strong">NUT Developers</em> - <link href="http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev">http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev</link>
+</p>
+</item>
+</list>
+<section id="_translators"><links type="section"/><links type="topic"/><title>8.1. TRANSLATORS</title>
+<p>A guide to translate extensions can be found in gnome shell extensions <link href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</link>.</p>
+<p><em>walNUT</em>'s documentation is done in <link href="http://www.methods.co.nz/asciidoc/">AsciiDoc</link> and then processed either to the html version and to the <link href="http://projectmallard.org/">Mallard</link> version for <link href="http://projects.gnome.org/yelp/">Yelp</link>.
+Help file must be put in extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p>
+<p>The html version must be compiled with:</p>
+<listing>
+<code>asciidoc --backend=xhtml11 \
+         -a lang=XX \
+         --out-file help.html \
+         manual.txt</code>
+</listing>
+<p>Where <code><em style="strong">help.html</em></code> is the name the help file <em style="strong">must</em> have, <code><em style="strong">manual.txt</em></code> is the name of your source file and <code><em style="strong">XX</em></code> is the desired locale&#8217;s language code (e.g. <code>it</code>, <code>es</code>, ..).</p>
+<p>While the Mallard version needs some further steps:</p>
+<list type="numbered">
+<item>
+<p>
+Download <link href="https://docs.google.com/file/d/0BxWv_9cok7BKTnBWZTFjVDRyUE0/edit?usp=sharing">this Mallard backend for AsciiDoc</link>
+</p>
+</item>
+<item>
+<p>
+Extract it
+</p>
+<listing>
+<code>tar -xf mallard-backend.tar.gz</code>
+</listing>
+</item>
+<item>
+<p>
+Install the backend
+</p>
+<listing>
+<code>asciidoc --backend install mallard.zip</code>
+</listing>
+</item>
+<item>
+<p>
+Compile your source file (e.g. <code>manual.txt</code>) with:
+</p>
+<listing>
+<code>asciidoc --backend=mallard \
+         -a chunked=1 \
+         -a toc \
+         --out-file temp.page \
+         manual.txt</code>
+</listing>
+</item>
+<item>
+<p>
+Give <code>chunkenizer</code> bash script executable permissions:
+</p>
+<listing>
+<code>chmod +x chunkenizer</code>
+</listing>
+</item>
+<item>
+<p>
+Process the previously created temp file <code>temp.page</code> with it:
+</p>
+<listing>
+<code>./chunkenizer --yelp temp.page outdir</code>
+</listing>
+<p>Where <code>outdir</code> is the output directory named after your locale (e.g. <code>pt_BR</code>).</p>
+</item>
+</list>
+<note style="note">
+<p>If you want to use english manual&#8217;s images you have to make a symbolic link to their directory in your locale dir:</p>
+<listing>
+<code>ln -s ../C/img img</code>
+</listing>
+</note>
+</section>
+</page>
