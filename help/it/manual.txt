@@ -343,20 +343,14 @@ Dove +*help.html*+ è il nome che il file di aiuto *deve* avere, +manual.txt+ è
 
 Mentre la versione in Mallard necessita di qualche ulteriore passaggio:
 
-1. Scaricare https://docs.google.com/file/d/0BxWv_9cok7BKTnBWZTFjVDRyUE0/edit?usp=sharing[questo Mallard backend per AsciiDoc]
-2. Estrarlo
-+
-
-----
-tar -xf mallard-backend.tar.gz
-----
-3. Installare il backend
+1. Scaricare https://github.com/zykh/mallard-backend/raw/master/mallard.zip[questo Mallard backend per AsciiDoc] (documentazione https://github.com/zykh/mallard-backend[qui])
+2. Installare il backend
 +
 
 ----
 asciidoc --backend install mallard.zip
 ----
-4. Compilare il file sorgente (ad esempio +manual.txt+) con:
+3. Compilare il file sorgente (ad esempio +manual.txt+) con:
 +
 
 ----
@@ -366,6 +360,7 @@ asciidoc --backend=mallard \
 	 --out-file temp.page \
 	 manual.txt
 ----
+4. Scaricare lo https://github.com/zykh/mallard-backend/raw/master/chunkenizer[script di bash +chunkenizer+] (documentazione https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc[qui])
 5. Dare allo script di bash +chunkenizer+ i permessi di esecuzione:
 +
 

@@ -43,16 +43,8 @@ Help file must be put in extension&#8217;s help subdir, creating a directory nam
 <list type="numbered">
 <item>
 <p>
-Download <link href="https://docs.google.com/file/d/0BxWv_9cok7BKTnBWZTFjVDRyUE0/edit?usp=sharing">this Mallard backend for AsciiDoc</link>
+Download <link href="https://github.com/zykh/mallard-backend/raw/master/mallard.zip">this Mallard backend for AsciiDoc</link> (documentation <link href="https://github.com/zykh/mallard-backend">here</link>)
 </p>
-</item>
-<item>
-<p>
-Extract it
-</p>
-<listing>
-<code>tar -xf mallard-backend.tar.gz</code>
-</listing>
 </item>
 <item>
 <p>
@@ -73,6 +65,11 @@ Compile your source file (e.g. <code>manual.txt</code>) with:
          --out-file temp.page \
          manual.txt</code>
 </listing>
+</item>
+<item>
+<p>
+Download <link href="https://github.com/zykh/mallard-backend/raw/master/chunkenizer"><code>chunkenizer</code> bash script</link> (documentation <link href="https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc">here</link>)
+</p>
 </item>
 <item>
 <p>
