@@ -7,6 +7,6 @@
 		"3.6",
 		"3.8"
 	],
-	"url": "http://lists.alioth.debian.org/cgi-bin/mailman/listinfo/nut-upsdev",
+	"url": "https://github.com/zykh/walNUT",
 	"uuid": "walnut@networkupstools"
 }
