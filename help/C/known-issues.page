@@ -1,0 +1,24 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="known-issues">
+<title>7. KNOWN ISSUES</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.2" date="October 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="help"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>Since <em>walNUT</em> relies on NUT&#8217;s upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn&#8217;t have an up and running NUT, upsc will take some time to tell us, so <em style="strong">every time</em> the devices list get updated or when a research for new devices is invoked or, if the &#8216;problematic&#8217; device is the currently chosen one, every time <em>walNUT</em> tries to update its variables, it <em>could potentially</em> <em style="strong">freeze Gnome Shell</em> for some seconds (~3 for every &#8216;problematic&#8217; device).</p>
+<p>In order to prevent these freezes every invocation of upsc/upscmd is done through a timeout of 150ms.
+If your device isn&#8217;t found (e.g. it needs more than 150ms to reply), you can change that timeout by changing the <em>timeout</em> setting (<em>default: 0.150</em>) either through <link href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</link> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) or executing:</p>
+<listing>
+<code>gsettings set org.gnome.shell.extensions.walnut timeout N.NNN</code>
+</listing>
+<p>Where <code>N.NNN</code> is the timeout in seconds.</p>
+<note style="caution">
+<p>Regardless of this timeout, it&#8217;s better not to play around with the &#8216;find new devices&#8217; box and &#8216;fantasy&#8217; hosts and it&#8217;s <em>higly</em> recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.</p>
+</note>
+</page>

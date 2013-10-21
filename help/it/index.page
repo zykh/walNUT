@@ -5,14 +5,14 @@
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
-<link type="next" xref="IN"/>
+<revision version="0.2" date="October 2013"/>
+<link type="next" xref="installation"/>
 </info>
 <links type="prevnext"/>
 <links type="topic"/>
 <links type="section"/>
 <listing><title style="heading">COS'È?</title></listing>
 <p><em style="strong"><em>walNUT</em></em> non è niente di più che un&#8217;interfaccia fra voi e NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>), usando <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link> e <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link> di NUT.
-Fornisce un pratico <link xref="M">menu del pannello</link> e un'<link xref="PI">icona</link> per monitorare i propri dispositivi ed eseguire i <link xref="M#DC">comandi</link> istantanei di NUT.</p>
-<p>Prima di <link xref="IN">cominciare</link>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <link xref="F">fin da subito</link>.</p>
+Fornisce un pratico <link xref="panel-menu">menu del pannello</link> e un'<link xref="panel-icon">icona</link> per monitorare i propri dispositivi ed eseguire i <link xref="panel-menu#device-commands">comandi</link> istantanei di NUT.</p>
+<p>Prima di <link xref="installation">cominciare</link>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <link xref="first-execution">fin da subito</link>.</p>
 </page>

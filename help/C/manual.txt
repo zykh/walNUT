@@ -1,11 +1,11 @@
 walNUT
 ======
 Daniele Pezzini <hyouko@gmail.com>
-v0.1, May 2013
+v0.2, October 2013
 :numbered:
-:imagesdir: img
+:imagesdir: help/C/img
 :icons:
-:iconsdir: ../ad/icons
+:iconsdir: help/ad/icons
 :badges:
 :disable-javascript:
 :linkcss:
@@ -13,17 +13,72 @@ v0.1, May 2013
 :stylesheet: custom.css
 :max-width: 1024px
 
+// The following ones are used by the GitHub README.adoc
+:installation: 1-installation
+:first-execution: 2-first-execution
+:panel-icon: 3-panel-iconlabel
+:panel-menu: 4-panel-menu
+:device-list: 41-device-list
+:device-model: 42-device-model
+:device-status: 43-device-status
+:device-alarm: 44-device-alarm
+:data-table: 45-data-table
+:raw-vars: 46-raw-vars
+:device-commands: 47-devices-commands
+:control-buttons: 48-control-buttons
+:credentials-box: 49-credentials-box
+:find-new-devices: 410-find-new-devicesfind-new-devices-box
+:delete-devices: 411-delete-devicesdelete-devices-box
+:device-credentials: 5-device-credentials
+:credentials-dialog: 51-credentials-dialog
+:preferences: 6-preferences
+:known-issues: 7-known-issues
+:help: 8-help
+
+// Override them and images' directories for the html/mallard versions calling asciidoc with the 'walnut' attribute (i.e. -a walnut)
+ifdef::walnut[]
+
+:imagesdir: img
+:iconsdir: ../ad/icons
+
+:installation: installation
+:first-execution: first-execution
+:panel-icon: panel-icon
+:panel-menu: panel-menu
+:device-list: device-list
+:device-model: device-model
+:device-status: device-status
+:device-alarm: device-alarm
+:data-table: data-table
+:raw-vars: raw-vars
+:device-commands: device-commands
+:control-buttons: control-buttons
+:credentials-box: credentials-box
+:find-new-devices: find-new-devices
+:delete-devices: delete-devices
+:device-credentials: device-credentials
+:credentials-dialog: credentials-dialog
+:preferences: preferences
+:known-issues: known-issues
+:help: help
+
+endif::walnut[]
+
+
 [float]
 WHAT IS IT?
 -----------
+
 *_walNUT_* is nothing more than an interface between you and NUT (http://www.networkupstools.org[Network UPS Tools]), using NUT's own http://www.networkupstools.org/docs/man/upsc.html[upsc] and http://www.networkupstools.org/docs/man/upscmd.html[upscmd].
-It provides you a handy <<M,panel menu>> and <<PI,icon>> to monitor your devices and execute NUT's instant <<DC,commands>>.
+It provides you a handy <<{panel-menu},panel menu>> and <<{panel-icon},icon>> to monitor your devices and execute NUT's instant <<{device-commands},commands>>.
 
-Before <<IN,you start>>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that _walNUT_ will work right <<F,out of the box>>.
+Before <<{installation},you start>>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that _walNUT_ will work right <<{first-execution},out of the box>>.
 
-[[IN]]
+
+[[installation]]
 INSTALLATION
 ------------
+
 You can install this extension for your user by executing:
 
 ----
@@ -39,46 +94,55 @@ After the installation you'll need to restart Gnome Shell:
 
 Then you can enable the extension through https://live.gnome.org/GnomeTweakTool[Gnome Tweak Tool] (Shell Extensions -> walNUT -> On) or through https://extensions.gnome.org/local/
 
-NOTE: In addition to NUT, you need also http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (see <<I,known issues>>).
+NOTE: In addition to NUT, you need also http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (see <<{known-issues},known issues>>).
 
-[[F]]
+
+[[first-execution]]
 FIRST EXECUTION
 ---------------
-Once you've <<IN,installed>> _walNUT_, when it's executed for the first time, or every time its device list is empty, it'll try and search automatically for new devices at _localhost:3493_. +
-So, for most installations, it should have already found your devices. If not, you have to add them through the <<FN,find new devices box>>.
 
-It's important that you understand how _walNUT_ communicates with you and how you can customize it: please read <<PI,panel icon/label>>, <<M,panel menu>> and <<P,preferences>> sections. +
-Don't miss the <<I,known issues>> section!
+Once you've <<{installation},installed>> _walNUT_, when it's executed for the first time, or every time its device list is empty, it'll try and search automatically for new devices at _localhost:3493_. +
+So, for most installations, it should have already found your devices.
+If not, you have to add them through the <<{find-new-devices},find new devices box>>.
 
-[[PI]]
+It's important that you understand how _walNUT_ communicates with you and how you can customize it: please read <<{panel-icon},panel icon/label>>, <<{panel-menu},panel menu>> and <<{preferences},preferences>> sections. +
+Don't miss the <<{known-issues},known issues>> section!
+
+[[panel-icon]]
 PANEL ICON/LABEL
 ----------------
-_walNUT_'s icon and label are customizable through the <<P,preferences>>. +
+
+_walNUT_'s icon and label are customizable through the <<{preferences},preferences>>. +
 Here is explained how they behave.
 
 [cols="1^.^,9.^",frame="topbot",grid="rows",align="center",options="autowidth"]
 |====
 |image:icons.png["Panel Icon"] a|
-Panel icon standardly displays only battery charge [*A*], but it can display also device load [*B*], if available. +
+The panel icon standardly displays only battery charge [*A*], but it can display also device load [*B*], if available. +
 In that case the `seed' of the walnut will be split up in two pieces: the leftmost [*1*] will display battery charge, the rightmost [*2*] load level.
 
-CAUTION: In case you set also to _Display load in panel icon_ in <<P,preferences>> _and_ battery charge is not available, the icon will be exactly the same as that for battery charge only [*A*]: _please pay attention_.
+:preferences: 6-preferences
+ifdef::walnut[]
+:preferences: preferences
+endif::walnut[]
+
+CAUTION: In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the icon will be exactly the same as that for battery charge alone [*A*]: _please pay attention_.
 |image:icon_ol_ob.png["Panel Icon - Online/On Battery + Charged/Charging"] |
-Panel icon displays also the state of the line: if the device is on line (main is not absent, +ups.status+: +OL+) there will be a small lightning [*C*] at the right of the nut that wont be displayed if the device is on battery [*D*]. +
+The panel icon displays also the state of the line: if the device is on line (mains is not absent, +ups.status+: +OL+) there will be a small lightning [*C*] at the right of the nut that wont be displayed if the device is on battery [*D*]. +
 That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available _and_ the device isn't telling us it's charging or discharging (+ups.status+: +CHRG+/+DISCHRG+) we'll assume it's charged and the lightning will be transparent [*E*], otherwise it'll be at full opacity [*F*].
 |image:icon_caution.png["Panel Icon - Caution"] |
 For other status (+ups.status+: +BYPASS+, +TRIM+, ..) or if an alarm arises (+ups.status+: +ALARM+ + +ups.alarm+) there will be an exclamation mark on the right top angle of the nut.
 |image:icon_ghost.png["Panel Icon - Ghost"] |
-If battery charge is not available or if also _Display load in panel icon_ option is selected in <<P,preferences>> _and_ *both* device load and battery charge aren't available the icon will be a full transparent nut.
+If battery charge is not available or if also _Display load in panel icon_ option is selected in the <<{preferences},preferences>> _and_ *both* device load and battery charge aren't available the icon will be a full transparent nut.
 |image:icon_error.png["Panel Icon - Error"] |
 That's the icon displayed in case of errors.
 |image:icon_labels.png["Panel Labels"] |
-_walNUT_ can also display a label, at the right of the icon in panel, with battery charge [*G*], device load [*H*] or both [*I*], if available.
+_walNUT_ can also display a label, at the right of the icon in the panel, with battery charge [*G*], device load [*H*] or both [*I*], if available.
 |====
 
 [NOTE]
 ====
-Icon shows charge/load through 3 bars:
+The icon shows charge/load through 3 bars:
 
 [cols="1^.^,2.^,7.^",options="header,autowidth",frame="topbot",grid="rows",align="center"]
 |====
@@ -90,10 +154,12 @@ Icon shows charge/load through 3 bars:
 |====
 ====
 
-[[M]]
+
+[[panel-menu]]
 PANEL MENU
 ----------
-Here's a quick overview of panel menu. +
+
+Here's a quick overview of the panel menu. +
 Standardly the menu look like this:
 
 image::menustd.png["Panel Menu", align = "center"]
@@ -101,95 +167,128 @@ image::menustd.png["Panel Menu", align = "center"]
 With all the available options set:
 
 image::menu.png["Panel Menu - Complete", align = "center"]
-Menu can be split up in various sections:
+
+The menu can be split up in various sections:
 
 [cols="1^s,9<",options="autowidth",frame="topbot",grid="rows",align="center"]
 |====
-|A |<<L,Device List>>
-|B |<<DM,Device Model>>
-|C |<<DS,Device Status>>
-|D |<<DA,Device Alarm>>
-|E |<<DT,Data Table>>
-|F |<<R,Raw Vars>>
-|G |<<DC,Device's Commands>>
-|H a|Box for control buttuns functions
+|A |<<{device-list},Device List>>
+|B |<<{device-model},Device Model>>
+|C |<<{device-status},Device Status>>
+|D |<<{device-alarm},Device Alarm>>
+|E |<<{data-table},Data Table>>
+|F |<<{raw-vars},Raw Vars>>
+|G |<<{device-commands},Device's Commands>>
+|H a|Box for control buttons' functions
 
-- <<CB,Device's credentials box>>
-- <<FN,Find new devices box>>
-- <<DD,Delete device box>>
-|I |<<BB,Control Buttons>>
+:credentials-box: 49-credentials-box
+:find-new-devices: 410-find-new-devicesfind-new-devices-box
+:delete-devices: 411-delete-devicesdelete-devices-box
+ifdef::walnut[]
+:credentials-box: credentials-box
+:find-new-devices: find-new-devices
+:delete-devices: delete-devices
+endif::walnut[]
+
+- <<{credentials-box},Device's credentials box>>
+- <<{find-new-devices},Find new devices box>>
+- <<{delete-devices},Delete device box>>
+|I |<<{control-buttons},Control Buttons>>
 |====
 
-In case of an error, the menu appears like this:
+In case of errors, the menu appears like this:
 
 image::menuerr.png["Panel Menu - Error", align="center"]
 
 Where the device list [*A*] is visible or not, depending on the type of error [*L*].
 
-[[L]]
+
+[[device-list]]
 DEVICE LIST
 ~~~~~~~~~~~
+
 image::devicelist.png["Device List", align = "center"]
+
 Devices are listed in _hostname:port_ alphabetical order and then alphabetically by their name.
 
-NOTE: Every device stored in _walNUT_'s own list will be prompted for availability *every time* you change some option or gnome shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.
+NOTE: Every device stored in _walNUT_'s own list will be prompted for availability *every time* you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.
 
 image::devicelist_open.png["Device List opened", align = "center"]
-Not available devices are signaled with a *(N/A)* [*A*] at their right.
-You can choose either to display or not not available devices in <<P,preferences>>.
 
-[[DM]]
+Not available devices are signaled with a *(N/A)* [*A*] at their right.
+You can choose either to display or not not available devices in the <<{preferences},preferences>>.
+
+
+[[device-model]]
 DEVICE MODEL
 ~~~~~~~~~~~~
+
 image::devicemodel.png["Device Model", align = "center"]
+
 If available both device manufacturer and device model will be shown here.
 
 TIP: If your device isn't providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in http://www.networkupstools.org/docs/man/ups.conf.html[ups.conf].
 
-[[DS]]
+
+[[device-status]]
 DEVICE STATUS
 ~~~~~~~~~~~~~
+
 image::devicestatus.png["Device Status", align = "center"]
+
 Device status will show: line status [*A*] (online/on battery), and then, on the second row, every status reported by the device [*B*] (bypass, trim, ..).
 
-[[DA]]
+
+[[device-alarm]]
 DEVICE ALARM
 ~~~~~~~~~~~~
+
 image::devicealarm.png["Device Alarm", align = "center"]
-If an alarm is set (+ups.status+: +ALARM+ and +ups.alarm+) it'll be showed here.
 
-NOTE: An alarm will be signaled also through an `exclamation mark' on the <<PI,panel icon>>.
+If an alarm is set (+ups.status+: +ALARM+ and +ups.alarm+) it'll be shown here.
 
-[[DT]]
+NOTE: An alarm will be signaled also through an `exclamation mark' on the <<{panel-icon},panel icon>>.
+
+
+[[data-table]]
 DATA TABLE
 ~~~~~~~~~~
-image::datatable.png["Data Table", align = "center"]
-If available, [*C*] battery charge, [*D*] backup time, [*E*] device load and [*F*] temperature will be shown here. +
-Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<PI,panel icon>>).
 
-[[R]]
+image::datatable.png["Data Table", align = "center"]
+
+If available, [*C*] battery charge, [*D*] backup time, [*E*] device load and [*F*] temperature will be shown here. +
+Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
+
+
+[[raw-vars]]
 RAW VARS
 ~~~~~~~~
-image::raw.png["Raw Vars", align = "center"]
-If you want a deep dive in all the variables available for a device you have to select the _Display raw data_ option in the <<P,preferences>>: raw vars will be displayed in a scrollable submenu.
 
-[[DC]]
+image::raw.png["Raw Vars", align = "center"]
+
+If you want a deep dive in all the variables available for a device you have to select the _Display raw data_ option in the <<{preferences},preferences>>: raw vars will be displayed in a scrollable submenu.
+
+
+[[device-commands]]
 DEVICE'S COMMANDS
 ~~~~~~~~~~~~~~~~~
+
 image::cmd.png["Device's Commands - Combo Box", align = "center"]
-If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device's commands_ option in <<P,preferences>>. +
+
+If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device's commands_ option in the <<{preferences},preferences>>. +
 You can choose to show device's instant command either in a combo box [*A*] or as a submenu [*B*].
 
 image::cmd_sm.png["Device's Commands - Sub Menu", align = "center"]
-If combo box [*A*] is chosen, first you have to select the command, and then click on the [*1*] `execute' button on the right of command's description [*2*].
+
+If the combo box [*A*] is chosen, first you have to select the command, and then click on the [*1*] `execute' button on the right of the command's description [*2*].
 
 image::cmdchosen.png["Device's Commands - Combo box, chosen", align = "center"]
 
-If submenu [*B*] is chosen, when you click on a command, it'll be executed.
+If the submenu [*B*] is chosen, when you click on a command, it'll be executed.
 
 [TIP]
 --
-Submenu standardly display also a localized description of commands [*C*], but if you think that it steals too much space you can set not to display it [*D*] in <<P,preferences>>.
+Submenu standardly displays also a localized description of the commands [*C*], but if you think that it steals too much space you can set not to display it [*D*] in the <<{preferences},preferences>>.
 
 image::cmd_sm_vs.png["Device's Commands - Sub Menu, with or w/o description", align = "center"]
 --
@@ -200,81 +299,103 @@ image::cmd_notify.png["Device's Commands - Notify", align = "center"]
 
 NOTE: The main advantage of the combo box is that it's a *two-step* process, while the submenu gives you a scrollable interface if you have limited vertical space.
 
-[[BB]]
+
+[[control-buttons]]
 CONTROL BUTTONS
 ~~~~~~~~~~~~~~~
+
 image::btns.png["Control Buttons", align = "center"]
-At the bottom of <<M,panel menu>> there's a handful of control buttons, some of which will open their own box [*A*] just before the controls row [*B*].
+
+At the bottom of the <<{panel-menu},panel menu>> there's a handful of control buttons, some of which will open their own box [*A*] just before the controls row [*B*].
 
 image::btns_box.png["Control Buttons + Control Box", align = "center"]
+
 The buttons will show:
 
-1. <<P,Preferences>>
-2. <<CB,Device's crendetials box>>
-3. <<FN,Find new devices box>>
-4. <<DD,Delete devices box>>
-5. <<H,Help>>
+1. <<{preferences},Preferences>>
+2. <<{credentials-box},Device's crendetials box>>
+3. <<{find-new-devices},Find new devices box>>
+4. <<{delete-devices},Delete devices box>>
+5. <<{help},Help>>
 
-[[CB]]
+
+[[credentials-box]]
 CREDENTIALS BOX
 ~~~~~~~~~~~~~~~
+
 image::credbox.png["Credentials Box", align = "center"]
-Clicking on the `credentials' button [*A*] credentials box [*B*] will open. This box is used to store username and password for devices so that you don't have to be prompted for them every time you execute a command.
 
-NOTE: If you want to delete username, password or both (e.g. so that you will be prompted for them from now on), you have to save them void.
+Clicking on the `credentials' button [*A*] the credentials box [*B*] will open.
+This box is used to store username and password for devices so that you don't have to be prompted for them every time you execute a command.
 
-If you click on the [*1*] `undo and close' button any change you have made to user/password before clicking on [*2*] `save' button will be discarded.
+NOTE: If you want to delete username, password or both (e.g. so that you will be prompted for them from now on), you have to save them empty.
 
-TIP: Standardly password is hidden, but if you want, you can choose not to hide it in <<P,preferences>>.
+If you click on the [*1*] `undo and close' button any change you made to user/password before clicking on [*2*] `save' button will be discarded.
 
-[[FN]]
+TIP: Standardly the password is hidden, but if you want, you can choose not to hide it in the <<{preferences},preferences>>.
+
+
+[[find-new-devices]]
 FIND NEW DEVICES/FIND NEW DEVICES BOX
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::addbox.png["Find new devices Box", align = "center"]
+
 In order to find new devices, once you clicked on the [*A*] `find' button, you have to insert the devices' hostname [*1*] and port [*2*] and then click on the [*B*] `start search' button.
 
-NOTE: If hostname isn't given it'll be _localhost_, while port, if not given, will fall back to _3493_.
+NOTE: If the hostname isn't given it'll be _localhost_, while port, if not given, will fall back to _3493_.
 
 You will be notified either if new devices are found [*C*] or not [*D*].
 
 image::add_notify.png["Find new devices - Notify", align = "center"]
 
-[[DD]]
+
+[[delete-devices]]
 DELETE DEVICES/DELETE DEVICES BOX
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::delbox.png["Delete device Box", align = "center"]
-If you want to delete a device, first you have to select it from <<L,device list>>, and then you have to click on the [*A*] `delete' button. +
+
+If you want to delete a device, first you have to select it from the <<{device-list},device list>>, and then you have to click on the [*A*] `delete' button. +
 A new box [*B*] will appear asking you if you really want to delete it [*1*] or not [*2*].
 
-NOTE: If you want to delete a device that's not currently available, check first to have enabled the _Display not available devices_ option in <<P,preferences>>.
+NOTE: If you want to delete a device that's not currently available, check first to have enabled the _Display not available devices_ option in the <<{preferences},preferences>>.
 
-[[C]]
+
+[[device-credentials]]
 DEVICE CREDENTIALS
 ------------------
-If you want to execute device's <<C,instant commands>> you have to provide a valid username and password (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
-You can either save them through <<CB,credentials box>> or insert them in <<CD,credentials dialog>> *every time* you execute a command.
 
-NOTE: If the saved user and password prove to be wrong you will be prompted for them with <<CD,credential dialog>> when you try and execute a command.
+If you want to execute a device's <<{device-commands},instant commands>> you have to provide a valid username and password (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
+You can either save them through the <<{credentials-box},credentials box>> or insert them in the <<{credentials-dialog},credentials dialog>> *every time* you execute a command.
 
-[[CD]]
+NOTE: If the saved user and password prove to be wrong you will be prompted for them with a <<{credentials-dialog},credential dialog>> when you try to execute a command.
+
+
+[[credentials-dialog]]
 CREDENTIALS DIALOG
 ~~~~~~~~~~~~~~~~~~
+
 image::creddialog.png["Credentials dialog", align = "center"]
-Credentials dialog will prompt you to insert a valid username or password either if they've not been saved through <<CB,credentials box>> or if they proved to be wrong [*A*].
+
+The credentials dialog will prompt you to insert a valid username or password either if they've not been saved through the <<{credentials-box},credentials box>> or if they proved to be wrong [*A*].
 
 image::creddialog_err.png["Credentials dialog - error", align = "center"]
 
-NOTE: The [*B*] `execute' button will be sensitive only if both username and password are not void.
+NOTE: The [*B*] `execute' button will be sensitive only if both username and password are not empty.
 
-CAUTION: Once you have inserted username and password, when you click on the [*B*] `execute' button, the command will be sent to the driver.
+CAUTION: Once you have inserted the username and the password, when you click on the [*B*] `execute' button, the command will be sent to the driver.
 
-[[P]]
+
+[[preferences]]
 PREFERENCES
 -----------
+
 To fine tune _walNUT_ to suit your needs you may want to change some options.
 
 image::prefbtn.png["Preferences Button", align = "center"]
-You can access the preferences from the [*A*] preferences button in the <<M,panel menu>>.
+
+You can access the preferences from the [*A*] preferences button in the <<{panel-menu},panel menu>>.
 
 A new window will open, where you can set the various options.
 
@@ -287,21 +408,23 @@ image::pref.png["Preferences", align = "center"]
 |# |Option |Description
 |1 |Seconds before next update |The seconds after _walNUT_ updates the data from the device. (_default: 15_)
 |2 |Temperature unit |The unit (Centigrade or Fahrenheit) _walNUT_ should display the temperature in. (_default: Centigrade_)
-|3 |Display not available devices |Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
+|3 |Display not available devices |Display also not available devices in the combo box in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
 |4 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
-|5 |Display device's commands |Display device's available commands. Requires upsd user and password to execute them. (_default: OFF_)
+|5 |Display device's commands |Display device's available commands. You'll need upsd user and password to execute them. (_default: OFF_)
 |6 |Device's commands in a combobox |Whether the extension should display the device's commands in a combobox or not (if not, commands are displayed in a sub menu). (_default: ON_)
-|7 |Display description of device's commands (submenu) |Display also a localized description of device's available commands in the sub menu. (_default: ON_)
+|7 |Display description of device's commands (submenu) |Display also a localized description of the device's available commands in the sub menu. (_default: ON_)
 |8 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
-|9 |Display load in panel icon |Whether the device load should be displayed in panel icon or not. (_default: OFF_)
-|10 |Display load in panel label |Whether the device load should be displayed in panel label or not. (_default: OFF_)
-|11 |Display charge in panel label |Whether the battery charge should be displayed in panel label or not. (_default: OFF_)
+|9 |Display load in panel icon |Whether the device load should be displayed in the panel icon or not. (_default: OFF_)
+|10 |Display load in panel label |Whether the device load should be displayed in the panel label or not. (_default: OFF_)
+|11 |Display charge in panel label |Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
 |====
 
-[[I]]
+
+[[known-issues]]
 KNOWN ISSUES
 ------------
-Since _walNUT_ relies on NUT's upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn't have an up and running NUT, upsc will take some time to tell us, so *every time* the devices list get updated or when a research for new devices is invoked or, if the `problematic' device is the currently chosen one, every time _walNUT_ tries and update its variables, it _could potentially_ *freeze gnome shell* for some seconds (~3 for every `problematic' device).
+
+Since _walNUT_ relies on NUT's upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn't have an up and running NUT, upsc will take some time to tell us, so *every time* the devices list get updated or when a research for new devices is invoked or, if the `problematic' device is the currently chosen one, every time _walNUT_ tries to update its variables, it _could potentially_ *freeze Gnome Shell* for some seconds (~3 for every `problematic' device).
 
 In order to prevent these freezes every invocation of upsc/upscmd is done through a timeout of 150ms. +
 If your device isn't found (e.g. it needs more than 150ms to reply), you can change that timeout by changing the _timeout_ setting (_default: 0.150_) either through https://developer.gnome.org/dconf/0.14/dconf-editor.html[dconf-editor] (org -> gnome -> shell -> extensions -> walnut) or executing:
@@ -309,13 +432,16 @@ If your device isn't found (e.g. it needs more than 150ms to reply), you can cha
 ----
 gsettings set org.gnome.shell.extensions.walnut timeout N.NNN
 ----
+
 Where +N.NNN+ is the timeout in seconds.
 
-CAUTION: Regardless of this timeout, it's better not to play around with find new devices box and `fantasy' hosts and it's _higly_ recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.
+CAUTION: Regardless of this timeout, it's better not to play around with the `find new devices' box and `fantasy' hosts and it's _higly_ recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.
 
-[[H]]
+
+[[help]]
 HELP
 ----
+
 If this manual doesn't answer your questions or for every problem you may encounter, you can find some help at NUT's list:
 
 - *NUT Users* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser
@@ -324,12 +450,15 @@ If you want to help, you are welcomed in NUT's list and NUT's developers list:
 
 - *NUT Developers* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev
 
+
 TRANSLATORS
 ~~~~~~~~~~~
-A guide to translate extensions can be found in gnome shell extensions https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ].
 
-_walNUT_'s documentation is done in http://www.methods.co.nz/asciidoc/[AsciiDoc] and then processed either to the html version and to the http://projectmallard.org/[Mallard] version for http://projects.gnome.org/yelp/[Yelp]. +
-Help file must be put in extension's help subdir, creating a directory named after the desired locale's language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).
+A guide to translate extensions can be found in Gnome Shell extensions' https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ].
+
+_walNUT_'s documentation is done in http://www.methods.co.nz/asciidoc/[AsciiDoc] and then processed either to the html version and to the http://projectmallard.org/[Mallard] version for http://projects.gnome.org/yelp/[Yelp].
+
+The help files must be put in the extension's help subdir, creating a directory named after the desired locale's language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).
 
 The html version must be compiled with:
 
@@ -339,20 +468,20 @@ asciidoc --backend=xhtml11 \
 	 --out-file help.html \
 	 manual.txt
 ----
-Where +*help.html*+ is the name the help file *must* have, +*manual.txt*+ is the name of your source file and +*XX*+ is the desired locale's language code (e.g. +it+, +es+, ..). +
+
+Where +*help.html*+ is the name the help file *must* have, +*manual.txt*+ is the name of your source file and +*XX*+ is the desired locale's language code (e.g. +it+, +es+, ..).
 
 While the Mallard version needs some further steps:
 
 1. Download https://github.com/zykh/mallard-backend/raw/master/mallard.zip[this Mallard backend for AsciiDoc] (documentation https://github.com/zykh/mallard-backend[here])
 2. Install the backend
 +
-
 ----
 asciidoc --backend install mallard.zip
 ----
+
 3. Compile your source file (e.g. +manual.txt+) with:
 +
-
 ----
 asciidoc --backend=mallard \
 	 -a chunked=1 \
@@ -360,22 +489,21 @@ asciidoc --backend=mallard \
 	 --out-file temp.page \
 	 manual.txt
 ----
+
 4. Download https://github.com/zykh/mallard-backend/raw/master/chunkenizer[+chunkenizer+ bash script] (documentation https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc[here])
 5. Give +chunkenizer+ bash script executable permissions:
 +
-
 ----
 chmod +x chunkenizer
 ----
+
 6. Process the previously created temp file +temp.page+ with it:
 +
-
 ----
 ./chunkenizer --yelp temp.page outdir
 ----
 +
 Where +outdir+ is the output directory named after your locale (e.g. +pt_BR+).
-
 
 [NOTE]
 --
@@ -386,7 +514,10 @@ ln -s ../C/img img
 -----
 --
 
+
+[[author]]
 AUTHOR
 ------
+
 Daniele Pezzini <hyouko@gmail.com>
 

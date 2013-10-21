@@ -1,13 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="H">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="help">
 <title>8. HELP</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="_author"/>
+<link type="next" xref="author"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
@@ -28,9 +28,9 @@
 </item>
 </list>
 <section id="_translators"><links type="section"/><links type="topic"/><title>8.1. TRANSLATORS</title>
-<p>A guide to translate extensions can be found in gnome shell extensions <link href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</link>.</p>
-<p><em>walNUT</em>'s documentation is done in <link href="http://www.methods.co.nz/asciidoc/">AsciiDoc</link> and then processed either to the html version and to the <link href="http://projectmallard.org/">Mallard</link> version for <link href="http://projects.gnome.org/yelp/">Yelp</link>.
-Help file must be put in extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p>
+<p>A guide to translate extensions can be found in Gnome Shell extensions' <link href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</link>.</p>
+<p><em>walNUT</em>'s documentation is done in <link href="http://www.methods.co.nz/asciidoc/">AsciiDoc</link> and then processed either to the html version and to the <link href="http://projectmallard.org/">Mallard</link> version for <link href="http://projects.gnome.org/yelp/">Yelp</link>.</p>
+<p>The help files must be put in the extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p>
 <p>The html version must be compiled with:</p>
 <listing>
 <code>asciidoc --backend=xhtml11 \

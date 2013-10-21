@@ -1,13 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="IN">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="installation">
 <title>1. INSTALLATION</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="F"/>
+<link type="next" xref="first-execution"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
@@ -32,6 +32,6 @@ Enter <code>r</code> to restart Gnome Shell
 </list>
 <p>Then you can enable the extension through <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) or through <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
 <note style="note">
-<p>In addition to NUT, you need also <link href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</link> (see <link xref="I">known issues</link>).</p>
+<p>In addition to NUT, you need also <link href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</link> (see <link xref="known-issues">known issues</link>).</p>
 </note>
 </page>

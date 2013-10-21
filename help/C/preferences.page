@@ -1,13 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="P">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="preferences">
 <title>6. PREFERENCES</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="I"/>
+<link type="next" xref="known-issues"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
@@ -18,7 +18,7 @@
 <p>Preferences Button</p>
 </media>
 </figure>
-<p>You can access the preferences from the [<em style="strong">A</em>] preferences button in the <link xref="M">panel menu</link>.</p>
+<p>You can access the preferences from the [<em style="strong">A</em>] preferences button in the <link xref="panel-menu">panel menu</link>.</p>
 <p>A new window will open, where you can set the various options.</p>
 <figure>
 <media type="image" src="img/pref.png"
@@ -51,7 +51,7 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">3</em></p></td>
 <td><p>Display not available devices</p></td>
-<td><p>Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
+<td><p>Display also not available devices in the combo box in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">4</em></p></td>
@@ -61,7 +61,7 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">5</em></p></td>
 <td><p>Display device&#8217;s commands</p></td>
-<td><p>Display device&#8217;s available commands. Requires upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
+<td><p>Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">6</em></p></td>
@@ -71,7 +71,7 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">7</em></p></td>
 <td><p>Display description of device&#8217;s commands (submenu)</p></td>
-<td><p>Display also a localized description of device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
+<td><p>Display also a localized description of the device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">8</em></p></td>
@@ -81,17 +81,17 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">9</em></p></td>
 <td><p>Display load in panel icon</p></td>
-<td><p>Whether the device load should be displayed in panel icon or not. (<em>default: OFF</em>)</p></td>
+<td><p>Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">10</em></p></td>
 <td><p>Display load in panel label</p></td>
-<td><p>Whether the device load should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+<td><p>Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">11</em></p></td>
 <td><p>Display charge in panel label</p></td>
-<td><p>Whether the battery charge should be displayed in panel label or not. (<em>default: OFF</em>)</p></td>
+<td><p>Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 </tbody>
 </table>

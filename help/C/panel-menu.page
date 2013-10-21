@@ -1,0 +1,304 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-menu">
+<title>4. PANEL MENU</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.2" date="October 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="device-credentials"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>Here&#8217;s a quick overview of the panel menu.
+Standardly the menu look like this:</p>
+<figure>
+<media type="image" src="img/menustd.png"
+>
+<p>Panel Menu</p>
+</media>
+</figure>
+<p>With all the available options set:</p>
+<figure>
+<media type="image" src="img/menu.png"
+>
+<p>Panel Menu - Complete</p>
+</media>
+</figure>
+<p>The menu can be split up in various sections:</p>
+<table rules="rows"
+frame="top bottom"
+>
+<tbody>
+<tr>
+<td><p><em style="strong">A</em></p></td>
+<td><p><link xref="panel-menu#device-list">Device List</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">B</em></p></td>
+<td><p><link xref="panel-menu#device-model">Device Model</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">C</em></p></td>
+<td><p><link xref="panel-menu#device-status">Device Status</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">D</em></p></td>
+<td><p><link xref="panel-menu#device-alarm">Device Alarm</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">E</em></p></td>
+<td><p><link xref="panel-menu#data-table">Data Table</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">F</em></p></td>
+<td><p><link xref="panel-menu#raw-vars">Raw Vars</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">G</em></p></td>
+<td><p><link xref="panel-menu#device-commands">Device&#8217;s Commands</link></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">H</em></p></td>
+<td><p>Box for control buttons' functions</p>
+<list>
+<item>
+<p>
+<link xref="panel-menu#credentials-box">Device&#8217;s credentials box</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#find-new-devices">Find new devices box</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#delete-devices">Delete device box</link>
+</p>
+</item>
+</list></td>
+</tr>
+<tr>
+<td><p><em style="strong">I</em></p></td>
+<td><p><link xref="panel-menu#control-buttons">Control Buttons</link></p></td>
+</tr>
+</tbody>
+</table>
+<p>In case of errors, the menu appears like this:</p>
+<figure>
+<media type="image" src="img/menuerr.png"
+>
+<p>Panel Menu - Error</p>
+</media>
+</figure>
+<p>Where the device list [<em style="strong">A</em>] is visible or not, depending on the type of error [<em style="strong">L</em>].</p>
+<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. DEVICE LIST</title>
+<figure>
+<media type="image" src="img/devicelist.png"
+>
+<p>Device List</p>
+</media>
+</figure>
+<p>Devices are listed in <em>hostname:port</em> alphabetical order and then alphabetically by their name.</p>
+<note style="note">
+<p>Every device stored in <em>walNUT</em>'s own list will be prompted for availability <em style="strong">every time</em> you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.</p>
+</note>
+<figure>
+<media type="image" src="img/devicelist_open.png"
+>
+<p>Device List opened</p>
+</media>
+</figure>
+<p>Not available devices are signaled with a <em style="strong">(N/A)</em> [<em style="strong">A</em>] at their right.
+You can choose either to display or not not available devices in the <link xref="preferences">preferences</link>.</p>
+</section>
+<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. DEVICE MODEL</title>
+<figure>
+<media type="image" src="img/devicemodel.png"
+>
+<p>Device Model</p>
+</media>
+</figure>
+<p>If available both device manufacturer and device model will be shown here.</p>
+<note style="tip">
+<p>If your device isn&#8217;t providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in <link href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</link>.</p>
+</note>
+</section>
+<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. DEVICE STATUS</title>
+<figure>
+<media type="image" src="img/devicestatus.png"
+>
+<p>Device Status</p>
+</media>
+</figure>
+<p>Device status will show: line status [<em style="strong">A</em>] (online/on battery), and then, on the second row, every status reported by the device [<em style="strong">B</em>] (bypass, trim, ..).</p>
+</section>
+<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. DEVICE ALARM</title>
+<figure>
+<media type="image" src="img/devicealarm.png"
+>
+<p>Device Alarm</p>
+</media>
+</figure>
+<p>If an alarm is set (<code>ups.status</code>: <code>ALARM</code> and <code>ups.alarm</code>) it&#8217;ll be shown here.</p>
+<note style="note">
+<p>An alarm will be signaled also through an &#8216;exclamation mark&#8217; on the <link xref="panel-icon">panel icon</link>.</p>
+</note>
+</section>
+<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. DATA TABLE</title>
+<figure>
+<media type="image" src="img/datatable.png"
+>
+<p>Data Table</p>
+</media>
+</figure>
+<p>If available, [<em style="strong">C</em>] battery charge, [<em style="strong">D</em>] backup time, [<em style="strong">E</em>] device load and [<em style="strong">F</em>] temperature will be shown here.
+Battery icon [<em style="strong">1</em>] will display actual charge through the number of horizontal bars (as the ones of <link xref="panel-icon">panel icon</link>).</p>
+</section>
+<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. RAW VARS</title>
+<figure>
+<media type="image" src="img/raw.png"
+>
+<p>Raw Vars</p>
+</media>
+</figure>
+<p>If you want a deep dive in all the variables available for a device you have to select the <em>Display raw data</em> option in the <link xref="preferences">preferences</link>: raw vars will be displayed in a scrollable submenu.</p>
+</section>
+<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. DEVICE&#8217;S COMMANDS</title>
+<figure>
+<media type="image" src="img/cmd.png"
+>
+<p>Device's Commands - Combo Box</p>
+</media>
+</figure>
+<p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in the <link xref="preferences">preferences</link>.
+You can choose to show device&#8217;s instant command either in a combo box [<em style="strong">A</em>] or as a submenu [<em style="strong">B</em>].</p>
+<figure>
+<media type="image" src="img/cmd_sm.png"
+>
+<p>Device's Commands - Sub Menu</p>
+</media>
+</figure>
+<p>If the combo box [<em style="strong">A</em>] is chosen, first you have to select the command, and then click on the [<em style="strong">1</em>] &#8216;execute&#8217; button on the right of the command&#8217;s description [<em style="strong">2</em>].</p>
+<figure>
+<media type="image" src="img/cmdchosen.png"
+>
+<p>Device's Commands - Combo box, chosen</p>
+</media>
+</figure>
+<p>If the submenu [<em style="strong">B</em>] is chosen, when you click on a command, it&#8217;ll be executed.</p>
+<note style="tip">
+<p>Submenu standardly displays also a localized description of the commands [<em style="strong">C</em>], but if you think that it steals too much space you can set not to display it [<em style="strong">D</em>] in the <link xref="preferences">preferences</link>.</p>
+<figure>
+<media type="image" src="img/cmd_sm_vs.png"
+>
+<p>Device's Commands - Sub Menu, with or w/o description</p>
+</media>
+</figure>
+</note>
+<p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<em style="strong">E</em>] or not [<em style="strong">F</em>].</p>
+<figure>
+<media type="image" src="img/cmd_notify.png"
+>
+<p>Device's Commands - Notify</p>
+</media>
+</figure>
+<note style="note">
+<p>The main advantage of the combo box is that it&#8217;s a <em style="strong">two-step</em> process, while the submenu gives you a scrollable interface if you have limited vertical space.</p>
+</note>
+</section>
+<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. CONTROL BUTTONS</title>
+<figure>
+<media type="image" src="img/btns.png"
+>
+<p>Control Buttons</p>
+</media>
+</figure>
+<p>At the bottom of the <link xref="panel-menu">panel menu</link> there&#8217;s a handful of control buttons, some of which will open their own box [<em style="strong">A</em>] just before the controls row [<em style="strong">B</em>].</p>
+<figure>
+<media type="image" src="img/btns_box.png"
+>
+<p>Control Buttons + Control Box</p>
+</media>
+</figure>
+<p>The buttons will show:</p>
+<list type="numbered">
+<item>
+<p>
+<link xref="preferences">Preferences</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#credentials-box">Device&#8217;s crendetials box</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#find-new-devices">Find new devices box</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#delete-devices">Delete devices box</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="help">Help</link>
+</p>
+</item>
+</list>
+</section>
+<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. CREDENTIALS BOX</title>
+<figure>
+<media type="image" src="img/credbox.png"
+>
+<p>Credentials Box</p>
+</media>
+</figure>
+<p>Clicking on the &#8216;credentials&#8217; button [<em style="strong">A</em>] the credentials box [<em style="strong">B</em>] will open.
+This box is used to store username and password for devices so that you don&#8217;t have to be prompted for them every time you execute a command.</p>
+<note style="note">
+<p>If you want to delete username, password or both (e.g. so that you will be prompted for them from now on), you have to save them empty.</p>
+</note>
+<p>If you click on the [<em style="strong">1</em>] &#8216;undo and close&#8217; button any change you made to user/password before clicking on [<em style="strong">2</em>] &#8216;save&#8217; button will be discarded.</p>
+<note style="tip">
+<p>Standardly the password is hidden, but if you want, you can choose not to hide it in the <link xref="preferences">preferences</link>.</p>
+</note>
+</section>
+<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. FIND NEW DEVICES/FIND NEW DEVICES BOX</title>
+<figure>
+<media type="image" src="img/addbox.png"
+>
+<p>Find new devices Box</p>
+</media>
+</figure>
+<p>In order to find new devices, once you clicked on the [<em style="strong">A</em>] &#8216;find&#8217; button, you have to insert the devices' hostname [<em style="strong">1</em>] and port [<em style="strong">2</em>] and then click on the [<em style="strong">B</em>] &#8216;start search&#8217; button.</p>
+<note style="note">
+<p>If the hostname isn&#8217;t given it&#8217;ll be <em>localhost</em>, while port, if not given, will fall back to <em>3493</em>.</p>
+</note>
+<p>You will be notified either if new devices are found [<em style="strong">C</em>] or not [<em style="strong">D</em>].</p>
+<figure>
+<media type="image" src="img/add_notify.png"
+>
+<p>Find new devices - Notify</p>
+</media>
+</figure>
+</section>
+<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. DELETE DEVICES/DELETE DEVICES BOX</title>
+<figure>
+<media type="image" src="img/delbox.png"
+>
+<p>Delete device Box</p>
+</media>
+</figure>
+<p>If you want to delete a device, first you have to select it from the <link xref="panel-menu#device-list">device list</link>, and then you have to click on the [<em style="strong">A</em>] &#8216;delete&#8217; button.
+A new box [<em style="strong">B</em>] will appear asking you if you really want to delete it [<em style="strong">1</em>] or not [<em style="strong">2</em>].</p>
+<note style="note">
+<p>If you want to delete a device that&#8217;s not currently available, check first to have enabled the <em>Display not available devices</em> option in the <link xref="preferences">preferences</link>.</p>
+</note>
+</section>
+</page>

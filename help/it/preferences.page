@@ -1,13 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="P">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="preferences">
 <title>6. PREFERENZE</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="I"/>
+<link type="next" xref="known-issues"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
@@ -18,7 +18,7 @@
 <p>Pulsante delle preferenze</p>
 </media>
 </figure>
-<p>È possibile accedere alle preferenze dal pulsante delle preferenze [<em style="strong">A</em>] nel <link xref="M">menu del pannello</link>.</p>
+<p>È possibile accedere alle preferenze dal pulsante delle preferenze [<em style="strong">A</em>] nel <link xref="panel-menu">menu del pannello</link>.</p>
 <p>Si aprirà una nuova finestra in cui è possibile impostare le varie opzioni.</p>
 <figure>
 <media type="image" src="img/pref.png"
@@ -51,7 +51,7 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">3</em></p></td>
 <td><p>Mostra i dispositivi non disponibili</p></td>
-<td><p>Visualizza anche i dispositivi non disponibili nel menu a cascata nel menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (<em>default: OFF</em>)</p></td>
+<td><p>Visualizza anche i dispositivi non disponibili nel menu a cascata del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">4</em></p></td>

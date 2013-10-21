@@ -1,13 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="M">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-menu">
 <title>4. MENU DEL PANNELLO</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="C"/>
+<link type="next" xref="device-credentials"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
@@ -33,31 +33,31 @@ frame="top bottom"
 <tbody>
 <tr>
 <td><p><em style="strong">A</em></p></td>
-<td><p><link xref="M#L">Lista dei dispositivi</link></p></td>
+<td><p><link xref="panel-menu#device-list">Lista dei dispositivi</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">B</em></p></td>
-<td><p><link xref="M#DM">Modello del dispositivo</link></p></td>
+<td><p><link xref="panel-menu#device-model">Modello del dispositivo</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">C</em></p></td>
-<td><p><link xref="M#DS">Stato del dispositivo</link></p></td>
+<td><p><link xref="panel-menu#device-status">Stato del dispositivo</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">D</em></p></td>
-<td><p><link xref="M#DA">Allarme del dispositivo</link></p></td>
+<td><p><link xref="panel-menu#device-alarm">Allarme del dispositivo</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">E</em></p></td>
-<td><p><link xref="M#DT">Tabella dei dati</link></p></td>
+<td><p><link xref="panel-menu#data-table">Tabella dei dati</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">F</em></p></td>
-<td><p><link xref="M#R">Dati grezzi</link></p></td>
+<td><p><link xref="panel-menu#raw-vars">Dati grezzi</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">G</em></p></td>
-<td><p><link xref="M#DC">Comandi del dispositivo</link></p></td>
+<td><p><link xref="panel-menu#device-commands">Comandi del dispositivo</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">H</em></p></td>
@@ -65,28 +65,28 @@ frame="top bottom"
 <list>
 <item>
 <p>
-<link xref="M#CB">Riquadro delle credenziali del dispositivo</link>
+<link xref="panel-menu#credentials-box">Riquadro delle credenziali del dispositivo</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="M#FN">Riquadro per cercare nuovi dispositivi</link>
+<link xref="panel-menu#find-new-devices">Riquadro per cercare nuovi dispositivi</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="M#DD">Riquadro per rimuovere un dispositivo</link>
+<link xref="panel-menu#delete-devices">Riquadro per rimuovere un dispositivo</link>
 </p>
 </item>
 </list></td>
 </tr>
 <tr>
 <td><p><em style="strong">I</em></p></td>
-<td><p><link xref="M#BB">Pulsanti di controllo</link></p></td>
+<td><p><link xref="panel-menu#control-buttons">Pulsanti di controllo</link></p></td>
 </tr>
 </tbody>
 </table>
-<p>Nel caso di errore, il menu appare in questo modo:</p>
+<p>In caso di errore, il menu appare in questo modo:</p>
 <figure>
 <media type="image" src="img/menuerr.png"
 >
@@ -94,7 +94,7 @@ frame="top bottom"
 </media>
 </figure>
 <p>Dove la lista dei dispositivi [<em style="strong">A</em>] è visibile o meno, a seconda del tipo di errore [<em style="strong">L</em>].</p>
-<section id="L"><links type="section"/><links type="topic"/><title>4.1. LISTA DEI DISPOSITIVI</title>
+<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. LISTA DEI DISPOSITIVI</title>
 <figure>
 <media type="image" src="img/devicelist.png"
 >
@@ -103,7 +103,7 @@ frame="top bottom"
 </figure>
 <p>I dispositivi sono elencati in ordine alfabetico di <em>hostname:porta</em> e quindi secondo l&#8217;ordine alfabetico dei loro nomi.</p>
 <note style="note">
-<p>Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <em style="strong">ogni volta</em> che si cambia qualche opzione o quando gnome shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</p>
+<p>Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <em style="strong">ogni volta</em> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</p>
 </note>
 <figure>
 <media type="image" src="img/devicelist_open.png"
@@ -112,9 +112,9 @@ frame="top bottom"
 </media>
 </figure>
 <p>I dispositivi non disponibili sono segnalati con <em style="strong">(N/D)</em> [<em style="strong">A</em>] alla loro destra.
-È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <link xref="P">preferenze</link>.</p>
+È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <link xref="preferences">preferenze</link>.</p>
 </section>
-<section id="DM"><links type="section"/><links type="topic"/><title>4.2. MODELLO DEL DISPOSITIVO</title>
+<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. MODELLO DEL DISPOSITIVO</title>
 <figure>
 <media type="image" src="img/devicemodel.png"
 >
@@ -126,7 +126,7 @@ frame="top bottom"
 <p>Se il dispositivo non sta fornendo uno fra produttore o modello oppure entrambi, o se si desidera un&#8217;etichetta più accattivante, è possibile sovrascriverne uno o entrambi in <link href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</link>.</p>
 </note>
 </section>
-<section id="DS"><links type="section"/><links type="topic"/><title>4.3. STATO DEL DISPOSITIVO</title>
+<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. STATO DEL DISPOSITIVO</title>
 <figure>
 <media type="image" src="img/devicestatus.png"
 >
@@ -135,7 +135,7 @@ frame="top bottom"
 </figure>
 <p>Lo stato del dispositivo mostrerà: lo stato della linea elettrica [<em style="strong">A</em>] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [<em style="strong">B</em>] (bypass, smorzamento, ..).</p>
 </section>
-<section id="DA"><links type="section"/><links type="topic"/><title>4.4. ALLARME DEL DISPOSITIVO</title>
+<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. ALLARME DEL DISPOSITIVO</title>
 <figure>
 <media type="image" src="img/devicealarm.png"
 >
@@ -144,10 +144,10 @@ frame="top bottom"
 </figure>
 <p>Se viene riportato un allarme (<code>ups.status</code>: <code>ALARM</code> e <code>ups.alarm</code>) sarà mostrato qui.</p>
 <note style="note">
-<p>L&#8217;allarme viene segnalato anche attraverso un &#8216;punto esclamativo&#8217; nell'<link xref="PI">icona del pannello</link>.</p>
+<p>L&#8217;allarme viene segnalato anche attraverso un &#8216;punto esclamativo&#8217; nell'<link xref="panel-icon">icona del pannello</link>.</p>
 </note>
 </section>
-<section id="DT"><links type="section"/><links type="topic"/><title>4.5. TABELLA DEI DATI</title>
+<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. TABELLA DEI DATI</title>
 <figure>
 <media type="image" src="img/datatable.png"
 >
@@ -155,25 +155,25 @@ frame="top bottom"
 </media>
 </figure>
 <p>Se disponibili, [<em style="strong">C</em>] il livello di carica della batteria, [<em style="strong">D</em>] il tempo stimato di backup, [<em style="strong">E</em>] il livello di carico e [<em style="strong">F</em>] la temperatura del dispositivo saranno visualizzati qui.
-L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<link xref="PI">icona del pannello</link>).</p>
+L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<link xref="panel-icon">icona del pannello</link>).</p>
 </section>
-<section id="R"><links type="section"/><links type="topic"/><title>4.6. DATI GREZZI</title>
+<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. DATI GREZZI</title>
 <figure>
 <media type="image" src="img/raw.png"
 >
 <p>Dati grezzi</p>
 </media>
 </figure>
-<p>Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l&#8217;opzione <em>Mostra i dati grezzi</em> nelle <link xref="P">preferenze</link>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.</p>
+<p>Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l&#8217;opzione <em>Mostra i dati grezzi</em> nelle <link xref="preferences">preferenze</link>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.</p>
 </section>
-<section id="DC"><links type="section"/><links type="topic"/><title>4.7. COMANDI DEL DISPOSITIVO</title>
+<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. COMANDI DEL DISPOSITIVO</title>
 <figure>
 <media type="image" src="img/cmd.png"
 >
 <p>Comandi del dispositivo - Menu a cascata</p>
 </media>
 </figure>
-<p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <link xref="P">preferenze</link>.
+<p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <link xref="preferences">preferenze</link>.
 È possibile scegliere di visualizzare i comandi istantanei del dispositivo sia in menu a cascata [<em style="strong">A</em>] che in un sotto-menu [<em style="strong">B</em>].</p>
 <figure>
 <media type="image" src="img/cmd_sm.png"
@@ -188,9 +188,9 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 <p>Comandi del dispositivo - Menu a cascata, selezionato</p>
 </media>
 </figure>
-<p>Se si sceglie il sotto-menu [<em style="strong">B</em>], quando si clicca su un comando, quasto viene eseguito.</p>
+<p>Se si sceglie il sotto-menu [<em style="strong">B</em>], quando si clicca su un comando, questo viene eseguito.</p>
 <note style="tip">
-<p>Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">C</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">D</em>] nelle <link xref="P">preferenze</link>.</p>
+<p>Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">C</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">D</em>] nelle <link xref="preferences">preferenze</link>.</p>
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
@@ -206,17 +206,17 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 </media>
 </figure>
 <note style="note">
-<p>Il principale vantaggio del menu a cascata è che si tratta di un processo in <em style="strong">due fasi</em>, mentre il sotto-menu fornisce un&#8217;interfaccia scorrevole se si dispone di limitato spazio in verticale.</p>
+<p>Il principale vantaggio del menu a cascata è che si tratta di un processo in <em style="strong">due fasi</em>, mentre il sotto-menu fornisce un&#8217;interfaccia scorrevole se si dispone di un limitato spazio in verticale.</p>
 </note>
 </section>
-<section id="BB"><links type="section"/><links type="topic"/><title>4.8. PULSANTI DI CONTROLLO</title>
+<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. PULSANTI DI CONTROLLO</title>
 <figure>
 <media type="image" src="img/btns.png"
 >
 <p>Pulsanti di controllo</p>
 </media>
 </figure>
-<p>In fondo al <link xref="M">menu del pannello</link> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<em style="strong">A</em>] appena prima della riga dei pulsanti di controllo [<em style="strong">B</em>].</p>
+<p>In fondo al <link xref="panel-menu">menu del pannello</link> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<em style="strong">A</em>] appena prima della riga dei pulsanti di controllo [<em style="strong">B</em>].</p>
 <figure>
 <media type="image" src="img/btns_box.png"
 >
@@ -227,32 +227,32 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 <list type="numbered">
 <item>
 <p>
-<link xref="P">Preferenze</link>
+<link xref="preferences">Preferenze</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="M#CB">Riquadro delle credenziali del dispositivo</link>
+<link xref="panel-menu#credentials-box">Riquadro delle credenziali del dispositivo</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="M#FN">Riquadro per cercare nuovi dispositivi</link>
+<link xref="panel-menu#find-new-devices">Riquadro per cercare nuovi dispositivi</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="M#DD">Riquadro per rimuovere un dispositivo</link>
+<link xref="panel-menu#delete-devices">Riquadro per rimuovere un dispositivo</link>
 </p>
 </item>
 <item>
 <p>
-<link xref="H">Aiuto</link>
+<link xref="help">Aiuto</link>
 </p>
 </item>
 </list>
 </section>
-<section id="CB"><links type="section"/><links type="topic"/><title>4.9. RIQUADRO DELLE CREDENZIALI</title>
+<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. RIQUADRO DELLE CREDENZIALI</title>
 <figure>
 <media type="image" src="img/credbox.png"
 >
@@ -265,10 +265,10 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 </note>
 <p>Se si clicca sul pulsante &#8216;annulla e chiudi&#8217; [<em style="strong">1</em>] qualsiasi modifica effettuata al nome utente o alla password prima di cliccare sul pulsante &#8216;salva&#8217; [<em style="strong">2</em>] verrà scartata.</p>
 <note style="tip">
-<p>Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <link xref="P">preferenze</link>.</p>
+<p>Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <link xref="preferences">preferenze</link>.</p>
 </note>
 </section>
-<section id="FN"><links type="section"/><links type="topic"/><title>4.10. TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI</title>
+<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI</title>
 <figure>
 <media type="image" src="img/addbox.png"
 >
@@ -287,17 +287,17 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 </media>
 </figure>
 </section>
-<section id="DD"><links type="section"/><links type="topic"/><title>4.11. RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO</title>
+<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO</title>
 <figure>
 <media type="image" src="img/delbox.png"
 >
 <p>Riquadro per rimuovere un dispositivo</p>
 </media>
 </figure>
-<p>Se si vuole rimuovere un dispositivo, per prima cosa è necessario selezionarlo dalla <link xref="M#L">lista dei dispositivi</link>, quindi è necessario cliccare sul pulsante &#8216;rimuovi&#8217; [<em style="strong">A</em>].
+<p>Se si vuole rimuovere un dispositivo, per prima cosa è necessario selezionarlo dalla <link xref="panel-menu#device-list">lista dei dispositivi</link>, quindi è necessario cliccare sul pulsante &#8216;rimuovi&#8217; [<em style="strong">A</em>].
 Un nuovo riquadro [<em style="strong">B</em>] apparirà chiedendo se si vuole davvero rimuoverlo [<em style="strong">1</em>] oppure no [<em style="strong">2</em>].</p>
 <note style="note">
-<p>Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l&#8217;opzione <em>Mostra i dispositivi non disponibili</em> nelle <link xref="P">preferenze</link>.</p>
+<p>Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l&#8217;opzione <em>Mostra i dispositivi non disponibili</em> nelle <link xref="preferences">preferenze</link>.</p>
 </note>
 </section>
 </page>

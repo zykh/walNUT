@@ -1,17 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="PI">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-icon">
 <title>3. ICONA/ETICHETTA DEL PANNELLO</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="M"/>
+<link type="next" xref="panel-menu"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
-<p>L&#8217;icona e l&#8217;etichetta di <em>walNUT</em> sono personalizzabili tramite le <link xref="P">preferenze</link>.
+<p>L&#8217;icona e l&#8217;etichetta di <em>walNUT</em> sono personalizzabili tramite le <link xref="preferences">preferenze</link>.
 Qui è spiegato come si comportano.</p>
 <table rules="rows"
 frame="top bottom"
@@ -24,7 +24,7 @@ Icona del pannello</media></p></td>
 <td><p>L&#8217;icona del pannello normalmente mostra solo il livello di carica della batteria [<em style="strong">A</em>], ma può visualizzare anche il livello di carico del dispositivo [<em style="strong">B</em>], se disponibile.
 In tal caso il &#8216;seme&#8217; della noce sarà diviso in due parti: quella più a sinistra [<em style="strong">1</em>] mostrerà il livello di carica della batteria, quella più a destra [<em style="strong">2</em>] il livello di carico del dispositivo.</p>
 <note style="caution">
-<p>Nal caso in cui si imposti anche <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> nelle <link xref="P">preferenze</link> <em>e</em> il livello di carica della batteria non sia disponibile, l&#8217;icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [<em style="strong">A</em>]: <em>si prega di prestare attenzione</em>.</p>
+<p>Nal caso in cui si imposti anche <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> nelle <link xref="preferences">preferenze</link> <em>e</em> il livello di carica della batteria non sia disponibile, l&#8217;icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [<em style="strong">A</em>]: <em>si prega di prestare attenzione</em>.</p>
 </note></td>
 </tr>
 <tr>
@@ -44,7 +44,7 @@ Icona del pannello - Attenzione</media></p></td>
 <td><p><media type="image" src="img/icon_ghost.png"
 >
 Icona del pannello - Fantasma</media></p></td>
-<td><p>Se il livello di carica della batteria non è disponibile oppure se anche l&#8217;opzione <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> è selezionata nelle <link xref="P">preferenze</link> <em>e</em> <em style="strong">sia</em> il livello di carico del dispositivo, <em style="strong">sia</em> il livello di carica della batteria non sono disponibili l&#8217;icona sarà una noce piena e trasparente.</p></td>
+<td><p>Se il livello di carica della batteria non è disponibile oppure se anche l&#8217;opzione <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> è selezionata nelle <link xref="preferences">preferenze</link> <em>e</em> <em style="strong">sia</em> il livello di carico del dispositivo, <em style="strong">sia</em> il livello di carica della batteria non sono disponibili l&#8217;icona sarà una noce piena e trasparente.</p></td>
 </tr>
 <tr>
 <td><p><media type="image" src="img/icon_error.png"

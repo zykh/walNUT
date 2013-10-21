@@ -1,17 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="I">
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="known-issues">
 <title>7. PROBLEMI CONOSCIUTI</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.1" date="May 2013"/>
+<revision version="0.2" date="October 2013"/>
 <link type="guide" xref="index"/>
-<link type="next" xref="H"/>
+<link type="next" xref="help"/>
 </info>
 <links type="section"/>
 <links type="topic"/>
-<p>Dal momento che <em>walNUT</em> si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l&#8217;host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così <em style="strong">ogni volta</em> che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo &#8216;problematico&#8217; è quello attualmente scelto, ogni volta che <em>walNUT</em> prova ad aggiornare le suo variabili, <em>potrebbe potenzialmente</em> <em style="strong">congelare gnome shell</em> per alcuni secondi (~3 per ogni dispositivo &#8216;problematico&#8217;).</p>
+<p>Dal momento che <em>walNUT</em> si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l&#8217;host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così <em style="strong">ogni volta</em> che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo &#8216;problematico&#8217; è quello attualmente scelto, ogni volta che <em>walNUT</em> prova ad aggiornare le suo variabili, <em>potrebbe potenzialmente</em> <em style="strong">congelare Gnome Shell</em> per alcuni secondi (~3 per ogni dispositivo &#8216;problematico&#8217;).</p>
 <p>Al fine di evitare questi blocchi, ogni invocazione di upsc/upscmd è effettuata attraverso un timeout di 150ms.
 Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più di 150ms per rispondere), è possibile cambiare questo timeout modificando l&#8217;opzione <em>timeout</em> (<em>default: 0.150</em>) sia tramite <link href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</link> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) che eseguendo:</p>
 <listing>

@@ -1,0 +1,19 @@
+<page xmlns="http://projectmallard.org/1.0/" type="guide" id="first-execution">
+<title>2. FIRST EXECUTION</title>
+<info>
+<credit type="author copyright">
+<name>Daniele Pezzini</name>
+<email>hyouko@gmail.com</email>
+</credit>
+<revision version="0.2" date="October 2013"/>
+<link type="guide" xref="index"/>
+<link type="next" xref="panel-icon"/>
+</info>
+<links type="section"/>
+<links type="topic"/>
+<p>Once you&#8217;ve <link xref="installation">installed</link> <em>walNUT</em>, when it&#8217;s executed for the first time, or every time its device list is empty, it&#8217;ll try and search automatically for new devices at <em>localhost:3493</em>.
+So, for most installations, it should have already found your devices.
+If not, you have to add them through the <link xref="panel-menu#find-new-devices">find new devices box</link>.</p>
+<p>It&#8217;s important that you understand how <em>walNUT</em> communicates with you and how you can customize it: please read <link xref="panel-icon">panel icon/label</link>, <link xref="panel-menu">panel menu</link> and <link xref="preferences">preferences</link> sections.
+Don&#8217;t miss the <link xref="known-issues">known issues</link> section!</p>
+</page>

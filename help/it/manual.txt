@@ -1,7 +1,7 @@
 walNUT
 ======
 Daniele Pezzini <hyouko@gmail.com>
-v0.1, May 2013
+v0.2, October 2013
 :numbered:
 :imagesdir: img
 :icons:
@@ -13,17 +13,21 @@ v0.1, May 2013
 :stylesheet: custom.css
 :max-width: 1024px
 
+
 [float]
 COS'È?
 ------
+
 *_walNUT_* non è niente di più che un'interfaccia fra voi e NUT (http://www.networkupstools.org[Network UPS Tools]), usando http://www.networkupstools.org/docs/man/upsc.html[upsc] e http://www.networkupstools.org/docs/man/upscmd.html[upscmd] di NUT.
-Fornisce un pratico <<M,menu del pannello>> e un'<<PI,icona>> per monitorare i propri dispositivi ed eseguire i <<DC,comandi>> istantanei di NUT.
+Fornisce un pratico <<panel-menu,menu del pannello>> e un'<<panel-icon,icona>> per monitorare i propri dispositivi ed eseguire i <<device-commands,comandi>> istantanei di NUT.
 
-Prima di <<IN,cominciare>>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che _walNUT_ funzioni già <<F,fin da subito>>.
+Prima di <<installation,cominciare>>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che _walNUT_ funzioni già <<first-execution,fin da subito>>.
 
-[[IN]]
+
+[[installation]]
 INSTALLAZIONE
 -------------
+
 È possibile installare questa estensione per il proprio utente eseguendo:
 
 ----
@@ -39,21 +43,26 @@ Dopo l'installazione è necessario riavviare Gnome Shell:
 
 Quindi è possibile attivare l'esensione attraverso https://live.gnome.org/GnomeTweakTool[Gnome Tweak Tool] (Shell Extensions -> walNUT -> On) o tramite https://extensions.gnome.org/local/
 
-NOTE: Oltre a NUT, è necessario anche http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (vedi <<I,problemi conosciuti>>).
+NOTE: Oltre a NUT, è necessario anche http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (vedi <<known-issues,problemi conosciuti>>).
 
-[[F]]
+
+[[first-execution]]
 PRIMA ESECUZIONE
 ----------------
-Una volta che si è <<IN,installato>> _walNUT_, quando viene eseguito per la prima volta, o ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in _localhost:3493_. +
-Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disopnibili. In caso contrario, è necessario aggiungerli tramite il <<FN,riquadro per trovare nuovi dispositivi>>.
 
-È importante comprendere come _walNUT_ comunica e come può essere personalizzato: si prega di leggere le sezioni <<PI,icona/etichetta del pannello>>, <<M,menu del pannello>> e <<P,preferenze>>. +
-Non si dimentichi la sezione <<I,problemi conosciuti>>!
+Una volta che si è <<installation,installato>> _walNUT_, quando viene eseguito per la prima volta, od ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in _localhost:3493_. +
+Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disponibili.
+In caso contrario, è necessario aggiungerli tramite il <<find-new-devices,riquadro per trovare nuovi dispositivi>>.
 
-[[PI]]
+È importante comprendere come _walNUT_ comunica e come può essere personalizzato: si prega di leggere le sezioni <<panel-icon,icona/etichetta del pannello>>, <<panel-menu,menu del pannello>> e <<preferences,preferenze>>. +
+Non si dimentichi la sezione <<known-issues,problemi conosciuti>>!
+
+
+[[panel-icon]]
 ICONA/ETICHETTA DEL PANNELLO
 ----------------------------
-L'icona e l'etichetta di _walNUT_ sono personalizzabili tramite le <<P,preferenze>>. +
+
+L'icona e l'etichetta di _walNUT_ sono personalizzabili tramite le <<preferences,preferenze>>. +
 Qui è spiegato come si comportano.
 
 [cols="1^.^,9.^",frame="topbot",grid="rows",align="center",options="autowidth"]
@@ -62,14 +71,14 @@ Qui è spiegato come si comportano.
 L'icona del pannello normalmente mostra solo il livello di carica della batteria [*A*], ma può visualizzare anche il livello di carico del dispositivo [*B*], se disponibile. +
 In tal caso il `seme' della noce sarà diviso in due parti: quella più a sinistra [*1*] mostrerà il livello di carica della batteria, quella più a destra [*2*] il livello di carico del dispositivo.
 
-CAUTION: Nal caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<P,preferenze>> _e_ il livello di carica della batteria non sia disponibile, l'icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [*A*]: _si prega di prestare attenzione_.
+CAUTION: Nal caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<preferences,preferenze>> _e_ il livello di carica della batteria non sia disponibile, l'icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [*A*]: _si prega di prestare attenzione_.
 |image:icon_ol_ob.png["Icona del pannello - in linea/a batteria + Carico/Caricando"] |
 L'icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l'elettricità non è assente, +ups.status+: +OL+) ci sarà un piccolo fulmine [*C*] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [*D*]. +
 Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile _e_ il dispositivo non ci sta dicendo che si sta caricando o scaricando (+ups.status+: +CHRG+/+DISCHRG+) supporremo che sia carico e il fulmine sarà trasparente [*E*], altrimenti sarà a piena opacità [*F*].
 |image:icon_caution.png["Icona del pannello - Attenzione"] |
 Per gli altri stati (+ups.status+: +BYPASS+, +TRIM+, ..) o se si verifica un allarme (+ups.status+: +ALARM+ + +ups.alarm+) ci sarà un punto esclamativo nell'angolo in alto a destra della noce.
 |image:icon_ghost.png["Icona del pannello - Fantasma"] |
-Se il livello di carica della batteria non è disponibile oppure se anche l'opzione _Mostra il carico del dispositivo nell'icona del pannello_ è selezionata nelle <<P,preferenze>> _e_ *sia* il livello di carico del dispositivo, *sia* il livello di carica della batteria non sono disponibili l'icona sarà una noce piena e trasparente.
+Se il livello di carica della batteria non è disponibile oppure se anche l'opzione _Mostra il carico del dispositivo nell'icona del pannello_ è selezionata nelle <<preferences,preferenze>> _e_ *sia* il livello di carico del dispositivo, *sia* il livello di carica della batteria non sono disponibili l'icona sarà una noce piena e trasparente.
 |image:icon_error.png["Icona del pannello - Errore"] |
 Questa è l'icona visualizzata in caso di errori.
 |image:icon_labels.png["Etichette sul pannello"] |
@@ -90,9 +99,11 @@ L'icona mostra il livello di carica della batteria e il livello di carico del di
 |====
 ====
 
-[[M]]
+
+[[panel-menu]]
 MENU DEL PANNELLO
 -----------------
+
 Ecco una rapida panoramica del menu del pannello. +
 Di base il menu ha questo aspetto:
 
@@ -101,95 +112,119 @@ image::menustd.png["Menu del pannello", align = "center"]
 Con tutte le opzioni disponibili impostate:
 
 image::menu.png["Menu del pannello - Completo", align = "center"]
+
 Il menu può essere suddiviso in varie sezioni:
 
 [cols="1^s,9<",options="autowidth",frame="topbot",grid="rows",align="center"]
 |====
-|A |<<L,Lista dei dispositivi>>
-|B |<<DM,Modello del dispositivo>>
-|C |<<DS,Stato del dispositivo>>
-|D |<<DA,Allarme del dispositivo>>
-|E |<<DT,Tabella dei dati>>
-|F |<<R,Dati grezzi>>
-|G |<<DC,Comandi del dispositivo>>
+|A |<<device-list,Lista dei dispositivi>>
+|B |<<device-model,Modello del dispositivo>>
+|C |<<device-status,Stato del dispositivo>>
+|D |<<device-alarm,Allarme del dispositivo>>
+|E |<<data-table,Tabella dei dati>>
+|F |<<raw-vars,Dati grezzi>>
+|G |<<device-commands,Comandi del dispositivo>>
 |H a|Riquadro per le funzioni dei pulsanti di controllo
 
-- <<CB,Riquadro delle credenziali del dispositivo>>
-- <<FN,Riquadro per cercare nuovi dispositivi>>
-- <<DD,Riquadro per rimuovere un dispositivo>>
-|I |<<BB,Pulsanti di controllo>>
+- <<credentials-box,Riquadro delle credenziali del dispositivo>>
+- <<find-new-devices,Riquadro per cercare nuovi dispositivi>>
+- <<delete-devices,Riquadro per rimuovere un dispositivo>>
+|I |<<control-buttons,Pulsanti di controllo>>
 |====
 
-Nel caso di errore, il menu appare in questo modo:
+In caso di errore, il menu appare in questo modo:
 
 image::menuerr.png["Menu del pannello - Errore", align="center"]
 
 Dove la lista dei dispositivi [*A*] è visibile o meno, a seconda del tipo di errore [*L*].
 
-[[L]]
+
+[[device-list]]
 LISTA DEI DISPOSITIVI
 ~~~~~~~~~~~~~~~~~~~~~
+
 image::devicelist.png["Lista dei dispositivi", align = "center"]
+
 I dispositivi sono elencati in ordine alfabetico di _hostname:porta_ e quindi secondo l'ordine alfabetico dei loro nomi.
 
-NOTE: Di ciascun dispositivo memorizzato nella lista di _walNUT_ verrà controllata la disponibilità *ogni volta* che si cambia qualche opzione o quando gnome shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall'ultimo aggiornamento.
+NOTE: Di ciascun dispositivo memorizzato nella lista di _walNUT_ verrà controllata la disponibilità *ogni volta* che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall'ultimo aggiornamento.
 
 image::devicelist_open.png["Lista dei dispositivi aperta", align = "center"]
-I dispositivi non disponibili sono segnalati con *(N/D)* [*A*] alla loro destra.
-È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <<P,preferenze>>.
 
-[[DM]]
+I dispositivi non disponibili sono segnalati con *(N/D)* [*A*] alla loro destra.
+È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <<preferences,preferenze>>.
+
+
+[[device-model]]
 MODELLO DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~
+
 image::devicemodel.png["Modello del dispositivo", align = "center"]
+
 Se disponibili, sia il produttore del dispositivo che il modello saranno mostrati qui.
 
 TIP: Se il dispositivo non sta fornendo uno fra produttore o modello oppure entrambi, o se si desidera un'etichetta più accattivante, è possibile sovrascriverne uno o entrambi in http://www.networkupstools.org/docs/man/ups.conf.html[ups.conf].
 
-[[DS]]
+
+[[device-status]]
 STATO DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~
+
 image::devicestatus.png["Stato del dispositivo", align = "center"]
+
 Lo stato del dispositivo mostrerà: lo stato della linea elettrica [*A*] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [*B*] (bypass, smorzamento, ..).
 
-[[DA]]
+
+[[device-alarm]]
 ALLARME DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~
+
 image::devicealarm.png["Allarme del dispositivo", align = "center"]
+
 Se viene riportato un allarme (+ups.status+: +ALARM+ e +ups.alarm+) sarà mostrato qui.
 
-NOTE: L'allarme viene segnalato anche attraverso un `punto esclamativo' nell'<<PI,icona del pannello>>.
+NOTE: L'allarme viene segnalato anche attraverso un `punto esclamativo' nell'<<panel-icon,icona del pannello>>.
 
-[[DT]]
+
+[[data-table]]
 TABELLA DEI DATI
 ~~~~~~~~~~~~~~~~
-image::datatable.png["Tabella dei dati", align = "center"]
-Se disponibili, [*C*] il livello di carica della batteria, [*D*] il tempo stimato di backup, [*E*] il livello di carico e [*F*] la temperatura del dispositivo saranno visualizzati qui. +
-L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<<PI,icona del pannello>>).
 
-[[R]]
+image::datatable.png["Tabella dei dati", align = "center"]
+
+Se disponibili, [*C*] il livello di carica della batteria, [*D*] il tempo stimato di backup, [*E*] il livello di carico e [*F*] la temperatura del dispositivo saranno visualizzati qui. +
+L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<<panel-icon,icona del pannello>>).
+
+
+[[raw-vars]]
 DATI GREZZI
 ~~~~~~~~~~~
-image::raw.png["Dati grezzi", align = "center"]
-Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l'opzione _Mostra i dati grezzi_ nelle <<P,preferenze>>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.
 
-[[DC]]
+image::raw.png["Dati grezzi", align = "center"]
+
+Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l'opzione _Mostra i dati grezzi_ nelle <<preferences,preferenze>>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.
+
+
+[[device-commands]]
 COMANDI DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~
+
 image::cmd.png["Comandi del dispositivo - Menu a cascata", align = "center"]
-Se si desidera eseguire i comandi istantanei di NUT tramite _walNUT_ è necessario selezionare l'opzione _Mostra i comandi del dispositivo_ nelle <<P,preferenze>>. +
+
+Se si desidera eseguire i comandi istantanei di NUT tramite _walNUT_ è necessario selezionare l'opzione _Mostra i comandi del dispositivo_ nelle <<preferences,preferenze>>. +
 È possibile scegliere di visualizzare i comandi istantanei del dispositivo sia in menu a cascata [*A*] che in un sotto-menu [*B*].
 
 image::cmd_sm.png["Comandi del dispositivo - Sotto-menu", align = "center"]
+
 Se si sceglie il menu a cascata [*A*], per prima cosa è necessario selezionare il comando, quindi si deve cliccare sul bottone [*1*] `esegui' alla destra della descrizione del comando [*2*].
 
 image::cmdchosen.png["Comandi del dispositivo - Menu a cascata, selezionato", align = "center"]
 
-Se si sceglie il sotto-menu [*B*], quando si clicca su un comando, quasto viene eseguito.
+Se si sceglie il sotto-menu [*B*], quando si clicca su un comando, questo viene eseguito.
 
 [TIP]
 --
-Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [*C*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*D*] nelle <<P,preferenze>>.
+Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [*C*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*D*] nelle <<preferences,preferenze>>.
 
 image::cmd_sm_vs.png["Comandi del dispositivo - Sotto-menu, con o senza descrizione", align = "center"]
 --
@@ -198,39 +233,49 @@ Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato
 
 image::cmd_notify.png["Comandi del dispositivo - Notifica", align = "center"]
 
-NOTE: Il principale vantaggio del menu a cascata è che si tratta di un processo in *due fasi*, mentre il sotto-menu fornisce un'interfaccia scorrevole se si dispone di limitato spazio in verticale.
+NOTE: Il principale vantaggio del menu a cascata è che si tratta di un processo in *due fasi*, mentre il sotto-menu fornisce un'interfaccia scorrevole se si dispone di un limitato spazio in verticale.
 
-[[BB]]
+
+[[control-buttons]]
 PULSANTI DI CONTROLLO
 ~~~~~~~~~~~~~~~~~~~~~
+
 image::btns.png["Pulsanti di controllo", align = "center"]
-In fondo al <<M,menu del pannello>> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [*A*] appena prima della riga dei pulsanti di controllo [*B*].
+
+In fondo al <<panel-menu,menu del pannello>> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [*A*] appena prima della riga dei pulsanti di controllo [*B*].
 
 image::btns_box.png["Pulsanti di controllo + Riquadro di controllo", align = "center"]
+
 I pulsanti mostreranno:
 
-1. <<P,Preferenze>>
-2. <<CB,Riquadro delle credenziali del dispositivo>>
-3. <<FN,Riquadro per cercare nuovi dispositivi>>
-4. <<DD,Riquadro per rimuovere un dispositivo>>
-5. <<H,Aiuto>>
+1. <<preferences,Preferenze>>
+2. <<credentials-box,Riquadro delle credenziali del dispositivo>>
+3. <<find-new-devices,Riquadro per cercare nuovi dispositivi>>
+4. <<delete-devices,Riquadro per rimuovere un dispositivo>>
+5. <<help,Aiuto>>
 
-[[CB]]
+
+[[credentials-box]]
 RIQUADRO DELLE CREDENZIALI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::credbox.png["Riquadro delle credenziali", align = "center"]
+
 Cliccando sul pulsante `credenziali' [*A*] si aprirà il riquadro delle credenziali [*B*] che è usato per memorizzare il nome utente e la password per i dispositivi in modo che non vengano richiesti ogni volta che si esegue un comando.
 
 NOTE: Se si desidera cancellare il nome utente, la password o entrambi (ad esempio in modo che da ora in avanti essi vengano richiesti), è necessario salvarli vuoti.
 
 Se si clicca sul pulsante `annulla e chiudi' [*1*] qualsiasi modifica effettuata al nome utente o alla password prima di cliccare sul pulsante `salva' [*2*] verrà scartata.
 
-TIP: Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <<P,preferenze>>.
+TIP: Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <<preferences,preferenze>>.
 
-[[FN]]
+
+[[find-new-devices]]
 TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::addbox.png["Riquadro per trovare nuovi dispositivi", align = "center"]
+
 Al fine di cercare nuovi dispositivi, una volta che si è cliccato sul pulsante `trova' [*A*], è necessario inserire l'hostname [*1*] e la porta [*2*] del dispositivo e quindi cliccare sul pulsante `inizia ricerca' [*B*].
 
 NOTE: Se l'hostname non viene fornito sarà _localhost_, mentre la porta, se non indicata, sarà _3493_.
@@ -239,28 +284,36 @@ Si verrà avvisati sia che nuovi dispositivi siano trovati [*C*] o meno [*D*].
 
 image::add_notify.png["Trova nuovi dispositivi - Notifica", align = "center"]
 
-[[DD]]
+
+[[delete-devices]]
 RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::delbox.png["Riquadro per rimuovere un dispositivo", align = "center"]
-Se si vuole rimuovere un dispositivo, per prima cosa è necessario selezionarlo dalla <<L,lista dei dispositivi>>, quindi è necessario cliccare sul pulsante `rimuovi' [*A*]. +
+
+Se si vuole rimuovere un dispositivo, per prima cosa è necessario selezionarlo dalla <<device-list,lista dei dispositivi>>, quindi è necessario cliccare sul pulsante `rimuovi' [*A*]. +
 Un nuovo riquadro [*B*] apparirà chiedendo se si vuole davvero rimuoverlo [*1*] oppure no [*2*].
 
-NOTE: Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l'opzione _Mostra i dispositivi non disponibili_ nelle <<P,preferenze>>.
+NOTE: Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l'opzione _Mostra i dispositivi non disponibili_ nelle <<preferences,preferenze>>.
 
-[[C]]
+
+[[device-credentials]]
 CREDENZIALI DEL DISPOSITIVO
 ---------------------------
-Se si desidera eseguire i <<C,comandi instantanei>> di un dispositivo, è necessario fornire un nome utente e una password validi (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
-È possibile salvarli tramite il <<CB,riquadro delle credenziali>> oppure si possono inserire nella <<CD,finestra delle credenziali>> *ogni volta* che si esegue un comando.
 
-NOTE: Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <<CD,finestra delle credenziali>>, qualora si provasse ad eseguire un comando.
+Se si desidera eseguire i <<device-commands,comandi instantanei>> di un dispositivo, è necessario fornire un nome utente e una password validi (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
+È possibile salvarli tramite il <<credentials-box,riquadro delle credenziali>> oppure si possono inserire nella <<credentials-dialog,finestra delle credenziali>> *ogni volta* che si esegue un comando.
 
-[[CD]]
+NOTE: Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <<credentials-dialog,finestra delle credenziali>>, qualora si provasse ad eseguire un comando.
+
+
+[[credentials-dialog]]
 FINESTRA DELLE CREDENZIALI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 image::creddialog.png["Finestra delle credenziali", align = "center"]
-La finestra delle credenziali vi chiederà di inserire un nome utente e una password validi sia che non siano stati salvati tramite il <<CB,riquadro delle credenziali>> sia che si siano dimostrati errati [*A*].
+
+La finestra delle credenziali vi chiederà di inserire un nome utente e una password validi sia che non siano stati salvati tramite il <<credentials-box,riquadro delle credenziali>> sia che si siano dimostrati errati [*A*].
 
 image::creddialog_err.png["Finestra delle credenziali - errore", align = "center"]
 
@@ -268,13 +321,16 @@ NOTE: Il pulsante `esegui' [*B*] sarà selezionabile solo se sia il nome utente 
 
 CAUTION: Dopo aver inserito nome utente e password, quando si clicca sul pulsante `esegui' [*B*] il comando sarà inviato al driver.
 
-[[P]]
+
+[[preferences]]
 PREFERENZE
 ----------
+
 Per personalizzare _walNUT_ in base alle proprie esigenze si può decidere di modificare alcune opzioni.
 
 image::prefbtn.png["Pulsante delle preferenze", align = "center"]
-È possibile accedere alle preferenze dal pulsante delle preferenze [*A*] nel <<M,menu del pannello>>.
+
+È possibile accedere alle preferenze dal pulsante delle preferenze [*A*] nel <<panel-menu,menu del pannello>>.
 
 Si aprirà una nuova finestra in cui è possibile impostare le varie opzioni.
 
@@ -287,7 +343,7 @@ image::pref.png["Preferenze", align = "center"]
 |# |Opzione |Descrizione
 |1 |Secondi prima del prossimo aggiornamento |I secondi dopo i quali _walNUT_ aggiorna i dati del dispositivo. (_default: 15_)
 |2 |Unità di misura della temperatura |L'unità di misura (Centigradi o Fahrenheit) in cui _walNUT_ deve mostrare la temperatura. (_default: Centigradi_)
-|3 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel menu a cascata nel menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
+|3 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel menu a cascata del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
 |4 |Mostra i dati grezzi |Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
 |5 |Mostra i comandi del disposivo |Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
 |6 |Comandi del dispositivo in un menu a cascata |Se l'estensione deve mostrare i comandi del dispositivo in un menu a cascata oppure no (se no, i comandi sono visualizzati in un sotto-menu). (_default: ON_)
@@ -298,10 +354,12 @@ image::pref.png["Preferenze", align = "center"]
 |11 |Mostra la carica della batteria nel pannello |Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
 |====
 
-[[I]]
+
+[[known-issues]]
 PROBLEMI CONOSCIUTI
 -------------------
-Dal momento che _walNUT_ si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l'host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così *ogni volta* che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo `problematico' è quello attualmente scelto, ogni volta che _walNUT_ prova ad aggiornare le suo variabili, _potrebbe potenzialmente_ *congelare gnome shell* per alcuni secondi (~3 per ogni dispositivo `problematico').
+
+Dal momento che _walNUT_ si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l'host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così *ogni volta* che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo `problematico' è quello attualmente scelto, ogni volta che _walNUT_ prova ad aggiornare le suo variabili, _potrebbe potenzialmente_ *congelare Gnome Shell* per alcuni secondi (~3 per ogni dispositivo `problematico').
 
 Al fine di evitare questi blocchi, ogni invocazione di upsc/upscmd è effettuata attraverso un timeout di 150ms. +
 Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più di 150ms per rispondere), è possibile cambiare questo timeout modificando l'opzione _timeout_ (_default: 0.150_) sia tramite https://developer.gnome.org/dconf/0.14/dconf-editor.html[dconf-editor] (org -> gnome -> shell -> extensions -> walnut) che eseguendo:
@@ -309,13 +367,16 @@ Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più 
 ----
 gsettings set org.gnome.shell.extensions.walnut timeout N.NNN
 ----
+
 Dove +N.NNN+ è il timeout in secondi.
 
 CAUTION: A prescindere da questo timeout, è meglio non giocare con il riquadro per trovare nuovi dispositivi e host `di fantasia' ed è _altamente_ raccomandabile rimuovere dalla lista quei dispositivi il cui hostname:porta stia per non essere più risolvibile.
 
-[[H]]
+
+[[help]]
 AIUTO
 -----
+
 Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare dell'aiuto nella mailing list di NUT:
 
 - *NUT Users* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser
@@ -324,12 +385,15 @@ Se volete aiutare, sarete i benvenuti nella mailing list di NUT e nella mailing 
 
 - *NUT Developers* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev
 
+
 TRADUTTORI
 ~~~~~~~~~~
-Una guida alla traduzione delle estensioni può essere trovata nelle https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ] sulle estensioni di gnome shell.
 
-La documentazione di _walNUT_ è scritta in http://www.methods.co.nz/asciidoc/[AsciiDoc] e quindi elaborata sia per la versione in html che per la versione in http://projectmallard.org/[Mallard] per http://projects.gnome.org/yelp/[Yelp]. +
-Il file di aiuto deve essere messo nella cartella help dell'estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).
+Una guida alla traduzione delle estensioni può essere trovata nelle https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ] sulle estensioni di Gnome Shell.
+
+La documentazione di _walNUT_ è scritta in http://www.methods.co.nz/asciidoc/[AsciiDoc] e quindi elaborata sia per la versione in html che per la versione in http://projectmallard.org/[Mallard] per http://projects.gnome.org/yelp/[Yelp].
+
+I file di aiuto devono essere messi nella cartella help dell'estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).
 
 La versione in html deve essere compilata con:
 
@@ -339,20 +403,20 @@ asciidoc --backend=xhtml11 \
 	 --out-file help.html \
 	 manual.txt
 ----
-Dove +*help.html*+ è il nome che il file di aiuto *deve* avere, +manual.txt+ è il nome del file sorgente e +*XX*+ è il proprio language code (ad esempio +it+, +es+, ..). +
+
+Dove +*help.html*+ è il nome che il file di aiuto *deve* avere, +manual.txt+ è il nome del file sorgente e +*XX*+ è il proprio language code (ad esempio +it+, +es+, ..).
 
 Mentre la versione in Mallard necessita di qualche ulteriore passaggio:
 
 1. Scaricare https://github.com/zykh/mallard-backend/raw/master/mallard.zip[questo Mallard backend per AsciiDoc] (documentazione https://github.com/zykh/mallard-backend[qui])
 2. Installare il backend
 +
-
 ----
 asciidoc --backend install mallard.zip
 ----
+
 3. Compilare il file sorgente (ad esempio +manual.txt+) con:
 +
-
 ----
 asciidoc --backend=mallard \
 	 -a chunked=1 \
@@ -360,22 +424,21 @@ asciidoc --backend=mallard \
 	 --out-file temp.page \
 	 manual.txt
 ----
+
 4. Scaricare lo https://github.com/zykh/mallard-backend/raw/master/chunkenizer[script di bash +chunkenizer+] (documentazione https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc[qui])
 5. Dare allo script di bash +chunkenizer+ i permessi di esecuzione:
 +
-
 ----
 chmod +x chunkenizer
 ----
+
 6. Elaborare il file temporaneo precedentemente creato +temp.page+ con:
 +
-
 ----
 ./chunkenizer --yelp temp.page outdir
 ----
 +
 Dove +outdir+ è la cartella di destinazione con il nome del proprio locale (ad esempio +pt_BR+).
-
 
 [NOTE]
 --
@@ -386,7 +449,10 @@ ln -s ../C/img img
 -----
 --
 
+
+[[author]]
 AUTORE
 ------
+
 Daniele Pezzini <hyouko@gmail.com>
 
