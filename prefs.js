@@ -2,9 +2,9 @@
  * walNUT: A Gnome Shell Extension for NUT (Network UPS Tools)
  *
  * Copyright (C)
- *   2013 - Daniele Pezzini <hyouko@gmail.com>
+ *   2013 Daniele Pezzini <hyouko@gmail.com>
  * Based on prefs.js from gnome-shell-extensions-mediaplayer - Copyright (C)
- *   2011-2013 - Jean-Philippe Braun <eon@patapon.info>
+ *   2011-2013 Jean-Philippe Braun <eon@patapon.info>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,21 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-const Gtk = imports.gi.Gtk;
-const GObject = imports.gi.GObject;
+const	Gtk = imports.gi.Gtk,
+	GObject = imports.gi.GObject;
 
 // Gettext
-const Gettext = imports.gettext.domain('gnome-shell-extensions-walnut');
-const _ = Gettext.gettext;
+const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
+	_ = Gettext.gettext;
 
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-//const Lib = Me.imports.lib;
-const Convenience = Me.imports.convenience;
+const	Me = imports.misc.extensionUtils.getCurrentExtension(),
+	Convenience = Me.imports.convenience;
 
+// Stored settings
 let gsettings;
 
 // Extensions settings
 let settings;
+
 // Children settings of UPS Commands
 let settings_cmd_cb;
 let settings_cmd_desc;
@@ -45,6 +46,7 @@ let cmd_cb_box;
 let cmd_desc_box;
 
 function init() {
+
 	Convenience.initTranslations();
 	gsettings = Convenience.getSettings();
 
@@ -62,6 +64,7 @@ function init() {
 			step: 5,
 			default: 15
 		},
+		// Temperature unit
 		temp_unit: {
 			type: 'es',
 			// TRANSLATORS: Label of setting @ preferences
@@ -151,6 +154,7 @@ function init() {
 			}
 		}
 	};
+
 	// Child setting of UPS Commands #2
 	settings_cmd_desc = {
 		display_cmd_desc: {
@@ -162,15 +166,19 @@ function init() {
 		//	margin: 30
 		}
 	};
+
 }
 
 // Put preferences widget together
 function buildPrefsWidget() {
+
 	let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, border_width: 10 });
+
 	// Vertical box
 	let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_right: 10, margin_left: 10, margin_bottom: 0, margin_top: 0 });
+
 	// Children boxes of UPS Commands preference
-	cmd_cb_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30, });
+	cmd_cb_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30 });
 	cmd_desc_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30, margin_bottom: 5 });
 
 	// Horizontal box
@@ -181,33 +189,40 @@ function buildPrefsWidget() {
 		hbox = buildHbox(settings_cmd_cb, setting);
 		cmd_cb_box.add(hbox);
 	}
+
 	// Child setting of UPS Commands #2
 	for (let setting in settings_cmd_desc) {
 		hbox = buildHbox(settings_cmd_desc, setting);
 		cmd_desc_box.add(hbox);
 	}
+
 	// Children sensitivity
 	cmd_cb_box.set_sensitive(gsettings.get_boolean('display-cmd'));
 	cmd_desc_box.set_sensitive(gsettings.get_boolean('display-cmd') && !gsettings.get_boolean('display-cmd-cb'));
 
 	// All other settings
 	for (let setting in settings) {
+
 		hbox = buildHbox(settings, setting);
 		vbox.add(hbox);
+
 		if (setting == 'display_cmd') {
 			vbox.add(cmd_cb_box);
 			vbox.add(cmd_desc_box);
 		}
+
 	}
 
 	frame.add(vbox);
 	frame.show_all();
 
 	return frame;
+
 }
 
 // Build horizontal box for each setting
 function buildHbox(settings, setting) {
+
 	let hbox;
 
 	if (settings[setting].type == 's')
@@ -224,6 +239,7 @@ function buildHbox(settings, setting) {
 		hbox = createEnumStringSetting(settings, setting);
 
 	return hbox;
+
 }
 
 // Enum setting from string setting
@@ -243,22 +259,30 @@ function createEnumStringSetting(settings, setting) {
 	setting_enum.pack_start(renderer, true);
 	setting_enum.add_attribute(renderer, 'text', 1);
 
-	for (let i=0; i < settings[setting].list.length; i++) {
+	for (let i = 0; i < settings[setting].list.length; i++) {
+
 		let item = settings[setting].list[i];
 		let iter = model.append();
+
 		model.set(iter, [0, 1], [item.nick, item.name]);
+
 		if (item.nick == gsettings.get_string(setting.replace(/_/g, '-'))) {
 			setting_enum.set_active(item.id);
 		}
+
 	}
 
 	setting_enum.connect('changed', function(entry) {
+
 		let [success, iter] = setting_enum.get_active_iter();
+
 		if (!success)
 			return;
 
 		let nick = model.get_value(iter, 0)
+
 		gsettings.set_string(setting.replace(/_/g, '-'), nick);
+
 	});
 
 	// Tip
@@ -291,22 +315,30 @@ function createEnumSetting(settings, setting) {
 	setting_enum.pack_start(renderer, true);
 	setting_enum.add_attribute(renderer, 'text', 1);
 
-	for (let i=0; i < settings[setting].list.length; i++) {
+	for (let i = 0; i < settings[setting].list.length; i++) {
+
 		let item = settings[setting].list[i];
 		let iter = model.append();
+
 		model.set(iter, [0, 1], [item.id, item.name]);
+
 		if (item.id == gsettings.get_enum(setting.replace(/_/g, '-'))) {
 			setting_enum.set_active(item.id);
 		}
+
 	}
 
 	setting_enum.connect('changed', function(entry) {
+
 		let [success, iter] = setting_enum.get_active_iter();
+
 		if (!success)
 			return;
 
 		let id = model.get_value(iter, 0)
+
 		gsettings.set_enum(setting.replace(/_/g, '-'), id);
+
 	});
 
 	// Tip
@@ -325,13 +357,13 @@ function createEnumSetting(settings, setting) {
 // String setting
 function createStringSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0});
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0 });
 
 	// Label
-	let setting_label = new Gtk.Label({label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
 
 	// Entry
-	let setting_string = new Gtk.Entry({text: gsettings.get_string(setting.replace(/_/g, '-'))});
+	let setting_string = new Gtk.Entry({ text: gsettings.get_string(setting.replace(/_/g, '-')) });
 	setting_string.set_width_chars(30);
 	setting_string.connect('notify::text', function(entry) {
 		gsettings.set_string(setting.replace(/_/g, '-'), entry.text);
@@ -351,19 +383,20 @@ function createStringSetting(settings, setting) {
 	hbox.add(setting_string);
 
 	return hbox;
+
 }
 
 // Integer setting
 function createIntSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0});
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0 });
 
 	// Label
-	let setting_label = new Gtk.Label({label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
 
 	// Numbers
-	let adjustment = new Gtk.Adjustment({ lower: 1, upper: 65535, step_increment: 1});
-	let setting_int = new Gtk.SpinButton({adjustment: adjustment, snap_to_ticks: true});
+	let adjustment = new Gtk.Adjustment({ lower: 1, upper: 65535, step_increment: 1 });
+	let setting_int = new Gtk.SpinButton({ adjustment: adjustment, snap_to_ticks: true });
 	setting_int.set_value(gsettings.get_int(setting.replace(/_/g, '-')));
 	setting_int.connect('value-changed', function(entry) {
 		gsettings.set_int(setting.replace(/_/g, '-'), entry.value);
@@ -379,23 +412,27 @@ function createIntSetting(settings, setting) {
 	hbox.add(setting_int);
 
 	return hbox;
+
 }
 
 // Boolean setting
 function createBoolSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0, margin_left: settings[setting].margin ? settings[setting].margin : 0 });
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0, margin_left: settings[setting].margin ? settings[setting].margin : 0 });
 
 	// Label
-	let setting_label = new Gtk.Label({label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
 
 	// Switch
-	let setting_switch = new Gtk.Switch({active: gsettings.get_boolean(setting.replace(/_/g, '-'))});
+	let setting_switch = new Gtk.Switch({ active: gsettings.get_boolean(setting.replace(/_/g, '-')) });
 	setting_switch.connect('notify::active', function(button) {
+
 		gsettings.set_boolean(setting.replace(/_/g, '-'), button.active);
+
 		// Callback function
 		if (settings[setting].cb)
 			settings[setting].cb(button.active)
+
 	});
 
 	// Tip
@@ -408,6 +445,7 @@ function createBoolSetting(settings, setting) {
 	hbox.add(setting_switch);
 
 	return hbox;
+
 }
 
 // Range setting
@@ -439,4 +477,5 @@ function createRangeSetting(settings, setting) {
 	hbox.add(setting_range);
 
 	return hbox;
+
 }
