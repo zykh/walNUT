@@ -12,41 +12,41 @@
 
 		<key type="s" name="temp-unit">
 			<default>"Centigrade"</default>
-			<summary>Unit</summary>
+			<summary>Temperature unit</summary>
 			<description>The unit ('Centigrade' or 'Fahrenheit', without quotes) the extension should display the temperature in.</description>
 		</key>
 
 		<!-- Device List Options -->
 		<key type="b" name="display-na">
 			<default>false</default>
-			<summary>Display not available UPSes</summary>
-			<description>Display also not available UPSes in combobox in panelmenu (chosen UPS will be always displayed, also if not available, in spite of this option).</description>
+			<summary>Display not available devices</summary>
+			<description>Display also not available devices in the combobox in the panel menu (chosen device will be always displayed, also if not available, in spite of this option).</description>
 		</key>
 
 		<!-- Raw Data -->
 		<key type="b" name="display-raw">
 			<default>false</default>
 			<summary>Display raw data</summary>
-			<description>Show also raw data.</description>
+			<description>Show also raw data in a submenu.</description>
 		</key>
 
 		<!-- UPS Commands -->
 		<key type="b" name="display-cmd">
 			<default>false</default>
-			<summary>Display UPS commands</summary>
-			<description>Display available UPS commands.</description>
+			<summary>Display device's commands</summary>
+			<description>Display device's available commands.</description>
 		</key>
 
 		<key type="b" name="display-cmd-cb">
 			<default>true</default>
-			<summary>UPS commands in a combobox</summary>
-			<description>Whether the extension should display the UPS commands in a combobox or not (if not, commands are displayed in a sub menu).</description>
+			<summary>Device's commands in a combobox</summary>
+			<description>Whether the extension should display the device's commands in a combobox or not (if not, commands are displayed in a sub menu).</description>
 		</key>
 
 		<key type="b" name="display-cmd-desc">
 			<default>true</default>
-			<summary>Display desc of UPS commands</summary>
-			<description>Display also a localized description of available UPS commands in the sub menu.</description>
+			<summary>Display description of device's commands (submenu)</summary>
+			<description>Display also a localized description of the device's available commands in the sub menu.</description>
 		</key>
 
 		<!-- Credentials Box Options -->
