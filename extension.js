@@ -576,7 +576,7 @@ const	walNUT = new Lang.Class({
 
 				// ..otherwise we'll open the web page
 				} else
-					Util.spawn(['xdg-open', 'http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser']);
+					Util.spawn(['xdg-open', 'https://github.com/zykh/walNUT']);
 
 			}
 
