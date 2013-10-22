@@ -465,7 +465,7 @@ const	walNUT = new Lang.Class({
 		// Panel icon
 		this._icon = new St.Icon({ icon_name: icons.e+'-symbolic', style_class: 'system-status-icon' });
 		// Panel label for battery charge and device load
-		this._status = new St.Label();
+		this._status = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
 
 		this._btnBox.add(this._icon);
 		this._btnBox.add(this._status);
