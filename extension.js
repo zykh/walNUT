@@ -298,8 +298,8 @@ const	ERR_LABEL_LENGTH = 35,		// ErrorBox Label
 	ERR_DESC_LENGTH = 40,		// ErrorBox Description
 	MODEL_LENGTH = 40,		// Device manufacturer+model
 	TOPDATA_LENGTH = 40,		// Topdata (status/alarm) description (2nd row)
-	RAW_VAR_LENGTH = 35,		// Raw data list: variable name
-	RAW_VALUE_LENGTH = 40,		// Raw data list: variable value
+	RAW_VAR_LENGTH = 35,		// Raw data list: variable's name
+	RAW_VALUE_LENGTH = 40,		// Raw data list: variable's value
 	CMD_LENGTH = 45,		// UPS commands list - description
 	CRED_DIALOG_LENGTH = 60;	// Credentials dialog description
 
@@ -1124,7 +1124,7 @@ const	DelBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		let container = new St.Table();
 
@@ -1143,8 +1143,25 @@ const	DelBox = new Lang.Class({
 		container.add(text, { row: 1, col: 1 });
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, this.hide), 'small');
-		let go = new Button('imported-emblem-ok', Utilities.upsDel, 'small');
+		let del = new Button('imported-window-close', Lang.bind(this, function() {
+
+			this.hide();
+
+			// Give back focus to our 'submenu-toggle button'
+			walnut._del_btn.actor.grab_key_focus();
+
+		}), 'small');
+
+		let go = new Button('imported-emblem-ok', Lang.bind(this, function() {
+
+			Utilities.upsDel();
+
+			this.hide();
+
+			// Give back focus to our 'submenu-toggle button'
+			walnut._del_btn.actor.grab_key_focus();
+
+		}), 'small');
 
 		// Putting buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-delbox-buttons-box' });
@@ -1181,7 +1198,7 @@ const	CredBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		let container = new St.Table();
 
@@ -1196,14 +1213,14 @@ const	CredBox = new Lang.Class({
 
 		// Username
 		// TRANSLATORS: Username hint @ credentials box
-		this.user = new St.Entry({ text: '', hint_text: _("username"), style_class: 'walnut-credbox-username' });
+		this.user = new St.Entry({ text: '', hint_text: _("username"), can_focus: true, style_class: 'walnut-credbox-username' });
 		let userBox = new St.Bin({ style_class: 'walnut-credbox-userbox', x_align: St.Align.END });
 		userBox.add_actor(this.user);
 		container.add(userBox, { row: 1, col: 1 });
 
 		// Password
 		// TRANSLATORS: Password hint @ credentials box
-		this.pw = new St.Entry({ text: '', hint_text: _("password"), style_class: 'walnut-credbox-password' });
+		this.pw = new St.Entry({ text: '', hint_text: _("password"), can_focus: true, style_class: 'walnut-credbox-password' });
 		let pwBox = new St.Bin({ style_class: 'walnut-credbox-pwbox', x_align: St.Align.END });
 		pwBox.add_actor(this.pw);
 		container.add(pwBox, { row: 1, col: 2 });
@@ -1212,7 +1229,15 @@ const	CredBox = new Lang.Class({
 		}));
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, this.undoAndClose), 'small');
+		let del = new Button('imported-window-close', Lang.bind(this, function() {
+
+			this.undoAndClose();
+
+			// Give back focus to our 'submenu-toggle button'
+			walnut._cred_btn.actor.grab_key_focus();
+
+		}), 'small');
+
 		let go = new Button('imported-emblem-ok', Lang.bind(this, this.credUpdate), 'small');
 
 		// Putting buttons together
@@ -1293,7 +1318,7 @@ const	AddBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		let container = new St.Table();
 
@@ -1307,28 +1332,36 @@ const	AddBox = new Lang.Class({
 		container.add(desc, { row: 0, col: 1, col_span: 2 });
 
 		// Hostname - left-aligned
-	//	this.hostname = new St.Entry({ hint_text: _("hostname"), style_class: 'add-entry', style: 'width: 110px; padding: 5px;' });
+	//	this.hostname = new St.Entry({ hint_text: _("hostname"), can_focus: true, style_class: 'add-entry', style: 'width: 110px; padding: 5px;' });
 	//	container.add(this.hostname, { row: 1, col: 1 });
 		// Hostname - right-aligned
 		// TRANSLATORS: Hostname hint @ find new devices box
-		this.hostname = new St.Entry({ hint_text: _("hostname"), style_class: 'walnut-addbox-host' });
+		this.hostname = new St.Entry({ hint_text: _("hostname"), can_focus: true, style_class: 'walnut-addbox-host' });
 		let hostnameBox = new St.Bin({ style_class: 'walnut-addbox-hostbox', x_align: St.Align.END });
 		hostnameBox.add_actor(this.hostname);
 		container.add(hostnameBox, { row: 1, col: 1 });
 
 		// Port - left-aligned
-	//	this.port = new St.Entry({ hint_text: _("port"), style_class: 'add-entry', style: 'width: 50px; padding: 5px;' });
+	//	this.port = new St.Entry({ hint_text: _("port"), can_focus: true, style_class: 'add-entry', style: 'width: 50px; padding: 5px;' });
 	//	container.add(this.port, { row: 1, col: 2 });
 		// Port - right-aligned
 		// TRANSLATORS: Port hint @ find new devices box
-		this.port = new St.Entry({ hint_text: _("port"), style_class: 'walnut-addbox-port' });
+		this.port = new St.Entry({ hint_text: _("port"), can_focus: true, style_class: 'walnut-addbox-port' });
 		let portBox = new St.Bin({ style_class: 'walnut-addbox-portbox', x_align: St.Align.END });
 		portBox.add_actor(this.port);
 		container.add(portBox, { row: 1, col: 2 });
 
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, this.undoAndClose), 'small');
+		let del = new Button('imported-window-close', Lang.bind(this, function() {
+
+			this.undoAndClose();
+
+			// Give back focus to our 'submenu-toggle button'
+			walnut._add_btn.actor.grab_key_focus();
+
+		}), 'small');
+
 		let go = new Button('imported-emblem-ok', Lang.bind(this, this.addUps), 'small');
 
 		// Putting buttons together
@@ -1393,7 +1426,7 @@ const	Button = new Lang.Class({
 		let button_icon = new St.Icon({ icon_name: icon + '-symbolic', style_class: 'walnut-buttons-icon-%s'.format(type) });
 
 		// Button
-		this.actor = new St.Button({ style_class: 'notification-icon-button walnut-buttons-%s'.format(type), child: button_icon });
+		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, style_class: 'notification-icon-button walnut-buttons-%s'.format(type), child: button_icon });
 
 		// Set callback, if any
 		if (callback)
@@ -1416,7 +1449,7 @@ const	BottomControls = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		this.btns = new St.BoxLayout({ style_class: 'walnut-bottom-controls-box' });
 
@@ -1530,7 +1563,7 @@ const	UpsCmdList = new Lang.Class({
 		if (fail || this._cmds.length == 0 || this._cmds.slice(0,7) == 'Error: ') {
 
 			// TRANSLATORS: Error @ UPS commands submenu
-			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false }));
+			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
 		} else {
 
@@ -1563,7 +1596,7 @@ const	UpsCmdList = new Lang.Class({
 			} else {
 
 				// TRANSLATORS: Error @ UPS commands submenu
-				this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false }));
+				this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
 			}
 
@@ -1682,10 +1715,10 @@ const	UpsRawDataList = new Lang.Class({
 		// Actual submenu children (children of this.menu.box of type PopupMenuSection or PopupBaseMenuItem -> our own UpsRawDataItem)
 		let actual;
 
-		// Object where keys are variable names (battery.charge, ups.status..) that stores the original position of the children (used to delete vars no longer available)
+		// Object where keys are variables' names (battery.charge, ups.status..) that stores the original position of the children (used to delete vars no longer available)
 		let stored = {};
 
-		// Array of variable's names of the submenu's children (used to sort new vars alphabetically)
+		// Array of variables' names of the submenu's children (used to sort new vars alphabetically)
 		let ab = Array();
 
 		// Submenu has children
@@ -1796,7 +1829,7 @@ const	UpsDataTable = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		// New table
 		this.table = new St.Table();
@@ -1971,7 +2004,7 @@ const	UpsTopDataList = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		let container = new St.Bin();
 
@@ -2073,7 +2106,7 @@ const	UpsModel = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		this.label = new St.Label({ style_class: 'walnut-ups-model' });
 
@@ -2219,7 +2252,7 @@ const	ErrorBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false });
+		this.parent({ reactive: false, can_focus: false });
 
 		let eBox = new St.BoxLayout({ vertical: false });
 
