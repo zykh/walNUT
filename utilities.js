@@ -363,7 +363,7 @@ function getUps(timeoutPath, timeout, notify, upsc, host, port) {
 }
 
 // defaultUps: pick chosen UPS
-function defaultUps(menuItem, id) {
+function defaultUps(id) {
 
 	// Don't do anything if UPS is already the chosen one
 	if (id == 0)
@@ -410,7 +410,7 @@ function upsCred(user, pw) {
 	// We're going to operate on the first item (index = 0)
 	// since the only way to update credentials is through panel menu
 	// and for the chosen UPS, that's at first position in UPS list
-	// If user or password are empty we'll delete them from UPS properties
+	// If user or password are empty we'll delete them from UPS's properties
 	if (user.length > 0)
 		got[0].user = user;
 	else

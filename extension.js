@@ -300,8 +300,7 @@ const	ERR_LABEL_LENGTH = 35,		// ErrorBox Label
 	TOPDATA_LENGTH = 40,		// Topdata (status/alarm) description (2nd row)
 	RAW_VAR_LENGTH = 35,		// Raw data list: variable name
 	RAW_VALUE_LENGTH = 40,		// Raw data list: variable value
-	CMD_LENGTH = 45,		// UPS commands list - description @ submenu
-	CMD_DESC_LENGTH = 45,		// UPS commands list - description @ combobox
+	CMD_LENGTH = 45,		// UPS commands list - description
 	CRED_DIALOG_LENGTH = 60;	// Credentials dialog description
 
 // Interval in milliseconds after which the menu, if open, has to be updated (15 minutes)
@@ -798,7 +797,7 @@ const	walNUT = new Lang.Class({
 			if (!this._lastTime)
 				this._lastTime = now;
 
-			// UPS list combobox
+			// UPS list
 			if (hasChanged || ((now - this._lastTime) > INTERVAL)) {
 				this.menu.upsList.update(devices);
 				this._lastTime = now;
@@ -1127,9 +1126,6 @@ const	DelBox = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		let container = new St.Table();
 
 		// Icon
@@ -1161,7 +1157,7 @@ const	DelBox = new Lang.Class({
 
 		container.add(btnsBox, { row: 2, col: 1 });
 
-		this.addActor(container, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(container, { expand: true, x_fill: false });
 
 	},
 
@@ -1186,9 +1182,6 @@ const	CredBox = new Lang.Class({
 	_init: function() {
 
 		this.parent({ reactive: false });
-
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
 
 		let container = new St.Table();
 
@@ -1233,7 +1226,7 @@ const	CredBox = new Lang.Class({
 
 		container.add(btnsBox, { row: 2, col: 1, col_span: 2 });
 
-		this.addActor(container, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(container, { expand: true, x_fill: false });
 
 	},
 
@@ -1302,9 +1295,6 @@ const	AddBox = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		let container = new St.Table();
 
 		// Icon
@@ -1352,7 +1342,7 @@ const	AddBox = new Lang.Class({
 
 		container.add(btnsBox, { row: 2, col: 1, col_span: 2 });
 
-		this.addActor(container, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(container, { expand: true, x_fill: false });
 
 	},
 
@@ -1428,12 +1418,9 @@ const	BottomControls = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		this.btns = new St.BoxLayout({ style_class: 'walnut-bottom-controls-box' });
 
-		this.addActor(this.btns, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(this.btns, { expand: true, x_fill: false });
 
 	},
 
@@ -1457,39 +1444,6 @@ const	BottomControls = new Lang.Class({
 			button.actor.reactive = true;
 		else
 			button.actor.reactive = false;
-
-	}
-});
-
-// UpsCmdDescAndGo: the label + button for UpsCmdList's combobox
-const	UpsCmdDescAndGo = new Lang.Class({
-	Name: 'UpsCmdDescAndGo',
-	Extends: PopupMenu.PopupBaseMenuItem,
-
-	_init: function(button) {
-
-		this.parent({ reactive: false });
-
-		this.desc = new St.Label();
-
-		this.addActor(this.desc);
-
-		this.addActor(button.actor, { span: -1, align: St.Align.END });
-
-	},
-
-	// setInfo: set the description text
-	setInfo: function(text) {
-
-		this.desc.text = parseText(text, CMD_DESC_LENGTH);
-
-	},
-
-	// Override getColumnWidths() to make the item independent from the overall column layout of the menu
-	// getColumnWidths: return an empty array
-	getColumnWidths: function() {
-
-		return [];
 
 	}
 });
@@ -1530,7 +1484,7 @@ const	CmdPopupSubMenu = new Lang.Class({
 	}
 });
 
-// UpsCmdList: a submenu listing UPS commands (displayed either in a combobox or in a submenu)
+// UpsCmdList: a submenu listing UPS commands
 const	UpsCmdList = new Lang.Class({
 	Name: 'UpsCmdList',
 	Extends: PopupMenu.PopupSubMenuMenuItem,
@@ -1539,12 +1493,6 @@ const	UpsCmdList = new Lang.Class({
 
 		// TRANSLATORS: Label of UPS commands sub menu
 		this.parent(_("UPS Commands"));
-
-		// Remove triangle
-		this.removeActor(this._triangle);
-
-		// Re-add triangle with span to put the triangle at the end of the row
-		this.addActor(this._triangle, { span: -1, align: St.Align.END });
 
 		// Override base PopupSubMenu with our sub menu that update itself only and every time it is opened
 		this.menu = new CmdPopupSubMenu(this, this.actor, this._triangle);
@@ -1597,87 +1545,17 @@ const	UpsCmdList = new Lang.Class({
 			// Listing available commands, if any
 			if (commands.length > 0){
 
-				// List UPS commands in combobox
-				if (gsettings.get_boolean('display-cmd-cb')) {
+				// List UPS commands in submenu
+				for each (let item in commands){
 
-					// New combobox
-					let cb = new PopupMenu.PopupComboBoxMenuItem({ style_class: 'status-chooser-combo' });
+					let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, parseText(cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
+					let command = item.cmd;
 
-					// No command chosen label
-					// TRANSLATORS: default item @ UPS commands combobox
-					cb.addMenuItem(new PopupMenu.PopupMenuItem(_("Choose..")));
-
-					for each (let item in commands){
-						cb.addMenuItem(new PopupMenu.PopupMenuItem(item.cmd));
-					}
-
-					// Set active item to 'Choose..'
-					cb.setActiveItem(0);
-
-					// No command chosen description
-					// TRANSLATORS: Description of default item @ UPS commands combobox
-					let desc = _("Pick one of the commands and then click here");
-
-					// Go! button
-					let go = new Button('imported-media-playback-start', false, 'small');
-					go.actor.hide();
-
-					// Command description and Go! button
-					let descAndGo = new UpsCmdDescAndGo(go);
-					descAndGo.setInfo(desc);
-
-					// Set chosen UPS command
-
-					// Variable to store signal handler id from call to call
-					let prevCallback = '';
-
-					cb.connect('active-item-changed', Lang.bind(this, function(menuItem, id){
-
-						// Id = 0 (Choose..) -> desc
-						if (id == 0) {
-
-							descAndGo.setInfo(desc);
-							go.actor.hide();
-
-						// Id != 0 -> command description
-						} else {
-
-							descAndGo.setInfo(cmdI18n(commands[id-1]).desc);
-
-							if (prevCallback)
-								// Remove previous signal handler
-								go.actor.disconnect(prevCallback);
-
-							// prevCallback will store the signal handler id so that we can remove it in future
-							prevCallback = go.actor.connect('clicked', Lang.bind(this, function(){
-								this.cmdExec(this._device.user, this._device.pw, commands[id-1].cmd);
-							}));
-
-							go.actor.show();
-
-						}
-
+					cmd.connect('activate', Lang.bind(this, function(){
+							this.cmdExec(this._device.user, this._device.pw, command);
 					}));
 
-					// Adding combobox and descAndGo to UPS commands submenu
-					this.menu.addMenuItem(cb);
-					this.menu.addMenuItem(descAndGo);
-
-				// List UPS commands in submenu
-				} else {
-
-					for each (let item in commands){
-
-						let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, parseText(cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
-						let command = item.cmd;
-
-						cmd.connect('activate', Lang.bind(this, function(){
-								this.cmdExec(this._device.user, this._device.pw, command);
-						}));
-
-						this.menu.addMenuItem(cmd);
-
-					}
+					this.menu.addMenuItem(cmd);
 
 				}
 
@@ -1779,18 +1657,10 @@ const	UpsRawDataItem = new Lang.Class({
 		this.parent({ activate: false });
 
 		this.label = new St.Label({ text: label });
-		this.addActor(this.label);
+		this.actor.add(this.label, { expand: true });
 
 		this.value = new St.Label({ text: value });
-		this.addActor(this.value, { span: -1, align: St.Align.END });
-
-	},
-
-	// Override getColumnWidths() to make the item independent from the overall column layout of the menu
-	// getColumnWidths: return an empty array
-	getColumnWidths: function() {
-
-		return [];
+		this.actor.add(this.value);
 
 	}
 });
@@ -1804,12 +1674,6 @@ const	UpsRawDataList = new Lang.Class({
 
 		// TRANSLATORS: Label of raw data submenu
 		this.parent(_("Raw Data"));
-
-		// Remove triangle
-		this.removeActor(this._triangle);
-
-		// Re-add triangle with span to put the triangle at the end of the row
-		this.addActor(this._triangle, { span: -1, align: St.Align.END });
 
 	},
 
@@ -1934,13 +1798,10 @@ const	UpsDataTable = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		// New table
 		this.table = new St.Table();
 
-		this.addActor(this.table, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(this.table, { expand: true, x_fill: false });
 
 	},
 
@@ -2100,31 +1961,6 @@ const	UpsDataTable = new Lang.Class({
 
 		this.actor.show();
 
-	},
-
-	// Override getColumnWidths() to allocate 10% less width
-	getColumnWidths: function() {
-
-		let widths = [];
-
-		for (let i = 0, col = 0; i < this._children.length; i++) {
-
-			let child = this._children[i];
-			let [min, natural] = child.actor.get_preferred_width(-1);
-
-			widths[col++] = (natural*0.9);
-
-			if (child.span > 1) {
-
-				for (let j = 1; j < child.span; j++)
-					widths[col++] = 0;
-
-			}
-
-		}
-
-		return widths;
-
 	}
 });
 
@@ -2136,9 +1972,6 @@ const	UpsTopDataList = new Lang.Class({
 	_init: function() {
 
 		this.parent({ reactive: false });
-
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
 
 		let container = new St.Bin();
 
@@ -2181,7 +2014,7 @@ const	UpsTopDataList = new Lang.Class({
 		dataBox.add_actor(statusBox);
 		dataBox.add_actor(this.alarmBox);
 
-		this.addActor(container, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(container, { expand: true });
 
 	},
 
@@ -2230,35 +2063,10 @@ const	UpsTopDataList = new Lang.Class({
 
 		this.actor.show();
 
-	},
-
-	// Override getColumnWidths() to allocate 10% less width
-	getColumnWidths: function() {
-
-		let widths = [];
-
-		for (let i = 0, col = 0; i < this._children.length; i++) {
-
-			let child = this._children[i];
-			let [min, natural] = child.actor.get_preferred_width(-1);
-
-			widths[col++] = (natural*0.9);
-
-			if (child.span > 1) {
-
-				for (let j = 1; j < child.span; j++)
-					widths[col++] = 0;
-
-			}
-
-		}
-
-		return widths;
-
 	}
 });
 
-// UpsModel: Listing chosen UPS's Model/manufacturer (if available)
+// UpsModel: Listing chosen UPS's model/manufacturer (if available)
 const	UpsModel = new Lang.Class({
 	Name: 'UpsModel',
 	Extends: PopupMenu.PopupBaseMenuItem,
@@ -2267,12 +2075,9 @@ const	UpsModel = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		this.label = new St.Label({ style_class: 'walnut-ups-model' });
 
-		this.addActor(this.label, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(this.label, { expand: true });
 
 	},
 
@@ -2300,119 +2105,101 @@ const	UpsModel = new Lang.Class({
 
 		this.actor.show();
 
-	},
-
-	// Override getColumnWidths() to allocate 10% less width
-	getColumnWidths: function() {
-
-		let widths = [];
-
-		for (let i = 0, col = 0; i < this._children.length; i++) {
-
-			let child = this._children[i];
-			let [min, natural] = child.actor.get_preferred_width(-1);
-
-			widths[col++] = (natural*0.9);
-
-			if (child.span > 1) {
-
-				for (let j = 1; j < child.span; j++)
-					widths[col++] = 0;
-
-			}
-
-		}
-
-		return widths;
-
 	}
 });
 
-// UpsList: a combobox listing available UPSes in a upsc-like way (e.g. ups@hostname:port)
+// UpsList: a submenu listing available UPSes in a upsc-like way (e.g. ups@hostname:port)
 const	UpsList = new Lang.Class({
 	Name: 'UpsList',
-	Extends: PopupMenu.PopupComboBoxMenuItem,
+	Extends: PopupMenu.PopupSubMenuMenuItem,
 
 	_init: function() {
 
-		this.parent({ style_class: 'status-chooser-combo' });
-
-		// Change chosen UPS to selected one
-		this.connect('active-item-changed', Lang.bind(this, Utilities.defaultUps));
+		this.parent('');
 
 	},
 
 	buildInfo: function() {
 
-		// Counter used to decide whether the combobox will be sensitive or not: only 1 entry -> not sensitive, 2+ entries -> sensitive
+		// Counter used to decide whether the submenu will be sensitive or not: only 1 entry -> not sensitive, 2+ entries -> sensitive
 		let count = 0;
-		let i = 0;
 
-		for each (let item in this._devices) {
+		for (let i = 0; i < this._devices.length; i++) {
 
-			// Available
-			if (item.av == 1)
-				this.addMenuItem(new PopupMenu.PopupMenuItem('%s@%s:%s'.format(item.name, item.host, item.port)));
+			let label;
+
+			let item = this._devices[i];
+
+			label = '%s@%s:%s'.format(item.name, item.host, item.port);
 
 			// N/A
-			else {
-
+			if (item.av != 1)
 				// TRANSLATORS: Device not available @ UPS list
-				let na = new PopupMenu.PopupMenuItem(_("%s@%s:%s (N/A)").format(item.name, item.host, item.port));
+				label += _(" (N/A)");
 
-				// Style = popup-menu-item:insensitive
-				na.actor.add_style_pseudo_class('insensitive');
-				this.addMenuItem(na);
+			if (i == 0) {
+				this.label.text = label;
+				continue;
+			}
 
-				// Chosen UPS (1st one) is always visible
+			let ups_l = new PopupMenu.PopupMenuItem(label);
+
+			let index = i;
+
+			ups_l.connect('activate', Lang.bind(this, function(){
+				Utilities.defaultUps(index);
+			}));
+
+			// N/A -> Style = popup-menu-item:insensitive
+			if (item.av != 1) {
+
+				ups_l.actor.add_style_pseudo_class('insensitive');
+
 				// If !display-na: UPSes not currently available won't be shown (apart from the chosen one)
-				if (this._display_na == false && i != 0)
-					this.setItemVisible(i, false);
-
-				if (i != 0)
-					count++;
+				if (this._display_na == false)
+					continue;
 
 			}
 
-			i++;
+			count++;
+
+			this.menu.addMenuItem(ups_l);
 
 		}
 
-		// Combo box sensitive or not
-		if ((this._display_na == false && count >= (this._devices.length - 1)) || this._devices.length == 1)
+		// Submenu sensitive or not
+		if ((this._display_na == false && count == 0) || this._devices.length == 1)
 			this.setSensitive(false);
 		else
 			this.setSensitive(true);
 
-		// Set active item to actual chosen UPS (the first one in UPS list)
-		this.setActiveItem(0);
-
 	},
 
-	// update: Empty the combobox and update it with the new device list
+	// update: Empty the submenu and update it with the new device list
 	update: function(devices) {
 
 		// Update device list
 		this._devices = devices;
 
 		// Destroy all previously added items, if any
-		if (this._menu._getMenuItems().length)
-			this._menu.removeAll();
-
-		// Unset active item position
-		this._activeItemPos = -1;
+		if (this.menu._getMenuItems().length)
+			this.menu.removeAll();
 
 		// Display also not available UPSes, if at least one of the 'not chosen' is available:
 		//  - display-na: Display also not available UPSes
 		//  - !display-na: Display chosen UPS and then only available UPSes
 		this._display_na = gsettings.get_boolean('display-na');
 
-		// Rebuild combobox
+		// Rebuild submenu
 		this.buildInfo();
 
 	},
 
 	hide: function() {
+
+		// If the submenu is not empty, destroy all children
+		if (!this.menu.isEmpty())
+			this.menu.removeAll();
 
 		this.actor.hide();
 
@@ -2434,9 +2221,6 @@ const	ErrorBox = new Lang.Class({
 
 		this.parent({ reactive: false });
 
-		// Align Shell.GenericContainer to center
-		this.actor.set_x_align(Clutter.ActorAlign.CENTER);
-
 		let eBox = new St.BoxLayout({ vertical: false });
 
 		// Box for the message
@@ -2456,7 +2240,7 @@ const	ErrorBox = new Lang.Class({
 
 		eBox.add(textBox, { y_align: St.Align.START });
 
-		this.addActor(eBox, { span: -1, align: St.Align.MIDDLE });
+		this.actor.add(eBox, { expand: true });
 
 	},
 
@@ -2512,31 +2296,6 @@ const	ErrorBox = new Lang.Class({
 
 		this.actor.show();
 
-	},
-
-	// Override getColumnWidths() to allocate 10% less width
-	getColumnWidths: function() {
-
-		let widths = [];
-
-		for (let i = 0, col = 0; i < this._children.length; i++) {
-
-			let child = this._children[i];
-			let [min, natural] = child.actor.get_preferred_width(-1);
-
-			widths[col++] = (natural*0.9);
-
-			if (child.span > 1) {
-
-				for (let j = 1; j < child.span; j++)
-					widths[col++] = 0;
-
-			}
-
-		}
-
-		return widths;
-
 	}
 });
 
@@ -2550,7 +2309,7 @@ const	NutMenu = new Lang.Class({
 		this.parent(sourceActor, 0.0, St.Side.TOP);
 
 		// Override base style
-		this._boxWrapper.add_style_class_name('walnut-menu');
+		this.actor.add_style_class_name('walnut-menu');
 
 		// Error Box
 		this.errorBox = new ErrorBox();

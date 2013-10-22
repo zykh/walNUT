@@ -20,7 +20,7 @@
 		<key type="b" name="display-na">
 			<default>false</default>
 			<summary>Display not available devices</summary>
-			<description>Display also not available devices in the combobox in the panel menu (chosen device will be always displayed, also if not available, in spite of this option).</description>
+			<description>Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option).</description>
 		</key>
 
 		<!-- Raw Data -->
@@ -37,15 +37,9 @@
 			<description>Display device's available commands.</description>
 		</key>
 
-		<key type="b" name="display-cmd-cb">
-			<default>true</default>
-			<summary>Device's commands in a combobox</summary>
-			<description>Whether the extension should display the device's commands in a combobox or not (if not, commands are displayed in a sub menu).</description>
-		</key>
-
 		<key type="b" name="display-cmd-desc">
 			<default>true</default>
-			<summary>Display description of device's commands (submenu)</summary>
+			<summary>Display description of device's commands</summary>
 			<description>Display also a localized description of the device's available commands in the sub menu.</description>
 		</key>
 

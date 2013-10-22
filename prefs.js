@@ -38,11 +38,9 @@ let gsettings;
 let settings;
 
 // Children settings of UPS Commands
-let settings_cmd_cb;
 let settings_cmd_desc;
 
 // Children boxes of UPS Commands
-let cmd_cb_box;
 let cmd_desc_box;
 
 function init() {
@@ -103,8 +101,7 @@ function init() {
 			help: _("Display device's available commands. Requires upsd user and password to execute them. (default: OFF)"),
 			// cb: callback function -> set children sensitivity
 			cb: function(status) {
-				cmd_cb_box.set_sensitive(status);
-				cmd_desc_box.set_sensitive(status && !gsettings.get_boolean('display-cmd-cb'));
+				cmd_desc_box.set_sensitive(status);
 			}
 		},
 		// Credentials Box Options
@@ -139,23 +136,7 @@ function init() {
 		}
 	};
 
-	// Child setting of UPS Commands #1
-	settings_cmd_cb = {
-		display_cmd_cb: {
-			type: 'b',
-			// TRANSLATORS: Label of setting @ preferences
-			label: _("Device's commands in a combobox"),
-			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Whether the extension should display the device's commands in a combobox or not (if not, commands are displayed in a sub menu). (default: ON)"),
-		//	margin: 30,
-			// cb: callback function -> set child#2 sensitivity
-			cb: function(status) {
-				cmd_desc_box.set_sensitive(!status);
-			}
-		}
-	};
-
-	// Child setting of UPS Commands #2
+	// Child setting of UPS Commands
 	settings_cmd_desc = {
 		display_cmd_desc: {
 			type: 'b',
@@ -178,27 +159,19 @@ function buildPrefsWidget() {
 	let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_right: 10, margin_left: 10, margin_bottom: 0, margin_top: 0 });
 
 	// Children boxes of UPS Commands preference
-	cmd_cb_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30 });
 	cmd_desc_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30, margin_bottom: 5 });
 
 	// Horizontal box
 	let hbox;
 
-	// Child setting of UPS Commands #1
-	for (let setting in settings_cmd_cb) {
-		hbox = buildHbox(settings_cmd_cb, setting);
-		cmd_cb_box.add(hbox);
-	}
-
-	// Child setting of UPS Commands #2
+	// Child setting of UPS Commands
 	for (let setting in settings_cmd_desc) {
 		hbox = buildHbox(settings_cmd_desc, setting);
 		cmd_desc_box.add(hbox);
 	}
 
 	// Children sensitivity
-	cmd_cb_box.set_sensitive(gsettings.get_boolean('display-cmd'));
-	cmd_desc_box.set_sensitive(gsettings.get_boolean('display-cmd') && !gsettings.get_boolean('display-cmd-cb'));
+	cmd_desc_box.set_sensitive(gsettings.get_boolean('display-cmd'));
 
 	// All other settings
 	for (let setting in settings) {
@@ -207,7 +180,6 @@ function buildPrefsWidget() {
 		vbox.add(hbox);
 
 		if (setting == 'display_cmd') {
-			vbox.add(cmd_cb_box);
 			vbox.add(cmd_desc_box);
 		}
 
