@@ -1426,7 +1426,7 @@ const	Button = new Lang.Class({
 		let button_icon = new St.Icon({ icon_name: icon + '-symbolic', style_class: 'walnut-buttons-icon-%s'.format(type) });
 
 		// Button
-		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, style_class: 'notification-icon-button walnut-buttons-%s'.format(type), child: button_icon });
+		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, style_class: 'system-menu-action walnut-buttons-%s'.format(type), child: button_icon });
 
 		// Set callback, if any
 		if (callback)
