@@ -480,7 +480,8 @@ const	walNUT = new Lang.Class({
 		// Bottom Buttons
 
 		// Settings button
-		this._pref_btn = new Button('imported-preferences-system', function() {
+		// TRANSLATORS: Accessible name of 'Preferences' button
+		this._pref_btn = new Button('imported-preferences-system', _("Preferences"), function() {
 
 			let _appSys = Shell.AppSystem.get_default();
 			let _gsmPrefs = _appSys.lookup_app('gnome-shell-extension-prefs.desktop');
@@ -493,7 +494,8 @@ const	walNUT = new Lang.Class({
 		});
 
 		// Credentials button
-		this._cred_btn = new Button('imported-dialog-password', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Credentials' button
+		this._cred_btn = new Button('imported-dialog-password', _("Credentials"), Lang.bind(this, function() {
 
 			// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
 			if (this.menu.addBox.actor.visible)
@@ -508,7 +510,8 @@ const	walNUT = new Lang.Class({
 		}));
 
 		// Add UPS button
-		this._add_btn = new Button('imported-edit-find', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Find new devices' button
+		this._add_btn = new Button('imported-edit-find', _("Find new devices"), Lang.bind(this, function() {
 
 			// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
 			if (this.menu.credBox.actor.visible)
@@ -523,7 +526,8 @@ const	walNUT = new Lang.Class({
 		}));
 
 		// Delete UPS from UPS list button
-		this._del_btn = new Button('imported-user-trash', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Delete device' button
+		this._del_btn = new Button('imported-user-trash', _("Delete device"), Lang.bind(this, function() {
 
 			// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
 			if (this.menu.addBox.actor.visible)
@@ -538,7 +542,8 @@ const	walNUT = new Lang.Class({
 		}));
 
 		// Help button
-		this._help_btn = new Button('imported-help-browser', function() {
+		// TRANSLATORS: Accessible name of 'Help' button
+		this._help_btn = new Button('imported-help-browser', _("Help"), function() {
 
 			let yelp = Utilities.detect('yelp');
 			let help = Me.dir.get_child('help');
@@ -1143,7 +1148,8 @@ const	DelBox = new Lang.Class({
 		container.add(text, { row: 1, col: 1 });
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
+		let del = new Button('imported-window-close', _("Don't delete"), Lang.bind(this, function() {
 
 			this.hide();
 
@@ -1152,7 +1158,8 @@ const	DelBox = new Lang.Class({
 
 		}), 'small');
 
-		let go = new Button('imported-emblem-ok', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
+		let go = new Button('imported-emblem-ok', _("Delete"), Lang.bind(this, function() {
 
 			Utilities.upsDel();
 
@@ -1229,7 +1236,8 @@ const	CredBox = new Lang.Class({
 		}));
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
+		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
 			this.undoAndClose();
 
@@ -1238,7 +1246,8 @@ const	CredBox = new Lang.Class({
 
 		}), 'small');
 
-		let go = new Button('imported-emblem-ok', Lang.bind(this, this.credUpdate), 'small');
+		// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
+		let go = new Button('imported-emblem-ok', _("Save credentials"), Lang.bind(this, this.credUpdate), 'small');
 
 		// Putting buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-credbox-buttons-box' });
@@ -1353,7 +1362,8 @@ const	AddBox = new Lang.Class({
 
 
 		// Delete/Go buttons
-		let del = new Button('imported-window-close', Lang.bind(this, function() {
+		// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
+		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
 			this.undoAndClose();
 
@@ -1362,7 +1372,8 @@ const	AddBox = new Lang.Class({
 
 		}), 'small');
 
-		let go = new Button('imported-emblem-ok', Lang.bind(this, this.addUps), 'small');
+		// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
+		let go = new Button('imported-emblem-ok', _("Start search"), Lang.bind(this, this.addUps), 'small');
 
 		// Putting buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-addbox-buttons-box' });
@@ -1417,7 +1428,7 @@ const	AddBox = new Lang.Class({
 const	Button = new Lang.Class({
 	Name: 'Button',
 
-	_init: function(icon, callback, type) {
+	_init: function(icon, accessibleName, callback, type) {
 
 		if (!type || type != 'small')
 			type = 'big';
@@ -1426,7 +1437,7 @@ const	Button = new Lang.Class({
 		let button_icon = new St.Icon({ icon_name: icon + '-symbolic', style_class: 'walnut-buttons-icon-%s'.format(type) });
 
 		// Button
-		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, style_class: 'system-menu-action walnut-buttons-%s'.format(type), child: button_icon });
+		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, accessible_name: accessibleName, style_class: 'system-menu-action walnut-buttons-%s'.format(type), child: button_icon });
 
 		// Set callback, if any
 		if (callback)
