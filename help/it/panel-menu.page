@@ -170,27 +170,13 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 <figure>
 <media type="image" src="img/cmd.png"
 >
-<p>Comandi del dispositivo - Menu a cascata</p>
+<p>Comandi del dispositivo</p>
 </media>
 </figure>
 <p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <link xref="preferences">preferenze</link>.
-È possibile scegliere di visualizzare i comandi istantanei del dispositivo sia in menu a cascata [<em style="strong">A</em>] che in un sotto-menu [<em style="strong">B</em>].</p>
-<figure>
-<media type="image" src="img/cmd_sm.png"
->
-<p>Comandi del dispositivo - Sotto-menu</p>
-</media>
-</figure>
-<p>Se si sceglie il menu a cascata [<em style="strong">A</em>], per prima cosa è necessario selezionare il comando, quindi si deve cliccare sul bottone [<em style="strong">1</em>] &#8216;esegui&#8217; alla destra della descrizione del comando [<em style="strong">2</em>].</p>
-<figure>
-<media type="image" src="img/cmdchosen.png"
->
-<p>Comandi del dispositivo - Menu a cascata, selezionato</p>
-</media>
-</figure>
-<p>Se si sceglie il sotto-menu [<em style="strong">B</em>], quando si clicca su un comando, questo viene eseguito.</p>
+Si noti che, quando si clicca su un comando, questo viene eseguito.</p>
 <note style="tip">
-<p>Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">C</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">D</em>] nelle <link xref="preferences">preferenze</link>.</p>
+<p><em>walNUT</em> di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">A</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">B</em>] nelle <link xref="preferences">preferenze</link>.</p>
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
@@ -198,16 +184,13 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 </media>
 </figure>
 </note>
-<p>Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [<em style="strong">E</em>] oppure no [<em style="strong">F</em>].</p>
+<p>Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [<em style="strong">C</em>] oppure no [<em style="strong">D</em>].</p>
 <figure>
 <media type="image" src="img/cmd_notify.png"
 >
 <p>Comandi del dispositivo - Notifica</p>
 </media>
 </figure>
-<note style="note">
-<p>Il principale vantaggio del menu a cascata è che si tratta di un processo in <em style="strong">due fasi</em>, mentre il sotto-menu fornisce un&#8217;interfaccia scorrevole se si dispone di un limitato spazio in verticale.</p>
-</note>
 </section>
 <section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. PULSANTI DI CONTROLLO</title>
 <figure>

@@ -170,27 +170,13 @@ Battery icon [<em style="strong">1</em>] will display actual charge through the 
 <figure>
 <media type="image" src="img/cmd.png"
 >
-<p>Device's Commands - Combo Box</p>
+<p>Device's Commands</p>
 </media>
 </figure>
 <p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in the <link xref="preferences">preferences</link>.
-You can choose to show device&#8217;s instant command either in a combo box [<em style="strong">A</em>] or as a submenu [<em style="strong">B</em>].</p>
-<figure>
-<media type="image" src="img/cmd_sm.png"
->
-<p>Device's Commands - Sub Menu</p>
-</media>
-</figure>
-<p>If the combo box [<em style="strong">A</em>] is chosen, first you have to select the command, and then click on the [<em style="strong">1</em>] &#8216;execute&#8217; button on the right of the command&#8217;s description [<em style="strong">2</em>].</p>
-<figure>
-<media type="image" src="img/cmdchosen.png"
->
-<p>Device's Commands - Combo box, chosen</p>
-</media>
-</figure>
-<p>If the submenu [<em style="strong">B</em>] is chosen, when you click on a command, it&#8217;ll be executed.</p>
+Note that, when you click on a command, it&#8217;ll be executed.</p>
 <note style="tip">
-<p>Submenu standardly displays also a localized description of the commands [<em style="strong">C</em>], but if you think that it steals too much space you can set not to display it [<em style="strong">D</em>] in the <link xref="preferences">preferences</link>.</p>
+<p><em>walNUT</em> standardly displays also a localized description of the commands [<em style="strong">A</em>], but if you think that it steals too much space you can set not to display it [<em style="strong">B</em>] in the <link xref="preferences">preferences</link>.</p>
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
@@ -198,16 +184,13 @@ You can choose to show device&#8217;s instant command either in a combo box [<em
 </media>
 </figure>
 </note>
-<p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<em style="strong">E</em>] or not [<em style="strong">F</em>].</p>
+<p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<em style="strong">C</em>] or not [<em style="strong">D</em>].</p>
 <figure>
 <media type="image" src="img/cmd_notify.png"
 >
 <p>Device's Commands - Notify</p>
 </media>
 </figure>
-<note style="note">
-<p>The main advantage of the combo box is that it&#8217;s a <em style="strong">two-step</em> process, while the submenu gives you a scrollable interface if you have limited vertical space.</p>
-</note>
 </section>
 <section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. CONTROL BUTTONS</title>
 <figure>

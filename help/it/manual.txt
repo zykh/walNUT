@@ -209,31 +209,21 @@ Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un 
 COMANDI DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-image::cmd.png["Comandi del dispositivo - Menu a cascata", align = "center"]
+image::cmd.png["Comandi del dispositivo", align = "center"]
 
 Se si desidera eseguire i comandi istantanei di NUT tramite _walNUT_ è necessario selezionare l'opzione _Mostra i comandi del dispositivo_ nelle <<preferences,preferenze>>. +
-È possibile scegliere di visualizzare i comandi istantanei del dispositivo sia in menu a cascata [*A*] che in un sotto-menu [*B*].
-
-image::cmd_sm.png["Comandi del dispositivo - Sotto-menu", align = "center"]
-
-Se si sceglie il menu a cascata [*A*], per prima cosa è necessario selezionare il comando, quindi si deve cliccare sul bottone [*1*] `esegui' alla destra della descrizione del comando [*2*].
-
-image::cmdchosen.png["Comandi del dispositivo - Menu a cascata, selezionato", align = "center"]
-
-Se si sceglie il sotto-menu [*B*], quando si clicca su un comando, questo viene eseguito.
+Si noti che, quando si clicca su un comando, questo viene eseguito.
 
 [TIP]
 --
-Il sotto-menu di base visualizza anche una descrizione localizzata dei comandi [*C*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*D*] nelle <<preferences,preferenze>>.
+_walNUT_ di base visualizza anche una descrizione localizzata dei comandi [*A*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*B*] nelle <<preferences,preferenze>>.
 
 image::cmd_sm_vs.png["Comandi del dispositivo - Sotto-menu, con o senza descrizione", align = "center"]
 --
 
-Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [*E*] oppure no [*F*].
+Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [*C*] oppure no [*D*].
 
 image::cmd_notify.png["Comandi del dispositivo - Notifica", align = "center"]
-
-NOTE: Il principale vantaggio del menu a cascata è che si tratta di un processo in *due fasi*, mentre il sotto-menu fornisce un'interfaccia scorrevole se si dispone di un limitato spazio in verticale.
 
 
 [[control-buttons]]
@@ -343,15 +333,14 @@ image::pref.png["Preferenze", align = "center"]
 |# |Opzione |Descrizione
 |1 |Secondi prima del prossimo aggiornamento |I secondi dopo i quali _walNUT_ aggiorna i dati del dispositivo. (_default: 15_)
 |2 |Unità di misura della temperatura |L'unità di misura (Centigradi o Fahrenheit) in cui _walNUT_ deve mostrare la temperatura. (_default: Centigradi_)
-|3 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel menu a cascata del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
+|3 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
 |4 |Mostra i dati grezzi |Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
 |5 |Mostra i comandi del disposivo |Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
-|6 |Comandi del dispositivo in un menu a cascata |Se l'estensione deve mostrare i comandi del dispositivo in un menu a cascata oppure no (se no, i comandi sono visualizzati in un sotto-menu). (_default: ON_)
-|7 |Mostra la descrizione dei comandi del dispositivo (sotto-menu) |Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili (sotto-menu). (_default: ON_)
-|8 |Nascondi la password nel riquadro delle credenziali |Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
-|9 |Mostra il carico del dispositivo nell'icona del pannello |Se il livello di carico del dispositivo deve essere visualizzato nell'icona sul pannello oppure no. (_default: OFF_)
-|10 |Mostra il carico del dispositivo nel pannello |Se il livello di carico del dispositivo deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
-|11 |Mostra la carica della batteria nel pannello |Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
+|6 |Mostra la descrizione dei comandi del dispositivo |Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (_default: ON_)
+|7 |Nascondi la password nel riquadro delle credenziali |Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
+|8 |Mostra il carico del dispositivo nell'icona del pannello |Se il livello di carico del dispositivo deve essere visualizzato nell'icona sul pannello oppure no. (_default: OFF_)
+|9 |Mostra il carico del dispositivo nel pannello |Se il livello di carico del dispositivo deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
+|10 |Mostra la carica della batteria nel pannello |Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
 |====
 
 
