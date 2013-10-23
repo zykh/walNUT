@@ -1032,7 +1032,7 @@ const	CredDialog = new Lang.Class({
 		table.add(userLabel, { row: 0, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
 		// Username entry
 		let name = this._device.user;
-		this.user = new St.Entry({ text: name ? name : '', style_class: 'walnut-add-entry' });
+		this.user = new St.Entry({ text: name ? name : '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
 		table.add(this.user, { row: 0, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
