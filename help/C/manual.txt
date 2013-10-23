@@ -275,17 +275,22 @@ DEVICE'S COMMANDS
 
 image::cmd.png["Device's Commands", align = "center"]
 
-If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device's commands_ option in the <<{preferences},preferences>>. +
+If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device's commands_ option in the <<{preferences},preferences>>.
+
+You can also pass to the command some extra data filling, before you click on the command, the entry [*A*] that will appear next to the submenu of the device's commands when it is opened.
+
+image::cmd_extra.png["Device's Commands - Extra data", align = "center"]
+
 Note that, when you click on a command, it'll be executed.
 
 [TIP]
 --
-_walNUT_ standardly displays also a localized description of the commands [*A*], but if you think that it steals too much space you can set not to display it [*B*] in the <<{preferences},preferences>>.
+_walNUT_ standardly displays also a localized description of the commands [*B*], but if you think that it steals too much space you can set not to display it [*C*] in the <<{preferences},preferences>>.
 
 image::cmd_sm_vs.png["Device's Commands - Sub Menu, with or w/o description", align = "center"]
 --
 
-Once a command has been executed, you'll be notified whether it has been successfully sent to the driver [*C*] or not [*D*].
+Once a command has been executed, you'll be notified whether it has been successfully sent to the driver [*D*] or not [*E*].
 
 image::cmd_notify.png["Device's Commands - Notify", align = "center"]
 

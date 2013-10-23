@@ -173,10 +173,17 @@ Battery icon [<em style="strong">1</em>] will display actual charge through the 
 <p>Device's Commands</p>
 </media>
 </figure>
-<p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in the <link xref="preferences">preferences</link>.
-Note that, when you click on a command, it&#8217;ll be executed.</p>
+<p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in the <link xref="preferences">preferences</link>.</p>
+<p>You can also pass to the command some extra data filling, before you click on the command, the entry [<em style="strong">A</em>] that will appear next to the submenu of the device&#8217;s commands when it is opened.</p>
+<figure>
+<media type="image" src="img/cmd_extra.png"
+>
+<p>Device's Commands - Extra data</p>
+</media>
+</figure>
+<p>Note that, when you click on a command, it&#8217;ll be executed.</p>
 <note style="tip">
-<p><em>walNUT</em> standardly displays also a localized description of the commands [<em style="strong">A</em>], but if you think that it steals too much space you can set not to display it [<em style="strong">B</em>] in the <link xref="preferences">preferences</link>.</p>
+<p><em>walNUT</em> standardly displays also a localized description of the commands [<em style="strong">B</em>], but if you think that it steals too much space you can set not to display it [<em style="strong">C</em>] in the <link xref="preferences">preferences</link>.</p>
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
@@ -184,7 +191,7 @@ Note that, when you click on a command, it&#8217;ll be executed.</p>
 </media>
 </figure>
 </note>
-<p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<em style="strong">C</em>] or not [<em style="strong">D</em>].</p>
+<p>Once a command has been executed, you&#8217;ll be notified whether it has been successfully sent to the driver [<em style="strong">D</em>] or not [<em style="strong">E</em>].</p>
 <figure>
 <media type="image" src="img/cmd_notify.png"
 >

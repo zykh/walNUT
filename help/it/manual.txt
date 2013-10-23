@@ -211,17 +211,22 @@ COMANDI DEL DISPOSITIVO
 
 image::cmd.png["Comandi del dispositivo", align = "center"]
 
-Se si desidera eseguire i comandi istantanei di NUT tramite _walNUT_ è necessario selezionare l'opzione _Mostra i comandi del dispositivo_ nelle <<preferences,preferenze>>. +
+Se si desidera eseguire i comandi istantanei di NUT tramite _walNUT_ è necessario selezionare l'opzione _Mostra i comandi del dispositivo_ nelle <<preferences,preferenze>>.
+
+Si possono inoltre passare al comando da eseguire dei dati aggiuntivi usando, prima di cliccare sul comando, la casella [*A*] che apparirà di fianco al menu dei comandi del dispositivi quando questo viene aperto.
+
+image::cmd_extra.png["Comandi del dispositivo - Dati aggiuntivi", align = "center"]
+
 Si noti che, quando si clicca su un comando, questo viene eseguito.
 
 [TIP]
 --
-_walNUT_ di base visualizza anche una descrizione localizzata dei comandi [*A*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*B*] nelle <<preferences,preferenze>>.
+_walNUT_ di base visualizza anche una descrizione localizzata dei comandi [*B*], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [*C*] nelle <<preferences,preferenze>>.
 
 image::cmd_sm_vs.png["Comandi del dispositivo - Sotto-menu, con o senza descrizione", align = "center"]
 --
 
-Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [*C*] oppure no [*D*].
+Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [*D*] oppure no [*E*].
 
 image::cmd_notify.png["Comandi del dispositivo - Notifica", align = "center"]
 

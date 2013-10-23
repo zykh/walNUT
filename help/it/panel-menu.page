@@ -173,10 +173,17 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 <p>Comandi del dispositivo</p>
 </media>
 </figure>
-<p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <link xref="preferences">preferenze</link>.
-Si noti che, quando si clicca su un comando, questo viene eseguito.</p>
+<p>Se si desidera eseguire i comandi istantanei di NUT tramite <em>walNUT</em> è necessario selezionare l&#8217;opzione <em>Mostra i comandi del dispositivo</em> nelle <link xref="preferences">preferenze</link>.</p>
+<p>Si possono inoltre passare al comando da eseguire dei dati aggiuntivi usando, prima di cliccare sul comando, la casella [<em style="strong">A</em>] che apparirà di fianco al menu dei comandi del dispositivi quando questo viene aperto.</p>
+<figure>
+<media type="image" src="img/cmd_extra.png"
+>
+<p>Comandi del dispositivo - Dati aggiuntivi</p>
+</media>
+</figure>
+<p>Si noti che, quando si clicca su un comando, questo viene eseguito.</p>
 <note style="tip">
-<p><em>walNUT</em> di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">A</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">B</em>] nelle <link xref="preferences">preferenze</link>.</p>
+<p><em>walNUT</em> di base visualizza anche una descrizione localizzata dei comandi [<em style="strong">B</em>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<em style="strong">C</em>] nelle <link xref="preferences">preferenze</link>.</p>
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
@@ -184,7 +191,7 @@ Si noti che, quando si clicca su un comando, questo viene eseguito.</p>
 </media>
 </figure>
 </note>
-<p>Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [<em style="strong">C</em>] oppure no [<em style="strong">D</em>].</p>
+<p>Una volta che un comando è stato eseguito, verrà segnalato se è stato inviato con successo al driver [<em style="strong">D</em>] oppure no [<em style="strong">E</em>].</p>
 <figure>
 <media type="image" src="img/cmd_notify.png"
 >
