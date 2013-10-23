@@ -167,6 +167,12 @@
 	border: 1px solid #6f6f6f;
 }
 
+/* Device's commands */
+.walnut-cmd-extradata {
+	width: 5.333em;
+	background-color: rgba(0,0,0,0.3);
+}
+
 /* Device Data Table (Battery Charge, Backup Time, Device Load, Temperature) */
 .walnut-ups-data-table-icon {
 	icon-size: 3.3em;

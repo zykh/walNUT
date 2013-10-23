@@ -984,12 +984,13 @@ const	CredDialog = new Lang.Class({
 	Name: 'CredDialog',
 	Extends: ModalDialog.ModalDialog,
 
-	_init: function(delegate, cmd, error) {
+	_init: function(delegate, cmd, extradata, error) {
 
 		this.parent({ styleClass: 'walnut-cred-dialog' });
 
 		this._delegate = delegate;
 		this._cmd = cmd;
+		this._extra = extradata;
 		this._device = upscMonitor.getList()[0];
 
 		// Main container
@@ -1010,8 +1011,15 @@ const	CredDialog = new Lang.Class({
 		textBox.add(label, { y_fill: false, y_align: St.Align.START });
 
 		// Description
+		let cmdExtraDesc;
+
+		if (this._extra.length)
+			cmdExtraDesc = '\'%s %s\''.format(this._cmd, this._extra);
+		else
+			cmdExtraDesc = this._cmd;
+
 		// TRANSLATORS: Description @ credentials dialog
-		let desc = new St.Label({ text: parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(this._cmd, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH), style_class: 'prompt-dialog-description walnut-cred-dialog-description' });
+		let desc = new St.Label({ text: parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH), style_class: 'prompt-dialog-description walnut-cred-dialog-description' });
 		textBox.add(desc, { y_fill: true, y_align: St.Align.START, expand: true });
 
 		// Username/password table
@@ -1110,7 +1118,7 @@ const	CredDialog = new Lang.Class({
 	// _onOk: actions to do when Execute button is pressed
 	_onOk: function() {
 
-		this._delegate.cmdExec(this.user.get_text(), this.pw.get_text(), this._cmd);
+		this._delegate.cmdExec(this.user.get_text(), this.pw.get_text(), this._cmd, this._extra);
 		this.close(global.get_current_time());
 
 	},
@@ -1538,8 +1546,71 @@ const	UpsCmdList = new Lang.Class({
 		// TRANSLATORS: Label of UPS commands sub menu
 		this.parent(_("UPS Commands"));
 
+		// Command's extradata
+
+		// Remove focus from St.BoxLayout..
+		this.actor.can_focus = false;
+
+		// ..and add it to our child St.BoxLayout
+		let labelBox = new St.BoxLayout({ can_focus: true });
+
+		// Add the label to our St.BoxLayout and put it in its place
+		this.actor.insert_child_below(labelBox, this.label);
+		this.actor.remove_child(this.label);
+		labelBox.add(this.label);
+
+		// Connect key focus
+		labelBox.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+		labelBox.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+
+		// TRANSLATORS: Extradata's label @ Device's commands submenu
+		this.status.text = _("extradata:");
+
+		// Extradata's entry: we need to start with a nonempty entry otherwise, when clicking-in, the submenu will close itself
+		this.extradata = new St.Entry({ text: ' ', reactive: true, can_focus: true, style_class: 'walnut-cmd-extradata' });
+
+		// For the same reason, if the user leave the entry empty, fill it with a space
+		this.extradata.clutter_text.connect('text-changed', Lang.bind(this, function() {
+			if (!this.extradata.get_text().length)
+				this.extradata.text = ' ';
+		}));
+
+		// Add extradata's entry just before the triangle
+		this.actor.insert_child_below(this.extradata, this._triangleBin);
+
+		// Hide extradata's {entry,label}
+		this.status.hide();
+		this.extradata.hide();
+
 		// Override base PopupSubMenu with our sub menu that update itself only and every time it is opened
 		this.menu = new CmdPopupSubMenu(this, this.actor, this._triangle);
+
+		// Connect our extradata-toggle
+		this.menu.connect('open-state-changed', Lang.bind(this, this._extradataToggle));
+
+		// Reconnect SubMenuMenuItem standard function
+		this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
+
+	},
+
+	// _extradataToggle: toggle extradata's view
+	_extradataToggle: function(menu, open) {
+
+		if (open) {
+
+			this.status.show();
+			this.extradata.show();
+
+		} else {
+
+			this.status.hide();
+
+			// Clear extradata
+			this.extradata.text = ' ';
+
+			this.extradata.hide();
+
+		}
 
 	},
 
@@ -1596,7 +1667,7 @@ const	UpsCmdList = new Lang.Class({
 					let command = item.cmd;
 
 					cmd.connect('activate', Lang.bind(this, function(){
-							this.cmdExec(this._device.user, this._device.pw, command);
+							this.cmdExec(this._device.user, this._device.pw, command, this.extradata.get_text());
 					}));
 
 					this.menu.addMenuItem(cmd);
@@ -1637,37 +1708,45 @@ const	UpsCmdList = new Lang.Class({
 	},
 
 	// cmdExec: try to exec the command cmd
-	cmdExec: function(user, pw, cmd) {
+	cmdExec: function(user, pw, cmd, extradata) {
+
+		let extra = extradata.trim();
+		let cmdExtra;
+
+		if (extra.length)
+			cmdExtra = '\'%s %s\''.format(cmd, extra);
+		else
+			cmdExtra = cmd;
 
 		// We have both user and password
 		if (user && pw) {
 
 			// Just a note here: upscmd use always stderr (also if a command has been successfully sent to the driver)
-			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port), '%s'.format(cmd)]);
+			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port), '%s'.format(cmd), '%s'.format(extra)]);
 
 			// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
 			if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 				// ..ask for them and tell the user the previuosly sent ones were wrong
-				let credDialog = new CredDialog(this, cmd, true);
+				let credDialog = new CredDialog(this, cmd, extra, true);
 				credDialog.open(global.get_current_time());
 
 			// stderr = OK\n -> Command sent to the driver successfully
 			} else if (stderr && stderr.indexOf('OK') != -1)
 
 				// TRANSLATORS: Notify title/description on command successfully sent
-				Main.notify(_("NUT: command handled"), _("Successfully sent command %s to device %s@%s:%s").format(cmd, this._device.name, this._device.host, this._device.port));
+				Main.notify(_("NUT: command handled"), _("Successfully sent command %s to device %s@%s:%s").format(cmdExtra, this._device.name, this._device.host, this._device.port));
 
 			// mmhh.. something's wrong here!
 			else
 				// TRANSLATORS: Notify title/description for error on command sent
-				Main.notifyError(_("NUT: error while handling command"), _("Unable to send command %s to device %s@%s:%s").format(cmd, this._device.name, this._device.host, this._device.port));
+				Main.notifyError(_("NUT: error while handling command"), _("Unable to send command %s to device %s@%s:%s").format(cmdExtra, this._device.name, this._device.host, this._device.port));
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialog(this, cmd, false);
+			let credDialog = new CredDialog(this, cmd, extra, false);
 			credDialog.open(global.get_current_time());
 
 		}
