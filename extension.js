@@ -29,7 +29,9 @@ const	Clutter = imports.gi.Clutter,
 	Shell = imports.gi.Shell,
 	ShellEntry = imports.ui.shellEntry,
 	St = imports.gi.St,
-	Util = imports.misc.util;
+	Util = imports.misc.util,
+	CheckBox = imports.ui.checkBox,
+	Slider = imports.ui.slider;
 
 // Gettext
 const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
@@ -914,7 +916,7 @@ const	walNUT = new Lang.Class({
 
 			// UPS Raw Data
 			if (this._display_raw)
-				this.menu.upsRaw.update(varsArr);
+				this.menu.upsRaw.update(varsArr, hasChanged);
 			else if (this.menu.upsRaw.actor.visible)
 				this.menu.upsRaw.hide();
 
@@ -984,13 +986,12 @@ const	CredDialog = new Lang.Class({
 	Name: 'CredDialog',
 	Extends: ModalDialog.ModalDialog,
 
-	_init: function(delegate, cmd, extradata, error) {
+	_init: function(delegate, error) {
 
 		this.parent({ styleClass: 'walnut-cred-dialog' });
 
 		this._delegate = delegate;
-		this._cmd = cmd;
-		this._extra = extradata;
+
 		this._device = upscMonitor.getList()[0];
 
 		// Main container
@@ -1011,16 +1012,8 @@ const	CredDialog = new Lang.Class({
 		textBox.add(label, { y_fill: false, y_align: St.Align.START });
 
 		// Description
-		let cmdExtraDesc;
-
-		if (this._extra.length)
-			cmdExtraDesc = '\'%s %s\''.format(this._cmd, this._extra);
-		else
-			cmdExtraDesc = this._cmd;
-
-		// TRANSLATORS: Description @ credentials dialog
-		let desc = new St.Label({ text: parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH), style_class: 'prompt-dialog-description walnut-cred-dialog-description' });
-		textBox.add(desc, { y_fill: true, y_align: St.Align.START, expand: true });
+		this.desc = new St.Label({ text: '', style_class: 'prompt-dialog-description walnut-cred-dialog-description' });
+		textBox.add(this.desc, { y_fill: true, y_align: St.Align.START, expand: true });
 
 		// Username/password table
 		let table = new St.Table({ style_class: 'walnut-cred-dialog-table' });
@@ -1030,20 +1023,24 @@ const	CredDialog = new Lang.Class({
 		// TRANSLATORS: Username @ credentials dialog
 		let userLabel = new St.Label({ text: _("Username:"), style_class: 'prompt-dialog-password-label' });
 		table.add(userLabel, { row: 0, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
+
 		// Username entry
 		let name = this._device.user;
 		this.user = new St.Entry({ text: name ? name : '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
+
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
 		table.add(this.user, { row: 0, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
 
 		// user_valid tells us whether a username is set or not
 		this.user_valid = name ? true : false;
+
 		// Update Execute button when text changes in user entry
 		this.user.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.user_valid = this.user.get_text().length > 0;
 			this._updateOkButton();
 		}));
+
 		// Hide errorBox, if visible, when selected
 		this.user.clutter_text.connect('button-press-event', Lang.bind(this, function() {
 			if (errorBox.visible)
@@ -1054,22 +1051,27 @@ const	CredDialog = new Lang.Class({
 		// TRANSLATORS: Password @ credentials dialog
 		let pwLabel = new St.Label({ text: _("Password:"), style_class: 'prompt-dialog-password-label' });
 		table.add(pwLabel, { row: 1, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
+
 		// Password entry
 		let pass = this._device.pw;
 		this.pw = new St.Entry({ text: pass ? pass : '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
+
 		// Password right-click menu
 		ShellEntry.addContextMenu(this.pw, { isPassword: true });
+
 		// Password visual appearance (hidden)
 		this.pw.clutter_text.set_password_char('\u25cf');
 		table.add(this.pw, { row: 1, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
 
 		// pw_valid tells us whether a password is set or not
 		this.pw_valid = pass ? true : false;
+
 		// Update Execute button when text changes in pw entry
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.pw_valid = this.pw.get_text().length > 0;
 			this._updateOkButton();
 		}));
+
 		// Hide errorBox, if visible, when selected
 		this.pw.clutter_text.connect('button-press-event', Lang.bind(this, function() {
 			if (errorBox.visible)
@@ -1079,6 +1081,7 @@ const	CredDialog = new Lang.Class({
 		// Error box
 		let errorBox = new St.BoxLayout({ style_class: 'walnut-cred-dialog-error-box' });
 		textBox.add(errorBox, { expand: true });
+
 		// Hide error box if no error has been reported
 		if (error)
 			errorBox.show();
@@ -1097,8 +1100,10 @@ const	CredDialog = new Lang.Class({
 
 		// TRANSLATORS: Execute button @ credentials dialog
 		this.ok = { label: _("Execute"), action: Lang.bind(this, this._onOk), default: true };
+
 		// TRANSLATORS: Cancel button @ credentials dialog
 		this.setButtons([{ label: _("Cancel"), action: Lang.bind(this, this.cancel), key: Clutter.KEY_Escape, }, this.ok]);
+
 		this._updateOkButton();
 
 	},
@@ -1118,14 +1123,73 @@ const	CredDialog = new Lang.Class({
 	// _onOk: actions to do when Execute button is pressed
 	_onOk: function() {
 
-		this._delegate.cmdExec(this.user.get_text(), this.pw.get_text(), this._cmd, this._extra);
 		this.close(global.get_current_time());
 
 	},
 
+	// cancel: actions to do when Cancel button is pressed
 	cancel: function() {
 
 		this.close(global.get_current_time());
+
+	}
+});
+
+// CredDialogCmd: credential dialog for instant commands
+const	CredDialogCmd = new Lang.Class({
+	Name: 'CredDialogCmd',
+	Extends: CredDialog,
+
+	_init: function(delegate, cmd, extradata, error) {
+
+		this.parent(delegate, error);
+
+		this._cmd = cmd;
+		this._extra = extradata;
+
+		// Description
+		let cmdExtraDesc;
+
+		if (this._extra.length)
+			cmdExtraDesc = '\'%s %s\''.format(this._cmd, this._extra);
+		else
+			cmdExtraDesc = this._cmd;
+
+		// TRANSLATORS: Description @ credentials dialog for instant commands
+		this.desc.text = parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+
+	},
+
+	_onOk: function() {
+
+		this._delegate.cmdExec(this.user.get_text(), this.pw.get_text(), this._cmd, this._extra);
+
+		this.parent();
+
+	}
+});
+
+// CredDialogSetvar: credential dialog for setvars
+const	CredDialogSetvar = new Lang.Class({
+	Name: 'CredDialogSetvar',
+	Extends: CredDialog,
+
+	_init: function(delegate, varName, varValue, error) {
+
+		this.parent(delegate, error);
+
+		this._varValue = varValue;
+
+		// TRANSLATORS: Description @ credentials dialog for setvars
+		this.desc.text = parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+
+	},
+
+	_onOk: function() {
+
+		this._delegate.setVar(this.user.get_text(), this.pw.get_text(), this._varValue);
+
+		this.parent();
 
 	}
 });
@@ -1367,7 +1431,6 @@ const	AddBox = new Lang.Class({
 		let portBox = new St.Bin({ style_class: 'walnut-addbox-portbox', x_align: St.Align.END });
 		portBox.add_actor(this.port);
 		container.add(portBox, { row: 1, col: 2 });
-
 
 		// Delete/Go buttons
 		// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
@@ -1721,14 +1784,14 @@ const	UpsCmdList = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			// Just a note here: upscmd use always stderr (also if a command has been successfully sent to the driver)
+			// Just a note here: upscmd uses always stderr (also if a command has been successfully sent to the driver)
 			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port), '%s'.format(cmd), '%s'.format(extra)]);
 
 			// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
 			if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 				// ..ask for them and tell the user the previuosly sent ones were wrong
-				let credDialog = new CredDialog(this, cmd, extra, true);
+				let credDialog = new CredDialogCmd(this, cmd, extra, true);
 				credDialog.open(global.get_current_time());
 
 			// stderr = OK\n -> Command sent to the driver successfully
@@ -1746,7 +1809,7 @@ const	UpsCmdList = new Lang.Class({
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialog(this, cmd, extra, false);
+			let credDialog = new CredDialogCmd(this, cmd, extra, false);
 			credDialog.open(global.get_current_time());
 
 		}
@@ -1770,6 +1833,627 @@ const	UpsCmdList = new Lang.Class({
 	}
 });
 
+// SetvarBox: box used to handle setvars
+const	SetvarBox = new Lang.Class({
+	Name: 'SetvarBox',
+
+	_init: function(varName, parent) {
+
+		this.actor = new St.BoxLayout({ style_class: 'walnut-setvar-box', vertical: true, reactive: false, track_hover: false, can_focus: false });
+
+		// Variable's name
+		this.varName = varName;
+
+		// Our toggle-button
+		this._parent = parent;
+
+	},
+
+	// setVar: try to set this.varName to varValue
+	setVar: function(username, password, varValue) {
+
+		let user = username;
+		let pw = password;
+
+		// Get actual device
+		this._device = upscMonitor.getList()[0];
+
+		this._timeout = upscMonitor._timeout;
+
+		if (!user)
+			user = this._device.user;
+
+		if (!pw)
+			pw = this._device.pw;
+
+		// We have both user and password
+		if (user && pw) {
+
+			// Just a note here: upsrw uses always stderr (also if a setvar has been successfully sent to the driver)
+			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upsrw), '-s', '%s=%s'.format(this.varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)]);
+
+			// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
+			if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
+
+				// ..ask for them and tell the user the previuosly sent ones were wrong
+				let credDialog = new CredDialogSetvar(this, this.varName, varValue, true);
+				credDialog.open(global.get_current_time());
+
+			// stderr = OK\n -> Setvar sent to the driver successfully
+			} else if (stderr && stderr.indexOf('OK') != -1) {
+
+				// TRANSLATORS: Notify title/description on setvar successfully sent
+				Main.notify(_("NUT: setvar handled"), _("Successfully set %s to %s in device %s@%s:%s").format(this.varName, varValue, this._device.name, this._device.host, this._device.port));
+
+				// Close the SetvarBox
+				this._parent.close();
+
+				// Update vars
+				upscMonitor.update();
+
+				// Refresh the menu
+				walnut.refreshMenu();
+
+			// mmhh.. something's wrong here!
+			} else
+				// TRANSLATORS: Notify title/description for error on setvar sent
+				Main.notifyError(_("NUT: error while handling setvar"), _("Unable to set %s to %s in device %s@%s:%s").format(this.varName, varValue, this._device.name, this._device.host, this._device.port));
+
+		// User, password or both are not available
+		} else {
+
+			// ..ask for them
+			let credDialog = new CredDialogSetvar(this, this.varName, varValue, false);
+			credDialog.open(global.get_current_time());
+
+		}
+
+	},
+
+	// open: open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
+	open: function(actualValue) {
+
+		if (actualValue != this.actualValue)
+			this._resetTo(actualValue);
+
+		this.show();
+
+	},
+
+	// hide: Hide SetvarBox
+	hide: function() {
+
+		this.actor.hide();
+
+	},
+
+	show: function() {
+
+		this.actor.show();
+
+	},
+
+	destroy: function() {
+
+		this.actor.destroy();
+
+	}
+});
+
+// SetvarBoxRanges: box to set r/w variables with ranges
+const	SetvarBoxRanges = new Lang.Class({
+	Name: 'SetvarBoxRanges',
+	Extends: SetvarBox,
+
+	_init: function(parent, varName, ranges, actualValue) {
+
+		this.parent(varName, parent);
+
+		// ranges: [{ min: value, max: value }, { min: value, max: value }, ..]
+		this.ranges = ranges;
+
+		// rangeAct: { min: value, max: value }
+		this.rangeAct = {};
+
+		// Slider
+		this.slider = new Slider.Slider(0.5);
+		this.actor.add(this.slider.actor, { expand: true });
+
+		// Labels' box
+		let rangeValueBox = new St.BoxLayout({ style_class: 'walnut-setvar-range-value-box' });
+		this.actor.add(rangeValueBox, { expand: true });
+
+		// Labels
+		this.rangeMinLabel = new St.Label({ text: '' });
+		rangeValueBox.add(this.rangeMinLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+
+		this.rangeActLabel = new St.Label({ text: '', style_class: 'walnut-setvar-range-actual' });
+		rangeValueBox.add(this.rangeActLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+
+		this.rangeMaxLabel = new St.Label({ text: '' });
+		rangeValueBox.add(this.rangeMaxLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+
+		// Buttons
+		// TRANSLATORS: 'Decrement' button @ setvar ranges
+		this.minus = new Button('imported-list-remove', _("Decrement by one"), null, 'small');
+		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
+
+		this.minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
+		this.minus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+
+			let key = event.get_key_symbol();
+
+			if (key == Clutter.KEY_space || key == Clutter.KEY_Return)
+				this._minusAction();
+
+		}));
+
+		// TRANSLATORS: 'Increment' button @ setvar ranges
+		this.plus = new Button('imported-list-add', _("Increment by one"), null, 'small');
+		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
+
+		this.plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
+		this.plus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+
+			let key = event.get_key_symbol();
+
+			if (key == Clutter.KEY_space || key == Clutter.KEY_Return)
+				this._plusAction();
+
+		}));
+
+		// TRANSLATORS: 'Undo and close' button @ setvar
+		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+
+			// Reset submenu
+			this._resetTo(this.actualValue);
+
+			// Give focus back to our 'toggle button'
+			this._parent.container.grab_key_focus();
+
+			// Close the setvarBox and toggle the 'expander'
+			this._parent.toggle();
+
+		}), 'small');
+
+		// TRANSLATORS: 'Set' button @ setvar
+		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
+			this.setVar(null, null, '%d'.format(this.valueToSet));
+		}), 'small');
+
+		// Buttons' box
+		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-setvar-buttons-box' });
+		btns.add_actor(del.actor);
+		btns.add_actor(this.go.actor);
+		rangeValueBox.add(btns);
+
+		// Connect slider
+		this.slider.connect('value-changed', Lang.bind(this, function(item) {
+
+			let rangeWindow = this.rangeAct.max - this.rangeAct.min;
+
+			// Get value
+			this.valueToSet = this.rangeAct.min + Math.round(item._value * rangeWindow);
+
+			// Update value's label
+			this.rangeActLabel.text = '%d'.format(this.valueToSet);
+
+			// Update buttons' clickability
+			this._updateButtons();
+
+		}));
+
+		// 'Grab' the scroll (i.e. 'ungrab' it from the PopupSubMenu) when mouse is over the slider
+		this.slider.actor.connect('enter-event', Lang.bind(this, function(actor, event) {
+			if (event.is_pointer_emulated())
+				return;
+			this._parent._parent.actor.set_mouse_scrolling(false);
+		}));
+
+		// 'Ungrab' the scroll (i.e. give it back to the PopupSubMenu) when mouse leaves the slider
+		this.slider.actor.connect('leave-event', Lang.bind(this, function(actor, event) {
+			if (event.is_pointer_emulated())
+				return;
+			this._parent._parent.actor.set_mouse_scrolling(true);
+		}));
+
+		// Add settable ranges
+		if (this.ranges.length > 1) {
+
+			let row = 0;
+			let col;
+
+			let rangesTable = new St.Table({ style_class: 'walnut-setvar-range-table' });
+
+			this.rangesCheck = new Array();
+
+			for (let i = 0; i < this.ranges.length; i++) {
+
+				let range = this.ranges[i];
+
+				// TRANSLATORS: Range interval @ Setvar box
+				this.rangesCheck[i] = new CheckBox.CheckBox(_("%s - %s").format(range.min, range.max));
+
+				this.rangesCheck[i].actor.name = '%d - %d'.format(range.min, range.max);
+
+				// Connect handlers
+				this.rangesCheck[i].actor.connect('clicked', Lang.bind(this, function() {
+					this._changeRange(range.min, range.max);
+				}));
+
+				if (i % 2)
+					col = 2;
+				else {
+					col = 1;
+					row++;
+				}
+
+				rangesTable.add(this.rangesCheck[i].actor, { row: row, col: col });
+
+			}
+
+			this.actor.add(rangesTable, { expand: true });
+
+		}
+
+		this._resetTo(actualValue);
+
+		this.hide();
+
+	},
+
+	// _minusAction: actions to execute when 'minus' button gets activated
+	_minusAction: function() {
+
+		if (this.valueToSet <= this.rangeAct.min)
+			this.valueToSet = this.rangeAct.min
+
+		else if (this.valueToSet > this.rangeAct.max)
+			this.valueToSet = this.rangeAct.max
+
+		// this.rangeAct.min < this.valueToSet <= this.rangeAct.max
+		else
+			this.valueToSet--;
+
+		// Update value's label
+		this.rangeActLabel.text = '%d'.format(this.valueToSet);
+
+		// Update slider's appearance
+		let rangeActInRange = (this.valueToSet - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min)
+		this.slider.setValue(rangeActInRange);
+
+		// Update buttons' clickability
+		this._updateButtons();
+
+	},
+
+	// _plusAction: actions to execute when 'plus' button gets activated
+	_plusAction: function() {
+
+		if (this.valueToSet < this.rangeAct.min)
+			this.valueToSet = this.rangeAct.min
+
+		else if (this.valueToSet >= this.rangeAct.max)
+			this.valueToSet = this.rangeAct.max
+
+		// this.rangeAct.min <= this.valueToSet < this.rangeAct.max
+		else
+			this.valueToSet++;
+
+		// Update value's label
+		this.rangeActLabel.text = '%d'.format(this.valueToSet);
+
+		// Update slider's appearance
+		let rangeActInRange = (this.valueToSet - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min)
+		this.slider.setValue(rangeActInRange);
+
+		// Update buttons' clickability
+		this._updateButtons();
+
+	},
+
+	// _changeRange: change actual range to the one whose maximum and minimum settable value are 'max' and 'min'
+	_changeRange: function(min, max) {
+
+		this.rangeAct.min = min;
+		this.rangeMinLabel.text = '%d'.format(this.rangeAct.min);
+
+		this.rangeAct.max = max;
+		this.rangeMaxLabel.text = '%d'.format(this.rangeAct.max);
+
+		if (this.ranges.length > 1) {
+
+			for (let i = 0; i < this.rangesCheck.length; i++) {
+
+				let range = this.rangesCheck[i];
+
+				if (range.actor.name != '%d - %d'.format(this.rangeAct.min, this.rangeAct.max))
+					range.actor.checked = false;
+
+				else
+					// Set the CheckBox as checked if it represents actual range
+					range.actor.checked = true;
+
+			}
+
+		}
+
+		let rangeActInRange = 0;
+
+		if (this.actualValue >= this.rangeAct.min && this.actualValue <= this.rangeAct.max) {
+
+			rangeActInRange = (this.actualValue - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min);
+
+		}
+
+		this.slider.setValue(rangeActInRange);
+
+		this.rangeActLabel.text = '%d'.format(this.actualValue);
+
+		this.valueToSet = this.actualValue;
+
+		// Update buttons' clickability
+		this._updateButtons();
+
+	},
+
+	// _updateButtons: 'Set' button is usable only when this.valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range's limit
+	_updateButtons: function() {
+
+		if (this.actualValue != this.valueToSet) {
+			this.go.actor.reactive = true;
+			this.go.actor.can_focus = true;
+		} else {
+			this.go.actor.reactive = false;
+			this.go.actor.can_focus = false;
+		}
+
+		if (this.valueToSet > this.rangeAct.min) {
+			this.minus.actor.reactive = true;
+			this.minus.actor.can_focus = true;
+		} else {
+			this.minus.actor.reactive = false;
+			this.minus.actor.can_focus = false;
+		}
+
+		if (this.valueToSet < this.rangeAct.max) {
+			this.plus.actor.reactive = true;
+			this.plus.actor.can_focus = true;
+		} else {
+			this.plus.actor.reactive = false;
+			this.plus.actor.can_focus = false;
+		}
+
+	},
+
+	// _resetTo: reset setvar box to actualValue
+	_resetTo: function(actualValue) {
+
+		this.actualValue = actualValue * 1;
+
+		for each (let range in this.ranges) {
+
+			if (!(this.actualValue >= range.min && this.actualValue <= range.max))
+				continue;
+
+			this.rangeAct.min = range.min;
+			this.rangeAct.max = range.max;
+
+			break;
+
+		}
+
+		this._changeRange(this.rangeAct.min, this.rangeAct.max);
+
+	}
+});
+
+// SetvarEnumItem: one of the enumerated values displayed in SetvarBoxEnums
+const	SetvarEnumItem = new Lang.Class({
+	Name: 'SetvarEnumItem',
+	Extends: PopupMenu.PopupMenuItem,
+
+	_init: function(label) {
+
+		this.parent('\u2022 ' + label);
+
+	},
+
+	// setChosen: take as argument whether the current enumerated value is chosen or not and set its style/clickability accordingly
+	setChosen: function(chosen) {
+
+		if (chosen) {
+
+			this.setSensitive(false);
+			this.actor.add_style_class_name('walnut-setvar-enums-chosen');
+
+		} else {
+
+			this.setSensitive(true);
+			this.actor.remove_style_class_name('walnut-setvar-enums-chosen');
+
+		}
+
+	}
+});
+
+// SetvarBoxEnums: box to set r/w variables with enumerated values
+const	SetvarBoxEnums = new Lang.Class({
+	Name: 'SetvarBoxEnums',
+	Extends: SetvarBox,
+
+	_init: function(parent, varName, enums, actualValue) {
+
+		this.parent(varName, parent);
+
+		// Our children are already popup-menu-item, with their paddings, so remove this class
+		this.actor.remove_style_class_name('walnut-setvar-box');
+
+		// enums: { enum1, enum2, enum3, .. }
+		this.enums = enums;
+
+		// Actual value
+		this.actualValue = actualValue;
+
+		this.enumItems = new Array();
+
+		// Iterate through all the enumerated values
+		for (let i = 0; i < this.enums.length; i++) {
+
+			let enumValue = this.enums[i];
+
+			this.enumItems[i] = new SetvarEnumItem(enumValue);
+
+			this.enumItems[i].connect('activate', Lang.bind(this, function() {
+				this.setVar(null, null, enumValue);
+				this._parent.toggle();
+			}));
+
+			this.actor.add(this.enumItems[i].actor, { expand: true });
+
+			if (this.enums[i] != this.actualValue)
+				this.enumItems[i].setChosen(false);
+			else
+				this.enumItems[i].setChosen(true);
+
+		}
+
+		this.hide();
+
+	},
+
+	// _resetTo: reset setvar box to actualValue
+	_resetTo: function(actualValue) {
+
+		this.actualValue = actualValue;
+
+		for (let i = 0; i < this.enumItems.length; i++) {
+
+			if (this.enumItems[i].label.text != this.actualValue)
+				this.enumItems[i].setChosen(false);
+			else
+				this.enumItems[i].setChosen(true);
+
+		}
+
+	}
+});
+
+// SetvarBoxString: box to set r/w string variables
+const	SetvarBoxString = new Lang.Class({
+	Name: 'SetvarBoxString',
+	Extends: SetvarBox,
+
+	_init: function(parent, varName, actualValue) {//, len, actualValue) {	TODO: max length not implemented yet in upsrw
+
+		this.parent(varName, parent);
+
+		// Max length of the string	TODO: max length not implemented yet in upsrw
+	//	this.maxLength = len;
+
+		// Actual value
+		this.actualValue = actualValue;
+
+		let container = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false, style_class: 'walnut-setvar-string-container' });
+		this.actor.add(container, { expand: true });
+
+		// Error box			TODO: max length not implemented yet in upsrw
+	//	this.errorBox = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false });
+	//	this.actor.add(this.errorBox);
+
+		// Error Icon			TODO: max length not implemented yet in upsrw
+	//	let errorIcon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-setvar-string-error-icon' });
+	//	this.errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
+
+		// Error message		TODO: max length not implemented yet in upsrw
+		// TRANSLATORS: Error message @ string setvar
+	//	let errorText = new St.Label({ text: _("String too long"), style_class: 'walnut-setvar-string-error-text' });
+	//	this.errorBox.add(errorText, { expand: true, y_align: St.Align.MIDDLE, y_fill: false });
+
+	//	this.errorBox.hide();
+
+		// TRANSLATORS: Hint text @ string setvar
+		this.entry = new St.Entry({ text: '', hint_text: _("set this variable to.."), can_focus: true, reactive: true, style_class: 'walnut-setvar-string-entry' });
+		container.add(this.entry, { expand: true });
+
+		this.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
+
+			this.valueToSet = this.entry.get_text();
+
+		//	if (this.valueToSet.trim().length > this.maxLength)	TODO: max length not implemented yet in upsrw
+		//		this.errorBox.show();
+		//	else
+		//		this.errorBox.hide();
+
+			this._updateOkButton();
+
+		}));
+
+		// Buttons
+		// TRANSLATORS: 'Undo and close' button @ setvar
+		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+
+			// Reset submenu
+			this._resetTo(this.actualValue);
+
+			// Give focus back to our 'toggle button'
+			this._parent.container.grab_key_focus();
+
+			// Close the setvarBox and toggle the 'expander'
+			this._parent.toggle();
+
+		}), 'small');
+
+		// TRANSLATORS: 'Set' button @ setvar
+		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
+			this.setVar(null, null, this.valueToSet.trim());
+		}), 'small');
+
+		this.valueToSet = this.actualValue;
+
+		this._updateOkButton();
+
+		// Buttons' box
+		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-setvar-buttons-box' });
+		btns.add_actor(del.actor);
+		btns.add_actor(this.go.actor);
+		container.add(btns);
+
+		this.hide();
+
+	},
+
+	// _updateOkButton: 'Set' button is usable only when this.valueToSet != actual value
+	_updateOkButton: function() {
+
+		let len = this.valueToSet.trim().length;
+
+		if (this.actualValue != this.valueToSet && len > 0) {// && len <= this.maxLength) {	TODO: max length not implemented yet in upsrw
+			this.go.actor.reactive = true;
+			this.go.actor.can_focus = true;
+		} else {
+			this.go.actor.reactive = false;
+			this.go.actor.can_focus = false;
+		}
+
+	},
+
+	// _resetTo: reset setvar box to actualValue
+	_resetTo: function(actualValue) {
+
+		this.actualValue = actualValue;
+
+		this.entry.text = '';
+
+		this.valueToSet = actualValue;
+
+	//	this.errorBox.hide();	TODO: max length not implemented yet in upsrw
+
+		this._updateOkButton();
+
+	}
+});
+
 // UpsRawDataItem: each item of the raw data submenu
 const	UpsRawDataItem = new Lang.Class({
 	Name: 'UpsRawDataItem',
@@ -1777,15 +2461,159 @@ const	UpsRawDataItem = new Lang.Class({
 
 	_init: function(label, value) {
 
-		this.parent({ activate: false });
+		this.parent({ activate: false, reactive: false, can_focus: false, hover: false });
 
+		// Edit PopupBaseMenuItem to our needs
+		this.actor.vertical = true;
+		this.actor.remove_child(this._ornamentLabel);
+		this.actor.remove_style_class_name('popup-menu-item');
+
+		// Variable's name
+		this.varName = label;
+
+		// Expander/name/value container
+		this.container = new St.BoxLayout({ can_focus: true, track_hover: true, reactive: true, style_class: 'popup-menu-item walnut-raw-data-container' });
+		this.actor.add(this.container);
+
+		// Expander
+		this.expander = new St.Label({ text: '+', style_class: 'walnut-raw-data-expander' });
+		this.container.add(this.expander);
+
+		this.expander.hide();
+
+		// Label of variable's name
 		this.label = new St.Label({ text: label });
-		this.actor.add(this.label, { expand: true });
+		this.container.add(this.label, { expand: true });
 
+		// Label of variable's value
 		this.value = new St.Label({ text: value });
-		this.actor.add(this.value);
+		this.container.add(this.value);
+
+		// Handle focus and its visual representation
+		this.active = false;
+
+		this.container.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
+
+		this.container.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+		this.container.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+
+	},
+
+	_onKeyFocusIn: function (actor) {
+
+		this.setActive(true);
+
+	},
+
+	_onKeyFocusOut: function (actor) {
+
+		this.setActive(false);
+
+	},
+
+	_onHoverChanged: function (actor) {
+
+		this.setActive(actor.hover);
+
+	},
+
+	setActive: function (active) {
+
+		let activeChanged = active != this.active;
+
+		if (activeChanged) {
+
+			this.active = active;
+
+			if (active) {
+				this.container.add_style_pseudo_class('active');
+				this.container.grab_key_focus();
+			} else {
+				this.container.remove_style_pseudo_class('active');
+			}
+
+			this.emit('active-changed', active);
+
+		}
+
+	},
+
+	// _addSetvarBox: common function for adding a SetvarBox
+	_addSetvarBox: function() {
+
+		this.actor.add(this.setvarBox.actor);
+
+		this.container.add_style_class_name('walnut-raw-data-expandable');
+
+		this.expander.show();
+
+		this.container.connect('button-release-event', Lang.bind(this, function() {
+
+			this.toggle();
+
+		}));
+
+		this.container.connect('key-press-event', Lang.bind(this, function (actor, event) {
+
+			let symbol = event.get_key_symbol();
+
+			if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return)
+				this.toggle();
+
+		}));
+
+	},
+
+	// setVarRange: add a SetvarBox for ranges
+	setVarRange: function(ranges, actualValue) {
+
+		this.setvarBox = new SetvarBoxRanges(this, this.varName, ranges, actualValue);
+
+		this._addSetvarBox();
+
+	},
+
+	// setVarEnum: add a SetvarBox for enumerated values
+	setVarEnum: function(enums, actualValue) {
+
+		this.setvarBox = new SetvarBoxEnums(this, this.varName, enums, actualValue);
+
+		this._addSetvarBox();
+
+	},
+
+	// setVarString: add a SetvarBox for strings
+	setVarString: function(actualValue) {//len, actualValue) {	TODO: max length not implemented yet in upsrw
+
+		this.setvarBox = new SetvarBoxString(this, this.varName, actualValue);//, len, actualValue);	TODO: max length not implemented yet in upsrw
+
+		this._addSetvarBox();
+
+	},
+
+	// toggle: toggle the setvarBox
+	toggle: function() {
+
+		if (this.setvarBox.actor.visible) {
+			this.expander.text = '+';
+			this.setvarBox.hide();
+		} else {
+			this.expander.text = '-';
+			this.setvarBox.open(this.value.text);
+		}
+
+	},
+
+	// close: close the setvarBox
+	close: function() {
+
+		if (this.setvarBox.actor.visible) {
+			this.expander.text = '+';
+			this.setvarBox.hide();
+		}
 
 	}
+
 });
 
 // UpsRawDataList: listing UPS's raw data in a submenu
@@ -1797,6 +2625,9 @@ const	UpsRawDataList = new Lang.Class({
 
 		// TRANSLATORS: Label of raw data submenu
 		this.parent(_("Raw Data"));
+
+		// Whether we have setvars or not
+		this._hasSetVars = false;
 
 	},
 
@@ -1864,6 +2695,22 @@ const	UpsRawDataList = new Lang.Class({
 
 				this['_'+item.var] = new UpsRawDataItem(parseText(item.var, RAW_VAR_LENGTH, '.'), parseText(item.value, RAW_VALUE_LENGTH));
 
+				// If we have setvars and this is one of them, add its SetvarBox
+				if (this._hasSetVars && this._setVar[item.var]) {
+
+					let setVar = this._setVar[item.var];
+
+					if (setVar.type == 'STRING')
+						this['_'+item.var].setVarString(item.value);
+
+					else if (setVar.type == 'ENUM')
+						this['_'+item.var].setVarEnum(setVar.options, item.value);
+
+					else if (setVar.type == 'RANGE')
+						this['_'+item.var].setVarRange(setVar.options, item.value);
+
+				}
+
 				// If the var is a new one in an already ordered submenu, add it in the right position
 				if (position)
 					this.menu.addMenuItem(this['_'+item.var], position);
@@ -1882,15 +2729,63 @@ const	UpsRawDataList = new Lang.Class({
 
 	},
 
-	// update: Update variables and show the menu if not already visible
-	update: function(vars) {
+	// update: Update variables and show the menu if not already visible, if hasChanged is true update setvars
+	update: function(vars, hasChanged) {
 
 		if (!this.actor.visible)
 			this.show();
 
 		this._vars = vars;
 
+		if (hasChanged)
+			this._hasSetVars = this._getSetVars();
+
 		this.buildInfo();
+
+	},
+
+	// _retrieveSetVars: get settable vars and their boundaries from the UPS through upsrw and return success/failure status
+	_retrieveSetVars: function() {
+
+		this._svreply = '';
+
+		if (!upsrw)
+			return true;
+
+		// Get actual device
+		this._device = upscMonitor.getList()[0];
+
+		let [stdout, stderr] = Utilities.Do(['%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)]);
+
+		if (!stdout && !stderr)
+			return true;
+
+		if (stderr)
+			this._svreply = stderr;
+		else
+			this._svreply = stdout;
+
+		return false;
+
+	},
+
+	// _getSetVars: try to get setvars from the UPS and return success/failure status
+	_getSetVars: function() {
+
+		let fail = this._retrieveSetVars();
+
+		// Error!
+		if (fail || this._svreply.length == 0 || this._svreply.slice(0, 7) == 'Error: ')
+			return false;
+
+		// Parse reply to get setvars
+		this._setVar = Utilities.parseSetVar(this._svreply);
+
+		// No setvars
+		if (!Object.keys(this._setVar).length)
+			return false;
+
+		return true;
 
 	},
 
@@ -2509,6 +3404,7 @@ let	gsettings,
 	walnut,		// Panel/menu
 	upsc,		// Absolute path of upsc
 	upscmd,		// Absolute path of upscmd
+	upsrw,		// Absolute path of upsrw
 	timeout;	// Absolute path of timeout
 
 // Init extension
@@ -2526,11 +3422,13 @@ function init(extensionMeta) {
 // Enable Extension
 function enable() {
 
-	// First, find upsc, upscmd and timeout
+	// First, find upsc, upscmd, upsrw and timeout
 	// Detect upsc
 	upsc = Utilities.detect('upsc');
 	// Detect upscmd
 	upscmd = Utilities.detect('upscmd');
+	// Detect upsrw
+	upsrw = Utilities.detect('upsrw');
 	// Detect timeout
 	timeout = Utilities.detect('timeout');
 

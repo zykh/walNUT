@@ -120,6 +120,100 @@ function toArr(txt, sep, label1, label2) {
 
 }
 
+// parseSetVar: parse upsrw output
+// return an object
+//  {
+//	name of the variable #1: { desc: descritpion of variable #1, type: type of variable #1, options: options of variable #1 },
+//	name of the variable #2: { desc: descritpion of variable #2, type: type of variable #2, options: options of variable #2 },
+//	..
+//  }
+// type is one of: RANGE, ENUM, STRING
+// options are:
+// if type = RANGE -> an array of the available ranges [ { min: minimum value #1, max: maximum value #1 }, { min: minimum value #2, max: maximum value #2 }, .. ]
+// if type = ENUM -> an array of the available enumerated values [ enum1, enum2, enum3, .. ]
+// if type = STRING -> nothing (I hoped to get the maximum length of the string but it's not implemented yet in upsrw)
+function parseSetVar(txt) {
+
+	// [var.name]
+	// Variable's description
+	// Type: ENUM
+	// Option: "enum1" SELECTED
+	// Option: "enum2"
+	//
+	// [var2.name]
+	// Variable's description
+	// Type: RANGE
+	// Option: "min1-max1"
+	// Option: "min2-max2" SELECTED
+	//
+	// [var3.name]
+	// Variable's description
+	// Type: STRING
+	// Value: actual value
+
+	let output = txt.split('\n\n');
+
+	let setVar = {};
+
+	// Get every variable
+	for (let i = 0; i < output.length; i++) {
+
+		let variable = output[i].split('\n');
+
+		// Type unrecognized / no var value (STRING) / no var boundaries (ENUM/RANGE)
+		if (variable.length < 4)
+			continue;
+
+		// Name of the variable
+		let varName = variable[0].slice(1, -1);
+
+		setVar[varName] = {};
+		setVar[varName].desc = variable[1];
+		setVar[varName].type = variable[2].slice(6);
+
+		// type = STRING
+		if (setVar[varName].type != 'ENUM' && setVar[varName].type != 'RANGE')
+			continue;
+
+		setVar[varName].options = new Array();
+
+		// Get every option
+		for (let j = 3; j < variable.length; j++) {
+
+			let from = variable[j].indexOf('"') + 1;
+
+			let to = variable[j].lastIndexOf('"');
+
+			let option = variable[j].substring(from, to).trim();
+
+			// varType = ENUM
+			if (setVar[varName].type == 'ENUM') {
+
+				setVar[varName].options.push(option);
+
+				continue;
+
+			}
+
+			// varType = RANGE
+
+			let ranges = option.split('-');
+
+			let range = {};
+
+			range.min = ranges[0] * 1;
+			range.max = ranges[1] * 1;
+
+			setVar[varName].options.push(range);
+
+		}
+
+	}
+
+	return setVar;
+
+}
+
 // Do: exec argv and return an array of stdout and stderr, if any (otherwise it returns null, e.g.: [stdout, null] -> no errors)
 // argv must be an already parsed to array full path-ed executable and its arguments
 // e.g.: ls -alh /tmp -> /usr/bin/ls -alh /tmp -> ['/usr/bin/ls', '-alh', '/tmp']

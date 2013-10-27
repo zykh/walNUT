@@ -167,6 +167,141 @@
 	border: 1px solid #6f6f6f;
 }
 
+.walnut-buttons-big:insensitive,
+.walnut-buttons-small:insensitive {
+    border-color: #666666;
+    color: #9f9f9f;
+    background-gradient-direction: none;
+    background-color: rgba(102, 102, 102, 0.15);
+}
+
+/* Setvar */
+/* Common */
+.walnut-setvar-box {
+	padding-left: 1.75em;
+	padding-right: 1.75em;
+}
+
+.popup-sub-menu:scrolled .walnut-setvar-box:ltr {
+	padding-right: 0em;
+}
+
+.popup-sub-menu:scrolled .walnut-setvar-box:rtl {
+	padding-left: 0em;
+}
+
+.walnut-setvar-buttons-box {
+	spacing: 0.333em;
+}
+
+/* Ranges */
+.walnut-setvar-range-value-box {
+	padding-top: 0.333em;
+	padding-bottom: 0.333em;
+}
+
+.walnut-setvar-range-value-box:ltr {
+	padding-left: 1.75em;
+}
+
+.walnut-setvar-range-value-box:rtl {
+	padding-right: 1.75em;
+}
+
+.walnut-setvar-range-actual {
+	font-weight: bold;
+}
+
+.walnut-setvar-range-table {
+	padding-right: .5em;
+	padding-left: .5em;
+}
+
+.popup-sub-menu:scrolled .walnut-setvar-range-table:ltr {
+	padding-right: 0em;
+}
+
+.popup-sub-menu:scrolled .walnut-setvar-range-table:rtl {
+	padding-left: 0em;
+}
+
+/* Enums */
+.walnut-setvar-enums-chosen {
+	font-weight: bold;
+}
+
+/* Strings */
+.walnut-setvar-string-container {
+	padding: .333em;
+}
+
+.walnut-setvar-string-container:ltr {
+	padding-left: .5em;
+}
+
+.walnut-setvar-string-container:rtl {
+	padding-right: .5em;
+}
+
+.walnut-setvar-string-entry {
+	max-width: 8em;
+}
+
+.walnut-setvar-string-entry:ltr {
+	padding-right: .333em;
+}
+
+.walnut-setvar-string-entry:rtl {
+	padding-left: .333em;
+}
+
+/* TODO: max length not implemented yet in upsrw
+.walnut-setvar-string-error-icon {
+	icon-size: 1em;
+	padding-left: .333em;
+	padding-right: .333em;
+}
+
+.walnut-setvar-string-error-text {
+	font-size: 0.818em;
+}*/
+
+/* Raw data */
+.walnut-raw-data-container {
+	spacing: 0em;
+	padding-left: 1.75em;
+	padding-right: 1.75em;
+}
+
+.popup-sub-menu:scrolled .walnut-raw-data-container:ltr {
+	padding-right: 0em;
+}
+
+.popup-sub-menu:scrolled .walnut-raw-data-container:rtl {
+	padding-left: 0em;
+}
+
+.walnut-raw-data-expandable:ltr {
+	padding-left: 0em;
+}
+
+.walnut-raw-data-expandable:rtl {
+	padding-left: 0em;
+}
+
+.walnut-raw-data-expander {
+	width: 1.25em;
+	font-weight: bold;
+}
+
+.walnut-raw-data-expander:ltr {
+	padding-left: .5em;
+}
+
+.walnut.raw-data-expander:rtl {
+	padding-right: .5em;
+}
+
 /* Device's commands */
 .walnut-cmd-extradata {
 	width: 5.333em;
