@@ -22,7 +22,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <h2 id="_what_is_it" class="float">WHAT IS IT?</h2>
-<div class="paragraph"><p><strong><em>walNUT</em></strong> is nothing more than an interface between you and NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), using NUT&#8217;s own <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a> and <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>.
+<div class="paragraph"><p><strong><em>walNUT</em></strong> is nothing more than an interface between you and NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), using NUT&#8217;s own <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> and <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>.
 It provides you a handy <a href="#panel-menu">panel menu</a> and <a href="#panel-icon">icon</a> to monitor your devices and execute NUT&#8217;s instant <a href="#device-commands">commands</a>.</p></div>
 <div class="paragraph"><p>Before <a href="#installation">you start</a>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that <em>walNUT</em> will work right <a href="#first-execution">out of the box</a>.</p></div>
 </div>
@@ -365,6 +365,61 @@ Battery icon [<strong>1</strong>] will display actual charge through the number 
 </div>
 </div>
 <div class="paragraph"><p>If you want a deep dive in all the variables available for a device you have to select the <em>Display raw data</em> option in the <a href="#preferences">preferences</a>: raw vars will be displayed in a scrollable submenu.</p></div>
+<div class="paragraph"><p>If a variable is settable, a <strong><code>+</code></strong> will be shown at the left of its name: clicking on this var will open a new box where you&#8217;ll be able to change its value.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars.png" alt="Settable vars" />
+</div>
+</div>
+<div class="paragraph"><p>Clicking again on the variable will close the box: the changes done won&#8217;t be discarded so that you can go back and edit the var starting from where you left.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">In order to set a variable you have to provide a <a href="#device-credentials">valid username and password</a> (<em>as set in <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> configuration file</em>).</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>If the variable is of type &#8216;<code>STRING</code>&#8217; you can insert a value in the text box [<strong>A</strong>]: if you then click on the &#8216;Set&#8217; button [<strong>B</strong>] the provided value will be sent to the driver.
+If you click on the &#8216;Undo and close&#8217; button [<strong>C</strong>] the provided value will be discarded and the box closed.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_string.png" alt="Settable vars - STRING" />
+</div>
+</div>
+<div class="paragraph"><p>If the variable is of type &#8216;<code>ENUM</code>&#8217;, the enumerated values will be listed in the box: if you click on one of them [<strong>D</strong>] the corresponding value will be sent to the driver.
+Also the actually chosen option will be shown, but it won&#8217;t be clickable [<strong>E</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_enums.png" alt="Settable vars - ENUM" />
+</div>
+</div>
+<div class="paragraph"><p>If the variable is of type &#8216;<code>RANGE</code>&#8217;, the available ranges will be shown in the box and you&#8217;ll then be able to choose the one you need to use.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges.png" alt="Settable vars - RANGE, more than one" />
+</div>
+</div>
+<div class="paragraph"><p>Once a range is chosen (provided that more than one range is available) [<strong>F</strong>], its limits [<strong>G</strong>, <strong>H</strong>] will be displayed at the right and left of the actual value [<strong>I</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges_set.png" alt="Settable vars - RANGE, edit" />
+</div>
+</div>
+<div class="paragraph"><p>You can then change the value either dragging the slider [<strong>J</strong>], or scrolling the mouse wheel over it or you can choose to increase or decrease the value by one unit at a time clicking on the -/+ buttons [<strong>K</strong>, <strong>L</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges_btn.png" alt="Settable vars - RANGE, buttons" />
+</div>
+</div>
+<div class="paragraph"><p>If you click on the &#8216;Set&#8217; button [<strong>M</strong>] the provided value will be sent to the driver.
+If you click on the &#8216;Undo and close&#8217; button [<strong>N</strong>] the provided value will be discarded and the box closed.</p></div>
+<div class="paragraph"><p>In case only one range is available, only its limits will be shown.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_range.png" alt="Settable vars - RANGE" />
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="device-commands">4.7. DEVICE&#8217;S COMMANDS</h3>
@@ -518,7 +573,7 @@ A new box [<strong>B</strong>] will appear asking you if you really want to dele
 <div class="sect1">
 <h2 id="device-credentials">5. DEVICE CREDENTIALS</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>If you want to execute a device&#8217;s <a href="#device-commands">instant commands</a> you have to provide a valid username and password (<em>as set in <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> configuration file</em>).
+<div class="paragraph"><p>If you want to execute a device&#8217;s <a href="#device-commands">instant commands</a> or to set a <a href="#raw-vars">settable variable</a>, you have to provide a valid username and password (<em>as set in <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> configuration file</em>).
 You can either save them through the <a href="#credentials-box">credentials box</a> or insert them in the <a href="#credentials-dialog">credentials dialog</a> <strong>every time</strong> you execute a command.</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -526,6 +581,14 @@ You can either save them through the <a href="#credentials-box">credentials box<
 <img src="../ad/icons/note.png" alt="Note" />
 </td>
 <td class="content">If the saved user and password prove to be wrong you will be prompted for them with a <a href="#credentials-dialog">credential dialog</a> when you try to execute a command.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/important.png" alt="Important" />
+</td>
+<td class="content">If you choose to save the user and password and then use them for both instant commands and settable vars, be sure that the provided username has the appropriate options set for both of them in <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> configuration file (e.g. <code>actions = set</code> and <code>instcmds = all</code>).</td>
 </tr></table>
 </div>
 <div class="sect2">
@@ -783,7 +846,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-10-23 18:22:38 CEST
+Last updated 2013-10-27 23:16:56 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

@@ -18,7 +18,7 @@ v0.2, October 2013
 COS'È?
 ------
 
-*_walNUT_* non è niente di più che un'interfaccia fra voi e NUT (http://www.networkupstools.org[Network UPS Tools]), usando http://www.networkupstools.org/docs/man/upsc.html[upsc] e http://www.networkupstools.org/docs/man/upscmd.html[upscmd] di NUT.
+*_walNUT_* non è niente di più che un'interfaccia fra voi e NUT (http://www.networkupstools.org[Network UPS Tools]), usando http://www.networkupstools.org/docs/man/upsc.html[upsc], http://www.networkupstools.org/docs/man/upsrw.html[upsrw] e http://www.networkupstools.org/docs/man/upscmd.html[upscmd] di NUT.
 Fornisce un pratico <<panel-menu,menu del pannello>> e un'<<panel-icon,icona>> per monitorare i propri dispositivi ed eseguire i <<device-commands,comandi>> istantanei di NUT.
 
 Prima di <<installation,cominciare>>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che _walNUT_ funzioni già <<first-execution,fin da subito>>.
@@ -204,6 +204,43 @@ image::raw.png["Dati grezzi", align = "center"]
 
 Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l'opzione _Mostra i dati grezzi_ nelle <<preferences,preferenze>>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.
 
+Se il valore di una variable è modificabile, un *`+`* apparirà alla sinistra del suo nome: a questo punto, cliccando sopra alla variabile, si aprirà un nuovo riquadro dove sarà possibile modificarne il valore.
+
+image::setvars.png["Variabili modificabili", align = "center"]
+
+Cliccando nuovamente sulla variabile il riquadro verrà chiuso ma le modifiche già effettuate non verrano scartate in modo che, se lo si desidera, sarà possibile riprendere da dove si era lasciato.
+
+NOTE: Per poter modificare una variabile è necessario fornire <<device-credentials,un nome utente e una password validi>> (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
+
+Se la variabile è di tipo `++STRING++' si potrà inserire un valore nella casella di testo [*A*] e quindi, cliccando sul tasto `Imposta' [*B*] il valore inserito verrà inviato al driver.
+Cliccando sul tasto `Annulla' [*C*] il valore inserito verrà cancellato e il riquadro chiuso.
+
+image::setvars_string.png["Variabili modificabili - STRING", align = "center"]
+
+Se la variabile è di tipo `++ENUM++', i vari valori impostabili saranno elencati e cliccando su uno qualsiasi di essi [*D*] l'impostazione verrà inviata al driver.
+Anche l'opzione attualmente scelta sarà visualizzata, ma non sarà cliccabile [*E*].
+
+image::setvars_enums.png["Variabili modificabili - ENUM", align = "center"]
+
+Se la variabile è di tipo `++RANGE++', verranno visualizzati tutti gli intervalli disponibili e sarà possibile scegliere quello che si desidera utilizzare.
+
+image::setvars_ranges.png["Variabili modificabili - RANGE, più di uno", align = "center"]
+
+Una volta selezionato l'intervallo desiderato (nel caso gli intervalli siano più di uno) [*F*], saranno mostrati i suoi limit [*G*, *H*] e al centro il valore attuale [*I*].
+
+image::setvars_ranges_set.png["Variabili modificabili - RANGE, modifica", align = "center"]
+
+È possibile modificare il valore sia trascinando lo slider [*J*], sia ruotandoci sopra la rotella del mouse oppure incrementare o decrementare il valore di un'unita alla volta cliccando sui tasti -/+ [*K*, *L*].
+
+image::setvars_ranges_btn.png["Variabili modificabili - RANGE, pulsanti", align = "center"]
+
+Cliccando sul tasto `Imposta' [*M*] il valore inserito verrà inviato al driver.
+Cliccando sul tasto `Annulla' [*N*] il valore inserito verrà cancellato e il riquadro chiuso.
+
+Nel caso in cu sia disponibile un solo intervallo, solo i limiti di quest'ultimo saranno mostrati.
+
+image::setvars_range.png["Variabili modificabili - RANGE", align = "center"]
+
 
 [[device-commands]]
 COMANDI DEL DISPOSITIVO
@@ -296,10 +333,12 @@ NOTE: Se si vuole rimuovere un dispositivo che non è al momento disponibile, co
 CREDENZIALI DEL DISPOSITIVO
 ---------------------------
 
-Se si desidera eseguire i <<device-commands,comandi instantanei>> di un dispositivo, è necessario fornire un nome utente e una password validi (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
+Se si desidera eseguire i <<device-commands,comandi instantanei>> di un dispositivo e <<raw-vars,modificarne le variabili>>, è necessario fornire un nome utente e una password validi (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
 È possibile salvarli tramite il <<credentials-box,riquadro delle credenziali>> oppure si possono inserire nella <<credentials-dialog,finestra delle credenziali>> *ogni volta* che si esegue un comando.
 
 NOTE: Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <<credentials-dialog,finestra delle credenziali>>, qualora si provasse ad eseguire un comando.
+
+IMPORTANT: Se si sceglie di salvare il nome utente e la password per usarli sia per i comandi istantanei che per modificare le variabili, ci si assicure che il nome utente fornito abbia le appropriate opzioni impostate per entrambi nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] (ad esempio +actions = set+ e +instcmds = all+).
 
 
 [[credentials-dialog]]

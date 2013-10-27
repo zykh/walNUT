@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.8" />
@@ -22,7 +22,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <h2 id="_cos_è" class="float">COS'È?</h2>
-<div class="paragraph"><p><strong><em>walNUT</em></strong> non è niente di più che un&#8217;interfaccia fra voi e NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), usando <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a> e <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a> di NUT.
+<div class="paragraph"><p><strong><em>walNUT</em></strong> non è niente di più che un&#8217;interfaccia fra voi e NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), usando <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> e <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a> di NUT.
 Fornisce un pratico <a href="#panel-menu">menu del pannello</a> e un'<a href="#panel-icon">icona</a> per monitorare i propri dispositivi ed eseguire i <a href="#device-commands">comandi</a> istantanei di NUT.</p></div>
 <div class="paragraph"><p>Prima di <a href="#installation">cominciare</a>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <a href="#first-execution">fin da subito</a>.</p></div>
 </div>
@@ -54,7 +54,7 @@ Inserire <code>r</code> per riavviare Gnome Shell
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Oltre a NUT, è necessario anche <a href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</a> (vedi <a href="#known-issues">problemi conosciuti</a>).</td>
 </tr></table>
@@ -93,7 +93,7 @@ In tal caso il &#8216;seme&#8217; della noce sarà diviso in due parti: quella p
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/caution.png" alt="Caution" />
+<img src="../ad/icons/caution.png" alt="Attenzione" />
 </td>
 <td class="content">Nal caso in cui si imposti anche <em>Mostra il carico del dispositivo nell&#8217;icona del pannello</em> nelle <a href="#preferences">preferenze</a> <em>e</em> il livello di carica della batteria non sia disponibile, l&#8217;icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [<strong>A</strong>]: <em>si prega di prestare attenzione</em>.</td>
 </tr></table>
@@ -136,7 +136,7 @@ Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il live
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">
 <div class="paragraph"><p>L&#8217;icona mostra il livello di carica della batteria e il livello di carico del dispositivo attraverso tre barre:</p></div>
@@ -291,7 +291,7 @@ cellspacing="0" cellpadding="4">
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <strong>ogni volta</strong> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</td>
 </tr></table>
@@ -315,7 +315,7 @@ cellspacing="0" cellpadding="4">
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/tip.png" alt="Tip" />
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
 </td>
 <td class="content">Se il dispositivo non sta fornendo uno fra produttore o modello oppure entrambi, o se si desidera un&#8217;etichetta più accattivante, è possibile sovrascriverne uno o entrambi in <a href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</a>.</td>
 </tr></table>
@@ -341,7 +341,7 @@ cellspacing="0" cellpadding="4">
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">L&#8217;allarme viene segnalato anche attraverso un &#8216;punto esclamativo&#8217; nell'<a href="#panel-icon">icona del pannello</a>.</td>
 </tr></table>
@@ -365,6 +365,61 @@ L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo li
 </div>
 </div>
 <div class="paragraph"><p>Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l&#8217;opzione <em>Mostra i dati grezzi</em> nelle <a href="#preferences">preferenze</a>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.</p></div>
+<div class="paragraph"><p>Se il valore di una variable è modificabile, un <strong><code>+</code></strong> apparirà alla sinistra del suo nome: a questo punto, cliccando sopra alla variabile, si aprirà un nuovo riquadro dove sarà possibile modificarne il valore.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars.png" alt="Variabili modificabili" />
+</div>
+</div>
+<div class="paragraph"><p>Cliccando nuovamente sulla variabile il riquadro verrà chiuso ma le modifiche già effettuate non verrano scartate in modo che, se lo si desidera, sarà possibile riprendere da dove si era lasciato.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">Per poter modificare una variabile è necessario fornire <a href="#device-credentials">un nome utente e una password validi</a> (<em>come impostati nel file di configurazione <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a></em>).</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Se la variabile è di tipo &#8216;<code>STRING</code>&#8217; si potrà inserire un valore nella casella di testo [<strong>A</strong>] e quindi, cliccando sul tasto &#8216;Imposta&#8217; [<strong>B</strong>] il valore inserito verrà inviato al driver.
+Cliccando sul tasto &#8216;Annulla&#8217; [<strong>C</strong>] il valore inserito verrà cancellato e il riquadro chiuso.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_string.png" alt="Variabili modificabili - STRING" />
+</div>
+</div>
+<div class="paragraph"><p>Se la variabile è di tipo &#8216;<code>ENUM</code>&#8217;, i vari valori impostabili saranno elencati e cliccando su uno qualsiasi di essi [<strong>D</strong>] l&#8217;impostazione verrà inviata al driver.
+Anche l&#8217;opzione attualmente scelta sarà visualizzata, ma non sarà cliccabile [<strong>E</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_enums.png" alt="Variabili modificabili - ENUM" />
+</div>
+</div>
+<div class="paragraph"><p>Se la variabile è di tipo &#8216;<code>RANGE</code>&#8217;, verranno visualizzati tutti gli intervalli disponibili e sarà possibile scegliere quello che si desidera utilizzare.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges.png" alt="Variabili modificabili - RANGE, più di uno" />
+</div>
+</div>
+<div class="paragraph"><p>Una volta selezionato l&#8217;intervallo desiderato (nel caso gli intervalli siano più di uno) [<strong>F</strong>], saranno mostrati i suoi limit [<strong>G</strong>, <strong>H</strong>] e al centro il valore attuale [<strong>I</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges_set.png" alt="Variabili modificabili - RANGE, modifica" />
+</div>
+</div>
+<div class="paragraph"><p>È possibile modificare il valore sia trascinando lo slider [<strong>J</strong>], sia ruotandoci sopra la rotella del mouse oppure incrementare o decrementare il valore di un&#8217;unita alla volta cliccando sui tasti -/+ [<strong>K</strong>, <strong>L</strong>].</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_ranges_btn.png" alt="Variabili modificabili - RANGE, pulsanti" />
+</div>
+</div>
+<div class="paragraph"><p>Cliccando sul tasto &#8216;Imposta&#8217; [<strong>M</strong>] il valore inserito verrà inviato al driver.
+Cliccando sul tasto &#8216;Annulla&#8217; [<strong>N</strong>] il valore inserito verrà cancellato e il riquadro chiuso.</p></div>
+<div class="paragraph"><p>Nel caso in cu sia disponibile un solo intervallo, solo i limiti di quest&#8217;ultimo saranno mostrati.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/setvars_range.png" alt="Variabili modificabili - RANGE" />
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="device-commands">4.7. COMANDI DEL DISPOSITIVO</h3>
@@ -384,7 +439,7 @@ L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo li
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/tip.png" alt="Tip" />
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
 </td>
 <td class="content">
 <div class="paragraph"><p><em>walNUT</em> di base visualizza anche una descrizione localizzata dei comandi [<strong>B</strong>], ma se si pensa che occupi troppo spazio è possibile scegliere di non mostrarla [<strong>C</strong>] nelle <a href="#preferences">preferenze</a>.</p></div>
@@ -456,7 +511,7 @@ L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo li
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Se si desidera cancellare il nome utente, la password o entrambi (ad esempio in modo che da ora in avanti essi vengano richiesti), è necessario salvarli vuoti.</td>
 </tr></table>
@@ -465,7 +520,7 @@ L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo li
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/tip.png" alt="Tip" />
+<img src="../ad/icons/tip.png" alt="Suggerimento" />
 </td>
 <td class="content">Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <a href="#preferences">preferenze</a>.</td>
 </tr></table>
@@ -482,7 +537,7 @@ L&#8217;icona della batteria [<strong>1</strong>] mostrerà l&#8217;effettivo li
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Se l&#8217;hostname non viene fornito sarà <em>localhost</em>, mentre la porta, se non indicata, sarà <em>3493</em>.</td>
 </tr></table>
@@ -506,7 +561,7 @@ Un nuovo riquadro [<strong>B</strong>] apparirà chiedendo se si vuole davvero r
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Se si vuole rimuovere un dispositivo che non è al momento disponibile, controllare prima di aver abilitato l&#8217;opzione <em>Mostra i dispositivi non disponibili</em> nelle <a href="#preferences">preferenze</a>.</td>
 </tr></table>
@@ -517,14 +572,22 @@ Un nuovo riquadro [<strong>B</strong>] apparirà chiedendo se si vuole davvero r
 <div class="sect1">
 <h2 id="device-credentials">5. CREDENZIALI DEL DISPOSITIVO</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Se si desidera eseguire i <a href="#device-commands">comandi instantanei</a> di un dispositivo, è necessario fornire un nome utente e una password validi (<em>come impostati nel file di configurazione <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a></em>).
+<div class="paragraph"><p>Se si desidera eseguire i <a href="#device-commands">comandi instantanei</a> di un dispositivo e <a href="#raw-vars">modificarne le variabili</a>, è necessario fornire un nome utente e una password validi (<em>come impostati nel file di configurazione <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a></em>).
 È possibile salvarli tramite il <a href="#credentials-box">riquadro delle credenziali</a> oppure si possono inserire nella <a href="#credentials-dialog">finestra delle credenziali</a> <strong>ogni volta</strong> che si esegue un comando.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <a href="#credentials-dialog">finestra delle credenziali</a>, qualora si provasse ad eseguire un comando.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/important.png" alt="Importante" />
+</td>
+<td class="content">Se si sceglie di salvare il nome utente e la password per usarli sia per i comandi istantanei che per modificare le variabili, ci si assicure che il nome utente fornito abbia le appropriate opzioni impostate per entrambi nel file di configurazione <a href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</a> (ad esempio <code>actions = set</code> e <code>instcmds = all</code>).</td>
 </tr></table>
 </div>
 <div class="sect2">
@@ -543,7 +606,7 @@ Un nuovo riquadro [<strong>B</strong>] apparirà chiedendo se si vuole davvero r
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">Il pulsante &#8216;esegui&#8217; [<strong>B</strong>] sarà selezionabile solo se sia il nome utente che la password non sono vuoti.</td>
 </tr></table>
@@ -551,7 +614,7 @@ Un nuovo riquadro [<strong>B</strong>] apparirà chiedendo se si vuole davvero r
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/caution.png" alt="Caution" />
+<img src="../ad/icons/caution.png" alt="Attenzione" />
 </td>
 <td class="content">Dopo aver inserito nome utente e password, quando si clicca sul pulsante &#8216;esegui&#8217; [<strong>B</strong>] il comando sarà inviato al driver.</td>
 </tr></table>
@@ -661,7 +724,7 @@ Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più 
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/caution.png" alt="Caution" />
+<img src="../ad/icons/caution.png" alt="Attenzione" />
 </td>
 <td class="content">A prescindere da questo timeout, è meglio non giocare con il riquadro per trovare nuovi dispositivi e host &#8216;di fantasia&#8217; ed è <em>altamente</em> raccomandabile rimuovere dalla lista quei dispositivi il cui hostname:porta stia per non essere più risolvibile.</td>
 </tr></table>
@@ -758,7 +821,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
+<img src="../ad/icons/note.png" alt="Nota" />
 </td>
 <td class="content">
 <div class="paragraph"><p>Se si desidera utilizzare le immagini del manuale inglese è necessario creare un collegamento simbolico alla loro cartella nella cartella del proprio locale:</p></div>
@@ -782,7 +845,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-10-23 18:21:40 CEST
+Last updated 2013-10-27 23:16:08 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

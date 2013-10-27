@@ -165,6 +165,63 @@ Battery icon [<em style="strong">1</em>] will display actual charge through the 
 </media>
 </figure>
 <p>If you want a deep dive in all the variables available for a device you have to select the <em>Display raw data</em> option in the <link xref="preferences">preferences</link>: raw vars will be displayed in a scrollable submenu.</p>
+<p>If a variable is settable, a <em style="strong"><code>+</code></em> will be shown at the left of its name: clicking on this var will open a new box where you&#8217;ll be able to change its value.</p>
+<figure>
+<media type="image" src="img/setvars.png"
+>
+<p>Settable vars</p>
+</media>
+</figure>
+<p>Clicking again on the variable will close the box: the changes done won&#8217;t be discarded so that you can go back and edit the var starting from where you left.</p>
+<note style="note">
+<p>In order to set a variable you have to provide a <link xref="device-credentials">valid username and password</link> (<em>as set in <link href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</link> configuration file</em>).</p>
+</note>
+<p>If the variable is of type &#8216;<code>STRING</code>&#8217; you can insert a value in the text box [<em style="strong">A</em>]: if you then click on the &#8216;Set&#8217; button [<em style="strong">B</em>] the provided value will be sent to the driver.
+If you click on the &#8216;Undo and close&#8217; button [<em style="strong">C</em>] the provided value will be discarded and the box closed.</p>
+<figure>
+<media type="image" src="img/setvars_string.png"
+>
+<p>Settable vars - STRING</p>
+</media>
+</figure>
+<p>If the variable is of type &#8216;<code>ENUM</code>&#8217;, the enumerated values will be listed in the box: if you click on one of them [<em style="strong">D</em>] the corresponding value will be sent to the driver.
+Also the actually chosen option will be shown, but it won&#8217;t be clickable [<em style="strong">E</em>].</p>
+<figure>
+<media type="image" src="img/setvars_enums.png"
+>
+<p>Settable vars - ENUM</p>
+</media>
+</figure>
+<p>If the variable is of type &#8216;<code>RANGE</code>&#8217;, the available ranges will be shown in the box and you&#8217;ll then be able to choose the one you need to use.</p>
+<figure>
+<media type="image" src="img/setvars_ranges.png"
+>
+<p>Settable vars - RANGE, more than one</p>
+</media>
+</figure>
+<p>Once a range is chosen (provided that more than one range is available) [<em style="strong">F</em>], its limits [<em style="strong">G</em>, <em style="strong">H</em>] will be displayed at the right and left of the actual value [<em style="strong">I</em>].</p>
+<figure>
+<media type="image" src="img/setvars_ranges_set.png"
+>
+<p>Settable vars - RANGE, edit</p>
+</media>
+</figure>
+<p>You can then change the value either dragging the slider [<em style="strong">J</em>], or scrolling the mouse wheel over it or you can choose to increase or decrease the value by one unit at a time clicking on the -/+ buttons [<em style="strong">K</em>, <em style="strong">L</em>].</p>
+<figure>
+<media type="image" src="img/setvars_ranges_btn.png"
+>
+<p>Settable vars - RANGE, buttons</p>
+</media>
+</figure>
+<p>If you click on the &#8216;Set&#8217; button [<em style="strong">M</em>] the provided value will be sent to the driver.
+If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</em>] the provided value will be discarded and the box closed.</p>
+<p>In case only one range is available, only its limits will be shown.</p>
+<figure>
+<media type="image" src="img/setvars_range.png"
+>
+<p>Settable vars - RANGE</p>
+</media>
+</figure>
 </section>
 <section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. DEVICE&#8217;S COMMANDS</title>
 <figure>

@@ -69,7 +69,7 @@ endif::walnut[]
 WHAT IS IT?
 -----------
 
-*_walNUT_* is nothing more than an interface between you and NUT (http://www.networkupstools.org[Network UPS Tools]), using NUT's own http://www.networkupstools.org/docs/man/upsc.html[upsc] and http://www.networkupstools.org/docs/man/upscmd.html[upscmd].
+*_walNUT_* is nothing more than an interface between you and NUT (http://www.networkupstools.org[Network UPS Tools]), using NUT's own http://www.networkupstools.org/docs/man/upsc.html[upsc], http://www.networkupstools.org/docs/man/upsrw.html[upsrw] and http://www.networkupstools.org/docs/man/upscmd.html[upscmd].
 It provides you a handy <<{panel-menu},panel menu>> and <<{panel-icon},icon>> to monitor your devices and execute NUT's instant <<{device-commands},commands>>.
 
 Before <<{installation},you start>>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that _walNUT_ will work right <<{first-execution},out of the box>>.
@@ -268,6 +268,43 @@ image::raw.png["Raw Vars", align = "center"]
 
 If you want a deep dive in all the variables available for a device you have to select the _Display raw data_ option in the <<{preferences},preferences>>: raw vars will be displayed in a scrollable submenu.
 
+If a variable is settable, a *`+`* will be shown at the left of its name: clicking on this var will open a new box where you'll be able to change its value.
+
+image::setvars.png["Settable vars", align = "center"]
+
+Clicking again on the variable will close the box: the changes done won't be discarded so that you can go back and edit the var starting from where you left.
+
+NOTE: In order to set a variable you have to provide a <<{device-credentials},valid username and password>> (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
+
+If the variable is of type `++STRING++' you can insert a value in the text box [*A*]: if you then click on the `Set' button [*B*] the provided value will be sent to the driver.
+If you click on the `Undo and close' button [*C*] the provided value will be discarded and the box closed.
+
+image::setvars_string.png["Settable vars - STRING", align = "center"]
+
+If the variable is of type `++ENUM++', the enumerated values will be listed in the box: if you click on one of them [*D*] the corresponding value will be sent to the driver.
+Also the actually chosen option will be shown, but it won't be clickable [*E*].
+
+image::setvars_enums.png["Settable vars - ENUM", align = "center"]
+
+If the variable is of type `++RANGE++', the available ranges will be shown in the box and you'll then be able to choose the one you need to use.
+
+image::setvars_ranges.png["Settable vars - RANGE, more than one", align = "center"]
+
+Once a range is chosen (provided that more than one range is available) [*F*], its limits [*G*, *H*] will be displayed at the right and left of the actual value [*I*].
+
+image::setvars_ranges_set.png["Settable vars - RANGE, edit", align = "center"]
+
+You can then change the value either dragging the slider [*J*], or scrolling the mouse wheel over it or you can choose to increase or decrease the value by one unit at a time clicking on the -/+ buttons [*K*, *L*].
+
+image::setvars_ranges_btn.png["Settable vars - RANGE, buttons", align = "center"]
+
+If you click on the `Set' button [*M*] the provided value will be sent to the driver.
+If you click on the `Undo and close' button [*N*] the provided value will be discarded and the box closed.
+
+In case only one range is available, only its limits will be shown.
+
+image::setvars_range.png["Settable vars - RANGE", align = "center"]
+
 
 [[device-commands]]
 DEVICE'S COMMANDS
@@ -361,10 +398,12 @@ NOTE: If you want to delete a device that's not currently available, check first
 DEVICE CREDENTIALS
 ------------------
 
-If you want to execute a device's <<{device-commands},instant commands>> you have to provide a valid username and password (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
+If you want to execute a device's <<{device-commands},instant commands>> or to set a <<{raw-vars},settable variable>>, you have to provide a valid username and password (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
 You can either save them through the <<{credentials-box},credentials box>> or insert them in the <<{credentials-dialog},credentials dialog>> *every time* you execute a command.
 
 NOTE: If the saved user and password prove to be wrong you will be prompted for them with a <<{credentials-dialog},credential dialog>> when you try to execute a command.
+
+IMPORTANT: If you choose to save the user and password and then use them for both instant commands and settable vars, be sure that the provided username has the appropriate options set for both of them in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file (e.g. +actions = set+ and +instcmds = all+).
 
 
 [[credentials-dialog]]

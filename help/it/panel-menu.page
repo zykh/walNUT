@@ -165,6 +165,63 @@ L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effet
 </media>
 </figure>
 <p>Se si desidera visualizzare nel dettaglio tutte le variabili disponibili per un dispositivo è necessario selezionare l&#8217;opzione <em>Mostra i dati grezzi</em> nelle <link xref="preferences">preferenze</link>: i dati grezzi saranno visualizzati in un sotto-menu scorrevele.</p>
+<p>Se il valore di una variable è modificabile, un <em style="strong"><code>+</code></em> apparirà alla sinistra del suo nome: a questo punto, cliccando sopra alla variabile, si aprirà un nuovo riquadro dove sarà possibile modificarne il valore.</p>
+<figure>
+<media type="image" src="img/setvars.png"
+>
+<p>Variabili modificabili</p>
+</media>
+</figure>
+<p>Cliccando nuovamente sulla variabile il riquadro verrà chiuso ma le modifiche già effettuate non verrano scartate in modo che, se lo si desidera, sarà possibile riprendere da dove si era lasciato.</p>
+<note style="note">
+<p>Per poter modificare una variabile è necessario fornire <link xref="device-credentials">un nome utente e una password validi</link> (<em>come impostati nel file di configurazione <link href="http://www.networkupstools.org/docs/man/upsd.users.html">upsd.user</link></em>).</p>
+</note>
+<p>Se la variabile è di tipo &#8216;<code>STRING</code>&#8217; si potrà inserire un valore nella casella di testo [<em style="strong">A</em>] e quindi, cliccando sul tasto &#8216;Imposta&#8217; [<em style="strong">B</em>] il valore inserito verrà inviato al driver.
+Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">C</em>] il valore inserito verrà cancellato e il riquadro chiuso.</p>
+<figure>
+<media type="image" src="img/setvars_string.png"
+>
+<p>Variabili modificabili - STRING</p>
+</media>
+</figure>
+<p>Se la variabile è di tipo &#8216;<code>ENUM</code>&#8217;, i vari valori impostabili saranno elencati e cliccando su uno qualsiasi di essi [<em style="strong">D</em>] l&#8217;impostazione verrà inviata al driver.
+Anche l&#8217;opzione attualmente scelta sarà visualizzata, ma non sarà cliccabile [<em style="strong">E</em>].</p>
+<figure>
+<media type="image" src="img/setvars_enums.png"
+>
+<p>Variabili modificabili - ENUM</p>
+</media>
+</figure>
+<p>Se la variabile è di tipo &#8216;<code>RANGE</code>&#8217;, verranno visualizzati tutti gli intervalli disponibili e sarà possibile scegliere quello che si desidera utilizzare.</p>
+<figure>
+<media type="image" src="img/setvars_ranges.png"
+>
+<p>Variabili modificabili - RANGE, più di uno</p>
+</media>
+</figure>
+<p>Una volta selezionato l&#8217;intervallo desiderato (nel caso gli intervalli siano più di uno) [<em style="strong">F</em>], saranno mostrati i suoi limit [<em style="strong">G</em>, <em style="strong">H</em>] e al centro il valore attuale [<em style="strong">I</em>].</p>
+<figure>
+<media type="image" src="img/setvars_ranges_set.png"
+>
+<p>Variabili modificabili - RANGE, modifica</p>
+</media>
+</figure>
+<p>È possibile modificare il valore sia trascinando lo slider [<em style="strong">J</em>], sia ruotandoci sopra la rotella del mouse oppure incrementare o decrementare il valore di un&#8217;unita alla volta cliccando sui tasti -/+ [<em style="strong">K</em>, <em style="strong">L</em>].</p>
+<figure>
+<media type="image" src="img/setvars_ranges_btn.png"
+>
+<p>Variabili modificabili - RANGE, pulsanti</p>
+</media>
+</figure>
+<p>Cliccando sul tasto &#8216;Imposta&#8217; [<em style="strong">M</em>] il valore inserito verrà inviato al driver.
+Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore inserito verrà cancellato e il riquadro chiuso.</p>
+<p>Nel caso in cu sia disponibile un solo intervallo, solo i limiti di quest&#8217;ultimo saranno mostrati.</p>
+<figure>
+<media type="image" src="img/setvars_range.png"
+>
+<p>Variabili modificabili - RANGE</p>
+</media>
+</figure>
 </section>
 <section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. COMANDI DEL DISPOSITIVO</title>
 <figure>

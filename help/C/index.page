@@ -12,7 +12,7 @@
 <links type="topic"/>
 <links type="section"/>
 <listing><title style="heading">WHAT IS IT?</title></listing>
-<p><em style="strong"><em>walNUT</em></em> is nothing more than an interface between you and NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>), using NUT&#8217;s own <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link> and <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link>.
+<p><em style="strong"><em>walNUT</em></em> is nothing more than an interface between you and NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>), using NUT&#8217;s own <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link>, <link href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</link> and <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link>.
 It provides you a handy <link xref="panel-menu">panel menu</link> and <link xref="panel-icon">icon</link> to monitor your devices and execute NUT&#8217;s instant <link xref="panel-menu#device-commands">commands</link>.</p>
 <p>Before <link xref="installation">you start</link>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that <em>walNUT</em> will work right <link xref="first-execution">out of the box</link>.</p>
 </page>
