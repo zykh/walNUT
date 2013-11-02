@@ -43,8 +43,6 @@ Dopo l'installazione è necessario riavviare Gnome Shell:
 
 Quindi è possibile attivare l'esensione attraverso https://live.gnome.org/GnomeTweakTool[Gnome Tweak Tool] (Shell Extensions -> walNUT -> On) o tramite https://extensions.gnome.org/local/
 
-NOTE: Oltre a NUT, è necessario anche http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (vedi <<known-issues,problemi conosciuti>>).
-
 
 [[first-execution]]
 PRIMA ESECUZIONE
@@ -54,8 +52,7 @@ Una volta che si è <<installation,installato>> _walNUT_, quando viene eseguito 
 Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disponibili.
 In caso contrario, è necessario aggiungerli tramite il <<find-new-devices,riquadro per trovare nuovi dispositivi>>.
 
-È importante comprendere come _walNUT_ comunica e come può essere personalizzato: si prega di leggere le sezioni <<panel-icon,icona/etichetta del pannello>>, <<panel-menu,menu del pannello>> e <<preferences,preferenze>>. +
-Non si dimentichi la sezione <<known-issues,problemi conosciuti>>!
+È importante comprendere come _walNUT_ comunica e come può essere personalizzato: si prega di leggere le sezioni <<panel-icon,icona/etichetta del pannello>>, <<panel-menu,menu del pannello>> e <<preferences,preferenze>>.
 
 
 [[panel-icon]]
@@ -147,7 +144,7 @@ image::devicelist.png["Lista dei dispositivi", align = "center"]
 
 I dispositivi sono elencati in ordine alfabetico di _hostname:porta_ e quindi secondo l'ordine alfabetico dei loro nomi.
 
-NOTE: Di ciascun dispositivo memorizzato nella lista di _walNUT_ verrà controllata la disponibilità *ogni volta* che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall'ultimo aggiornamento.
+NOTE: Di ciascun dispositivo memorizzato nella lista di _walNUT_ verrà controllata la disponibilità *ogni volta* che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o dopo 15 minuti dall'ultimo aggiornamento.
 
 image::devicelist_open.png["Lista dei dispositivi aperta", align = "center"]
 
@@ -386,24 +383,6 @@ image::pref.png["Preferenze", align = "center"]
 |9 |Mostra il carico del dispositivo nel pannello |Se il livello di carico del dispositivo deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
 |10 |Mostra la carica della batteria nel pannello |Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
 |====
-
-
-[[known-issues]]
-PROBLEMI CONOSCIUTI
--------------------
-
-Dal momento che _walNUT_ si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l'host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così *ogni volta* che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo `problematico' è quello attualmente scelto, ogni volta che _walNUT_ prova ad aggiornare le suo variabili, _potrebbe potenzialmente_ *congelare Gnome Shell* per alcuni secondi (~3 per ogni dispositivo `problematico').
-
-Al fine di evitare questi blocchi, ogni invocazione di upsc/upscmd è effettuata attraverso un timeout di 150ms. +
-Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più di 150ms per rispondere), è possibile cambiare questo timeout modificando l'opzione _timeout_ (_default: 0.150_) sia tramite https://developer.gnome.org/dconf/0.14/dconf-editor.html[dconf-editor] (org -> gnome -> shell -> extensions -> walnut) che eseguendo:
-
-----
-gsettings set org.gnome.shell.extensions.walnut timeout N.NNN
-----
-
-Dove +N.NNN+ è il timeout in secondi.
-
-CAUTION: A prescindere da questo timeout, è meglio non giocare con il riquadro per trovare nuovi dispositivi e host `di fantasia' ed è _altamente_ raccomandabile rimuovere dalla lista quei dispositivi il cui hostname:porta stia per non essere più risolvibile.
 
 
 [[help]]

@@ -103,7 +103,7 @@ frame="top bottom"
 </figure>
 <p>Devices are listed in <em>hostname:port</em> alphabetical order and then alphabetically by their name.</p>
 <note style="note">
-<p>Every device stored in <em>walNUT</em>'s own list will be prompted for availability <em style="strong">every time</em> you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.</p>
+<p>Every device stored in <em>walNUT</em>'s own list will be prompted for availability <em style="strong">every time</em> you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or 15 minutes after the last update.</p>
 </note>
 <figure>
 <media type="image" src="img/devicelist_open.png"

@@ -31,7 +31,4 @@ Inserire <code>r</code> per riavviare Gnome Shell
 </item>
 </list>
 <p>Quindi è possibile attivare l&#8217;esensione attraverso <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) o tramite <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
-<note style="note">
-<p>Oltre a NUT, è necessario anche <link href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</link> (vedi <link xref="known-issues">problemi conosciuti</link>).</p>
-</note>
 </page>

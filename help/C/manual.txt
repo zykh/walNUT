@@ -32,7 +32,6 @@ v0.2, October 2013
 :device-credentials: 5-device-credentials
 :credentials-dialog: 51-credentials-dialog
 :preferences: 6-preferences
-:known-issues: 7-known-issues
 :help: 8-help
 
 // Override them and images' directories for the html/mallard versions calling asciidoc with the 'walnut' attribute (i.e. -a walnut)
@@ -59,7 +58,6 @@ ifdef::walnut[]
 :device-credentials: device-credentials
 :credentials-dialog: credentials-dialog
 :preferences: preferences
-:known-issues: known-issues
 :help: help
 
 endif::walnut[]
@@ -94,8 +92,6 @@ After the installation you'll need to restart Gnome Shell:
 
 Then you can enable the extension through https://live.gnome.org/GnomeTweakTool[Gnome Tweak Tool] (Shell Extensions -> walNUT -> On) or through https://extensions.gnome.org/local/
 
-NOTE: In addition to NUT, you need also http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html[timeout] (see <<{known-issues},known issues>>).
-
 
 [[first-execution]]
 FIRST EXECUTION
@@ -105,8 +101,8 @@ Once you've <<{installation},installed>> _walNUT_, when it's executed for the fi
 So, for most installations, it should have already found your devices.
 If not, you have to add them through the <<{find-new-devices},find new devices box>>.
 
-It's important that you understand how _walNUT_ communicates with you and how you can customize it: please read <<{panel-icon},panel icon/label>>, <<{panel-menu},panel menu>> and <<{preferences},preferences>> sections. +
-Don't miss the <<{known-issues},known issues>> section!
+It's important that you understand how _walNUT_ communicates with you and how you can customize it: please read <<{panel-icon},panel icon/label>>, <<{panel-menu},panel menu>> and <<{preferences},preferences>> sections.
+
 
 [[panel-icon]]
 PANEL ICON/LABEL
@@ -211,7 +207,7 @@ image::devicelist.png["Device List", align = "center"]
 
 Devices are listed in _hostname:port_ alphabetical order and then alphabetically by their name.
 
-NOTE: Every device stored in _walNUT_'s own list will be prompted for availability *every time* you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.
+NOTE: Every device stored in _walNUT_'s own list will be prompted for availability *every time* you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or 15 minutes after the last update.
 
 image::devicelist_open.png["Device List opened", align = "center"]
 
@@ -451,24 +447,6 @@ image::pref.png["Preferences", align = "center"]
 |9 |Display load in panel label |Whether the device load should be displayed in the panel label or not. (_default: OFF_)
 |10 |Display charge in panel label |Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
 |====
-
-
-[[known-issues]]
-KNOWN ISSUES
-------------
-
-Since _walNUT_ relies on NUT's upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn't have an up and running NUT, upsc will take some time to tell us, so *every time* the devices list get updated or when a research for new devices is invoked or, if the `problematic' device is the currently chosen one, every time _walNUT_ tries to update its variables, it _could potentially_ *freeze Gnome Shell* for some seconds (~3 for every `problematic' device).
-
-In order to prevent these freezes every invocation of upsc/upscmd is done through a timeout of 150ms. +
-If your device isn't found (e.g. it needs more than 150ms to reply), you can change that timeout by changing the _timeout_ setting (_default: 0.150_) either through https://developer.gnome.org/dconf/0.14/dconf-editor.html[dconf-editor] (org -> gnome -> shell -> extensions -> walnut) or executing:
-
-----
-gsettings set org.gnome.shell.extensions.walnut timeout N.NNN
-----
-
-Where +N.NNN+ is the timeout in seconds.
-
-CAUTION: Regardless of this timeout, it's better not to play around with the `find new devices' box and `fantasy' hosts and it's _higly_ recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.
 
 
 [[help]]

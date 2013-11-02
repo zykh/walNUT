@@ -103,7 +103,7 @@ frame="top bottom"
 </figure>
 <p>I dispositivi sono elencati in ordine alfabetico di <em>hostname:porta</em> e quindi secondo l&#8217;ordine alfabetico dei loro nomi.</p>
 <note style="note">
-<p>Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <em style="strong">ogni volta</em> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</p>
+<p>Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <em style="strong">ogni volta</em> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o dopo 15 minuti dall&#8217;ultimo aggiornamento.</p>
 </note>
 <figure>
 <media type="image" src="img/devicelist_open.png"

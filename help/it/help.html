@@ -51,14 +51,6 @@ Inserire <code>r</code> per riavviare Gnome Shell
 </li>
 </ul></div>
 <div class="paragraph"><p>Quindi è possibile attivare l&#8217;esensione attraverso <a href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</a> (Shell Extensions &#8594; walNUT &#8594; On) o tramite <a href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</a></p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="../ad/icons/note.png" alt="Nota" />
-</td>
-<td class="content">Oltre a NUT, è necessario anche <a href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</a> (vedi <a href="#known-issues">problemi conosciuti</a>).</td>
-</tr></table>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -67,8 +59,7 @@ Inserire <code>r</code> per riavviare Gnome Shell
 <div class="paragraph"><p>Una volta che si è <a href="#installation">installato</a> <em>walNUT</em>, quando viene eseguito per la prima volta, od ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in <em>localhost:3493</em>.<br />
 Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disponibili.
 In caso contrario, è necessario aggiungerli tramite il <a href="#find-new-devices">riquadro per trovare nuovi dispositivi</a>.</p></div>
-<div class="paragraph"><p>È importante comprendere come <em>walNUT</em> comunica e come può essere personalizzato: si prega di leggere le sezioni <a href="#panel-icon">icona/etichetta del pannello</a>, <a href="#panel-menu">menu del pannello</a> e <a href="#preferences">preferenze</a>.<br />
-Non si dimentichi la sezione <a href="#known-issues">problemi conosciuti</a>!</p></div>
+<div class="paragraph"><p>È importante comprendere come <em>walNUT</em> comunica e come può essere personalizzato: si prega di leggere le sezioni <a href="#panel-icon">icona/etichetta del pannello</a>, <a href="#panel-menu">menu del pannello</a> e <a href="#preferences">preferenze</a>.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -293,7 +284,7 @@ cellspacing="0" cellpadding="4">
 <td class="icon">
 <img src="../ad/icons/note.png" alt="Nota" />
 </td>
-<td class="content">Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <strong>ogni volta</strong> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o quando il menu viene aperto, a condizione che più di 15 minuti siano passati dall&#8217;ultimo aggiornamento.</td>
+<td class="content">Di ciascun dispositivo memorizzato nella lista di <em>walNUT</em> verrà controllata la disponibilità <strong>ogni volta</strong> che si cambia qualche opzione o quando Gnome Shell viene aggiornato (ad esempio, di ritorno dal blocco dello schermo ..e così via) o dopo 15 minuti dall&#8217;ultimo aggiornamento.</td>
 </tr></table>
 </div>
 <div class="imageblock" style="text-align:center;">
@@ -711,28 +702,7 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect1">
-<h2 id="known-issues">7. PROBLEMI CONOSCIUTI</h2>
-<div class="sectionbody">
-<div class="paragraph"><p>Dal momento che <em>walNUT</em> si affida a upsc di NUT per cercare nuovi dispositivi e per stabilire se un dispositivo sia disponibile o meno, se un hostname:porta non è risolvibile, o se l&#8217;host non ha un NUT attivo e funzionante, upsc impiegherà del tempo per dircelo, così <strong>ogni volta</strong> che la lista dei dispositivi viene aggiornata o quando una ricerca per nuovi dispositivi è iniziata o, se il dispositivo &#8216;problematico&#8217; è quello attualmente scelto, ogni volta che <em>walNUT</em> prova ad aggiornare le suo variabili, <em>potrebbe potenzialmente</em> <strong>congelare Gnome Shell</strong> per alcuni secondi (~3 per ogni dispositivo &#8216;problematico&#8217;).</p></div>
-<div class="paragraph"><p>Al fine di evitare questi blocchi, ogni invocazione di upsc/upscmd è effettuata attraverso un timeout di 150ms.<br />
-Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più di 150ms per rispondere), è possibile cambiare questo timeout modificando l&#8217;opzione <em>timeout</em> (<em>default: 0.150</em>) sia tramite <a href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</a> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) che eseguendo:</p></div>
-<div class="listingblock">
-<div class="content">
-<pre><code>gsettings set org.gnome.shell.extensions.walnut timeout N.NNN</code></pre>
-</div></div>
-<div class="paragraph"><p>Dove <code>N.NNN</code> è il timeout in secondi.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="../ad/icons/caution.png" alt="Attenzione" />
-</td>
-<td class="content">A prescindere da questo timeout, è meglio non giocare con il riquadro per trovare nuovi dispositivi e host &#8216;di fantasia&#8217; ed è <em>altamente</em> raccomandabile rimuovere dalla lista quei dispositivi il cui hostname:porta stia per non essere più risolvibile.</td>
-</tr></table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="help">8. AIUTO</h2>
+<h2 id="help">7. AIUTO</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare dell&#8217;aiuto nella mailing list di NUT:</p></div>
 <div class="ulist"><ul>
@@ -751,7 +721,7 @@ Nel caso in cui un dispositivo non venga trovato (ad esempio ha bisogno di più 
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="_traduttori">8.1. TRADUTTORI</h3>
+<h3 id="_traduttori">7.1. TRADUTTORI</h3>
 <div class="paragraph"><p>Una guida alla traduzione delle estensioni può essere trovata nelle <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a> sulle estensioni di Gnome Shell.</p></div>
 <div class="paragraph"><p>La documentazione di <em>walNUT</em> è scritta in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> e quindi elaborata sia per la versione in html che per la versione in <a href="http://projectmallard.org/">Mallard</a> per <a href="http://projects.gnome.org/yelp/">Yelp</a>.</p></div>
 <div class="paragraph"><p>I file di aiuto devono essere messi nella cartella help dell&#8217;estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).</p></div>
@@ -836,7 +806,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 </div>
 </div>
 <div class="sect1">
-<h2 id="author">9. AUTORE</h2>
+<h2 id="author">8. AUTORE</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Daniele Pezzini &lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</p></div>
 </div>
@@ -845,7 +815,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-10-27 23:16:08 CET
+Last updated 2013-11-02 22:26:23 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

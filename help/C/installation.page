@@ -31,7 +31,4 @@ Enter <code>r</code> to restart Gnome Shell
 </item>
 </list>
 <p>Then you can enable the extension through <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) or through <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
-<note style="note">
-<p>In addition to NUT, you need also <link href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</link> (see <link xref="known-issues">known issues</link>).</p>
-</note>
 </page>

@@ -14,6 +14,5 @@
 <p>Una volta che si è <link xref="installation">installato</link> <em>walNUT</em>, quando viene eseguito per la prima volta, od ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in <em>localhost:3493</em>.
 Quindi, per la maggior parte delle installazioni, dovrebbe aver già trovato i dispositivi disponibili.
 In caso contrario, è necessario aggiungerli tramite il <link xref="panel-menu#find-new-devices">riquadro per trovare nuovi dispositivi</link>.</p>
-<p>È importante comprendere come <em>walNUT</em> comunica e come può essere personalizzato: si prega di leggere le sezioni <link xref="panel-icon">icona/etichetta del pannello</link>, <link xref="panel-menu">menu del pannello</link> e <link xref="preferences">preferenze</link>.
-Non si dimentichi la sezione <link xref="known-issues">problemi conosciuti</link>!</p>
+<p>È importante comprendere come <em>walNUT</em> comunica e come può essere personalizzato: si prega di leggere le sezioni <link xref="panel-icon">icona/etichetta del pannello</link>, <link xref="panel-menu">menu del pannello</link> e <link xref="preferences">preferenze</link>.</p>
 </page>

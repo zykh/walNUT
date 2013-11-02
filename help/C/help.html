@@ -51,14 +51,6 @@ Enter <code>r</code> to restart Gnome Shell
 </li>
 </ul></div>
 <div class="paragraph"><p>Then you can enable the extension through <a href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</a> (Shell Extensions &#8594; walNUT &#8594; On) or through <a href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</a></p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="../ad/icons/note.png" alt="Note" />
-</td>
-<td class="content">In addition to NUT, you need also <a href="http://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html">timeout</a> (see <a href="#known-issues">known issues</a>).</td>
-</tr></table>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -67,8 +59,7 @@ Enter <code>r</code> to restart Gnome Shell
 <div class="paragraph"><p>Once you&#8217;ve <a href="#installation">installed</a> <em>walNUT</em>, when it&#8217;s executed for the first time, or every time its device list is empty, it&#8217;ll try and search automatically for new devices at <em>localhost:3493</em>.<br />
 So, for most installations, it should have already found your devices.
 If not, you have to add them through the <a href="#find-new-devices">find new devices box</a>.</p></div>
-<div class="paragraph"><p>It&#8217;s important that you understand how <em>walNUT</em> communicates with you and how you can customize it: please read <a href="#panel-icon">panel icon/label</a>, <a href="#panel-menu">panel menu</a> and <a href="#preferences">preferences</a> sections.<br />
-Don&#8217;t miss the <a href="#known-issues">known issues</a> section!</p></div>
+<div class="paragraph"><p>It&#8217;s important that you understand how <em>walNUT</em> communicates with you and how you can customize it: please read <a href="#panel-icon">panel icon/label</a>, <a href="#panel-menu">panel menu</a> and <a href="#preferences">preferences</a> sections.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -293,7 +284,7 @@ cellspacing="0" cellpadding="4">
 <td class="icon">
 <img src="../ad/icons/note.png" alt="Note" />
 </td>
-<td class="content">Every device stored in <em>walNUT</em>'s own list will be prompted for availability <strong>every time</strong> you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or when the menu is opened, provided that more than 15 minutes has passed after the last update.</td>
+<td class="content">Every device stored in <em>walNUT</em>'s own list will be prompted for availability <strong>every time</strong> you change some option or Gnome Shell is refreshed (e.g. return from screen block ..and so on) or 15 minutes after the last update.</td>
 </tr></table>
 </div>
 <div class="imageblock" style="text-align:center;">
@@ -712,28 +703,7 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect1">
-<h2 id="known-issues">7. KNOWN ISSUES</h2>
-<div class="sectionbody">
-<div class="paragraph"><p>Since <em>walNUT</em> relies on NUT&#8217;s upsc to search new devices and to tell if one is available or not, if a hostname:port is not resolvable, or if the host doesn&#8217;t have an up and running NUT, upsc will take some time to tell us, so <strong>every time</strong> the devices list get updated or when a research for new devices is invoked or, if the &#8216;problematic&#8217; device is the currently chosen one, every time <em>walNUT</em> tries to update its variables, it <em>could potentially</em> <strong>freeze Gnome Shell</strong> for some seconds (~3 for every &#8216;problematic&#8217; device).</p></div>
-<div class="paragraph"><p>In order to prevent these freezes every invocation of upsc/upscmd is done through a timeout of 150ms.<br />
-If your device isn&#8217;t found (e.g. it needs more than 150ms to reply), you can change that timeout by changing the <em>timeout</em> setting (<em>default: 0.150</em>) either through <a href="https://developer.gnome.org/dconf/0.14/dconf-editor.html">dconf-editor</a> (org &#8594; gnome &#8594; shell &#8594; extensions &#8594; walnut) or executing:</p></div>
-<div class="listingblock">
-<div class="content">
-<pre><code>gsettings set org.gnome.shell.extensions.walnut timeout N.NNN</code></pre>
-</div></div>
-<div class="paragraph"><p>Where <code>N.NNN</code> is the timeout in seconds.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="../ad/icons/caution.png" alt="Caution" />
-</td>
-<td class="content">Regardless of this timeout, it&#8217;s better not to play around with the &#8216;find new devices&#8217; box and &#8216;fantasy&#8217; hosts and it&#8217;s <em>higly</em> recommeded that you remove from the list devices whose hostname:port is going to be no longer resolvable.</td>
-</tr></table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="help">8. HELP</h2>
+<h2 id="help">7. HELP</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>If this manual doesn&#8217;t answer your questions or for every problem you may encounter, you can find some help at NUT&#8217;s list:</p></div>
 <div class="ulist"><ul>
@@ -752,7 +722,7 @@ If your device isn&#8217;t found (e.g. it needs more than 150ms to reply), you c
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="_translators">8.1. TRANSLATORS</h3>
+<h3 id="_translators">7.1. TRANSLATORS</h3>
 <div class="paragraph"><p>A guide to translate extensions can be found in Gnome Shell extensions' <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a>.</p></div>
 <div class="paragraph"><p><em>walNUT</em>'s documentation is done in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> and then processed either to the html version and to the <a href="http://projectmallard.org/">Mallard</a> version for <a href="http://projects.gnome.org/yelp/">Yelp</a>.</p></div>
 <div class="paragraph"><p>The help files must be put in the extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p></div>
@@ -837,7 +807,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 </div>
 </div>
 <div class="sect1">
-<h2 id="author">9. AUTHOR</h2>
+<h2 id="author">8. AUTHOR</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Daniele Pezzini &lt;<a href="mailto:hyouko@gmail.com">hyouko@gmail.com</a>&gt;</p></div>
 </div>
@@ -846,7 +816,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-10-27 23:16:56 CET
+Last updated 2013-11-02 22:26:12 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">
