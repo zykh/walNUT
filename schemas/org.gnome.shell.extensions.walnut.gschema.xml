@@ -76,13 +76,6 @@
 			<description>List devices already found. UPS name, host, port, user and password. First in the array is the chosen one.</description>
 		</key>
 
-		<!-- Timeout -->
-		<key type="d" name="timeout">
-			<default>0.150</default>
-			<summary>Timeout</summary>
-			<description>The seconds after walNUT shuld give up when invoking upsc and upscmd.</description>
-		</key>
-
 	</schema>
 
 </schemalist>

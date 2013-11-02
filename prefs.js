@@ -390,7 +390,7 @@ function createIntSetting(settings, setting) {
 // Boolean setting
 function createBoolSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0, margin_left: settings[setting].margin ? settings[setting].margin : 0 });
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0, margin_left: settings[setting].margin || 0 });
 
 	// Label
 	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });

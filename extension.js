@@ -19,19 +19,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-const	Clutter = imports.gi.Clutter,
+const	CheckBox = imports.ui.checkBox,
+	Clutter = imports.gi.Clutter,
+	Lang = imports.lang,
 	Main = imports.ui.main,
 	Mainloop = imports.mainloop,
 	ModalDialog = imports.ui.modalDialog,
-	Lang = imports.lang,
 	PanelMenu = imports.ui.panelMenu,
 	PopupMenu = imports.ui.popupMenu,
 	Shell = imports.gi.Shell,
 	ShellEntry = imports.ui.shellEntry,
+	Slider = imports.ui.slider,
 	St = imports.gi.St,
-	Util = imports.misc.util,
-	CheckBox = imports.ui.checkBox,
-	Slider = imports.ui.slider;
+	Util = imports.misc.util;
 
 // Gettext
 const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
@@ -39,7 +39,7 @@ const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
 
 const	Me = imports.misc.extensionUtils.getCurrentExtension(),
 	Convenience = Me.imports.convenience,
-	// Importing utilities.js
+	// Import utilities.js
 	Utilities = Me.imports.utilities;
 
 // Panel Icons
@@ -53,7 +53,7 @@ const	icons = {
 	// low = 5	| low = 13
 	// empty = 7	| empty = 11
 	// no battery/no load = 1
-	// +: lightning = online (= status OL = not on battery (OB = b) = main is not absent): full opacity = charging => o | transparent = charged => c
+	// +: lightning = online (= status OL = not on battery (OB = b) = mains is not absent): full opacity = charging => o | transparent = charged => c
 	// +: ! = caution (ALARM, BYPASS, OVER, RB..) => a
 
 	// status = OB (-> b) - no caution
@@ -227,7 +227,7 @@ const	BatteryIcon = {
 }
 
 // BatteryLevel: battery level for icons
-function BatteryLevel(raw){
+function BatteryLevel(raw) {
 
 	// Battery Level:
 	//	unknown	-> 1
@@ -257,7 +257,7 @@ function BatteryLevel(raw){
 }
 
 // LoadLevel: load level for icons
-function LoadLevel(raw){
+function LoadLevel(raw) {
 
 	// Load Level:
 	//	unknown	-> 1
@@ -288,11 +288,9 @@ function LoadLevel(raw){
 
 // Errors
 const	ErrorType = {
-	NO_ERROR: 0,
-	UPS_NA: 1,
-	NO_UPS: 2,
-	NO_NUT: 3,
-	NO_TIMEOUT: 4
+	UPS_NA: 2,	// 'Chosen' UPS is not available
+	NO_UPS: 4,	// No device found
+	NO_NUT: 8	// NUT's executables (i.e. upsc) not found
 }
 
 // Max length (in chars)
@@ -305,7 +303,7 @@ const	ERR_LABEL_LENGTH = 35,		// ErrorBox Label
 	CMD_LENGTH = 45,		// UPS commands list - description
 	CRED_DIALOG_LENGTH = 60;	// Credentials dialog description
 
-// Interval in milliseconds after which the menu, if open, has to be updated (15 minutes)
+// Interval in milliseconds after which the extension should update the availability of the stored devices (15 minutes)
 const	INTERVAL = 900000;
 
 // UpscMonitor: exec upsc at a given interval and deliver infos
@@ -315,94 +313,439 @@ const	UpscMonitor = new Lang.Class({
 	_init: function() {
 
 		// Actual status
-		this._state = '';
+		this._state |= ErrorType.NO_UPS | ErrorType.UPS_NA;
 
 		// Device list
-		this._devices = new Array();
+		this._devices = [];
+		this._prevDevices = [];
 
 		// Here we'll store chosen UPS's variables
 		this._ups = {};
-		this._vars = Array();
+		this._vars = [];
 
 		// upsc not found
 		if (!upsc)
-			this._state = ErrorType.NO_NUT;
-		// timeout not found
-		else if (!timeout)
-			this._state = ErrorType.NO_TIMEOUT;
-		// upsc found
-		else {
-			this._state = ErrorType.NO_ERROR;
-			this.update();
-		}
+			this._state |= ErrorType.NO_NUT;
+		else
+			// Update devices
+			this.update(true);
 
 		// Get time between updates
 		this._interval = gsettings.get_int('update-time');
 
-		// Get timeout
-		this._timeout = gsettings.get_double('timeout');
-
+		// Connect update on settings changed
 		this._settingsChangedId = gsettings.connect('changed', Lang.bind(this, function() {
 
 			// Update interval between updates
 			this._interval = gsettings.get_int('update-time');
 
-			// Update timeout
-			this._timeout = gsettings.get_double('timeout');
+			// Remove timers
+			if (this._timer)
+				Mainloop.source_remove(this._timer);
+
+			if (this._forceRefresh)
+				Mainloop.source_remove(this._forceRefresh);
+
+			// Update devices
+			this.update(true);
 
 			// Update infos
-			this.updateTimer();
+			this._updateTimer();
 
 		}));
 
-		this.updateTimer();
+		this._updateTimer();
 
 	},
 
-	// _getDevices: Search available devices
-	_getDevices: function() {
+	// getDevices: Get available devices
+	// if a host:port is given call a function to check whether new UPSes are found there and add them to the already listed ones
+	// otherwise, get stored UPSes or if there's no stored UPS try to find new ones at localhost:3493
+	// - notify: whether we have to notify new devices found/not found or not
+	getDevices: function(notify, host, port) {
 
-		this._devices = Utilities.getUps(timeout, this._timeout, false, upsc);
+		// Save actual devices
+		this._prevDevices = JSON.parse(JSON.stringify(this._devices));
 
-		if (this._devices.length == 0)
-			this._state = ErrorType.NO_UPS;
+		let got = [];
+
+		// Retrieve actual UPSes stored in schema
+		let stored = gsettings.get_string('ups');
+
+		// e.g.: got = [ { name: 'name', host: 'host', port: 'port'}, {name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
+
+		if (!got.length)
+			this._state |= ErrorType.NO_UPS;
+
+		// If list is empty we'll check localhost:3493
+		if (!host && !got.length)
+			host = 'localhost';
+		if (!port && !got.length)
+			port = '3493';
+
+		if (host && port) {
+
+			Utilities.Do(['%s'.format(upsc), '-l', '%s:%s'.format(host, port)], Lang.bind(this, this._postGetDevices), [notify, host, port]);
+
+			return;
+
+		}
+
+		// No new UPS to search
+		this._devices = got;
+
+		// Check which stored UPS is available
+		this._checkAll();
+
+		this._state &= ~ErrorType.NO_UPS;
+
+	},
+
+	// _postGetDevices: process the result of the Do() function called by getDevices() and save them in schema and in this._devices as an array of objects:
+	//  {
+	//	name: upsname,
+	//	host: upshostname,
+	//	port: upsport,
+	//	user: username,
+	//	pw: password
+	//  }
+	// then call _checkAll() to fill the devices' list with the availability of each stored UPS
+	_postGetDevices: function(stdout, stderr, opts) {
+
+		let notify = opts[0];
+		let host = opts[1];
+		let port = opts[2];
+
+		let got = [];
+
+		let stored = gsettings.get_string('ups');
+
+		// e.g.: got = [ { name: 'name', host: 'host', port: 'port'}, {name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
+
+		// Unable to find an UPS -> returns already available ones
+		if (!stdout || stdout.length == 0 || (!stdout && !stderr) || (stderr && stderr.slice(0, 7) == 'Error: ')) {
+
+			// Notify
+			if (notify)
+				// TRANSLATORS: Notify title/description for error while searching new devices
+				Main.notifyError(_("NUT: Error!"), _("Unable to find new devices at host %s:%s").format(host, port));
+
+			this._devices = got;
+
+			// No stored UPSes
+			if (!this._devices.length) {
+
+				this._state |= ErrorType.NO_UPS;
+
+				return;
+
+			}
+
+			// Check which stored UPS is available
+			this._checkAll();
+
+			this._state &= ~ErrorType.NO_UPS;
+
+			return;
+
+		}
+
+		// Store here the actual length of the retrieved list
+		let l = got.length;
+
+		// Split upsc answer in token: each token = an UPS
+		let buffer = stdout.split('\n');
+
+		// Number of devices found
+		let foundDevices = 0;
+
+		// Iterate through each token
+		for (let i = 0; i < buffer.length; i++) {
+
+			// Skip empty token
+			if (buffer[i].length == 0)
+				continue;
+
+			let ups = {};
+
+			ups.name = buffer[i];
+			ups.host = host;
+			ups.port = port;
+
+			// Check if we already have this UPS
+			let isNew = 1;
+
+			// Don't do anything if there aren't stored UPSes in the list
+			if (l > 0) {
+
+				for (let j = 0; j < got.length; j++) {
+
+					if (got[j].name != ups.name)
+						continue;
+
+					if (got[j].host != ups.host)
+						continue;
+
+					if (got[j].port != ups.port)
+						continue;
+
+					isNew = 0;
+
+					break;
+
+				}
+
+			}
+
+			// New UPS found!
+			if (isNew) {
+
+				got.push(ups);
+
+				// Notify
+				if (notify) {
+
+					// TRANSLATORS: Notify title/description on every new device found
+					Main.notify(_("NUT: new device found"), _("Found device %s at host %s:%s").format(ups.name, ups.host, ups.port));
+
+					foundDevices++;
+
+				}
+
+			}
+
+		}
+
+		// Notify
+		if (notify) {
+
+			// Devices found (more than 1)
+			if (foundDevices > 1)
+				// TRANSLATORS: Notify title/description on new devices found (more than one)
+				Main.notify(_("NUT: new devices found"), _("Found %d devices at host %s:%s").format(foundDevices, host, port));
+
+			// No devices found
+			else if (!foundDevices)
+				// TRANSLATORS: Notify title/description for error while searching new devices
+				Main.notifyError(_("NUT: Error!"), _("Unable to find new devices at host %s:%s").format(host, port));
+
+		}
+
+		// First item of got array is the 'chosen' UPS: preserve it
+		let chosen = got.shift();
+
+		// Then sort UPSes in alphabetical order (host:port, and then name)
+		got.sort(function(a, b) { return ((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? 1 : (((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? -1 : 0); });
+
+		// And now restore chosen UPS
+		got.unshift(chosen);
+
+		// Store new devices in schema
+		if (got.length > l)
+			gsettings.set_string('ups', '%s'.format(JSON.stringify(got)));
+
+		this._devices = got;
+
+		// Check which stored UPS is available
+		this._checkAll();
+
+		this._state &= ~ErrorType.NO_UPS;
+
+	},
+
+	// _checkAll: Check which stored UPS is available
+	_checkAll: function() {
+
+		for each (let item in this._devices) {
+
+			// Just in case we lose the UPS..
+			item.av = 0;
+
+			Utilities.Do(['%s'.format(upsc), '%s@%s:%s'.format(item.name, item.host, item.port)], Lang.bind(this, this._checkUps), [item]);
+
+		}
+
+	},
+
+	// _checkUps: callback function to tell whether a given UPS is available or not
+	// The currently processed UPS will get added to its properties its availability:
+	// - if available -> av = 1: e.g. { name: 'name', host: 'host', port: 'port', av: 1 }
+	// - if not available -> av = 0: e.g. { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1', av: 0 }
+	_checkUps: function(stdout, stderr, opts) {
+
+		// The UPS we're checking
+		let ups = opts[0];
+
+		if (!stdout || stdout.length == 0 || (!stdout && !stderr) || (stderr && stderr.slice(0, 7) == 'Error: '))
+			ups.av = 0;
 		else
-			this._state = ErrorType.NO_ERROR;
+			ups.av = 1;
+
+		let updateNeeded = true;
+
+		for each (let prev in this._prevDevices) {
+
+			if (prev.name != ups.name)
+				continue;
+
+			if (prev.host != ups.host)
+				continue;
+
+			if (prev.port != ups.port)
+				continue;
+
+			if (prev.av != ups.av)
+				continue;
+
+			// Don't update the displayed list of devices if nothing changes
+			updateNeeded = false;
+
+		}
+
+		if (updateNeeded && walnut) {
+
+			// Refresh the list of devices
+			walnut.refreshList();
+
+		}
 
 	},
 
 	// _getVars: Retrieve chosen UPS's variables
 	_getVars: function() {
 
-		let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upsc), '%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)]);
+		// Reset status
+		this._state |= ErrorType.UPS_NA;
 
-		if (!stdout || stderr)
-			this._state = ErrorType.UPS_NA;
-		else {
-			this._ups = Utilities.toObj(stdout, ':');
-			this._vars = Utilities.toArr(stdout, ':', 'var', 'value');
-			this._state = ErrorType.NO_ERROR;
-		}
+		Utilities.Do(['%s'.format(upsc), '%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)], Lang.bind(this, this._processVars), [this._devices[0]]);
 
 	},
 
-	// updateTimer: update infos at a given interval
-	updateTimer: function() {
+	// _processVars: callback function for _getVars() - update status and vars
+	_processVars: function(stdout, stderr, opts) {
+
+		// The device the currently processed function belongs to
+		let device = opts[0];
+
+		let hasChanged = false;
+
+		// The actual 'chosen' device
+		let act = this._devices[0] || { name: '' };
+
+		// This device is no longer the chosen one
+		if (act.name != device.name || act.host != device.host || act.port != device.port)
+			return;
+
+		if (!stdout || stderr || (!stdout && !stderr)) {
+
+			this._state |= ErrorType.UPS_NA;
+
+			act.av = 0;
+
+		} else {
+
+			this._ups = Utilities.toObj(stdout, ':');
+			this._vars = Utilities.toArr(stdout, ':', 'var', 'value');
+
+			this._state &= ~ErrorType.UPS_NA;
+
+			act.av = 1;
+
+			// Update setvars/commands
+
+			let prev = this._prevChosen || { name: '' };
+
+			// Update only if something changed
+			if (act.name != prev.name || act.host != prev.host || act.port != prev.port || act.av != prev.av) {
+
+				if (upsrwDo)
+					upsrwDo.update();
+
+				if (upscmdDo)
+					upscmdDo.update();
+
+				hasChanged = true;
+
+			}
+
+		}
+
+		if (this._forceRefresh) {
+
+			Mainloop.source_remove(this._forceRefresh);
+
+			delete this._forceRefresh;
+
+		}
+
+		// Update panel/menu
+		if (walnut) {
+
+			walnut.refreshPanel();
+
+			if (walnut.menu.isOpen)
+				walnut.refreshMenu(hasChanged);
+
+		}
+
+		// Save actually processed device
+		this._prevChosen = JSON.parse(JSON.stringify(act));
+
+	},
+
+	// _updateTimer: update infos at a given interval
+	_updateTimer: function() {
+
+		if (this._state & ErrorType.NO_NUT)
+			return;
 
 		this.update();
 
-		if (this._state != ErrorType.NO_NUT && this._state != ErrorType.NO_TIMEOUT)
-			this._timer = Mainloop.timeout_add_seconds(this._interval, Lang.bind(this, this.updateTimer));
+		this._timer = Mainloop.timeout_add_seconds(this._interval, Lang.bind(this, this._updateTimer));
+
+		// Just in case we lose the UPS..
+		this._forceRefresh = Mainloop.timeout_add_seconds(2, Lang.bind(this, function() {
+
+			if (walnut) {
+
+				walnut.refreshPanel();
+
+				if (walnut.menu.isOpen)
+					walnut.refreshMenu(true);
+
+			}
+
+			delete this._forceRefresh;
+
+		}));
 
 	},
 
 	// update: Search for available devices and then for the first one's variables
-	update: function() {
+	update: function(hasChanged) {
 
-		this._getDevices();
+		// milliseconds
+		let now = Date.now();
 
-		if (this._state == ErrorType.NO_ERROR)
-			this._getVars();
+		// Last time the list has been updated
+		if (!this._lastTime)
+			this._lastTime = now;
+
+		// Update the list
+		if (hasChanged || ((now - this._lastTime) > INTERVAL)) {
+
+			this.getDevices();
+
+			this._lastTime = now;
+
+		}
+
+		if (this._state & ErrorType.NO_UPS)
+			return;
+
+		this._getVars();
 
 	},
 
@@ -437,12 +780,334 @@ const	UpscMonitor = new Lang.Class({
 	// destroy: remove timer and disconnect signals
 	destroy: function() {
 
-		// Remove timer
+		// Remove timers
 		if (this._timer)
 			Mainloop.source_remove(this._timer);
 
-		// Disconnect settings changed connection
+		if (this._forceRefresh)
+			Mainloop.source_remove(this._forceRefresh);
+
+		// Disconnect settings-changed connection
 		gsettings.disconnect(this._settingsChangedId);
+
+	}
+});
+
+// UpscmdDo: execute upscmd and process the reply
+const	UpscmdDo = new Lang.Class({
+	Name: 'UpscmdDo',
+
+	_init: function() {
+
+		this._hasCmds = false;
+
+		this._cmds = [];
+
+	},
+
+	update: function() {
+
+		// Reset status
+		this._hasCmds = false;
+
+		// Get actual device
+		this._device = upscMonitor.getList()[0];
+
+		// Don't do anything in case of errors
+		if (upscMonitor.getState() & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))
+			return;
+
+		this._retrieveCmds();
+
+	},
+
+	// _retrieveCmds: get instant commands from the UPS through upscmd
+	_retrieveCmds: function() {
+
+		if (!upscmd) {
+			this._hasCmds = false;
+			return;
+		}
+
+		Utilities.Do(['%s'.format(upscmd), '-l', '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)], Lang.bind(this, this._processRetrievedCmds), [this._device]);
+
+	},
+
+	// _processRetrievedCmds: callback function for _retrieveCmds()
+	_processRetrievedCmds: function(stdout, stderr, opts) {
+
+		// The device the currently processed function belongs to
+		let device = opts[0];
+
+		// The actual 'chosen' device
+		let act = upscMonitor.getList()[0] || { name: '' };
+
+		// This device is no longer the chosen one
+		if (act.name != device.name || act.host != device.host || act.port != device.port)
+			return;
+
+		if (!stdout && !stderr) {
+			this._hasCmds = false;
+			return;
+		}
+
+		let cmds;
+
+		if (stderr)
+			cmds = stderr;
+		else
+			cmds = stdout;
+
+		// Error!
+		if (cmds.length == 0 || cmds.slice(0, 7) == 'Error: ') {
+			this._hasCmds = false;
+			return;
+		}
+
+		this._cmds = [];
+
+		// Parse reply to retrieve upscmd commands
+		this._cmds = Utilities.toArr(cmds, '-', 'cmd', 'desc');
+
+		// Remove leading comment
+		this._cmds.shift();
+
+		this._hasCmds = true;
+
+	},
+
+	hasCmds: function() {
+
+		return this._hasCmds;
+
+	},
+
+	getCmds: function() {
+
+		return this._cmds;
+
+	},
+
+	// cmdExec: try to exec the command cmd
+	cmdExec: function(user, pw, device, cmd, extradata) {
+
+		let extra = extradata.trim();
+
+		// We have both user and password
+		if (user && pw) {
+
+			Utilities.Do(['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra)], Lang.bind(this, this._processExecutedCmd), [device, cmd, extradata]);
+
+		// User, password or both are not available
+		} else {
+
+			// ..ask for them
+			let credDialog = new CredDialogCmd(device, cmd, extra, false);
+			credDialog.open(global.get_current_time());
+
+		}
+
+	},
+
+	// _processExecutedCmd: callback function for cmdExec() - process the result of the executed instant command
+	_processExecutedCmd: function(stdout, stderr, opts) {
+
+		let device = opts[0];
+
+		let cmd = opts[1];
+
+		let extra = opts[2];
+
+		let cmdExtra;
+
+		if (extra.length)
+			cmdExtra = '\'%s %s\''.format(cmd, extra);
+		else
+			cmdExtra = cmd;
+
+		// Just a note here: upscmd uses always stderr (also if a command has been successfully sent to the driver)
+
+		// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
+		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
+
+			// ..ask for them and tell the user the previuosly sent ones were wrong
+			let credDialog = new CredDialogCmd(device, cmd, extra, true);
+			credDialog.open(global.get_current_time());
+
+		// stderr = OK\n -> Command sent to the driver successfully
+		} else if (stderr && stderr.indexOf('OK') != -1) {
+
+			// TRANSLATORS: Notify title/description on command successfully sent
+			Main.notify(_("NUT: command handled"), _("Successfully sent command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port));
+
+			// Update vars/panel/menu (not devices)
+			upscMonitor.update();
+
+		// mmhh.. something's wrong here!
+		} else
+			// TRANSLATORS: Notify title/description for error on command sent
+			Main.notifyError(_("NUT: error while handling command"), _("Unable to send command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port));
+
+	}
+});
+
+// UpsrwDo: execute upsrw and process the reply
+const	UpsrwDo = new Lang.Class({
+	Name: 'UpsrwDo',
+
+	_init: function() {
+
+		this._hasSetVars = false;
+
+		this._setVar = {};
+
+	},
+
+	update: function() {
+
+		// Reset status
+		this._hasSetVars = false;
+
+		// Get actual device
+		this._device = upscMonitor.getList()[0];
+
+		// Don't do anything in case of errors
+		if (upscMonitor.getState() & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))
+			return;
+
+		this._retrieveSetVars();
+
+	},
+
+	// _retrieveSetVars: get settable vars and their boundaries from the UPS through upsrw
+	_retrieveSetVars: function() {
+
+		if (!upsrw) {
+			this._hasSetVars = false;
+			return;
+		}
+
+		Utilities.Do(['%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)], Lang.bind(this, this._processRetrievedSetVars), [this._device]);
+
+	},
+
+	// _processRetrievedSetVars: callback function for _retrieveSetVars()
+	_processRetrievedSetVars: function(stdout, stderr, opts) {
+
+		// The device the currently processed function belongs to
+		let device = opts[0];
+
+		// The actual 'chosen' device
+		let act = upscMonitor.getList()[0] || { name: '' };
+
+		// This device is no longer the chosen one
+		if (act.name != device.name || act.host != device.host || act.port != device.port)
+			return;
+
+		let svreply = '';
+
+		if (!stdout && !stderr) {
+			this._hasSetVars = false;
+			return;
+		}
+
+		if (stderr)
+			svreply = stderr;
+		else
+			svreply = stdout;
+
+		// Error!
+		if (svreply.length == 0 || svreply.slice(0, 7) == 'Error: ') {
+			this._hasSetVars = false;
+			return;
+		}
+
+		this._setVar = {};
+
+		// Parse reply to get setvars
+		this._setVar = Utilities.parseSetVar(svreply);
+
+		// No setvars
+		if (!Object.keys(this._setVar).length) {
+			this._hasSetVars = false;
+			return;
+		}
+
+		this._hasSetVars = true;
+
+	},
+
+	hasSetVars: function() {
+
+		return this._hasSetVars;
+
+	},
+
+	getSetVars: function() {
+
+		return this._setVar;
+
+	},
+
+	// setVar: try to set varName to varValue in device
+	setVar: function(username, password, device, varName, varValue) {
+
+		let user = username;
+		let pw = password;
+
+		if (!user)
+			user = device.user;
+
+		if (!pw)
+			pw = device.pw;
+
+		// We have both user and password
+		if (user && pw) {
+
+			Utilities.Do(['%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port)], Lang.bind(this, this._processSetVar), [device, varName, varValue]);
+
+		// User, password or both are not available
+		} else {
+
+			// ..ask for them
+			let credDialog = new CredDialogSetvar(device, varName, varValue, false);
+			credDialog.open(global.get_current_time());
+
+		}
+
+	},
+
+	// _processSetVar: callback function for setVar()
+	_processSetVar: function(stdout, stderr, opts) {
+
+		let device = opts[0];
+
+		let varName = opts[1];
+
+		let varValue = opts[2];
+
+		// Just a note here: upsrw uses always stderr (also if a setvar has been successfully sent to the driver)
+
+		// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
+		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
+
+			// ..ask for them and tell the user the previuosly sent ones were wrong
+			let credDialog = new CredDialogSetvar(device, varName, varValue, true);
+			credDialog.open(global.get_current_time());
+
+		// stderr = OK\n -> Setvar sent to the driver successfully
+		} else if (stderr && stderr.indexOf('OK') != -1) {
+
+			// TRANSLATORS: Notify title/description on setvar successfully sent
+			Main.notify(_("NUT: setvar handled"), _("Successfully set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port));
+
+			// Update vars/panel/menu (not devices)
+			upscMonitor.update();
+
+		// mmhh.. something's wrong here!
+		} else
+			// TRANSLATORS: Notify title/description for error on setvar sent
+			Main.notifyError(_("NUT: error while handling setvar"), _("Unable to set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port));
 
 	}
 });
@@ -459,20 +1124,17 @@ const	walNUT = new Lang.Class({
 		this._monitor = upscMonitor;
 		this._state = this._monitor.getState();
 
-		// Timers
-		this._timers = {};
-
 		// Panel button
-		this._btnBox = new St.BoxLayout();
+		let _btnBox = new St.BoxLayout();
 		// Panel icon
-		this._icon = new St.Icon({ icon_name: icons.e+'-symbolic', style_class: 'system-status-icon' });
+		this._icon = new St.Icon({ icon_name: icons.e + '-symbolic', style_class: 'system-status-icon' });
 		// Panel label for battery charge and device load
 		this._status = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
 
-		this._btnBox.add(this._icon);
-		this._btnBox.add(this._status);
+		_btnBox.add(this._icon);
+		_btnBox.add(this._status);
 
-		this.actor.add_actor(this._btnBox);
+		this.actor.add_actor(_btnBox);
 		this.actor.add_style_class_name('panel-status-button');
 
 		// Menu
@@ -500,10 +1162,13 @@ const	walNUT = new Lang.Class({
 		this._cred_btn = new Button('imported-dialog-password', _("Credentials"), Lang.bind(this, function() {
 
 			// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
+
 			if (this.menu.addBox.actor.visible)
 				this.menu.addBox.hide();
+
 			if (this.menu.delBox.actor.visible)
 				this.menu.delBox.hide();
+
 			if (this.menu.credBox.actor.visible)
 				this.menu.credBox.hide();
 			else
@@ -516,10 +1181,13 @@ const	walNUT = new Lang.Class({
 		this._add_btn = new Button('imported-edit-find', _("Find new devices"), Lang.bind(this, function() {
 
 			// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
+
 			if (this.menu.credBox.actor.visible)
 				this.menu.credBox.hide();
+
 			if (this.menu.delBox.actor.visible)
 				this.menu.delBox.hide();
+
 			if (this.menu.addBox.actor.visible)
 				this.menu.addBox.hide();
 			else
@@ -527,15 +1195,18 @@ const	walNUT = new Lang.Class({
 
 		}));
 
-		// Delete UPS from UPS list button
+		// Delete UPS from devices' list button
 		// TRANSLATORS: Accessible name of 'Delete device' button
 		this._del_btn = new Button('imported-user-trash', _("Delete device"), Lang.bind(this, function() {
 
 			// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
+
 			if (this.menu.addBox.actor.visible)
 				this.menu.addBox.hide();
+
 			if (this.menu.credBox.actor.visible)
 				this.menu.credBox.hide();
+
 			if (this.menu.delBox.actor.visible)
 				this.menu.delBox.hide();
 			else
@@ -559,9 +1230,11 @@ const	walNUT = new Lang.Class({
 				// Language code + country code (eg. en_US, it_IT, ..)
 				if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
 					Util.spawn(['yelp', '%s/%s'.format(help.get_path(), locale.split('.')[0])]);
+
 				// Language code (eg. en, it, ..)
 				else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
 					Util.spawn(['yelp', '%s/%s'.format(help.get_path(), locale.split('_')[0])]);
+
 				else
 					Util.spawn(['yelp', '%s/C'.format(help.get_path())]);
 
@@ -574,9 +1247,11 @@ const	walNUT = new Lang.Class({
 					// Language code + country code (eg. en_US, it_IT, ..)
 					if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
 						Util.spawn(['xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('.')[0])]);
+
 					// Language code (eg. en, it, ..)
 					else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
 						Util.spawn(['xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('_')[0])]);
+
 					else
 						Util.spawn(['xdg-open', '%s/C/help.html'.format(help.get_path())]);
 
@@ -589,41 +1264,37 @@ const	walNUT = new Lang.Class({
 		});
 
 		// Always show Bottom Buttons (some won't be reactive in case of certain errors)
+
 		// Preferences
 		this.menu.controls.addControl(this._pref_btn);
+
 		// Credentials
-		this.menu.controls.addControl(this._cred_btn, this._state == ErrorType.NO_ERROR || this._state == ErrorType.UPS_NA ? 'active' : 'inactive' );
+		this.menu.controls.addControl(this._cred_btn, !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive' );
+
 		// Find new UPSes
-		this.menu.controls.addControl(this._add_btn, this._state != ErrorType.NO_NUT && this._state != ErrorType.NO_TIMEOUT ? 'active' : 'inactive' );
+		this.menu.controls.addControl(this._add_btn, !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive' );
+
 		// Delete UPS
-		this.menu.controls.addControl(this._del_btn, this._state == ErrorType.NO_ERROR || this._state == ErrorType.UPS_NA ? 'active' : 'inactive' );
+		this.menu.controls.addControl(this._del_btn, !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive' );
+
 		// Help
 		this.menu.controls.addControl(this._help_btn);
 
 		// Update options stored in schema
-		this.updateOptions();
+		this._updateOptions();
 
+		// Connect update on settings changed
 		let settingsChangedId = gsettings.connect('changed', Lang.bind(this, function() {
 
-			this._state = this._monitor.getState();
-
-			this.updateOptions();
-
-			this.refreshPanel();
-			this.refreshMenu(true);
+			this._updateOptions();
 
 		}));
 
-		// Disconnect settings changing connection on destroy
-		this.connect('destroy', Lang.bind(this, function(){ gsettings.disconnect(settingsChangedId); }));
+		// Disconnect settings-changed connection on destroy
+		this.connect('destroy', Lang.bind(this, function() { gsettings.disconnect(settingsChangedId); }));
 
-		// this._prevState = Status when the menu was closed the last time
-		this._prevState = this._state;
-
-		// Set timer for panel icon/text update
-		this.updatePanel();
-
-		// Build menu
+		// Init panel/menu
+		this.refreshPanel();
 		this.refreshMenu(true);
 
 	},
@@ -642,48 +1313,29 @@ const	walNUT = new Lang.Class({
 
 	},
 
-	// updatePanel: update panel icon/text at a given interval
-	updatePanel: function() {
-
-		this._state = this._monitor.getState();
-
-		this.refreshPanel();
-		this._timers.panel = Mainloop.timeout_add_seconds(this._interval, Lang.bind(this, this.updatePanel));
-
-	},
-
-	// updateMenu: update menu at a given interval
-	updateMenu: function() {
-
-		this._state = this._monitor.getState();
-
-		this.refreshMenu();
-		this._timers.menu = Mainloop.timeout_add_seconds(this._interval, Lang.bind(this, this.updateMenu));
-
-	},
-
 	// Update Options
-	updateOptions: function() {
+	_updateOptions: function() {
 
-		// Retrieving values stored in schema
-
-		// General Options
-		// Time between updates
-		this._interval = gsettings.get_int('update-time');
+		// Retrieve values stored in schema
 
 		// Raw Data
+
 		// Display raw data
 		this._display_raw = gsettings.get_boolean('display-raw');
 
 		// UPS commands
+
 		// Display UPS commands
 		this._display_cmd = gsettings.get_boolean('display-cmd');
 
 		// Panel button options
+
 		// Display device load in panel icon
 		this._panel_icon_display_load = gsettings.get_boolean('panel-icon-display-load');
+
 		// Display device load in panel label
 		this._panel_text_display_load = gsettings.get_boolean('panel-text-display-load');
+
 		// Display battery charge in panel label
 		this._panel_text_display_charge = gsettings.get_boolean('panel-text-display-charge');
 
@@ -695,14 +1347,13 @@ const	walNUT = new Lang.Class({
 		this.parent(menu, open);
 
 		// open -> update
-		if (open)
-			this.updateMenu();
-		// close -> remove timer
-		else {
-			if (this._timers.menu) {
-				Mainloop.source_remove(this._timers.menu);
-				delete this._timers.menu;
-			}
+		if (open) {
+
+			this.refreshMenu(true);
+
+			// How ugly is having different values in panel and in menu?
+			this.refreshPanel();
+
 		}
 
 	},
@@ -710,18 +1361,20 @@ const	walNUT = new Lang.Class({
 	// refreshPanel: Update panel icon and text
 	refreshPanel: function() {
 
-		this.updatePanelIcon();
-		this.updatePanelText();
+		this._state = this._monitor.getState();
+
+		this._updatePanelIcon();
+		this._updatePanelText();
 
 	},
 
-	// updatePanelIcon: Update icon displayed in panel
-	updatePanelIcon: function() {
+	// _updatePanelIcon: Update icon displayed in panel
+	_updatePanelIcon: function() {
 
 		// Errors!
-		if (this._state != ErrorType.NO_ERROR) {
+		if (this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel icon
-			this._icon.icon_name = icons.e+'-symbolic';
+			this._icon.icon_name = icons.e + '-symbolic';
 			// ..and return
 			return;
 		}
@@ -730,10 +1383,13 @@ const	walNUT = new Lang.Class({
 		let icon, battery_level = 1, load_level = 1, charged = false;
 
 		if (vars['battery.charge']) {
+
 			battery_level = BatteryLevel(vars['battery.charge']);
-			charged = vars['battery.charge']*1 == 100;
-		// The UPS isn't telling us it's charging or discharging -> we suppose it's charged
+
+			charged = vars['battery.charge'] * 1 == 100;
+
 		} else
+			// If the UPS isn't telling us it's charging or discharging -> we suppose it's charged
 			charged = vars['ups.status'].indexOf('CHRG') != -1 ? charged : true;
 
 		if (vars['ups.load'] && this._panel_icon_display_load)
@@ -741,17 +1397,17 @@ const	walNUT = new Lang.Class({
 
 		let status = parseStatus(vars['ups.status'], true);
 
-		icon = status.line + (status.alarm ? status.alarm : '') + (charged ? 'c' : '') + battery_level*load_level;
+		icon = status.line + (status.alarm || '') + (charged ? 'c' : '') + battery_level * load_level;
 
-		this._icon.icon_name = icons[icon]+'-symbolic';
+		this._icon.icon_name = icons[icon] + '-symbolic';
 
 	},
 
-	// updatePanelText: Update infos displayed in panel
-	updatePanelText: function() {
+	// _updatePanelText: Update infos displayed in panel
+	_updatePanelText: function() {
 
 		// Errors!
-		if (this._state != ErrorType.NO_ERROR) {
+		if (this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel text
 			this._status.text = '';
 			// ..and return
@@ -764,7 +1420,7 @@ const	walNUT = new Lang.Class({
 		// Display battery charge
 		if (this._panel_text_display_charge && vars['battery.charge'])
 			// TRANSLATORS: Panel text for battery charge
-			text += _("C: %d%").format(vars['battery.charge']*1);
+			text += _("C: %d%").format(vars['battery.charge'] * 1);
 
 		// Display UPS load
 		if (this._panel_text_display_load && vars['ups.load']) {
@@ -775,7 +1431,7 @@ const	walNUT = new Lang.Class({
 				text += _(", ");
 
 			// TRANSLATORS: Panel text for device load
-			text += _("L: %d%").format(vars['ups.load']*1);
+			text += _("L: %d%").format(vars['ups.load'] * 1);
 
 		}
 
@@ -789,26 +1445,13 @@ const	walNUT = new Lang.Class({
 	// refreshMenu: Update menu
 	refreshMenu: function(hasChanged) {
 
-		// hasChanged -> true also if previous status != actual status
-		hasChanged = hasChanged || this._state != this._prevState;
+		this._state = this._monitor.getState();
 
-		// If upsc and timeout are available, UPS list will be shown if at least one UPS is in the list, also if it's not currently available
-		if (this._state != ErrorType.NO_NUT && this._state != ErrorType.NO_TIMEOUT && this._state != ErrorType.NO_UPS) {
+		// If upsc is available, the devices' list will be shown if at least one UPS is in the list, also if it's not currently available
+		if (!(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS))) {
 
-			let devices = this._monitor.getList();
-
-			// milliseconds
-			let now = Date.now();
-
-			// Last time the menu has been updated
-			if (!this._lastTime)
-				this._lastTime = now;
-
-			// UPS list
-			if (hasChanged || ((now - this._lastTime) > INTERVAL)) {
-				this.menu.upsList.update(devices);
-				this._lastTime = now;
-			}
+			if (hasChanged)
+				this.refreshList();
 
 			if (!this.menu.upsList.actor.visible)
 				this.menu.upsList.show();
@@ -822,7 +1465,7 @@ const	walNUT = new Lang.Class({
 		}
 
 		// If upsc is available and at least one UPS is available -> show menu..
-		if (this._state == ErrorType.NO_ERROR) {
+		if (!(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))) {
 
 			let vars = this._monitor.getVars();
 			let varsArr = this._monitor.getVarsArr();
@@ -837,9 +1480,11 @@ const	walNUT = new Lang.Class({
 				this.menu.upsModel.show(vars['device.mfr'], vars['device.model']);
 
 			// TopDataList
+
 			// UPS status
 			this.menu.upsTopDataList.update('S', vars['ups.status']);
 			this.menu.upsTopDataList.show();
+
 			// UPS alarm
 			if (vars['ups.alarm'])
 				this.menu.upsTopDataList.update('A', vars['ups.alarm']);
@@ -917,18 +1562,15 @@ const	walNUT = new Lang.Class({
 			// UPS Raw Data
 			if (this._display_raw)
 				this.menu.upsRaw.update(varsArr, hasChanged);
+
 			else if (this.menu.upsRaw.actor.visible)
 				this.menu.upsRaw.hide();
 
 			// UPS Commands..
-			if (this._display_cmd) {
-
-				if (hasChanged)
-					this.menu.upsCmdList.update();
-
+			if (this._display_cmd)
 				this.menu.upsCmdList.show();
 
-			} else if (this.menu.upsCmdList.actor.visible)
+			else if (this.menu.upsCmdList.actor.visible)
 				this.menu.upsCmdList.hide();
 
 			// UPS Credentials Box
@@ -938,45 +1580,51 @@ const	walNUT = new Lang.Class({
 		// ..else show error 'upsc not found'/'NUT not installed' or 'No UPS found'
 		} else {
 
-			// Hiding not available infos
+			// Hide not available infos
+
 			if (this.menu.upsModel.actor.visible)
 				this.menu.upsModel.hide();
+
 			if (this.menu.upsTopDataList.actor.visible)
 				this.menu.upsTopDataList.hide();
+
 			if (this.menu.upsDataTable.actor.visible) {
 				this.menu.upsDataTable.clean();
 				this.menu.upsDataTable.hide();
 			}
+
 			if (this.menu.separator.actor.visible)
 				this.menu.separator.actor.hide();
+
 			if (this.menu.upsRaw.actor.visible)
 				this.menu.upsRaw.hide();
+
 			if (this.menu.upsCmdList.actor.visible)
 				this.menu.upsCmdList.hide();
 
+			// Show errorBox
 			this.menu.errorBox.show(this._state);
 
 		}
 
 		// Update Bottom Buttons (some won't be reactive in case of certain errors)
-		// Credentials
-		this.menu.controls.setControl(this._cred_btn, this._state == ErrorType.NO_ERROR || this._state == ErrorType.UPS_NA ? 'active' : 'inactive' );
-		// Find new UPSes
-		this.menu.controls.setControl(this._add_btn, this._state != ErrorType.NO_NUT && this._state != ErrorType.NO_TIMEOUT ? 'active' : 'inactive' );
-		// Delete UPS
-		this.menu.controls.setControl(this._del_btn, this._state == ErrorType.NO_ERROR || this._state == ErrorType.UPS_NA ? 'active' : 'inactive' );
 
-		this._prevState = this._state;
+		// Credentials
+		this.menu.controls.setControl(this._cred_btn, !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive' );
+
+		// Find new UPSes
+		this.menu.controls.setControl(this._add_btn, !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive' );
+
+		// Delete UPS
+		this.menu.controls.setControl(this._del_btn, !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive' );
 
 	},
 
-	destroy: function() {
+	refreshList: function() {
 
-		// Remove timers
-		for (let item in this._timers)
-			Mainloop.source_remove(this._timers[item]);
+		let devices = this._monitor.getList();
 
-		this.parent();
+		this.menu.upsList.update(devices);
 
 	}
 });
@@ -986,13 +1634,11 @@ const	CredDialog = new Lang.Class({
 	Name: 'CredDialog',
 	Extends: ModalDialog.ModalDialog,
 
-	_init: function(delegate, error) {
+	_init: function(device, error) {
 
 		this.parent({ styleClass: 'walnut-cred-dialog' });
 
-		this._delegate = delegate;
-
-		this._device = upscMonitor.getList()[0];
+		this._device = device;
 
 		// Main container
 		let container = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout', vertical: false });
@@ -1026,7 +1672,7 @@ const	CredDialog = new Lang.Class({
 
 		// Username entry
 		let name = this._device.user;
-		this.user = new St.Entry({ text: name ? name : '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
+		this.user = new St.Entry({ text: name || '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
 
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
@@ -1054,7 +1700,7 @@ const	CredDialog = new Lang.Class({
 
 		// Password entry
 		let pass = this._device.pw;
-		this.pw = new St.Entry({ text: pass ? pass : '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
+		this.pw = new St.Entry({ text: pass || '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
 
 		// Password right-click menu
 		ShellEntry.addContextMenu(this.pw, { isPassword: true });
@@ -1102,7 +1748,7 @@ const	CredDialog = new Lang.Class({
 		this.ok = { label: _("Execute"), action: Lang.bind(this, this._onOk), default: true };
 
 		// TRANSLATORS: Cancel button @ credentials dialog
-		this.setButtons([{ label: _("Cancel"), action: Lang.bind(this, this.cancel), key: Clutter.KEY_Escape, }, this.ok]);
+		this.setButtons([{ label: _("Cancel"), action: Lang.bind(this, this._onCancel), key: Clutter.KEY_Escape, }, this.ok]);
 
 		this._updateOkButton();
 
@@ -1128,7 +1774,7 @@ const	CredDialog = new Lang.Class({
 	},
 
 	// cancel: actions to do when Cancel button is pressed
-	cancel: function() {
+	_onCancel: function() {
 
 		this.close(global.get_current_time());
 
@@ -1140,11 +1786,12 @@ const	CredDialogCmd = new Lang.Class({
 	Name: 'CredDialogCmd',
 	Extends: CredDialog,
 
-	_init: function(delegate, cmd, extradata, error) {
+	_init: function(device, cmd, extradata, error) {
 
-		this.parent(delegate, error);
+		this.parent(device, error);
 
 		this._cmd = cmd;
+
 		this._extra = extradata;
 
 		// Description
@@ -1162,7 +1809,7 @@ const	CredDialogCmd = new Lang.Class({
 
 	_onOk: function() {
 
-		this._delegate.cmdExec(this.user.get_text(), this.pw.get_text(), this._cmd, this._extra);
+		upscmdDo.cmdExec(this.user.get_text(), this.pw.get_text(), this._device, this._cmd, this._extra);
 
 		this.parent();
 
@@ -1174,27 +1821,29 @@ const	CredDialogSetvar = new Lang.Class({
 	Name: 'CredDialogSetvar',
 	Extends: CredDialog,
 
-	_init: function(delegate, varName, varValue, error) {
+	_init: function(device, varName, varValue, error) {
 
-		this.parent(delegate, error);
+		this.parent(device, error);
+
+		this._varName = varName;
 
 		this._varValue = varValue;
 
 		// TRANSLATORS: Description @ credentials dialog for setvars
-		this.desc.text = parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+		this.desc.text = parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
 
 	},
 
 	_onOk: function() {
 
-		this._delegate.setVar(this.user.get_text(), this.pw.get_text(), this._varValue);
+		upsrwDo.setVar(this.user.get_text(), this.pw.get_text(), this._device, this._varName, this._varValue);
 
 		this.parent();
 
 	}
 });
 
-// DelBox: a box used to delete UPSes from UPS list
+// DelBox: a box used to delete UPSes from devices' list
 const	DelBox = new Lang.Class({
 	Name: 'DelBox',
 	Extends: PopupMenu.PopupBaseMenuItem,
@@ -1242,12 +1891,12 @@ const	DelBox = new Lang.Class({
 
 		}), 'small');
 
-		// Putting buttons together
+		// Put buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-delbox-buttons-box' });
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
-		// Right-aligning buttons in table
+		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
@@ -1311,7 +1960,7 @@ const	CredBox = new Lang.Class({
 		// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
 		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
-			this.undoAndClose();
+			this._undoAndClose();
 
 			// Give back focus to our 'submenu-toggle button'
 			walnut._cred_btn.actor.grab_key_focus();
@@ -1319,14 +1968,14 @@ const	CredBox = new Lang.Class({
 		}), 'small');
 
 		// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
-		let go = new Button('imported-emblem-ok', _("Save credentials"), Lang.bind(this, this.credUpdate), 'small');
+		let go = new Button('imported-emblem-ok', _("Save credentials"), Lang.bind(this, this._credUpdate), 'small');
 
-		// Putting buttons together
+		// Put buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-credbox-buttons-box' });
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
-		// Right-aligning buttons in table
+		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
@@ -1337,7 +1986,7 @@ const	CredBox = new Lang.Class({
 	},
 
 	// Update credentials: if empty user or password is given it'll be removed from the UPS's properties
-	credUpdate: function() {
+	_credUpdate: function() {
 
 		let user = this.user.get_text();
 		let pw = this.pw.get_text();
@@ -1357,7 +2006,7 @@ const	CredBox = new Lang.Class({
 	},
 
 	// Undo changes and hide CredBox
-	undoAndClose: function() {
+	_undoAndClose: function() {
 
 		let device = upscMonitor.getList()[0];
 		this.update(device);
@@ -1369,8 +2018,8 @@ const	CredBox = new Lang.Class({
 	// Update username and password
 	update: function(device) {
 
-		this.user.text = device.user ? device.user : '';
-		this.pw.text = device.pw ? device.pw : '';
+		this.user.text = device.user || '';
+		this.pw.text = device.pw || '';
 
 		// Hide password chars?
 		this._hide_pw = gsettings.get_boolean('hide-pw');
@@ -1436,7 +2085,7 @@ const	AddBox = new Lang.Class({
 		// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
 		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
-			this.undoAndClose();
+			this._undoAndClose();
 
 			// Give back focus to our 'submenu-toggle button'
 			walnut._add_btn.actor.grab_key_focus();
@@ -1444,14 +2093,14 @@ const	AddBox = new Lang.Class({
 		}), 'small');
 
 		// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
-		let go = new Button('imported-emblem-ok', _("Start search"), Lang.bind(this, this.addUps), 'small');
+		let go = new Button('imported-emblem-ok', _("Start search"), Lang.bind(this, this._addUps), 'small');
 
-		// Putting buttons together
+		// Put buttons together
 		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-addbox-buttons-box' });
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
-		// Right-aligning buttons in table
+		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
@@ -1462,18 +2111,21 @@ const	AddBox = new Lang.Class({
 	},
 
 	// Search new UPSes at a given host:port, if not given it'll search at localhost:3493
-	addUps: function() {
+	_addUps: function() {
 
 		let host = this.hostname.get_text();
 		let port = this.port.get_text();
-		let _timeout = upscMonitor._timeout;
 
-		Utilities.getUps(timeout, _timeout, true, upsc, host ? host : 'localhost', port ? port : '3493');
+		// Try to find the device
+		upscMonitor.getDevices(true, host || 'localhost', port || '3493');
+
+		// Clear and close AddBox
+		this._undoAndClose();
 
 	},
 
 	// Undo changes and hide AddBox
-	undoAndClose: function() {
+	_undoAndClose: function() {
 
 		this.hostname.text = '';
 		this.port.text = '';
@@ -1539,16 +2191,17 @@ const	BottomControls = new Lang.Class({
 
 	},
 
-	// addControl: add a button to buttons box
-	addControl: function(button, status){
+	// addControl: add a button to buttons' box
+	addControl: function(button, status) {
 
 		this.btns.add_actor(button.actor);
+
 		this.setControl(button, status);
 
 	},
 
 	// setControl: set the buttons' reactivity
-	setControl: function(button, status){
+	setControl: function(button, status) {
 
 		let active = true;
 
@@ -1677,75 +2330,47 @@ const	UpsCmdList = new Lang.Class({
 
 	},
 
-	// retrieveCmds: get instant commands from the UPS through upscmd and return success/failure status
-	retrieveCmds: function() {
-
-		if (!upscmd)
-			return true;
-
-		let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upscmd), '-l', '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)]);
-
-		if (!stdout && !stderr)
-			return true;
-
-		if (stderr)
-			this._cmds = stderr;
-		else
-			this._cmds = stdout;
-
-		return false;
-
-	},
-
-	// buildInfo: build submenu
-	buildInfo: function() {
-
-		this._timeout = upscMonitor._timeout;
-
-		let fail = this.retrieveCmds();
+	// _buildInfo: build submenu
+	_buildInfo: function() {
 
 		// Error!
-		if (fail || this._cmds.length == 0 || this._cmds.slice(0,7) == 'Error: ') {
+		if (!upscmdDo.hasCmds()) {
 
 			// TRANSLATORS: Error @ UPS commands submenu
 			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
-		} else {
+			return;
 
-			let commands = new Array();
+		}
 
-			// Retrieving upscmd commands
-			commands = Utilities.toArr(this._cmds, '-', 'cmd', 'desc');
+		// Retrieve upscmd commands
+		let commands = upscmdDo.getCmds();
 
-			// Removing leading comment
-			commands.shift();
+		// List available commands, if any
+		if (commands.length > 0) {
 
-			// Listing available commands, if any
-			if (commands.length > 0){
+			// List UPS commands in submenu
+			for each (let item in commands) {
 
-				// List UPS commands in submenu
-				for each (let item in commands){
+				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, parseText(cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
+				let command = item.cmd;
 
-					let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, parseText(cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
-					let command = item.cmd;
+				cmd.connect('activate', Lang.bind(this, function() {
+						upscmdDo.cmdExec(this._device.user, this._device.pw, this._device, command, this.extradata.get_text().trim());
+				}));
 
-					cmd.connect('activate', Lang.bind(this, function(){
-							this.cmdExec(this._device.user, this._device.pw, command, this.extradata.get_text());
-					}));
-
-					this.menu.addMenuItem(cmd);
-
-				}
-
-			// No UPS command available
-			} else {
-
-				// TRANSLATORS: Error @ UPS commands submenu
-				this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
+				this.menu.addMenuItem(cmd);
 
 			}
 
+			return;
+
 		}
+
+		// No UPS command available
+
+		// TRANSLATORS: Error @ UPS commands submenu
+		this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
 	},
 
@@ -1764,63 +2389,16 @@ const	UpsCmdList = new Lang.Class({
 
 		this.clean();
 
-		this.buildInfo();
+		this._buildInfo();
 
 		this.show();
-
-	},
-
-	// cmdExec: try to exec the command cmd
-	cmdExec: function(user, pw, cmd, extradata) {
-
-		let extra = extradata.trim();
-		let cmdExtra;
-
-		if (extra.length)
-			cmdExtra = '\'%s %s\''.format(cmd, extra);
-		else
-			cmdExtra = cmd;
-
-		// We have both user and password
-		if (user && pw) {
-
-			// Just a note here: upscmd uses always stderr (also if a command has been successfully sent to the driver)
-			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port), '%s'.format(cmd), '%s'.format(extra)]);
-
-			// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
-			if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
-
-				// ..ask for them and tell the user the previuosly sent ones were wrong
-				let credDialog = new CredDialogCmd(this, cmd, extra, true);
-				credDialog.open(global.get_current_time());
-
-			// stderr = OK\n -> Command sent to the driver successfully
-			} else if (stderr && stderr.indexOf('OK') != -1)
-
-				// TRANSLATORS: Notify title/description on command successfully sent
-				Main.notify(_("NUT: command handled"), _("Successfully sent command %s to device %s@%s:%s").format(cmdExtra, this._device.name, this._device.host, this._device.port));
-
-			// mmhh.. something's wrong here!
-			else
-				// TRANSLATORS: Notify title/description for error on command sent
-				Main.notifyError(_("NUT: error while handling command"), _("Unable to send command %s to device %s@%s:%s").format(cmdExtra, this._device.name, this._device.host, this._device.port));
-
-		// User, password or both are not available
-		} else {
-
-			// ..ask for them
-			let credDialog = new CredDialogCmd(this, cmd, extra, false);
-			credDialog.open(global.get_current_time());
-
-		}
 
 	},
 
 	hide: function() {
 
 		// If the submenu is not empty, destroy all children
-		if (!this.menu.isEmpty())
-			this.menu.removeAll();
+		this.clean();
 
 		this.actor.hide();
 
@@ -1846,67 +2424,6 @@ const	SetvarBox = new Lang.Class({
 
 		// Our toggle-button
 		this._parent = parent;
-
-	},
-
-	// setVar: try to set this.varName to varValue
-	setVar: function(username, password, varValue) {
-
-		let user = username;
-		let pw = password;
-
-		// Get actual device
-		this._device = upscMonitor.getList()[0];
-
-		this._timeout = upscMonitor._timeout;
-
-		if (!user)
-			user = this._device.user;
-
-		if (!pw)
-			pw = this._device.pw;
-
-		// We have both user and password
-		if (user && pw) {
-
-			// Just a note here: upsrw uses always stderr (also if a setvar has been successfully sent to the driver)
-			let [stdout, stderr] = Utilities.DoT(timeout, this._timeout, ['%s'.format(upsrw), '-s', '%s=%s'.format(this.varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)]);
-
-			// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
-			if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
-
-				// ..ask for them and tell the user the previuosly sent ones were wrong
-				let credDialog = new CredDialogSetvar(this, this.varName, varValue, true);
-				credDialog.open(global.get_current_time());
-
-			// stderr = OK\n -> Setvar sent to the driver successfully
-			} else if (stderr && stderr.indexOf('OK') != -1) {
-
-				// TRANSLATORS: Notify title/description on setvar successfully sent
-				Main.notify(_("NUT: setvar handled"), _("Successfully set %s to %s in device %s@%s:%s").format(this.varName, varValue, this._device.name, this._device.host, this._device.port));
-
-				// Close the SetvarBox
-				this._parent.close();
-
-				// Update vars
-				upscMonitor.update();
-
-				// Refresh the menu
-				walnut.refreshMenu();
-
-			// mmhh.. something's wrong here!
-			} else
-				// TRANSLATORS: Notify title/description for error on setvar sent
-				Main.notifyError(_("NUT: error while handling setvar"), _("Unable to set %s to %s in device %s@%s:%s").format(this.varName, varValue, this._device.name, this._device.host, this._device.port));
-
-		// User, password or both are not available
-		} else {
-
-			// ..ask for them
-			let credDialog = new CredDialogSetvar(this, this.varName, varValue, false);
-			credDialog.open(global.get_current_time());
-
-		}
 
 	},
 
@@ -1974,7 +2491,7 @@ const	SetvarBoxRanges = new Lang.Class({
 		rangeValueBox.add(this.rangeMaxLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
 
 		// Buttons
-		// TRANSLATORS: 'Decrement' button @ setvar ranges
+		// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
 		this.minus = new Button('imported-list-remove', _("Decrement by one"), null, 'small');
 		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
 
@@ -1988,7 +2505,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		// TRANSLATORS: 'Increment' button @ setvar ranges
+		// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
 		this.plus = new Button('imported-list-add', _("Increment by one"), null, 'small');
 		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
 
@@ -2002,7 +2519,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		// TRANSLATORS: 'Undo and close' button @ setvar
+		// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
 		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
 			// Reset submenu
@@ -2016,9 +2533,14 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}), 'small');
 
-		// TRANSLATORS: 'Set' button @ setvar
+		// TRANSLATORS: Accessible name of 'Set' button @ setvar
 		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
-			this.setVar(null, null, '%d'.format(this.valueToSet));
+
+			upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, '%d'.format(this.valueToSet));
+
+			// Close the setvarBox and toggle the 'expander'
+			this._parent.close();
+
 		}), 'small');
 
 		// Buttons' box
@@ -2065,7 +2587,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 			let rangesTable = new St.Table({ style_class: 'walnut-setvar-range-table' });
 
-			this.rangesCheck = new Array();
+			this.rangesCheck = [];
 
 			for (let i = 0; i < this.ranges.length; i++) {
 
@@ -2295,7 +2817,7 @@ const	SetvarBoxEnums = new Lang.Class({
 		// Actual value
 		this.actualValue = actualValue;
 
-		this.enumItems = new Array();
+		this.enumItems = [];
 
 		// Iterate through all the enumerated values
 		for (let i = 0; i < this.enums.length; i++) {
@@ -2305,8 +2827,11 @@ const	SetvarBoxEnums = new Lang.Class({
 			this.enumItems[i] = new SetvarEnumItem(enumValue);
 
 			this.enumItems[i].connect('activate', Lang.bind(this, function() {
-				this.setVar(null, null, enumValue);
+
+				upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, enumValue);
+
 				this._parent.toggle();
+
 			}));
 
 			this.actor.add(this.enumItems[i].actor, { expand: true });
@@ -2390,7 +2915,7 @@ const	SetvarBoxString = new Lang.Class({
 		}));
 
 		// Buttons
-		// TRANSLATORS: 'Undo and close' button @ setvar
+		// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
 		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
 
 			// Reset submenu
@@ -2404,9 +2929,14 @@ const	SetvarBoxString = new Lang.Class({
 
 		}), 'small');
 
-		// TRANSLATORS: 'Set' button @ setvar
+		// TRANSLATORS: Accessible name of 'Set' button @ setvar
 		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
-			this.setVar(null, null, this.valueToSet.trim());
+
+			this.setVar(null, null, upscMonitor.getList()[0], this.varName, this.valueToSet.trim());
+
+			// Close the setvarBox and toggle the 'expander'
+			this._parent.close();
+
 		}), 'small');
 
 		this.valueToSet = this.actualValue;
@@ -2553,7 +3083,7 @@ const	UpsRawDataItem = new Lang.Class({
 
 		}));
 
-		this.container.connect('key-press-event', Lang.bind(this, function (actor, event) {
+		this.container.connect('key-press-event', Lang.bind(this, function(actor, event) {
 
 			let symbol = event.get_key_symbol();
 
@@ -2613,10 +3143,9 @@ const	UpsRawDataItem = new Lang.Class({
 		}
 
 	}
-
 });
 
-// UpsRawDataList: listing UPS's raw data in a submenu
+// UpsRawDataList: list UPS's raw data in a submenu
 const	UpsRawDataList = new Lang.Class({
 	Name: 'UpsRawDataList',
 	Extends: PopupMenu.PopupSubMenuMenuItem,
@@ -2626,12 +3155,9 @@ const	UpsRawDataList = new Lang.Class({
 		// TRANSLATORS: Label of raw data submenu
 		this.parent(_("Raw Data"));
 
-		// Whether we have setvars or not
-		this._hasSetVars = false;
-
 	},
 
-	buildInfo: function() {
+	_buildInfo: function() {
 
 		// Actual submenu children (children of this.menu.box of type PopupMenuSection or PopupBaseMenuItem -> our own UpsRawDataItem)
 		let actual;
@@ -2640,7 +3166,7 @@ const	UpsRawDataList = new Lang.Class({
 		let stored = {};
 
 		// Array of variables' names of the submenu's children (used to sort new vars alphabetically)
-		let ab = Array();
+		let ab = [];
 
 		// Submenu has children
 		if (!this.menu.isEmpty()) {
@@ -2660,13 +3186,16 @@ const	UpsRawDataList = new Lang.Class({
 		}
 
 		// this._vars = [ { var: 'battery.charge', value: '100' }, { var: 'ups.status', value: 'OL' } .. ]
-		for each (let item in this._vars){
+		for each (let item in this._vars) {
 
 			// Submenu has children and the current var is one of them
 			if (actual && stored[item.var]) {
 
 				// -> update only the variable's value
-				this['_'+item.var].value.text = parseText(item.value, RAW_VALUE_LENGTH);
+				this['_' + item.var].value.text = parseText(item.value, RAW_VALUE_LENGTH);
+
+				// Handle setvars
+				this._handleSetVar(item);
 
 				// and delete it from stored -> we won't delete this var
 				delete stored[item.var];
@@ -2693,30 +3222,17 @@ const	UpsRawDataList = new Lang.Class({
 
 				}
 
-				this['_'+item.var] = new UpsRawDataItem(parseText(item.var, RAW_VAR_LENGTH, '.'), parseText(item.value, RAW_VALUE_LENGTH));
+				this['_' + item.var] = new UpsRawDataItem(parseText(item.var, RAW_VAR_LENGTH, '.'), parseText(item.value, RAW_VALUE_LENGTH));
 
-				// If we have setvars and this is one of them, add its SetvarBox
-				if (this._hasSetVars && this._setVar[item.var]) {
-
-					let setVar = this._setVar[item.var];
-
-					if (setVar.type == 'STRING')
-						this['_'+item.var].setVarString(item.value);
-
-					else if (setVar.type == 'ENUM')
-						this['_'+item.var].setVarEnum(setVar.options, item.value);
-
-					else if (setVar.type == 'RANGE')
-						this['_'+item.var].setVarRange(setVar.options, item.value);
-
-				}
+				// Handle setvars
+				this._handleSetVar(item);
 
 				// If the var is a new one in an already ordered submenu, add it in the right position
 				if (position)
-					this.menu.addMenuItem(this['_'+item.var], position);
+					this.menu.addMenuItem(this['_' + item.var], position);
 				// If the var is new as well as the submenu add it at the default position, as vars are already alphabetically ordered
 				else
-					this.menu.addMenuItem(this['_'+item.var]);
+					this.menu.addMenuItem(this['_' + item.var]);
 
 			}
 
@@ -2729,67 +3245,50 @@ const	UpsRawDataList = new Lang.Class({
 
 	},
 
-	// update: Update variables and show the menu if not already visible, if hasChanged is true update setvars
+	// _handleSetVar: If we have setvars and item is one of them, add its SetvarBox
+	_handleSetVar: function(item) {
+
+		// No setvars
+		if (!upsrwDo.hasSetVars())
+			return;
+
+		let setVars = upsrwDo.getSetVars();
+
+		if (setVars[item.var] && !this['_' + item.var].setvarBox) {
+
+			let setVar = setVars[item.var];
+
+			if (setVar.type == 'STRING')
+				this['_' + item.var].setVarString(item.value);
+
+			else if (setVar.type == 'ENUM')
+				this['_' + item.var].setVarEnum(setVar.options, item.value);
+
+			else if (setVar.type == 'RANGE')
+				this['_' + item.var].setVarRange(setVar.options, item.value);
+
+			return;
+
+		}
+
+	},
+
+	// update: Update variables and show the menu if not already visible, if hasChanged is true destroy the menu and rebuild it
 	update: function(vars, hasChanged) {
+
+		if (hasChanged && !this.menu.isEmpty())
+			this.menu.removeAll();
 
 		if (!this.actor.visible)
 			this.show();
 
 		this._vars = vars;
 
-		if (hasChanged)
-			this._hasSetVars = this._getSetVars();
-
-		this.buildInfo();
+		this._buildInfo();
 
 	},
 
-	// _retrieveSetVars: get settable vars and their boundaries from the UPS through upsrw and return success/failure status
-	_retrieveSetVars: function() {
-
-		this._svreply = '';
-
-		if (!upsrw)
-			return true;
-
-		// Get actual device
-		this._device = upscMonitor.getList()[0];
-
-		let [stdout, stderr] = Utilities.Do(['%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)]);
-
-		if (!stdout && !stderr)
-			return true;
-
-		if (stderr)
-			this._svreply = stderr;
-		else
-			this._svreply = stdout;
-
-		return false;
-
-	},
-
-	// _getSetVars: try to get setvars from the UPS and return success/failure status
-	_getSetVars: function() {
-
-		let fail = this._retrieveSetVars();
-
-		// Error!
-		if (fail || this._svreply.length == 0 || this._svreply.slice(0, 7) == 'Error: ')
-			return false;
-
-		// Parse reply to get setvars
-		this._setVar = Utilities.parseSetVar(this._svreply);
-
-		// No setvars
-		if (!Object.keys(this._setVar).length)
-			return false;
-
-		return true;
-
-	},
-
-	// hide: Hide the menu and, if it's not empty, desroy all children
+	// hide: Hide the menu and, if it's not empty, destroy all children
 	hide: function() {
 
 		// If the submenu is not empty (e.g. we don't want anymore to display Raw Var submenu in panel menu), destroy all children
@@ -2866,16 +3365,16 @@ const	UpsDataTable = new Lang.Class({
 
 		}
 
-		this[cell.type+'Icon'] = new St.Icon({ icon_name: cell.icon ? cell.icon+'-symbolic' : '', style_class: 'walnut-ups-data-table-icon' });
-		this[cell.type+'Label'] = new St.Label({ text: cell.label, style_class: 'walnut-ups-data-table-label' });
-		this[cell.type+'Text'] = new St.Label({ style_class: 'walnut-ups-data-table-text' });
+		this[cell.type + 'Icon'] = new St.Icon({ icon_name: cell.icon ? cell.icon + '-symbolic' : '', style_class: 'walnut-ups-data-table-icon' });
+		this[cell.type + 'Label'] = new St.Label({ text: cell.label, style_class: 'walnut-ups-data-table-label' });
+		this[cell.type + 'Text'] = new St.Label({ style_class: 'walnut-ups-data-table-text' });
 
 		// Description box {label\ntext}
-		this[cell.type+'DescBox'] = new St.BoxLayout({ vertical: true })
-		this[cell.type+'DescBox'].add_actor(this[cell.type+'Label']);
-		this[cell.type+'DescBox'].add_actor(this[cell.type+'Text']);
+		this[cell.type + 'DescBox'] = new St.BoxLayout({ vertical: true })
+		this[cell.type + 'DescBox'].add_actor(this[cell.type + 'Label']);
+		this[cell.type + 'DescBox'].add_actor(this[cell.type + 'Text']);
 
-		// Row and column handling
+		// Handle row and column
 		let row, col;
 
 		switch (count)
@@ -2910,9 +3409,9 @@ const	UpsDataTable = new Lang.Class({
 
 		}
 
-		// Populating table
-		this.table.add(this[cell.type+'Icon'], { row: row, col: col });
-		this.table.add(this[cell.type+'DescBox'], { row: row, col: col + 1 });
+		// Populate table
+		this.table.add(this[cell.type + 'Icon'], { row: row, col: col });
+		this.table.add(this[cell.type + 'DescBox'], { row: row, col: col + 1 });
 
 	},
 
@@ -2926,7 +3425,7 @@ const	UpsDataTable = new Lang.Class({
 		case 'C':	// Battery Charge
 
 			cell.type = 'batteryCharge';
-			cell.icon = BatteryIcon['b'+BatteryLevel(value)];
+			cell.icon = BatteryIcon['b' + BatteryLevel(value)];
 			cell.value = '%s %'.format(value);
 			break;
 
@@ -2955,9 +3454,9 @@ const	UpsDataTable = new Lang.Class({
 		}
 
 		if (cell.icon)
-			this[cell.type+'Icon'].icon_name = cell.icon+'-symbolic';
+			this[cell.type + 'Icon'].icon_name = cell.icon + '-symbolic';
 
-		this[cell.type+'Text'].text = cell.value;
+		this[cell.type + 'Text'].text = cell.value;
 
 	},
 
@@ -2982,7 +3481,7 @@ const	UpsDataTable = new Lang.Class({
 	}
 });
 
-// UpsTopDataList: Listing (if available/any) ups.{status,alarm}
+// UpsTopDataList: List (if available/any) ups.{status,alarm}
 const	UpsTopDataList = new Lang.Class({
 	Name: 'UpsTopDataList',
 	Extends: PopupMenu.PopupBaseMenuItem,
@@ -3028,7 +3527,7 @@ const	UpsTopDataList = new Lang.Class({
 		this.alarmBox.add_actor(alarmIcon);
 		this.alarmBox.add_actor(alarmDescBox);
 
-		// Adding to dataBox
+		// Add to dataBox
 		dataBox.add_actor(statusBox);
 		dataBox.add_actor(this.alarmBox);
 
@@ -3084,7 +3583,7 @@ const	UpsTopDataList = new Lang.Class({
 	}
 });
 
-// UpsModel: Listing chosen UPS's model/manufacturer (if available)
+// UpsModel: List chosen UPS's model/manufacturer (if available)
 const	UpsModel = new Lang.Class({
 	Name: 'UpsModel',
 	Extends: PopupMenu.PopupBaseMenuItem,
@@ -3117,7 +3616,7 @@ const	UpsModel = new Lang.Class({
 			else
 				text = '%s\n%s'.format(parseText(mfr, MODEL_LENGTH), parseText(model, MODEL_LENGTH));
 		} else
-			text = parseText((mfr ? mfr : model), MODEL_LENGTH);
+			text = parseText((mfr || model), MODEL_LENGTH);
 
 		this.label.text = text;
 
@@ -3126,7 +3625,7 @@ const	UpsModel = new Lang.Class({
 	}
 });
 
-// UpsList: a submenu listing available UPSes in a upsc-like way (e.g. ups@hostname:port)
+// UpsList: a submenu listing available UPSes in a upsc-like way (i.e. ups@hostname:port)
 const	UpsList = new Lang.Class({
 	Name: 'UpsList',
 	Extends: PopupMenu.PopupSubMenuMenuItem,
@@ -3137,7 +3636,7 @@ const	UpsList = new Lang.Class({
 
 	},
 
-	buildInfo: function() {
+	_buildInfo: function() {
 
 		// Counter used to decide whether the submenu will be sensitive or not: only 1 entry -> not sensitive, 2+ entries -> sensitive
 		let count = 0;
@@ -3152,7 +3651,7 @@ const	UpsList = new Lang.Class({
 
 			// N/A
 			if (item.av != 1)
-				// TRANSLATORS: Device not available @ UPS list
+				// TRANSLATORS: Device not available @ devices' list
 				label += _(" (N/A)");
 
 			if (i == 0) {
@@ -3164,7 +3663,7 @@ const	UpsList = new Lang.Class({
 
 			let index = i;
 
-			ups_l.connect('activate', Lang.bind(this, function(){
+			ups_l.connect('activate', Lang.bind(this, function() {
 				Utilities.defaultUps(index);
 			}));
 
@@ -3209,7 +3708,7 @@ const	UpsList = new Lang.Class({
 		this._display_na = gsettings.get_boolean('display-na');
 
 		// Rebuild submenu
-		this.buildInfo();
+		this._buildInfo();
 
 	},
 
@@ -3276,26 +3775,20 @@ const	ErrorBox = new Lang.Class({
 		let label, desc;
 
 		// Unable to find upsc -> ErrorType.NO_NUT
-		if (type == ErrorType.NO_NUT) {
+		if (type & ErrorType.NO_NUT) {
 
 			// TRANSLATORS: Error label NO NUT @ main menu
 			label = _("Error! No NUT found");
+
 			// TRANSLATORS: Error description NO NUT @ main menu
 			desc = _("walNUT can't find NUT's executable, please check your installation");
 
-		// Unable to find timeout -> ErrorType.NO_TIMEOUT
-		} else if (type == ErrorType.NO_TIMEOUT) {
-
-			// TRANSLATORS: Error label NO TIMEOUT @ main menu
-			label = _("Error! 'timeout' not found");
-			// TRANSLATORS: Error description NO TIMEOUT @ main menu
-			desc = _("walNUT can't find 'timeout' executable, please check your installation");
-
 		// Unable to find any UPS -> ErrorType.NO_UPS
-		} else if (type == ErrorType.NO_UPS) {
+		} else if (type & ErrorType.NO_UPS) {
 
 			// TRANSLATORS: Error label NO UPS @ main menu
 			label = _("Error! No UPS found");
+
 			// TRANSLATORS: Error description NO UPS @ main menu
 			desc = _("walNUT can't find any UPS, please add one hostname:port to search in");
 
@@ -3304,6 +3797,7 @@ const	ErrorBox = new Lang.Class({
 
 			// TRANSLATORS: Error label UPS NOT AVAILABLE @ main menu
 			label = _("Error! UPS not available");
+
 			// TRANSLATORS: Error description UPS NOT AVAILABLE @ main menu
 			desc = _("walNUT can't communicate to chosen UPS, please select or add another one or check your installation");
 
@@ -3333,7 +3827,7 @@ const	NutMenu = new Lang.Class({
 		this.errorBox = new ErrorBox();
 		this.errorBox.hide();
 
-		// UPS List
+		// Devices' list
 		this.upsList = new UpsList();
 		this.upsList.hide();
 
@@ -3370,9 +3864,9 @@ const	NutMenu = new Lang.Class({
 		// Bottom buttons
 		this.controls = new BottomControls();
 
-		// Putting menu together
+		// Put menu together
 
-		// UPS list
+		// Devices' list
 		this.addMenuItem(this.upsList);
 
 		// Error Box
@@ -3401,11 +3895,12 @@ const	NutMenu = new Lang.Class({
 // Start!
 let	gsettings,
 	upscMonitor,	// upsc monitor
+	upsrwDo,	// upsrw handler
+	upscmdDo,	// upscmd handler
 	walnut,		// Panel/menu
 	upsc,		// Absolute path of upsc
 	upscmd,		// Absolute path of upscmd
-	upsrw,		// Absolute path of upsrw
-	timeout;	// Absolute path of timeout
+	upsrw;		// Absolute path of upsrw
 
 // Init extension
 function init(extensionMeta) {
@@ -3413,7 +3908,7 @@ function init(extensionMeta) {
 	gsettings = Convenience.getSettings();
 	Convenience.initTranslations();
 
-	// Importing icons
+	// Import icons
 	let theme = imports.gi.Gtk.IconTheme.get_default();
 	theme.append_search_path(extensionMeta.path + '/icons');
 
@@ -3422,17 +3917,19 @@ function init(extensionMeta) {
 // Enable Extension
 function enable() {
 
-	// First, find upsc, upscmd, upsrw and timeout
+	// First, find upsc, upscmd and upsrw
 	// Detect upsc
 	upsc = Utilities.detect('upsc');
 	// Detect upscmd
 	upscmd = Utilities.detect('upscmd');
 	// Detect upsrw
 	upsrw = Utilities.detect('upsrw');
-	// Detect timeout
-	timeout = Utilities.detect('timeout');
 
 	upscMonitor = new UpscMonitor();
+
+	upsrwDo = new UpsrwDo();
+
+	upscmdDo = new UpscmdDo();
 
 	walnut = new walNUT();
 
@@ -3449,10 +3946,14 @@ function disable() {
 	upscMonitor.destroy();
 	upscMonitor = null;
 
+	upsrwDo = null;
+
+	upscmdDo = null;
+
 }
 
 // toFahrenheit: °C -> °F
-function toFahrenheit(c){
+function toFahrenheit(c) {
 
 	return ((9 / 5) * c + 32);
 
@@ -3634,7 +4135,7 @@ function parseText(raw, len, sep) {
 	if (!sep)
 		sep = ' ';
 
-	// Tokenizing raw
+	// Tokenize raw
 	let tok = raw.split(sep);
 
 	let ret = '';
@@ -3658,7 +4159,7 @@ function parseText(raw, len, sep) {
 
 					row += tok[i];
 					tok[i] = row.slice(len);
-					row = row.slice(0,len);
+					row = row.slice(0, len);
 
 				}
 
@@ -3669,7 +4170,7 @@ function parseText(raw, len, sep) {
 			// Case: still building row
 			} else {
 
-				// Restoring sep between tokens
+				// Restore sep between tokens
 				row += tok[i] + sep;
 				i++;
 
@@ -3677,17 +4178,17 @@ function parseText(raw, len, sep) {
 
 		}
 
-		// Removing leading and trailing space and adding new line character
+		// Remove leading and trailing space and add new line character
 		ret += row.trim() + '\n';
 
 	}
 
-	// Removing trailing sep (if not a space) and \n from ret
+	// Remove trailing sep (if not a space) and \n from ret
 	return ret.slice(0, sep != ' ' ? ret.length - 2 : ret.length - 1);
 
 }
 
-// cmdI18n: Translating UPS commands' description
+// cmdI18n: Translate UPS commands' description
 function cmdI18n(cmd) {
 
 	switch (cmd['cmd'])
@@ -3857,11 +4358,11 @@ function cmdI18n(cmd) {
 	// outlet.n.{shutdown.return,load.off,load.on,load.cycle}
 	default:
 
-		if (cmd['cmd'].slice(0,6) == 'outlet') {
+		if (cmd['cmd'].slice(0, 6) == 'outlet') {
 
 			let buf = cmd['cmd'].split('.');
 
-			switch (buf[2]+'.'+buf[3])
+			switch (buf[2] + '.' + buf[3])
 			{
 			case 'shutdown.return':
 
