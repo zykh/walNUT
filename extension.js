@@ -1163,16 +1163,11 @@ const	walNUT = new Lang.Class({
 
 			// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
 
-			if (this.menu.addBox.actor.visible)
-				this.menu.addBox.hide();
+			this.menu.addBox.close();
 
-			if (this.menu.delBox.actor.visible)
-				this.menu.delBox.hide();
+			this.menu.delBox.close();
 
-			if (this.menu.credBox.actor.visible)
-				this.menu.credBox.hide();
-			else
-				this.menu.credBox.show();
+			this.menu.credBox.toggle();
 
 		}));
 
@@ -1182,16 +1177,11 @@ const	walNUT = new Lang.Class({
 
 			// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
 
-			if (this.menu.credBox.actor.visible)
-				this.menu.credBox.hide();
+			this.menu.credBox.close();
 
-			if (this.menu.delBox.actor.visible)
-				this.menu.delBox.hide();
+			this.menu.delBox.close();
 
-			if (this.menu.addBox.actor.visible)
-				this.menu.addBox.hide();
-			else
-				this.menu.addBox.show();
+			this.menu.addBox.toggle();
 
 		}));
 
@@ -1201,16 +1191,11 @@ const	walNUT = new Lang.Class({
 
 			// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
 
-			if (this.menu.addBox.actor.visible)
-				this.menu.addBox.hide();
+			this.menu.addBox.close();
 
-			if (this.menu.credBox.actor.visible)
-				this.menu.credBox.hide();
+			this.menu.credBox.close();
 
-			if (this.menu.delBox.actor.visible)
-				this.menu.delBox.hide();
-			else
-				this.menu.delBox.show();
+			this.menu.delBox.toggle();
 
 		}));
 
@@ -1341,7 +1326,7 @@ const	walNUT = new Lang.Class({
 
 	},
 
-	// _onOpenStateChanged: update the menu only if it's not closed
+	// _onOpenStateChanged: close the boxes and update the menu when it's opened
 	_onOpenStateChanged: function(menu, open) {
 
 		this.parent(menu, open);
@@ -1353,6 +1338,14 @@ const	walNUT = new Lang.Class({
 
 			// How ugly is having different values in panel and in menu?
 			this.refreshPanel();
+
+			// Close {add,cred,del}Box
+
+			this.menu.addBox.close();
+
+			this.menu.delBox.close();
+
+			this.menu.credBox.close();
 
 		}
 
@@ -1906,6 +1899,22 @@ const	DelBox = new Lang.Class({
 
 	},
 
+	close: function() {
+
+		if (this.actor.visible)
+			this.hide();
+
+	},
+
+	toggle: function() {
+
+		if (this.actor.visible)
+			this.hide();
+		else
+			this.show();
+
+	},
+
 	hide: function() {
 
 		this.actor.hide();
@@ -2028,6 +2037,22 @@ const	CredBox = new Lang.Class({
 
 	},
 
+	close: function() {
+
+		if (this.actor.visible)
+			this.hide();
+
+	},
+
+	toggle: function() {
+
+		if (this.actor.visible)
+			this.hide();
+		else
+			this.show();
+
+	},
+
 	hide: function() {
 
 		this.actor.hide();
@@ -2131,6 +2156,22 @@ const	AddBox = new Lang.Class({
 		this.port.text = '';
 
 		this.hide();
+
+	},
+
+	close: function() {
+
+		if (this.actor.visible)
+			this.hide();
+
+	},
+
+	toggle: function() {
+
+		if (this.actor.visible)
+			this.hide();
+		else
+			this.show();
 
 	},
 
