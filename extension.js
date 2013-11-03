@@ -896,13 +896,13 @@ const	UpscmdDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra)], Lang.bind(this, this._processExecutedCmd), [device, cmd, extradata]);
+			Utilities.Do(['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra)], Lang.bind(this, this._processExecutedCmd), [device, cmd, extradata, user, pw]);
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogCmd(device, cmd, extra, false);
+			let credDialog = new CredDialogCmd(device, user, pw, cmd, extra, false);
 			credDialog.open(global.get_current_time());
 
 		}
@@ -918,6 +918,10 @@ const	UpscmdDo = new Lang.Class({
 
 		let extra = opts[2];
 
+		let user = opts[3];
+
+		let pw = opts[4];
+
 		let cmdExtra;
 
 		if (extra.length)
@@ -931,7 +935,7 @@ const	UpscmdDo = new Lang.Class({
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogCmd(device, cmd, extra, true);
+			let credDialog = new CredDialogCmd(device, user, pw, cmd, extra, true);
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Command sent to the driver successfully
@@ -1064,13 +1068,13 @@ const	UpsrwDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(['%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port)], Lang.bind(this, this._processSetVar), [device, varName, varValue]);
+			Utilities.Do(['%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port)], Lang.bind(this, this._processSetVar), [device, varName, varValue, user, pw]);
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogSetvar(device, varName, varValue, false);
+			let credDialog = new CredDialogSetvar(device, user, pw, varName, varValue, false);
 			credDialog.open(global.get_current_time());
 
 		}
@@ -1086,13 +1090,17 @@ const	UpsrwDo = new Lang.Class({
 
 		let varValue = opts[2];
 
+		let user = opts[3];
+
+		let pw = opts[4];
+
 		// Just a note here: upsrw uses always stderr (also if a setvar has been successfully sent to the driver)
 
 		// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogSetvar(device, varName, varValue, true);
+			let credDialog = new CredDialogSetvar(device, user, pw, varName, varValue, true);
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Setvar sent to the driver successfully
@@ -1627,7 +1635,7 @@ const	CredDialog = new Lang.Class({
 	Name: 'CredDialog',
 	Extends: ModalDialog.ModalDialog,
 
-	_init: function(device, error) {
+	_init: function(device, user, pw, error) {
 
 		this.parent({ styleClass: 'walnut-cred-dialog' });
 
@@ -1664,20 +1672,19 @@ const	CredDialog = new Lang.Class({
 		table.add(userLabel, { row: 0, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
 
 		// Username entry
-		let name = this._device.user;
-		this.user = new St.Entry({ text: name || '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
+		this.user = new St.Entry({ text: user || '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
 
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
 		table.add(this.user, { row: 0, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
 
 		// user_valid tells us whether a username is set or not
-		this.user_valid = name ? true : false;
+		this.user_valid = user ? true : false;
 
 		// Update Execute button when text changes in user entry
 		this.user.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.user_valid = this.user.get_text().length > 0;
-			this._updateOkButton();
+			this._updateOkButton(false);
 		}));
 
 		// Hide errorBox, if visible, when selected
@@ -1692,8 +1699,7 @@ const	CredDialog = new Lang.Class({
 		table.add(pwLabel, { row: 1, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
 
 		// Password entry
-		let pass = this._device.pw;
-		this.pw = new St.Entry({ text: pass || '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
+		this.pw = new St.Entry({ text: pw || '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
 
 		// Password right-click menu
 		ShellEntry.addContextMenu(this.pw, { isPassword: true });
@@ -1703,12 +1709,12 @@ const	CredDialog = new Lang.Class({
 		table.add(this.pw, { row: 1, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
 
 		// pw_valid tells us whether a password is set or not
-		this.pw_valid = pass ? true : false;
+		this.pw_valid = pw ? true : false;
 
 		// Update Execute button when text changes in pw entry
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.pw_valid = this.pw.get_text().length > 0;
-			this._updateOkButton();
+			this._updateOkButton(false);
 		}));
 
 		// Hide errorBox, if visible, when selected
@@ -1743,19 +1749,19 @@ const	CredDialog = new Lang.Class({
 		// TRANSLATORS: Cancel button @ credentials dialog
 		this.setButtons([{ label: _("Cancel"), action: Lang.bind(this, this._onCancel), key: Clutter.KEY_Escape, }, this.ok]);
 
-		this._updateOkButton();
+		this._updateOkButton(error);
 
 	},
 
-	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0)
-	_updateOkButton: function() {
+	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0) and if error isn't true
+	_updateOkButton: function(error) {
 
 		let valid = false;
 
 		valid = this.user_valid && this.pw_valid;
 
-		this.ok.button.reactive = valid;
-		this.ok.button.can_focus = valid;
+		this.ok.button.reactive = valid && !error;
+		this.ok.button.can_focus = valid && !error;
 
 	},
 
@@ -1779,9 +1785,9 @@ const	CredDialogCmd = new Lang.Class({
 	Name: 'CredDialogCmd',
 	Extends: CredDialog,
 
-	_init: function(device, cmd, extradata, error) {
+	_init: function(device, user, pw, cmd, extradata, error) {
 
-		this.parent(device, error);
+		this.parent(device, user, pw, error);
 
 		this._cmd = cmd;
 
@@ -1814,9 +1820,9 @@ const	CredDialogSetvar = new Lang.Class({
 	Name: 'CredDialogSetvar',
 	Extends: CredDialog,
 
-	_init: function(device, varName, varValue, error) {
+	_init: function(device, user, pw, varName, varValue, error) {
 
-		this.parent(device, error);
+		this.parent(device, user, pw, error);
 
 		this._varName = varName;
 
