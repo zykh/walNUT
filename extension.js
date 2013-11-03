@@ -226,66 +226,6 @@ const	BatteryIcon = {
 	b7:	'imported-battery-empty'
 }
 
-// BatteryLevel: battery level for icons
-function BatteryLevel(raw) {
-
-	// Battery Level:
-	//	unknown	-> 1
-	//	full	-> 2
-	//	good	-> 3
-	//	low	-> 5
-	//	empty	-> 7
-
-	let level = 1;
-
-	if (raw.isNaN)
-		return level;
-
-	let bt = raw * 1;
-
-	if (bt > 75)
-		level = 2;
-	else if (bt <= 75 && bt > 50)
-		level = 3;
-	else if (bt <= 50 && bt > 25)
-		level = 5;
-	else if (bt <= 25)
-		level = 7;
-
-	return level;
-
-}
-
-// LoadLevel: load level for icons
-function LoadLevel(raw) {
-
-	// Load Level:
-	//	unknown	-> 1
-	//	full	-> 23
-	//	good	-> 17
-	//	low	-> 13
-	//	empty	-> 11
-
-	let level = 1;
-
-	if (raw.isNaN)
-		return level;
-
-	let load = raw * 1;
-
-	if (load > 75)
-		level = 23;
-	else if (load <= 75 && load > 50)
-		level = 17;
-	else if (load <= 50 && load > 25)
-		level = 13;
-	else if (load <= 25)
-		level = 11;
-
-	return level;
-
-}
-
 // Errors
 const	ErrorType = {
 	UPS_NA: 2,	// 'Chosen' UPS is not available
@@ -1385,7 +1325,7 @@ const	walNUT = new Lang.Class({
 
 		if (vars['battery.charge']) {
 
-			battery_level = BatteryLevel(vars['battery.charge']);
+			battery_level = Utilities.BatteryLevel(vars['battery.charge']);
 
 			charged = vars['battery.charge'] * 1 == 100;
 
@@ -1394,9 +1334,9 @@ const	walNUT = new Lang.Class({
 			charged = vars['ups.status'].indexOf('CHRG') != -1 ? charged : true;
 
 		if (vars['ups.load'] && this._panel_icon_display_load)
-			load_level = LoadLevel(vars['ups.load']);
+			load_level = Utilities.LoadLevel(vars['ups.load']);
 
-		let status = parseStatus(vars['ups.status'], true);
+		let status = Utilities.parseStatus(vars['ups.status'], true);
 
 		icon = status.line + (status.alarm || '') + (charged ? 'c' : '') + battery_level * load_level;
 
@@ -1802,7 +1742,7 @@ const	CredDialogCmd = new Lang.Class({
 			cmdExtraDesc = this._cmd;
 
 		// TRANSLATORS: Description @ credentials dialog for instant commands
-		this.desc.text = parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+		this.desc.text = Utilities.parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
 
 	},
 
@@ -1829,7 +1769,7 @@ const	CredDialogSetvar = new Lang.Class({
 		this._varValue = varValue;
 
 		// TRANSLATORS: Description @ credentials dialog for setvars
-		this.desc.text = parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+		this.desc.text = Utilities.parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
 
 	},
 
@@ -1864,7 +1804,7 @@ const	DelBox = new Lang.Class({
 
 		// Text
 		// TRANSLATORS: Description @ delete device box
-		let text = new St.Label({ text: parseText(_("Do you really want to delete the current UPS from the list?"), 30), style_class: 'walnut-delbox-text' });
+		let text = new St.Label({ text: Utilities.parseText(_("Do you really want to delete the current UPS from the list?"), 30), style_class: 'walnut-delbox-text' });
 		container.add(text, { row: 1, col: 1 });
 
 		// Delete/Go buttons
@@ -2384,7 +2324,7 @@ const	UpsCmdList = new Lang.Class({
 		if (!upscmdDo.hasCmds()) {
 
 			// TRANSLATORS: Error @ UPS commands submenu
-			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false, can_focus: false }));
+			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(Utilities.parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
 			return;
 
@@ -2399,7 +2339,7 @@ const	UpsCmdList = new Lang.Class({
 			// List UPS commands in submenu
 			for each (let item in commands) {
 
-				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, parseText(cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
+				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, Utilities.parseText(Utilities.cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
 				let command = item.cmd;
 
 				cmd.connect('activate', Lang.bind(this, function() {
@@ -2417,7 +2357,7 @@ const	UpsCmdList = new Lang.Class({
 		// No UPS command available
 
 		// TRANSLATORS: Error @ UPS commands submenu
-		this.menu.addMenuItem(new PopupMenu.PopupMenuItem(parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
+		this.menu.addMenuItem(new PopupMenu.PopupMenuItem(Utilities.parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
 
 	},
 
@@ -3239,7 +3179,7 @@ const	UpsRawDataList = new Lang.Class({
 			if (actual && stored[item.var]) {
 
 				// -> update only the variable's value
-				this['_' + item.var].value.text = parseText(item.value, RAW_VALUE_LENGTH);
+				this['_' + item.var].value.text = Utilities.parseText(item.value, RAW_VALUE_LENGTH);
 
 				// Handle setvars
 				this._handleSetVar(item);
@@ -3269,7 +3209,7 @@ const	UpsRawDataList = new Lang.Class({
 
 				}
 
-				this['_' + item.var] = new UpsRawDataItem(parseText(item.var, RAW_VAR_LENGTH, '.'), parseText(item.value, RAW_VALUE_LENGTH));
+				this['_' + item.var] = new UpsRawDataItem(Utilities.parseText(item.var, RAW_VAR_LENGTH, '.'), Utilities.parseText(item.value, RAW_VALUE_LENGTH));
 
 				// Handle setvars
 				this._handleSetVar(item);
@@ -3472,7 +3412,7 @@ const	UpsDataTable = new Lang.Class({
 		case 'C':	// Battery Charge
 
 			cell.type = 'batteryCharge';
-			cell.icon = BatteryIcon['b' + BatteryLevel(value)];
+			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
 			cell.value = '%s %'.format(value);
 			break;
 
@@ -3485,13 +3425,13 @@ const	UpsDataTable = new Lang.Class({
 		case 'R':	// Backup Time
 
 			cell.type = 'backupTime';
-			cell.value = parseTime(value);
+			cell.value = Utilities.parseTime(value);
 			break;
 
 		case 'T':	// Device Temperature
 
 			cell.type = 'deviceTemp';
-			cell.value = formatTemp(value);
+			cell.value = Utilities.formatTemp(value);
 			break;
 
 		default:
@@ -3589,16 +3529,16 @@ const	UpsTopDataList = new Lang.Class({
 		{
 		case 'S':	// Device status
 
-			let status = parseStatus(value);
+			let status = Utilities.parseStatus(value);
 
 			this.statusLabel.text = status.line;
-			this.statusText.text = parseText(status.status, TOPDATA_LENGTH);
+			this.statusText.text = Utilities.parseText(status.status, TOPDATA_LENGTH);
 
 			break;
 
 		case 'A':	// Alarm
 
-			this.alarmText.text = parseText(value, TOPDATA_LENGTH);
+			this.alarmText.text = Utilities.parseText(value, TOPDATA_LENGTH);
 			break;
 
 		default:
@@ -3661,9 +3601,9 @@ const	UpsModel = new Lang.Class({
 			if ((mfr.length + model.length) < MODEL_LENGTH)
 				text = '%s - %s'.format(mfr, model);
 			else
-				text = '%s\n%s'.format(parseText(mfr, MODEL_LENGTH), parseText(model, MODEL_LENGTH));
+				text = '%s\n%s'.format(Utilities.parseText(mfr, MODEL_LENGTH), Utilities.parseText(model, MODEL_LENGTH));
 		} else
-			text = parseText((mfr || model), MODEL_LENGTH);
+			text = Utilities.parseText((mfr || model), MODEL_LENGTH);
 
 		this.label.text = text;
 
@@ -3850,8 +3790,8 @@ const	ErrorBox = new Lang.Class({
 
 		}
 
-		this.label.text = parseText(label, ERR_LABEL_LENGTH);
-		this.desc.text = parseText(desc, ERR_DESC_LENGTH);
+		this.label.text = Utilities.parseText(label, ERR_LABEL_LENGTH);
+		this.desc.text = Utilities.parseText(desc, ERR_DESC_LENGTH);
 
 		this.actor.show();
 
@@ -3996,457 +3936,5 @@ function disable() {
 	upsrwDo = null;
 
 	upscmdDo = null;
-
-}
-
-// toFahrenheit: °C -> °F
-function toFahrenheit(c) {
-
-	return ((9 / 5) * c + 32);
-
-}
-
-// formatTemp: Format temperature + °C/F
-function formatTemp(value) {
-
-	// Don't do anything if not a number
-	if (isNaN(value))
-		return value;
-
-	// UPS temperature unit (Centigrade/Fahrenheit)
-	let unit = gsettings.get_string('temp-unit');
-
-	if (unit == 'Fahrenheit')
-		value = toFahrenheit(value);
-
-	return '%.1f %s'.format(value, unit == 'Fahrenheit' ? '\u00b0F' : '\u00b0C');
-
-}
-
-// parseStatus: Status Parser
-function parseStatus(raw, icon) {
-
-	let st = raw.split(' ');
-
-	let line = '', status = '', icon_line = '', icon_alarm = '';
-
-	// Iterate through each status
-	for (let i = 0; i < st.length; i++) {
-
-		switch (st[i])
-		{
-		case 'OL':
-
-			// TRANSLATORS: Device status @ device status box
-			line += _(" on line");
-			icon_line = 'o';
-			break;
-
-		case 'OB':
-
-			// TRANSLATORS: Device status @ device status box
-			line += _(" on battery");
-			icon_line = 'b';
-			break;
-
-		case 'LB':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", low battery");
-			icon_alarm = 'a';
-			break;
-
-		case 'RB':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", replace battery");
-			icon_alarm = 'a';
-			break;
-
-		case 'CHRG':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", charging");
-			break;
-
-		case 'DISCHRG':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", discharging");
-			icon_alarm = 'a';
-			break;
-
-		case 'BYPASS':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", bypass");
-			icon_alarm = 'a';
-			break;
-
-		case 'CAL':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", runtime calibration");
-			icon_alarm = 'a';
-			break;
-
-		case 'OFF':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", offline");
-			break;
-
-		case 'OVER':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", overloaded");
-			icon_alarm = 'a';
-			break;
-
-		case 'TRIM':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", trimming");
-			icon_alarm = 'a';
-			break;
-
-		case 'BOOST':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", boosting");
-			icon_alarm = 'a';
-			break;
-
-		case 'FSD':
-
-			// TRANSLATORS: Device status @ device status box
-			status += _(", forced shutdown");
-			icon_alarm = 'a';
-			break;
-
-		case 'ALARM':
-
-			icon_alarm = 'a';
-			break;
-
-		default:
-
-			break;
-
-		}
-
-	}
-
-	// For panel/menu icons
-	if (icon)
-		return { line: icon_line, alarm: icon_alarm };
-
-	// For menu label/description
-
-	// Trim line, remove leading comma from status and then trim it
-	// TRANSLATORS: Stupid comment (from 1973 Walt Disney's Robin Hood) @ device status box
-	return { line: line.trim(), status: status ? status.substring(1).trim() : _("\u201f..and all's well!\u201d [NUTSY (shouting)]") };
-
-}
-
-// parseTime: Time Parser (from seconds to dhms)
-function parseTime(raw) {
-
-	// Don't do anything if not a number
-	if (isNaN(raw))
-		return raw;
-
-	return (
-		// TRANSLATORS: Days @ remaining time
-		(Math.floor(raw / 86400) != 0 ? Math.floor(raw / 86400) + _("d ") : '') +
-		// TRANSLATORS: Hours @ remaining time
-		(Math.floor(((raw / 86400) % 1) * 24) != 0 ? Math.floor(((raw / 86400) % 1) * 24) + _("h ") : '') +
-		// TRANSLATORS: Minutes @ remaining time
-		(Math.floor(((raw / 3600) % 1) * 60) != 0 ? Math.floor(((raw / 3600) % 1) * 60) + _("m ") : '') +
-		// TRANSLATORS: Seconds @ remaining time
-		Math.round(((raw / 60) % 1) * 60) + _("s")
-	);
-
-}
-
-// parseText: from a raw text to multi-row text where each row is at most len char long.
-// If words (tokens from raw separated by sep) are shorter then len they won't be split
-// otherwise they'll be split so that the resulting row will have a length of len chars
-function parseText(raw, len, sep) {
-
-	// Don't do anything if raw is shorter than len
-	if (raw.length <= len)
-		return raw;
-
-	// If sep isn't given we assume it's a space
-	if (!sep)
-		sep = ' ';
-
-	// Tokenize raw
-	let tok = raw.split(sep);
-
-	let ret = '';
-	let i = 0;
-
-	// Iterate through each token
-	while (i < (tok.length)) {
-
-		let repeat = 1;
-		let row = '';
-
-		while (repeat && (i < tok.length)) {
-
-			let buf = '' + tok[i];
-
-			// Case: row is going to be longer than len (trailing space is not considered here since we're going to trim it)
-			if ((row.length + buf.length) > (sep != ' ' ? len - sep.length : len)) {
-
-				// Token is longer than len -> we can split it up
-				if (buf.length > (sep != ' ' ? len - sep.length : len)) {
-
-					row += tok[i];
-					tok[i] = row.slice(len);
-					row = row.slice(0, len);
-
-				}
-
-				// If token is shorter than len, we'll close this row and push token to next row
-
-				repeat = 0;
-
-			// Case: still building row
-			} else {
-
-				// Restore sep between tokens
-				row += tok[i] + sep;
-				i++;
-
-			}
-
-		}
-
-		// Remove leading and trailing space and add new line character
-		ret += row.trim() + '\n';
-
-	}
-
-	// Remove trailing sep (if not a space) and \n from ret
-	return ret.slice(0, sep != ' ' ? ret.length - 2 : ret.length - 1);
-
-}
-
-// cmdI18n: Translate UPS commands' description
-function cmdI18n(cmd) {
-
-	switch (cmd['cmd'])
-	{
-	case 'load.off':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load immediately");
-		break;
-
-	case 'load.on':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn on the load immediately");
-		break;
-
-	case 'load.off.delay':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay");
-		break;
-
-	case 'load.on.delay':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn on the load possibly after a delay");
-		break;
-
-	case 'shutdown.return':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay and return when power is back");
-		break;
-
-	case 'shutdown.stayoff':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay and remain off even if power returns");
-		break;
-
-	case 'shutdown.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop a shutdown in progress");
-		break;
-
-	case 'shutdown.reboot':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Shut down the load briefly while rebooting the UPS");
-		break;
-
-	case 'shutdown.reboot.graceful':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("After a delay, shut down the load briefly while rebooting the UPS");
-		break;
-
-	case 'test.panel.start':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start testing the UPS panel");
-		break;
-
-	case 'test.panel.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop a UPS panel test");
-		break;
-
-	case 'test.failure.start':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a simulated power failure");
-		break;
-
-	case 'test.failure.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop simulating a power failure");
-		break;
-
-	case 'test.battery.start':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a battery test");
-		break;
-
-	case 'test.battery.start.quick':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a \"quick\" battery test");
-		break;
-
-	case 'test.battery.start.deep':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a \"deep\" battery test");
-		break;
-
-	case 'test.battery.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop the battery test");
-		break;
-
-	case 'calibrate.start':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start runtime calibration");
-		break;
-
-	case 'calibrate.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop runtime calibration");
-		break;
-
-	case 'bypass.start':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Put the UPS in bypass mode");
-		break;
-
-	case 'bypass.stop':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Take the UPS out of bypass mode");
-		break;
-
-	case 'reset.input.minmax':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Reset minimum and maximum input voltage status");
-		break;
-
-	case 'reset.watchdog':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Reset watchdog timer (forced reboot of load)");
-		break;
-
-	case 'beeper.enable':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Enable UPS beeper/buzzer");
-		break;
-
-	case 'beeper.disable':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Disable UPS beeper/buzzer");
-		break;
-
-	case 'beeper.mute':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Temporarily mute UPS beeper/buzzer");
-		break;
-
-	case 'beeper.toggle':
-
-		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Toggle UPS beeper/buzzer");
-		break;
-
-	// outlet.n.{shutdown.return,load.off,load.on,load.cycle}
-	default:
-
-		if (cmd['cmd'].slice(0, 6) == 'outlet') {
-
-			let buf = cmd['cmd'].split('.');
-
-			switch (buf[2] + '.' + buf[3])
-			{
-			case 'shutdown.return':
-
-				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn off the outlet #%d possibly after a delay and return when power is back").format(buf[1]);
-				break;
-
-			case 'load.off':
-
-				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn off the outlet #%d immediately").format(buf[1]);
-				break;
-
-			case 'load.on':
-
-				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn on the outlet #%d immediately").format(buf[1]);
-				break;
-
-			case 'load.cycle':
-
-				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Power cycle the outlet #%d immediately").format(buf[1]);
-				break;
-
-			default:
-
-				break;
-
-			}
-
-		}
-
-		break;
-
-	}
-
-	return cmd;
 
 }
