@@ -31,4 +31,12 @@ Enter <code>r</code> to restart Gnome Shell
 </item>
 </list>
 <p>Then you can enable the extension through <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) or through <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
+<note style="important">
+<p>Users of previous versions of <em>walNUT</em>, when upgrading, must always recompile the schema:</p>
+<listing>
+<code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code>
+</listing>
+</note>
 </page>

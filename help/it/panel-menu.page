@@ -125,6 +125,7 @@ frame="top bottom"
 <note style="tip">
 <p>Se il dispositivo non sta fornendo uno fra produttore o modello oppure entrambi, o se si desidera un&#8217;etichetta più accattivante, è possibile sovrascriverne uno o entrambi in <link href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</link>.</p>
 </note>
+<p>È possibile scegliere se visualizzare o meno questo dato modificando la relativa opzione nelle <link xref="preferences">preferenze</link>.</p>
 </section>
 <section id="device-status"><links type="section"/><links type="topic"/><title>4.3. STATO DEL DISPOSITIVO</title>
 <figure>
@@ -156,6 +157,7 @@ frame="top bottom"
 </figure>
 <p>Se disponibili, [<em style="strong">C</em>] il livello di carica della batteria, [<em style="strong">D</em>] il tempo stimato di backup, [<em style="strong">E</em>] il livello di carico e [<em style="strong">F</em>] la temperatura del dispositivo saranno visualizzati qui.
 L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<link xref="panel-icon">icona del pannello</link>).</p>
+<p>È possibile scegliere se visualizzare o meno queste informazioni modificando le relativa opzioni nelle <link xref="preferences">preferenze</link>.</p>
 </section>
 <section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. DATI GREZZI</title>
 <figure>

@@ -92,6 +92,17 @@ After the installation you'll need to restart Gnome Shell:
 
 Then you can enable the extension through https://live.gnome.org/GnomeTweakTool[Gnome Tweak Tool] (Shell Extensions -> walNUT -> On) or through https://extensions.gnome.org/local/
 
+[IMPORTANT]
+====
+Users of previous versions of _walNUT_, when upgrading, must always recompile the schema:
+
+----
+cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/
+----
+====
+
 
 [[first-execution]]
 FIRST EXECUTION
@@ -225,6 +236,8 @@ If available both device manufacturer and device model will be shown here.
 
 TIP: If your device isn't providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in http://www.networkupstools.org/docs/man/ups.conf.html[ups.conf].
 
+You can chose whether to display or not this information changing its option in the <<{preferences},preferences>>.
+
 
 [[device-status]]
 DEVICE STATUS
@@ -255,6 +268,7 @@ image::datatable.png["Data Table", align = "center"]
 If available, [*C*] battery charge, [*D*] backup time, [*E*] device load and [*F*] temperature will be shown here. +
 Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
 
+You can chose whether to display or not these data changing their options in the <<{preferences},preferences>>.
 
 [[raw-vars]]
 RAW VARS
@@ -439,13 +453,18 @@ image::pref.png["Preferences", align = "center"]
 |1 |Seconds before next update |The seconds after _walNUT_ updates the data from the device. (_default: 15_)
 |2 |Temperature unit |The unit (Centigrade or Fahrenheit) _walNUT_ should display the temperature in. (_default: Centigrade_)
 |3 |Display not available devices |Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
-|4 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
-|5 |Display device's commands |Display device's available commands. You'll need upsd user and password to execute them. (_default: OFF_)
-|6 |Display description of device's commands |Display also a localized description of the device's available commands in the sub menu. (_default: ON_)
-|7 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
-|8 |Display load in panel icon |Whether the device load should be displayed in the panel icon or not. (_default: OFF_)
-|9 |Display load in panel label |Whether the device load should be displayed in the panel label or not. (_default: OFF_)
-|10 |Display charge in panel label |Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
+|4 |Display device model in the menu |Show also device model (`manufacturer - model'), if available, in the panel menu. (_default: ON_)
+|5 |Display battery charge in the menu |Show also battery charge, if available, in the panel menu. (_default: ON_)
+|6 |Display load level in the menu |Show also load level, if available, in the panel menu. (_default: ON_)
+|7 |Display backup time in the menu |Show also backup time, if available, in the panel menu. (_default: ON_)
+|8 |Display device temperature in the menu |Show also device temperature, if available, in the panel menu. (_default: ON_)
+|9 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
+|10 |Display device's commands |Display device's available commands. You'll need upsd user and password to execute them. (_default: OFF_)
+|11 |Display description of device's commands |Display also a localized description of the device's available commands in the sub menu. (_default: ON_)
+|12 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
+|13 |Display load in panel icon |Whether the device load should be displayed in the panel icon or not. (_default: OFF_)
+|14 |Display load in panel label |Whether the device load should be displayed in the panel label or not. (_default: OFF_)
+|15 |Display charge in panel label |Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
 |====
 
 

@@ -51,6 +51,22 @@ Enter <code>r</code> to restart Gnome Shell
 </li>
 </ul></div>
 <div class="paragraph"><p>Then you can enable the extension through <a href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</a> (Shell Extensions &#8594; walNUT &#8594; On) or through <a href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</a></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/important.png" alt="Important" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Users of previous versions of <em>walNUT</em>, when upgrading, must always recompile the schema:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code></pre>
+</div></div>
+</td>
+</tr></table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -311,6 +327,7 @@ You can choose either to display or not not available devices in the <a href="#p
 <td class="content">If your device isn&#8217;t providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in <a href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</a>.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>You can chose whether to display or not this information changing its option in the <a href="#preferences">preferences</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="device-status">4.3. DEVICE STATUS</h3>
@@ -347,6 +364,7 @@ You can choose either to display or not not available devices in the <a href="#p
 </div>
 <div class="paragraph"><p>If available, [<strong>C</strong>] battery charge, [<strong>D</strong>] backup time, [<strong>E</strong>] device load and [<strong>F</strong>] temperature will be shown here.<br />
 Battery icon [<strong>1</strong>] will display actual charge through the number of horizontal bars (as the ones of <a href="#panel-icon">panel icon</a>).</p></div>
+<div class="paragraph"><p>You can chose whether to display or not these data changing their options in the <a href="#preferences">preferences</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="raw-vars">4.6. RAW VARS</h3>
@@ -664,36 +682,61 @@ cellspacing="0" cellpadding="4">
 </tr>
 <tr>
 <td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
+<td align="left" valign="top"><p class="table">Display device model in the menu</p></td>
+<td align="left" valign="top"><p class="table">Show also device model (&#8216;manufacturer - model&#8217;), if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="left" valign="top"><p class="table">Display battery charge in the menu</p></td>
+<td align="left" valign="top"><p class="table">Show also battery charge, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="left" valign="top"><p class="table">Display load level in the menu</p></td>
+<td align="left" valign="top"><p class="table">Show also load level, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="left" valign="top"><p class="table">Display backup time in the menu</p></td>
+<td align="left" valign="top"><p class="table">Show also backup time, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="left" valign="top"><p class="table">Display device temperature in the menu</p></td>
+<td align="left" valign="top"><p class="table">Show also device temperature, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
 <td align="left" valign="top"><p class="table">Display raw data</p></td>
 <td align="left" valign="top"><p class="table">Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
 <td align="left" valign="top"><p class="table">Display device&#8217;s commands</p></td>
 <td align="left" valign="top"><p class="table">Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
 <td align="left" valign="top"><p class="table">Display description of device&#8217;s commands</p></td>
 <td align="left" valign="top"><p class="table">Display also a localized description of the device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>12</strong></p></td>
 <td align="left" valign="top"><p class="table">Hide password at credentials box</p></td>
 <td align="left" valign="top"><p class="table">Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>13</strong></p></td>
 <td align="left" valign="top"><p class="table">Display load in panel icon</p></td>
 <td align="left" valign="top"><p class="table">Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>14</strong></p></td>
 <td align="left" valign="top"><p class="table">Display load in panel label</p></td>
 <td align="left" valign="top"><p class="table">Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>15</strong></p></td>
 <td align="left" valign="top"><p class="table">Display charge in panel label</p></td>
 <td align="left" valign="top"><p class="table">Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
@@ -816,7 +859,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-11-02 22:26:12 CET
+Last updated 2013-11-05 23:00:57 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

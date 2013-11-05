@@ -125,6 +125,7 @@ You can choose either to display or not not available devices in the <link xref=
 <note style="tip">
 <p>If your device isn&#8217;t providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in <link href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</link>.</p>
 </note>
+<p>You can chose whether to display or not this information changing its option in the <link xref="preferences">preferences</link>.</p>
 </section>
 <section id="device-status"><links type="section"/><links type="topic"/><title>4.3. DEVICE STATUS</title>
 <figure>
@@ -156,6 +157,7 @@ You can choose either to display or not not available devices in the <link xref=
 </figure>
 <p>If available, [<em style="strong">C</em>] battery charge, [<em style="strong">D</em>] backup time, [<em style="strong">E</em>] device load and [<em style="strong">F</em>] temperature will be shown here.
 Battery icon [<em style="strong">1</em>] will display actual charge through the number of horizontal bars (as the ones of <link xref="panel-icon">panel icon</link>).</p>
+<p>You can chose whether to display or not these data changing their options in the <link xref="preferences">preferences</link>.</p>
 </section>
 <section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. RAW VARS</title>
 <figure>

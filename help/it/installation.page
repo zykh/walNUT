@@ -31,4 +31,12 @@ Inserire <code>r</code> per riavviare Gnome Shell
 </item>
 </list>
 <p>Quindi è possibile attivare l&#8217;esensione attraverso <link href="https://live.gnome.org/GnomeTweakTool">Gnome Tweak Tool</link> (Shell Extensions &#8594; walNUT &#8594; On) o tramite <link href="https://extensions.gnome.org/local/">https://extensions.gnome.org/local/</link></p>
+<note style="important">
+<p>Se si usa una versione precedente di <em>walNUT</em>, in fase di aggiornamento, è sempre necessario ricompilare lo schema:</p>
+<listing>
+<code>cd ~/.local/share/gnome-shell/extensions
+git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+glib-compile-schemas walnut@networkupstools/schemas/</code>
+</listing>
+</note>
 </page>

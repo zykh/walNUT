@@ -55,36 +55,61 @@ frame="top bottom"
 </tr>
 <tr>
 <td><p><em style="strong">4</em></p></td>
+<td><p>Display device model in the menu</p></td>
+<td><p>Show also device model (&#8216;manufacturer - model&#8217;), if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">5</em></p></td>
+<td><p>Display battery charge in the menu</p></td>
+<td><p>Show also battery charge, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">6</em></p></td>
+<td><p>Display load level in the menu</p></td>
+<td><p>Show also load level, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">7</em></p></td>
+<td><p>Display backup time in the menu</p></td>
+<td><p>Show also backup time, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">8</em></p></td>
+<td><p>Display device temperature in the menu</p></td>
+<td><p>Show also device temperature, if available, in the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">9</em></p></td>
 <td><p>Display raw data</p></td>
 <td><p>Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">5</em></p></td>
+<td><p><em style="strong">10</em></p></td>
 <td><p>Display device&#8217;s commands</p></td>
 <td><p>Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">6</em></p></td>
+<td><p><em style="strong">11</em></p></td>
 <td><p>Display description of device&#8217;s commands</p></td>
 <td><p>Display also a localized description of the device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">7</em></p></td>
+<td><p><em style="strong">12</em></p></td>
 <td><p>Hide password at credentials box</p></td>
 <td><p>Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">8</em></p></td>
+<td><p><em style="strong">13</em></p></td>
 <td><p>Display load in panel icon</p></td>
 <td><p>Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">9</em></p></td>
+<td><p><em style="strong">14</em></p></td>
 <td><p>Display load in panel label</p></td>
 <td><p>Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">10</em></p></td>
+<td><p><em style="strong">15</em></p></td>
 <td><p>Display charge in panel label</p></td>
 <td><p>Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
