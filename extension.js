@@ -1251,6 +1251,23 @@ const	walNUT = new Lang.Class({
 
 		// Retrieve values stored in schema
 
+		// Device model ('manufacturer - model')
+		this._display_device_model = gsettings.get_boolean('display-device-model');
+
+		// Info displayed in 'DataTable'
+
+		// Battery charge
+		this._display_battery_charge = gsettings.get_boolean('display-battery-charge');
+
+		// Load level
+		this._display_load_level = gsettings.get_boolean('display-load-level');
+
+		// Backup time
+		this._display_backup_time = gsettings.get_boolean('display-backup-time');
+
+		// Device temperature
+		this._display_device_temperature = gsettings.get_boolean('display-device-temperature');
+
 		// Raw Data
 
 		// Display raw data
@@ -1417,8 +1434,11 @@ const	walNUT = new Lang.Class({
 				this.menu.errorBox.hide();
 
 			// UPS model
-			if (vars['device.mfr'] || vars['device.model'])
+			if (this._display_device_model && (vars['device.mfr'] || vars['device.model']))
 				this.menu.upsModel.show(vars['device.mfr'], vars['device.model']);
+
+			else if (this.menu.upsModel.actor.visible)
+				this.menu.upsModel.hide();
 
 			// TopDataList
 
@@ -1440,7 +1460,7 @@ const	walNUT = new Lang.Class({
 			let count = 0;
 
 			// UPS charge
-			if (vars['battery.charge']) {
+			if (this._display_battery_charge && vars['battery.charge']) {
 
 				count++;
 
@@ -1452,7 +1472,7 @@ const	walNUT = new Lang.Class({
 			}
 
 			// UPS load
-			if (vars['ups.load']) {
+			if (this._display_load_level && vars['ups.load']) {
 
 				count++;
 
@@ -1464,7 +1484,7 @@ const	walNUT = new Lang.Class({
 			}
 
 			// UPS remaining time
-			if (vars['battery.runtime']) {
+			if (this._display_backup_time && vars['battery.runtime']) {
 
 				count++;
 
@@ -1476,7 +1496,7 @@ const	walNUT = new Lang.Class({
 			}
 
 			// UPS temperature
-			if (vars['ups.temperature']) {
+			if (this._display_device_temperature && vars['ups.temperature']) {
 
 				count++;
 
@@ -1490,6 +1510,11 @@ const	walNUT = new Lang.Class({
 			// Don't show table if no data is available
 			if (count)
 				this.menu.upsDataTable.show();
+
+			else if (this.menu.upsDataTable.actor.visible) {
+				this.menu.upsDataTable.clean();
+				this.menu.upsDataTable.hide();
+			}
 
 			// Separator
 			if (this._display_raw || this._display_cmd) {

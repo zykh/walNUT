@@ -84,6 +84,43 @@ function init() {
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)")
 		},
+		// Device model
+		display_device_model: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display device model in the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Show also device model ('manufacturer - model'), if available, in the panel menu. (default: ON)")
+		},
+		// Data table options
+		display_battery_charge: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display battery charge in the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Show also battery charge, if available, in the panel menu. (default: ON)")
+		},
+		display_load_level: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display load level in the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Show also load level, if available, in the panel menu. (default: ON)")
+		},
+		display_backup_time: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display backup time in the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Show also backup time, if available, in the panel menu. (default: ON)")
+		},
+		display_device_temperature: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display device temperature in the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Show also device temperature, if available, in the panel menu. (default: ON)")
+		},
 		// Raw Data
 		display_raw: {
 			type: 'b',

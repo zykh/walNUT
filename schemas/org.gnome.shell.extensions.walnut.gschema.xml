@@ -23,6 +23,38 @@
 			<description>Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option).</description>
 		</key>
 
+		<!-- Device model -->
+		<key type="b" name="display-device-model">
+			<default>true</default>
+			<summary>Display device model in the menu</summary>
+			<description>Show also device model ('manufacturer - model'), if available, in the panel menu.</description>
+		</key>
+
+		<!-- Data table options -->
+		<key type="b" name="display-battery-charge">
+			<default>true</default>
+			<summary>Display battery charge in the menu</summary>
+			<description>Show also battery charge, if available, in the panel menu.</description>
+		</key>
+
+		<key type="b" name="display-load-level">
+			<default>true</default>
+			<summary>Display load level in the menu</summary>
+			<description>Show also load level, if available, in the panel menu.</description>
+		</key>
+
+		<key type="b" name="display-backup-time">
+			<default>true</default>
+			<summary>Display backup time in the menu</summary>
+			<description>Show also backup time, if available, in the panel menu.</description>
+		</key>
+
+		<key type="b" name="display-device-temperature">
+			<default>true</default>
+			<summary>Display device temperature in the menu</summary>
+			<description>Show also device temperature, if available, in the panel menu.</description>
+		</key>
+
 		<!-- Raw Data -->
 		<key type="b" name="display-raw">
 			<default>false</default>
