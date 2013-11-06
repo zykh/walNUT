@@ -76,6 +76,14 @@ function init() {
 				{ nick: 'Fahrenheit', name: _("Fahrenheit"), id: 1 }
 			]
 		},
+		// Menu style
+		less_noisy_menu: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Use a less noisy style for the menu"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Whether the extension should use a less noisy, more in line with Gnome Shell's own, style or not for the panel menu. (default: ON)")
+		},
 		// Device List Options
 		display_na: {
 			type: 'b',

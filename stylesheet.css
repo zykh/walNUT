@@ -131,13 +131,13 @@
 }
 
 /* Buttons */
-.walnut-buttons-icon-big {
+.walnut-buttons-big > StIcon {
 	height: 2.475em;
 	icon-size: 2.475em;
 	padding: 0;
 }
 
-.walnut-buttons-icon-small {
+.walnut-buttons-small > StIcon {
 	height: 1.1em;
 	icon-size: 1.1em;
 	padding: 0;
@@ -149,6 +149,10 @@
 
 .walnut-buttons-small {
 	padding: 0.2em;
+}
+
+.walnut-bottom-controls-less-noisy > StIcon {
+	padding: .65em;
 }
 
 .walnut-buttons-big:hover,
@@ -169,10 +173,10 @@
 
 .walnut-buttons-big:insensitive,
 .walnut-buttons-small:insensitive {
-    border-color: #666666;
-    color: #9f9f9f;
-    background-gradient-direction: none;
-    background-color: rgba(102, 102, 102, 0.15);
+	border-color: #666666;
+	color: #9f9f9f;
+	background-gradient-direction: none;
+	background-color: rgba(102, 102, 102, 0.15);
 }
 
 /* Setvar */
@@ -327,12 +331,21 @@
 
 /* Device Top Data (Status/Alarm) */
 .walnut-ups-top-data-box {
-	min-width: 20em;
+
+}
+
+.walnut-ups-top-data-status-box {
+	padding: 0em;
+}
+
+.walnut-ups-top-data-alarm-box {
+	padding-bottom: 0em;
+	padding-left: 0em;
+	padding-right: 0em;
 }
 
 .walnut-ups-top-data-icon {
 	icon-size: 3.3em;
-	padding: 0 1.333em 0.333em 0;
 }
 
 .walnut-ups-top-data-label {
@@ -366,7 +379,7 @@
 
 /* walNUT Menu*/
 .walnut-menu {
-	min-width: 26.7em;
+	min-width: 24em;
 }
 
 /* std gnome: 1em -> 15px (11pt) */

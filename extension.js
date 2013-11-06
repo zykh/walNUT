@@ -1254,6 +1254,9 @@ const	walNUT = new Lang.Class({
 		// Device model ('manufacturer - model')
 		this._display_device_model = gsettings.get_boolean('display-device-model');
 
+		// Menu style
+		this._less_noisy_menu = gsettings.get_boolean('less-noisy-menu');
+
 		// Info displayed in 'DataTable'
 
 		// Battery charge
@@ -1443,19 +1446,26 @@ const	walNUT = new Lang.Class({
 			// TopDataList
 
 			// UPS status
-			this.menu.upsTopDataList.update('S', vars['ups.status']);
+			this.menu.upsTopDataList.update('S', vars['ups.status'], this._less_noisy_menu);
 			this.menu.upsTopDataList.show();
 
 			// UPS alarm
 			if (vars['ups.alarm'])
-				this.menu.upsTopDataList.update('A', vars['ups.alarm']);
+				this.menu.upsTopDataList.update('A', vars['ups.alarm'], this._less_noisy_menu);
 			else
 				this.menu.upsTopDataList.hide('A');
 
 			// UpsDataTable
 
-			if (hasChanged)
+			if (hasChanged) {
+
 				this.menu.upsDataTable.clean();
+				this.menu.upsDataTable.hide();
+
+				this.menu.upsDataTableAlt.clean();
+				this.menu.upsDataTableAlt.hide();
+
+			}
 
 			let count = 0;
 
@@ -1464,10 +1474,19 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged)
-					this.menu.upsDataTable.addData('C', count);
+				if (hasChanged) {
 
-				this.menu.upsDataTable.update('C', vars['battery.charge']);
+					if (this._less_noisy_menu)
+						this.menu.upsDataTableAlt.addData('C');
+					else
+						this.menu.upsDataTable.addData('C', count);
+
+				}
+
+				if (this._less_noisy_menu)
+					this.menu.upsDataTableAlt.update('C', vars['battery.charge']);
+				else
+					this.menu.upsDataTable.update('C', vars['battery.charge']);
 
 			}
 
@@ -1476,10 +1495,19 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged)
-					this.menu.upsDataTable.addData('L', count);
+				if (hasChanged) {
 
-				this.menu.upsDataTable.update('L', vars['ups.load']);
+					if (this._less_noisy_menu)
+						this.menu.upsDataTableAlt.addData('L');
+					else
+						this.menu.upsDataTable.addData('L', count);
+
+				}
+
+				if (this._less_noisy_menu)
+					this.menu.upsDataTableAlt.update('L', vars['ups.load']);
+				else
+					this.menu.upsDataTable.update('L', vars['ups.load']);
 
 			}
 
@@ -1488,10 +1516,19 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged)
-					this.menu.upsDataTable.addData('R', count);
+				if (hasChanged) {
 
-				this.menu.upsDataTable.update('R', vars['battery.runtime']);
+					if (this._less_noisy_menu)
+						this.menu.upsDataTableAlt.addData('R');
+					else
+						this.menu.upsDataTable.addData('R', count);
+
+				}
+
+				if (this._less_noisy_menu)
+					this.menu.upsDataTableAlt.update('R', vars['battery.runtime']);
+				else
+					this.menu.upsDataTable.update('R', vars['battery.runtime']);
 
 			}
 
@@ -1500,20 +1537,46 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged)
-					this.menu.upsDataTable.addData('T', count);
+				if (hasChanged) {
 
-				this.menu.upsDataTable.update('T', vars['ups.temperature']);
+					if (this._less_noisy_menu)
+						this.menu.upsDataTableAlt.addData('T');
+					else
+						this.menu.upsDataTable.addData('T', count);
+
+				}
+
+				if (this._less_noisy_menu)
+					this.menu.upsDataTableAlt.update('T', vars['ups.temperature']);
+				else
+					this.menu.upsDataTable.update('T', vars['ups.temperature']);
 
 			}
 
 			// Don't show table if no data is available
-			if (count)
-				this.menu.upsDataTable.show();
+			if (count) {
 
-			else if (this.menu.upsDataTable.actor.visible) {
-				this.menu.upsDataTable.clean();
-				this.menu.upsDataTable.hide();
+				if (this._less_noisy_menu)
+					this.menu.upsDataTableAlt.show();
+				else
+					this.menu.upsDataTable.show();
+
+			} else {
+
+				if (this.menu.upsDataTable.actor.visible) {
+
+					this.menu.upsDataTable.clean();
+					this.menu.upsDataTable.hide();
+
+				}
+
+				if (this.menu.upsDataTableAlt.actor.visible) {
+
+					this.menu.upsDataTableAlt.clean();
+					this.menu.upsDataTableAlt.hide();
+
+				}
+
 			}
 
 			// Separator
@@ -1559,6 +1622,11 @@ const	walNUT = new Lang.Class({
 				this.menu.upsDataTable.hide();
 			}
 
+			if (this.menu.upsDataTableAlt.actor.visible) {
+				this.menu.upsDataTableAlt.clean();
+				this.menu.upsDataTableAlt.hide();
+			}
+
 			if (this.menu.separator.actor.visible)
 				this.menu.separator.actor.hide();
 
@@ -1583,6 +1651,25 @@ const	walNUT = new Lang.Class({
 
 		// Delete UPS
 		this.menu.controls.setControl(this._del_btn, !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive' );
+
+		// Bottom buttons' appearance
+		if (this._less_noisy_menu) {
+
+			this.menu.controls.removeStyle('walnut-buttons-big');
+
+			this.menu.controls.addStyle('walnut-buttons-small');
+
+			this.menu.controls.addStyle('walnut-bottom-controls-less-noisy');
+
+		} else {
+
+			this.menu.controls.removeStyle('walnut-buttons-small');
+
+			this.menu.controls.removeStyle('walnut-bottom-controls-less-noisy');
+
+			this.menu.controls.addStyle('walnut-buttons-big');
+
+		}
 
 	},
 
@@ -2169,7 +2256,7 @@ const	Button = new Lang.Class({
 			type = 'big';
 
 		// Icon
-		let button_icon = new St.Icon({ icon_name: icon + '-symbolic', style_class: 'walnut-buttons-icon-%s'.format(type) });
+		let button_icon = new St.Icon({ icon_name: icon + '-symbolic' });
 
 		// Button
 		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, accessible_name: accessibleName, style_class: 'system-menu-action walnut-buttons-%s'.format(type), child: button_icon });
@@ -2224,6 +2311,60 @@ const	BottomControls = new Lang.Class({
 			button.actor.reactive = true;
 		else
 			button.actor.reactive = false;
+
+	},
+
+	// removeStyle: remove 'style' from children buttons' style
+	removeStyle: function(style) {
+
+		let children = this.btns.get_children();
+
+		// mmh.. no children
+		if (!children.length)
+			return;
+
+		for (let i = 0; i < children.length; i++) {
+
+			let child = children[i];
+
+			// Not a button
+			if (!(child instanceof St.Button))
+				continue;
+
+			// Style already not set in button
+			if (!child.has_style_class_name(style))
+				continue;
+
+			child.remove_style_class_name(style);
+
+		}
+
+	},
+
+	// addStyle: add 'style' to children buttons' style
+	addStyle: function(style) {
+
+		let children = this.btns.get_children();
+
+		// mmh.. no children
+		if (!children.length)
+			return;
+
+		for (let i = 0; i < children.length; i++) {
+
+			let child = children[i];
+
+			// Not a button
+			if (!(child instanceof St.Button))
+				continue;
+
+			// Style already set
+			if (child.has_style_class_name(style))
+				continue;
+
+			child.add_style_class_name(style);
+
+		}
 
 	}
 });
@@ -3493,6 +3634,187 @@ const	UpsDataTable = new Lang.Class({
 	}
 });
 
+// UpsDataTableAlt: Alternative, less noisy, data table
+const	UpsDataTableAlt = new Lang.Class({
+	Name: 'UpsDataTableAlt',
+	Extends: PopupMenu.PopupBaseMenuItem,
+
+	_init: function() {
+
+		this.parent({ reactive: false, can_focus: false });
+
+		// Edit PopupBaseMenuItem to our needs
+		this.actor.vertical = true;
+		this.actor.remove_child(this._ornamentLabel);
+		this.actor.remove_style_class_name('popup-menu-item');
+
+	},
+
+	addData: function(type) {
+
+		let cell = {};
+
+		switch (type)
+		{
+		case 'C':	// Battery Charge
+
+			cell.type = 'batteryCharge';
+			// TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
+			cell.label = _("Battery Charge");
+			break;
+
+		case 'L':	// Device Load
+
+			cell.type = 'deviceLoad';
+			// TRANSLATORS: Label of device load @ alternative, less noisy, data table
+			cell.label = _("Device Load");
+			cell.icon = 'imported-system-run';
+			break;
+
+		case 'R':	// Backup Time
+
+			cell.type = 'backupTime';
+			// TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
+			cell.label = _("Backup Time");
+			cell.icon = 'imported-preferences-system-time';
+			break;
+
+		case 'T':	// Device Temperature
+
+			cell.type = 'deviceTemp';
+			// TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
+			cell.label = _("Temperature");
+			cell.icon = 'nut-thermometer';
+			break;
+
+		default:
+
+			break;
+
+		}
+
+		// Create item
+		this[cell.type] = new UpsDataTableAltItem();
+
+		// Populate item
+		this[cell.type].setLabel(cell.label);
+		if (cell.icon)
+			this[cell.type].setIcon(cell.icon + '-symbolic');
+
+		// Add item
+		this.actor.add(this[cell.type].actor, { expand: true, x_fill: true });
+
+	},
+
+	// update: update table's data/icons
+	update: function(type, value) {
+
+		let cell = {};
+
+		switch (type)
+		{
+		case 'C':	// Battery Charge
+
+			cell.type = 'batteryCharge';
+			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
+			cell.value = '%s %'.format(value);
+			break;
+
+		case 'L':	// Device Load
+
+			cell.type = 'deviceLoad';
+			cell.value = '%s %'.format(value);
+			break;
+
+		case 'R':	// Backup Time
+
+			cell.type = 'backupTime';
+			cell.value = Utilities.parseTime(value);
+			break;
+
+		case 'T':	// Device Temperature
+
+			cell.type = 'deviceTemp';
+			cell.value = Utilities.formatTemp(value);
+			break;
+
+		default:
+
+			break;
+
+		}
+
+		if (cell.icon)
+			this[cell.type].setIcon(cell.icon + '-symbolic');
+
+		this[cell.type].setValue(cell.value);
+
+	},
+
+	// clean: destroy table's children, if any
+	clean: function() {
+
+		if (this.actor.get_children().length > 0)
+			this.actor.destroy_all_children();
+
+	},
+
+	hide: function() {
+
+		this.actor.hide();
+
+	},
+
+	show: function() {
+
+		this.actor.show();
+
+	}
+});
+
+// UpsDataTableAltItem: Alternative, less noisy, data table - item
+const	UpsDataTableAltItem = new Lang.Class({
+	Name: 'UpsDataTableAltItem',
+	Extends: PopupMenu.PopupBaseMenuItem,
+
+	_init: function() {
+
+		this.parent();
+
+		// Icon
+		this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
+		this.actor.add(this.icon);
+
+		// Label
+		this.label = new St.Label({ text: '', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
+		this.actor.add(this.label, { expand: true });
+		this.actor.label_actor = this.label;
+
+		// Value
+		this.value = new St.Label({ text: '', style_class: 'popup-status-menu-item', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
+		this.actor.add(this.value);
+
+	},
+
+	setIcon: function(icon) {
+
+		this.icon.icon_name = icon;
+
+	},
+
+	setLabel: function(label) {
+
+		this.label.text = label;
+
+	},
+
+	setValue: function(value) {
+
+		this.value.text = value;
+
+	}
+});
+
 // UpsTopDataList: List (if available/any) ups.{status,alarm}
 const	UpsTopDataList = new Lang.Class({
 	Name: 'UpsTopDataList',
@@ -3509,7 +3831,7 @@ const	UpsTopDataList = new Lang.Class({
 		container.set_child(dataBox);
 
 		// Device status
-		let statusIcon = new St.Icon({ icon_name: 'imported-utilities-system-monitor-symbolic', style_class: 'walnut-ups-top-data-icon' });
+		this.statusIcon = new St.Icon({ icon_name: 'imported-utilities-system-monitor-symbolic', style_class: 'walnut-ups-top-data-icon' });
 		this.statusLabel = new St.Label({ style_class: 'walnut-ups-top-data-label'});
 		this.statusText = new St.Label({ style_class: 'walnut-ups-top-data-text' });
 
@@ -3519,12 +3841,12 @@ const	UpsTopDataList = new Lang.Class({
 		statusDescBox.add_actor(this.statusText);
 
 		// Icon + desc box
-		let statusBox = new St.BoxLayout();
-		statusBox.add_actor(statusIcon);
+		let statusBox = new St.BoxLayout({ style_class: 'popup-menu-item walnut-ups-top-data-status-box' });
+		statusBox.add_actor(this.statusIcon);
 		statusBox.add_actor(statusDescBox);
 
 		// Alarm
-		let alarmIcon = new St.Icon({ icon_name: 'imported-dialog-warning-symbolic', style_class: 'walnut-ups-top-data-icon' });
+		this.alarmIcon = new St.Icon({ icon_name: 'imported-dialog-warning-symbolic', style_class: 'walnut-ups-top-data-icon' });
 		// TRANSLATORS: Label of device alarm box
 		let alarmLabel = new St.Label({ text: _("Alarm!"), style_class: 'walnut-ups-top-data-label' });
 		this.alarmText = new St.Label({ style_class: 'walnut-ups-top-data-text' });
@@ -3535,20 +3857,20 @@ const	UpsTopDataList = new Lang.Class({
 		alarmDescBox.add_actor(this.alarmText);
 
 		// Icon + desc box
-		this.alarmBox = new St.BoxLayout();
-		this.alarmBox.add_actor(alarmIcon);
+		this.alarmBox = new St.BoxLayout({ style_class: 'popup-menu-item walnut-ups-top-data-alarm-box' });
+		this.alarmBox.add_actor(this.alarmIcon);
 		this.alarmBox.add_actor(alarmDescBox);
 
 		// Add to dataBox
 		dataBox.add_actor(statusBox);
 		dataBox.add_actor(this.alarmBox);
 
-		this.actor.add(container, { expand: true });
+		this.actor.add(container);
 
 	},
 
 	// update: update displayed data
-	update: function(type, value) {
+	update: function(type, value, lessnoisy) {
 
 		switch (type)
 		{
@@ -3559,11 +3881,22 @@ const	UpsTopDataList = new Lang.Class({
 			this.statusLabel.text = status.line;
 			this.statusText.text = Utilities.parseText(status.status, TOPDATA_LENGTH);
 
+			if (lessnoisy)
+				this.statusIcon.style_class = 'popup-menu-icon';
+			else
+				this.statusIcon.style_class = 'walnut-ups-top-data-icon';
+
 			break;
 
 		case 'A':	// Alarm
 
 			this.alarmText.text = Utilities.parseText(value, TOPDATA_LENGTH);
+
+			if (lessnoisy)
+				this.alarmIcon.style_class = 'popup-menu-icon';
+			else
+				this.alarmIcon.style_class = 'walnut-ups-top-data-icon';
+
 			break;
 
 		default:
@@ -3853,6 +4186,9 @@ const	NutMenu = new Lang.Class({
 		// Battery charge, battery runtime, device load, device temperature
 		this.upsDataTable = new UpsDataTable();
 		this.upsDataTable.hide();
+		// Alternative, less noisy, data table
+		this.upsDataTableAlt = new UpsDataTableAlt();
+		this.upsDataTableAlt.hide();
 
 		// Separator between chosen UPS's data & raw data/UPS commands
 		this.separator = new PopupMenu.PopupSeparatorMenuItem();
@@ -3888,6 +4224,7 @@ const	NutMenu = new Lang.Class({
 		this.addMenuItem(this.upsModel);
 		this.addMenuItem(this.upsTopDataList);
 		this.addMenuItem(this.upsDataTable);
+		this.addMenuItem(this.upsDataTableAlt);
 
 		// Separator - Raw Data / UPS Commands
 		this.addMenuItem(this.separator);
