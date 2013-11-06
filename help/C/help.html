@@ -209,10 +209,22 @@ Standardly the menu look like this:</p></div>
 <img src="img/menustd.png" alt="Panel Menu" />
 </div>
 </div>
+<div class="paragraph"><p>You can also choose to use a more &#8216;noisy&#8217; version, that could end up being more readable in some cases, setting the appropriate option in the <a href="#preferences">preferences</a>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menustd_noisy.png" alt="Panel Menu - 'Noisy' version" />
+</div>
+</div>
 <div class="paragraph"><p>With all the available options set:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/menu.png" alt="Panel Menu - Complete" />
+</div>
+</div>
+<div class="paragraph"><p>&#8216;Noisy&#8217; version:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menu_noisy.png" alt="Panel Menu - Complete, 'noisy' version" />
 </div>
 </div>
 <div class="paragraph"><p>The menu can be split up in various sections:</p></div>
@@ -336,6 +348,12 @@ You can choose either to display or not not available devices in the <a href="#p
 <img src="img/devicestatus.png" alt="Device Status" />
 </div>
 </div>
+<div class="paragraph"><p>or (&#8216;noisy&#8217; version):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicestatus_noisy.png" alt="Device Status - 'Noisy' version" />
+</div>
+</div>
 <div class="paragraph"><p>Device status will show: line status [<strong>A</strong>] (online/on battery), and then, on the second row, every status reported by the device [<strong>B</strong>] (bypass, trim, ..).</p></div>
 </div>
 <div class="sect2">
@@ -343,6 +361,12 @@ You can choose either to display or not not available devices in the <a href="#p
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/devicealarm.png" alt="Device Alarm" />
+</div>
+</div>
+<div class="paragraph"><p>or (&#8216;noisy&#8217; version):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicealarm_noisy.png" alt="Device Alarm - 'Noisy' version" />
 </div>
 </div>
 <div class="paragraph"><p>If an alarm is set (<code>ups.status</code>: <code>ALARM</code> and <code>ups.alarm</code>) it&#8217;ll be shown here.</p></div>
@@ -360,6 +384,12 @@ You can choose either to display or not not available devices in the <a href="#p
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/datatable.png" alt="Data Table" />
+</div>
+</div>
+<div class="paragraph"><p>or (&#8216;noisy&#8217; version):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/datatable_noisy.png" alt="Data Table - 'Noisy' version" />
 </div>
 </div>
 <div class="paragraph"><p>If available, [<strong>C</strong>] battery charge, [<strong>D</strong>] backup time, [<strong>E</strong>] device load and [<strong>F</strong>] temperature will be shown here.<br />
@@ -472,6 +502,12 @@ If you click on the &#8216;Undo and close&#8217; button [<strong>N</strong>] the
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/btns.png" alt="Control Buttons" />
+</div>
+</div>
+<div class="paragraph"><p>or (&#8216;noisy&#8217; version):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns_noisy.png" alt="Control Buttons - 'Noisy' version" />
 </div>
 </div>
 <div class="paragraph"><p>At the bottom of the <a href="#panel-menu">panel menu</a> there&#8217;s a handful of control buttons, some of which will open their own box [<strong>A</strong>] just before the controls row [<strong>B</strong>].</p></div>
@@ -677,66 +713,71 @@ cellspacing="0" cellpadding="4">
 </tr>
 <tr>
 <td align="right" valign="top"><p class="table"><strong>3</strong></p></td>
+<td align="left" valign="top"><p class="table">Use a less &#8216;noisy&#8217; style for the menu</p></td>
+<td align="left" valign="top"><p class="table">Whether the extension should use a less &#8216;noisy&#8217;, more in line with Gnome Shell&#8217;s own, style or not for the panel menu. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
 <td align="left" valign="top"><p class="table">Display not available devices</p></td>
 <td align="left" valign="top"><p class="table">Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
 <td align="left" valign="top"><p class="table">Display device model in the menu</p></td>
 <td align="left" valign="top"><p class="table">Show also device model (&#8216;manufacturer - model&#8217;), if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
 <td align="left" valign="top"><p class="table">Display battery charge in the menu</p></td>
 <td align="left" valign="top"><p class="table">Show also battery charge, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
 <td align="left" valign="top"><p class="table">Display load level in the menu</p></td>
 <td align="left" valign="top"><p class="table">Show also load level, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
 <td align="left" valign="top"><p class="table">Display backup time in the menu</p></td>
 <td align="left" valign="top"><p class="table">Show also backup time, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
 <td align="left" valign="top"><p class="table">Display device temperature in the menu</p></td>
 <td align="left" valign="top"><p class="table">Show also device temperature, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
 <td align="left" valign="top"><p class="table">Display raw data</p></td>
 <td align="left" valign="top"><p class="table">Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
 <td align="left" valign="top"><p class="table">Display device&#8217;s commands</p></td>
 <td align="left" valign="top"><p class="table">Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>12</strong></p></td>
 <td align="left" valign="top"><p class="table">Display description of device&#8217;s commands</p></td>
 <td align="left" valign="top"><p class="table">Display also a localized description of the device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>12</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>13</strong></p></td>
 <td align="left" valign="top"><p class="table">Hide password at credentials box</p></td>
 <td align="left" valign="top"><p class="table">Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>13</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>14</strong></p></td>
 <td align="left" valign="top"><p class="table">Display load in panel icon</p></td>
 <td align="left" valign="top"><p class="table">Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>14</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>15</strong></p></td>
 <td align="left" valign="top"><p class="table">Display load in panel label</p></td>
 <td align="left" valign="top"><p class="table">Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>15</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>16</strong></p></td>
 <td align="left" valign="top"><p class="table">Display charge in panel label</p></td>
 <td align="left" valign="top"><p class="table">Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
@@ -859,7 +900,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-11-05 23:00:57 CET
+Last updated 2013-11-06 23:43:08 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

@@ -50,66 +50,71 @@ frame="top bottom"
 </tr>
 <tr>
 <td><p><em style="strong">3</em></p></td>
+<td><p>Usa uno stile meno &#8216;rumoroso&#8217; per il menu</p></td>
+<td><p>Se l&#8217;esensione deve usare per il menu del pannello uno stile meno &#8216;rumoroso&#8217;, più in linea con quello di Gnome Shell, oppure no. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">4</em></p></td>
 <td><p>Mostra i dispositivi non disponibili</p></td>
 <td><p>Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">4</em></p></td>
+<td><p><em style="strong">5</em></p></td>
 <td><p>Mostra il modello del dispositivo nel menu</p></td>
 <td><p>Visualizza anche il modello del dispositivo (&#8216;produttore - modelo&#8217;), se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">5</em></p></td>
+<td><p><em style="strong">6</em></p></td>
 <td><p>Mostra la carica della batteria nel menu</p></td>
 <td><p>Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">6</em></p></td>
+<td><p><em style="strong">7</em></p></td>
 <td><p>Mostra il carico del dispositivo nel menu</p></td>
 <td><p>Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">7</em></p></td>
+<td><p><em style="strong">8</em></p></td>
 <td><p>Mostra il tempo di backup nel menu</p></td>
 <td><p>Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">8</em></p></td>
+<td><p><em style="strong">9</em></p></td>
 <td><p>Mostra la temperatura del dispositivo nel menu</p></td>
 <td><p>Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">9</em></p></td>
+<td><p><em style="strong">10</em></p></td>
 <td><p>Mostra i dati grezzi</p></td>
 <td><p>Visualizza anche i dati grezzi in un sotto-menu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">10</em></p></td>
+<td><p><em style="strong">11</em></p></td>
 <td><p>Mostra i comandi del disposivo</p></td>
 <td><p>Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">11</em></p></td>
+<td><p><em style="strong">12</em></p></td>
 <td><p>Mostra la descrizione dei comandi del dispositivo</p></td>
 <td><p>Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">12</em></p></td>
+<td><p><em style="strong">13</em></p></td>
 <td><p>Nascondi la password nel riquadro delle credenziali</p></td>
 <td><p>Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">13</em></p></td>
+<td><p><em style="strong">14</em></p></td>
 <td><p>Mostra il carico del dispositivo nell&#8217;icona del pannello</p></td>
 <td><p>Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;icona sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">14</em></p></td>
+<td><p><em style="strong">15</em></p></td>
 <td><p>Mostra il carico del dispositivo nel pannello</p></td>
 <td><p>Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">15</em></p></td>
+<td><p><em style="strong">16</em></p></td>
 <td><p>Mostra la carica della batteria nel pannello</p></td>
 <td><p>Se il livello di carica della batteria deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>

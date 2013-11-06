@@ -19,11 +19,25 @@ Standardly the menu look like this:</p>
 <p>Panel Menu</p>
 </media>
 </figure>
+<p>You can also choose to use a more &#8216;noisy&#8217; version, that could end up being more readable in some cases, setting the appropriate option in the <link xref="preferences">preferences</link>:</p>
+<figure>
+<media type="image" src="img/menustd_noisy.png"
+>
+<p>Panel Menu - 'Noisy' version</p>
+</media>
+</figure>
 <p>With all the available options set:</p>
 <figure>
 <media type="image" src="img/menu.png"
 >
 <p>Panel Menu - Complete</p>
+</media>
+</figure>
+<p>&#8216;Noisy&#8217; version:</p>
+<figure>
+<media type="image" src="img/menu_noisy.png"
+>
+<p>Panel Menu - Complete, 'noisy' version</p>
 </media>
 </figure>
 <p>The menu can be split up in various sections:</p>
@@ -134,6 +148,13 @@ You can choose either to display or not not available devices in the <link xref=
 <p>Device Status</p>
 </media>
 </figure>
+<p>or (&#8216;noisy&#8217; version):</p>
+<figure>
+<media type="image" src="img/devicestatus_noisy.png"
+>
+<p>Device Status - 'Noisy' version</p>
+</media>
+</figure>
 <p>Device status will show: line status [<em style="strong">A</em>] (online/on battery), and then, on the second row, every status reported by the device [<em style="strong">B</em>] (bypass, trim, ..).</p>
 </section>
 <section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. DEVICE ALARM</title>
@@ -141,6 +162,13 @@ You can choose either to display or not not available devices in the <link xref=
 <media type="image" src="img/devicealarm.png"
 >
 <p>Device Alarm</p>
+</media>
+</figure>
+<p>or (&#8216;noisy&#8217; version):</p>
+<figure>
+<media type="image" src="img/devicealarm_noisy.png"
+>
+<p>Device Alarm - 'Noisy' version</p>
 </media>
 </figure>
 <p>If an alarm is set (<code>ups.status</code>: <code>ALARM</code> and <code>ups.alarm</code>) it&#8217;ll be shown here.</p>
@@ -153,6 +181,13 @@ You can choose either to display or not not available devices in the <link xref=
 <media type="image" src="img/datatable.png"
 >
 <p>Data Table</p>
+</media>
+</figure>
+<p>or (&#8216;noisy&#8217; version):</p>
+<figure>
+<media type="image" src="img/datatable_noisy.png"
+>
+<p>Data Table - 'Noisy' version</p>
 </media>
 </figure>
 <p>If available, [<em style="strong">C</em>] battery charge, [<em style="strong">D</em>] backup time, [<em style="strong">E</em>] device load and [<em style="strong">F</em>] temperature will be shown here.
@@ -263,6 +298,13 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 <media type="image" src="img/btns.png"
 >
 <p>Control Buttons</p>
+</media>
+</figure>
+<p>or (&#8216;noisy&#8217; version):</p>
+<figure>
+<media type="image" src="img/btns_noisy.png"
+>
+<p>Control Buttons - 'Noisy' version</p>
 </media>
 </figure>
 <p>At the bottom of the <link xref="panel-menu">panel menu</link> there&#8217;s a handful of control buttons, some of which will open their own box [<em style="strong">A</em>] just before the controls row [<em style="strong">B</em>].</p>

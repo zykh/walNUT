@@ -209,10 +209,22 @@ Di base il menu ha questo aspetto:</p></div>
 <img src="img/menustd.png" alt="Menu del pannello" />
 </div>
 </div>
+<div class="paragraph"><p>È possibile, inoltre, visualizzare una versione più &#8216;rumorosa&#8217;, ma che potrebbe essere, in alcuni casi, più leggibile, impostando la relativa opzione nelle <a href="#preferences">preferenze</a>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menustd_noisy.png" alt="Menu del pannello - Versione 'rumorosa'" />
+</div>
+</div>
 <div class="paragraph"><p>Con tutte le opzioni disponibili impostate:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/menu.png" alt="Menu del pannello - Completo" />
+</div>
+</div>
+<div class="paragraph"><p>Nella versione &#8216;rumorosa&#8217;:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/menu_noisy.png" alt="Menu del pannello - Completo, versione 'rumorosa'" />
 </div>
 </div>
 <div class="paragraph"><p>Il menu può essere suddiviso in varie sezioni:</p></div>
@@ -336,6 +348,12 @@ cellspacing="0" cellpadding="4">
 <img src="img/devicestatus.png" alt="Stato del dispositivo" />
 </div>
 </div>
+<div class="paragraph"><p>oppure (versione &#8216;rumorosa&#8217;):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicestatus_noisy.png" alt="Stato del dispositivo - Versione 'rumorosa'" />
+</div>
+</div>
 <div class="paragraph"><p>Lo stato del dispositivo mostrerà: lo stato della linea elettrica [<strong>A</strong>] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [<strong>B</strong>] (bypass, smorzamento, ..).</p></div>
 </div>
 <div class="sect2">
@@ -343,6 +361,12 @@ cellspacing="0" cellpadding="4">
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/devicealarm.png" alt="Allarme del dispositivo" />
+</div>
+</div>
+<div class="paragraph"><p>oppure (versione &#8216;rumorosa&#8217;):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/devicealarm_noisy.png" alt="Allarme del dispositivo - Versione 'rumorosa'" />
 </div>
 </div>
 <div class="paragraph"><p>Se viene riportato un allarme (<code>ups.status</code>: <code>ALARM</code> e <code>ups.alarm</code>) sarà mostrato qui.</p></div>
@@ -360,6 +384,12 @@ cellspacing="0" cellpadding="4">
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/datatable.png" alt="Tabella dei dati" />
+</div>
+</div>
+<div class="paragraph"><p>oppure (versione &#8216;rumorosa&#8217;):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/datatable_noisy.png" alt="Tabella dei dati - Versione 'rumorosa'" />
 </div>
 </div>
 <div class="paragraph"><p>Se disponibili, [<strong>C</strong>] il livello di carica della batteria, [<strong>D</strong>] il tempo stimato di backup, [<strong>E</strong>] il livello di carico e [<strong>F</strong>] la temperatura del dispositivo saranno visualizzati qui.<br />
@@ -472,6 +502,12 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<strong>N</strong>] il valore inserit
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="img/btns.png" alt="Pulsanti di controllo" />
+</div>
+</div>
+<div class="paragraph"><p>oppure (versione &#8216;rumorosa&#8217;):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="img/btns_noisy.png" alt="Pulsanti di controllo - Versione 'rumorosa'" />
 </div>
 </div>
 <div class="paragraph"><p>In fondo al <a href="#panel-menu">menu del pannello</a> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<strong>A</strong>] appena prima della riga dei pulsanti di controllo [<strong>B</strong>].</p></div>
@@ -676,66 +712,71 @@ cellspacing="0" cellpadding="4">
 </tr>
 <tr>
 <td align="right" valign="top"><p class="table"><strong>3</strong></p></td>
+<td align="left" valign="top"><p class="table">Usa uno stile meno &#8216;rumoroso&#8217; per il menu</p></td>
+<td align="left" valign="top"><p class="table">Se l&#8217;esensione deve usare per il menu del pannello uno stile meno &#8216;rumoroso&#8217;, più in linea con quello di Gnome Shell, oppure no. (<em>default: ON</em>)</p></td>
+</tr>
+<tr>
+<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra i dispositivi non disponibili</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>4</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra il modello del dispositivo nel menu</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche il modello del dispositivo (&#8216;produttore - modelo&#8217;), se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>5</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra la carica della batteria nel menu</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>6</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra il carico del dispositivo nel menu</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>7</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra il tempo di backup nel menu</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>8</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra la temperatura del dispositivo nel menu</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>9</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra i dati grezzi</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche i dati grezzi in un sotto-menu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>10</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra i comandi del disposivo</p></td>
 <td align="left" valign="top"><p class="table">Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>11</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>12</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra la descrizione dei comandi del dispositivo</p></td>
 <td align="left" valign="top"><p class="table">Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>12</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>13</strong></p></td>
 <td align="left" valign="top"><p class="table">Nascondi la password nel riquadro delle credenziali</p></td>
 <td align="left" valign="top"><p class="table">Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>13</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>14</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra il carico del dispositivo nell&#8217;icona del pannello</p></td>
 <td align="left" valign="top"><p class="table">Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;icona sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>14</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>15</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra il carico del dispositivo nel pannello</p></td>
 <td align="left" valign="top"><p class="table">Se il livello di carico del dispositivo deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td align="right" valign="top"><p class="table"><strong>15</strong></p></td>
+<td align="right" valign="top"><p class="table"><strong>16</strong></p></td>
 <td align="left" valign="top"><p class="table">Mostra la carica della batteria nel pannello</p></td>
 <td align="left" valign="top"><p class="table">Se il livello di carica della batteria deve essere visualizzato nell&#8217;etichetta sul pannello oppure no. (<em>default: OFF</em>)</p></td>
 </tr>
@@ -858,7 +899,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2013-11-05 23:00:43 CET
+Last updated 2013-11-06 23:42:38 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

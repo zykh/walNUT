@@ -19,11 +19,25 @@ Di base il menu ha questo aspetto:</p>
 <p>Menu del pannello</p>
 </media>
 </figure>
+<p>È possibile, inoltre, visualizzare una versione più &#8216;rumorosa&#8217;, ma che potrebbe essere, in alcuni casi, più leggibile, impostando la relativa opzione nelle <link xref="preferences">preferenze</link>:</p>
+<figure>
+<media type="image" src="img/menustd_noisy.png"
+>
+<p>Menu del pannello - Versione 'rumorosa'</p>
+</media>
+</figure>
 <p>Con tutte le opzioni disponibili impostate:</p>
 <figure>
 <media type="image" src="img/menu.png"
 >
 <p>Menu del pannello - Completo</p>
+</media>
+</figure>
+<p>Nella versione &#8216;rumorosa&#8217;:</p>
+<figure>
+<media type="image" src="img/menu_noisy.png"
+>
+<p>Menu del pannello - Completo, versione 'rumorosa'</p>
 </media>
 </figure>
 <p>Il menu può essere suddiviso in varie sezioni:</p>
@@ -134,6 +148,13 @@ frame="top bottom"
 <p>Stato del dispositivo</p>
 </media>
 </figure>
+<p>oppure (versione &#8216;rumorosa&#8217;):</p>
+<figure>
+<media type="image" src="img/devicestatus_noisy.png"
+>
+<p>Stato del dispositivo - Versione 'rumorosa'</p>
+</media>
+</figure>
 <p>Lo stato del dispositivo mostrerà: lo stato della linea elettrica [<em style="strong">A</em>] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [<em style="strong">B</em>] (bypass, smorzamento, ..).</p>
 </section>
 <section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. ALLARME DEL DISPOSITIVO</title>
@@ -141,6 +162,13 @@ frame="top bottom"
 <media type="image" src="img/devicealarm.png"
 >
 <p>Allarme del dispositivo</p>
+</media>
+</figure>
+<p>oppure (versione &#8216;rumorosa&#8217;):</p>
+<figure>
+<media type="image" src="img/devicealarm_noisy.png"
+>
+<p>Allarme del dispositivo - Versione 'rumorosa'</p>
 </media>
 </figure>
 <p>Se viene riportato un allarme (<code>ups.status</code>: <code>ALARM</code> e <code>ups.alarm</code>) sarà mostrato qui.</p>
@@ -153,6 +181,13 @@ frame="top bottom"
 <media type="image" src="img/datatable.png"
 >
 <p>Tabella dei dati</p>
+</media>
+</figure>
+<p>oppure (versione &#8216;rumorosa&#8217;):</p>
+<figure>
+<media type="image" src="img/datatable_noisy.png"
+>
+<p>Tabella dei dati - Versione 'rumorosa'</p>
 </media>
 </figure>
 <p>Se disponibili, [<em style="strong">C</em>] il livello di carica della batteria, [<em style="strong">D</em>] il tempo stimato di backup, [<em style="strong">E</em>] il livello di carico e [<em style="strong">F</em>] la temperatura del dispositivo saranno visualizzati qui.
@@ -263,6 +298,13 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 <media type="image" src="img/btns.png"
 >
 <p>Pulsanti di controllo</p>
+</media>
+</figure>
+<p>oppure (versione &#8216;rumorosa&#8217;):</p>
+<figure>
+<media type="image" src="img/btns_noisy.png"
+>
+<p>Pulsanti di controllo - Versione 'rumorosa'</p>
 </media>
 </figure>
 <p>In fondo al <link xref="panel-menu">menu del pannello</link> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<em style="strong">A</em>] appena prima della riga dei pulsanti di controllo [<em style="strong">B</em>].</p>
