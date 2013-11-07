@@ -79,7 +79,7 @@
 		<key type="b" name="display-cmd-desc">
 			<default>true</default>
 			<summary>Display description of device's commands</summary>
-			<description>Display also a localized description of the device's available commands in the sub menu.</description>
+			<description>Display also a localized description of the device's available commands in the submenu.</description>
 		</key>
 
 		<!-- Credentials Box Options -->

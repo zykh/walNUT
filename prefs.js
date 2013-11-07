@@ -31,25 +31,24 @@ const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
 const	Me = imports.misc.extensionUtils.getCurrentExtension(),
 	Convenience = Me.imports.convenience;
 
-// Stored settings
-let gsettings;
+// Settings
+let	gsettings,		// Stored settings
+	settings_general,	// General settings
+	settings_panel,		// Panel settings
+	settings_menu,		// Menu settings
+	settings_cmd_desc;	// Children settings of 'device's commands' option
 
-// Extensions settings
-let settings;
-
-// Children settings of UPS Commands
-let settings_cmd_desc;
-
-// Children boxes of UPS Commands
-let cmd_desc_box;
+// Children boxes of 'device's commands' option
+let	cmd_desc_box;
 
 function init() {
 
 	Convenience.initTranslations();
 	gsettings = Convenience.getSettings();
 
-	// Extension settings
-	settings = {
+	// General settings
+	settings_general = {
+
 		// Update time chooser
 		update_time: {
 			type: 'r',
@@ -59,9 +58,10 @@ function init() {
 			help: _("The seconds after walNUT updates the data from the device. (default: 15)"),
 			min: 5,
 			max: 100,
-			step: 5,
+			step: 1,
 			default: 15
 		},
+
 		// Temperature unit
 		temp_unit: {
 			type: 'es',
@@ -75,7 +75,43 @@ function init() {
 				// TRANSLATORS: Temperature unit @ preferences
 				{ nick: 'Fahrenheit', name: _("Fahrenheit"), id: 1 }
 			]
+		}
+
+	};
+
+	// Panel settings
+	settings_panel = {
+
+		// Panel button options
+		panel_icon_display_load: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display load in the icon"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Whether the device load should be displayed in panel icon or not. (default: OFF)")
 		},
+
+		panel_text_display_load: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display load in the label"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Whether the device load should be displayed in panel label or not. (default: OFF)")
+		},
+
+		panel_text_display_charge: {
+			type: 'b',
+			// TRANSLATORS: Label of setting @ preferences
+			label: _("Display charge in the label"),
+			// TRANSLATORS: Hint text of setting @ preferences
+			help: _("Whether the battery charge should be displayed in panel label or not. (default: OFF)")
+		}
+
+	};
+
+	// Menu settings
+	settings_menu = {
+
 		// Menu style
 		less_noisy_menu: {
 			type: 'b',
@@ -84,6 +120,7 @@ function init() {
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Whether the extension should use a less noisy, more in line with Gnome Shell's own, style or not for the panel menu. (default: ON)")
 		},
+
 		// Device List Options
 		display_na: {
 			type: 'b',
@@ -92,43 +129,49 @@ function init() {
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)")
 		},
+
 		// Device model
 		display_device_model: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display device model in the menu"),
+			label: _("Display device model"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also device model ('manufacturer - model'), if available, in the panel menu. (default: ON)")
 		},
+
 		// Data table options
 		display_battery_charge: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display battery charge in the menu"),
+			label: _("Display battery charge"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also battery charge, if available, in the panel menu. (default: ON)")
 		},
+
 		display_load_level: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display load level in the menu"),
+			label: _("Display load level"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also load level, if available, in the panel menu. (default: ON)")
 		},
+
 		display_backup_time: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display backup time in the menu"),
+			label: _("Display backup time"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also backup time, if available, in the panel menu. (default: ON)")
 		},
+
 		display_device_temperature: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display device temperature in the menu"),
+			label: _("Display device temperature"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also device temperature, if available, in the panel menu. (default: ON)")
 		},
+
 		// Raw Data
 		display_raw: {
 			type: 'b',
@@ -137,6 +180,7 @@ function init() {
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Show also raw data in a submenu. (default: OFF)")
 		},
+
 		// UPS Commands
 		display_cmd: {
 			type: 'b',
@@ -149,6 +193,7 @@ function init() {
 				cmd_desc_box.set_sensitive(status);
 			}
 		},
+
 		// Credentials Box Options
 		hide_pw: {
 			type: 'b',
@@ -156,84 +201,165 @@ function init() {
 			label: _("Hide password at credentials box"),
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("Whether the password at credentials box should be hidden or not. (default: ON)")
-		},
-		// Panel button options
-		panel_icon_display_load: {
-			type: 'b',
-			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display load in panel icon"),
-			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Whether the device load should be displayed in panel icon or not. (default: OFF)")
-		},
-		panel_text_display_load: {
-			type: 'b',
-			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display load in panel label"),
-			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Whether the device load should be displayed in panel label or not. (default: OFF)")
-		},
-		panel_text_display_charge: {
-			type: 'b',
-			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display charge in panel label"),
-			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Whether the battery charge should be displayed in panel label or not. (default: OFF)")
 		}
+
 	};
 
-	// Child setting of UPS Commands
+	// Child setting of 'device's commands' option
 	settings_cmd_desc = {
+
 		display_cmd_desc: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display description of device's commands (submenu)"),
+			label: _("Display description of device's commands"),
 			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Display also a localized description of device's available commands in the sub menu. (default: ON)"),
-		//	margin: 30
+			help: _("Display also a localized description of device's available commands in the submenu. (default: ON)"),
 		}
+
 	};
 
 }
 
-// Put preferences widget together
-function buildPrefsWidget() {
+// General/Panel settings
+const	walNUTPrefsGeneral = new GObject.Class({
+	Name: 'walNUTPrefsGeneral',
+	GTypeName: 'walNUTPrefsGeneral',
+	Extends: Gtk.Box,
 
-	let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, border_width: 10 });
+	_init: function() {
 
-	// Vertical box
-	let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_right: 10, margin_left: 10, margin_bottom: 0, margin_top: 0 });
+		this.parent({ orientation: Gtk.Orientation.VERTICAL, margin: 10, spacing: 10 });
 
-	// Children boxes of UPS Commands preference
-	cmd_desc_box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_left: 30, margin_bottom: 5 });
+		// TRANSLATORS: Tab's label @ preferences widget
+		this.label = new Gtk.Label({ label: _("General/Panel") });
 
-	// Horizontal box
-	let hbox;
+		// Horizontal boxes
+		let hbox;
 
-	// Child setting of UPS Commands
-	for (let setting in settings_cmd_desc) {
-		hbox = buildHbox(settings_cmd_desc, setting);
-		cmd_desc_box.add(hbox);
+		// General options
+
+		let general = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_bottom: 10, margin_left: 10, margin_right: 10, margin_top: 0, spacing: 5 });
+
+		for (let setting in settings_general) {
+
+			hbox = buildHbox(settings_general, setting);
+
+			general.add(hbox);
+
+		}
+
+		// TRANSLATORS: Label @ preferences widget
+		let generalFrame = new Gtk.Frame({ label: _("General options") });
+
+		generalFrame.add(general);
+
+		this.add(generalFrame);
+
+		// Panel options
+
+		let panel = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_bottom: 10, margin_left: 10, margin_right: 10, margin_top: 0, spacing: 5 });
+
+		for (let setting in settings_panel) {
+
+			hbox = buildHbox(settings_panel, setting);
+
+			panel.add(hbox);
+
+		}
+
+		// TRANSLATORS: Label @ preferences widget
+		let panelFrame = new Gtk.Frame({ label: _("Panel options") });
+
+		panelFrame.add(panel);
+
+		this.add(panelFrame);
+
 	}
+});
 
-	// Children sensitivity
-	cmd_desc_box.set_sensitive(gsettings.get_boolean('display-cmd'));
+// Menu settings
+const	walNUTPrefsMenu = new GObject.Class({
+	Name: 'walNUTPrefsMenu',
+	GTypeName: 'walNUTPrefsMenu',
+	Extends: Gtk.Box,
 
-	// All other settings
-	for (let setting in settings) {
+	_init: function() {
 
-		hbox = buildHbox(settings, setting);
-		vbox.add(hbox);
+		this.parent({ orientation: Gtk.Orientation.VERTICAL, margin: 10, spacing: 5 });
 
-		if (setting == 'display_cmd') {
-			vbox.add(cmd_desc_box);
+		// TRANSLATORS: Tab's label @ preferences widget
+		this.label = new Gtk.Label({ label: _("Menu") });
+
+		// Horizontal boxes
+		let hbox;
+
+		cmd_desc_box = new Gtk.VBox({ margin_left: 30 });
+
+		// Child setting of 'device's commands' option
+		for (let setting in settings_cmd_desc) {
+
+			hbox = buildHbox(settings_cmd_desc, setting);
+
+			cmd_desc_box.add(hbox);
+
+		}
+
+		// Child's sensitivity
+		cmd_desc_box.set_sensitive(gsettings.get_boolean('display-cmd'));
+
+		// All other settings
+		for (let setting in settings_menu) {
+
+			hbox = buildHbox(settings_menu, setting);
+
+			this.add(hbox);
+
+			if (setting == 'display_cmd') {
+				this.add(cmd_desc_box);
+			}
+
 		}
 
 	}
+});
 
-	frame.add(vbox);
-	frame.show_all();
+// Preferences widget
+const	walNUTPrefsWidget = new GObject.Class({
+	Name: 'walNUTPrefsWidget',
+	GTypeName: 'walNUTPrefsWidget',
+	Extends: Gtk.Box,
 
-	return frame;
+	_init: function() {
+
+		this.parent();
+
+		let notebook = new Gtk.Notebook({
+			margin_left: 5,
+			margin_top: 5,
+			margin_bottom: 5,
+			margin_right: 5,
+			expand: true
+		});
+
+		let general = new walNUTPrefsGeneral();
+		let menu = new walNUTPrefsMenu();
+
+		notebook.append_page(general, general.label);
+		notebook.append_page(menu, menu.label);
+
+		this.add(notebook);
+
+	}
+});
+
+// Build preferences widget
+function buildPrefsWidget() {
+
+	let preferences = new walNUTPrefsWidget();
+
+	preferences.show_all();
+
+	return preferences;
 
 }
 
@@ -262,7 +388,7 @@ function buildHbox(settings, setting) {
 // Enum setting from string setting
 function createEnumStringSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0 });
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
 	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
@@ -406,7 +532,7 @@ function createStringSetting(settings, setting) {
 // Integer setting
 function createIntSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0 });
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
 	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
@@ -435,7 +561,7 @@ function createIntSetting(settings, setting) {
 // Boolean setting
 function createBoolSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0, margin_left: settings[setting].margin || 0 });
+	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
 	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
