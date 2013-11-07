@@ -23,9 +23,62 @@
 <figure>
 <media type="image" src="img/pref.png"
 >
-<p>Preferences</p>
+<p>Preferences - General/Panel</p>
 </media>
 </figure>
+<p><em>General/Panel</em> tab - extensions' general options and <link xref="panel-icon">panel icon/label</link> options:</p>
+<table rules="rows"
+frame="top bottom"
+>
+<title>Available Options</title>
+<thead>
+<tr>
+<td><p># </p></td>
+<td><p>Option </p></td>
+<td><p>Description</p></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3"><p><em>General options</em></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">1</em></p></td>
+<td><p>Seconds before next update</p></td>
+<td><p>The seconds after <em>walNUT</em> updates the data from the device. (<em>default: 15</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">2</em></p></td>
+<td><p>Temperature unit</p></td>
+<td><p>The unit (Centigrade or Fahrenheit) <em>walNUT</em> should display the temperature in. (<em>default: Centigrade</em>)</p></td>
+</tr>
+<tr>
+<td colspan="3"><p><em>Panel options</em></p></td>
+</tr>
+<tr>
+<td><p><em style="strong">3</em></p></td>
+<td><p>Display load in the icon</p></td>
+<td><p>Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">4</em></p></td>
+<td><p>Display load in the label</p></td>
+<td><p>Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+<tr>
+<td><p><em style="strong">5</em></p></td>
+<td><p>Display charge in the label</p></td>
+<td><p>Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<media type="image" src="img/pref_menu.png"
+>
+<p>Preferences - Menu</p>
+</media>
+</figure>
+<p><em>Menu</em> tab - <link xref="panel-menu">panel menu</link> options:</p>
 <table rules="rows"
 frame="top bottom"
 >
@@ -40,83 +93,58 @@ frame="top bottom"
 <tbody>
 <tr>
 <td><p><em style="strong">1</em></p></td>
-<td><p>Seconds before next update</p></td>
-<td><p>The seconds after <em>walNUT</em> updates the data from the device. (<em>default: 15</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">2</em></p></td>
-<td><p>Temperature unit</p></td>
-<td><p>The unit (Centigrade or Fahrenheit) <em>walNUT</em> should display the temperature in. (<em>default: Centigrade</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">3</em></p></td>
 <td><p>Use a less &#8216;noisy&#8217; style for the menu</p></td>
 <td><p>Whether the extension should use a less &#8216;noisy&#8217;, more in line with Gnome Shell&#8217;s own, style or not for the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">4</em></p></td>
+<td><p><em style="strong">2</em></p></td>
 <td><p>Display not available devices</p></td>
 <td><p>Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">5</em></p></td>
-<td><p>Display device model in the menu</p></td>
+<td><p><em style="strong">3</em></p></td>
+<td><p>Display device model</p></td>
 <td><p>Show also device model (&#8216;manufacturer - model&#8217;), if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">6</em></p></td>
-<td><p>Display battery charge in the menu</p></td>
+<td><p><em style="strong">4</em></p></td>
+<td><p>Display battery charge</p></td>
 <td><p>Show also battery charge, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">7</em></p></td>
-<td><p>Display load level in the menu</p></td>
+<td><p><em style="strong">5</em></p></td>
+<td><p>Display load level</p></td>
 <td><p>Show also load level, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">8</em></p></td>
-<td><p>Display backup time in the menu</p></td>
+<td><p><em style="strong">6</em></p></td>
+<td><p>Display backup time</p></td>
 <td><p>Show also backup time, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">9</em></p></td>
-<td><p>Display device temperature in the menu</p></td>
+<td><p><em style="strong">7</em></p></td>
+<td><p>Display device temperature</p></td>
 <td><p>Show also device temperature, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">10</em></p></td>
+<td><p><em style="strong">8</em></p></td>
 <td><p>Display raw data</p></td>
 <td><p>Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">11</em></p></td>
+<td><p><em style="strong">9</em></p></td>
 <td><p>Display device&#8217;s commands</p></td>
 <td><p>Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">12</em></p></td>
+<td><p><em style="strong">10</em></p></td>
 <td><p>Display description of device&#8217;s commands</p></td>
-<td><p>Display also a localized description of the device&#8217;s available commands in the sub menu. (<em>default: ON</em>)</p></td>
+<td><p>Display also a localized description of the device&#8217;s available commands in the submenu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">13</em></p></td>
+<td><p><em style="strong">11</em></p></td>
 <td><p>Hide password at credentials box</p></td>
 <td><p>Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">14</em></p></td>
-<td><p>Display load in panel icon</p></td>
-<td><p>Whether the device load should be displayed in the panel icon or not. (<em>default: OFF</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">15</em></p></td>
-<td><p>Display load in panel label</p></td>
-<td><p>Whether the device load should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">16</em></p></td>
-<td><p>Display charge in panel label</p></td>
-<td><p>Whether the battery charge should be displayed in the panel label or not. (<em>default: OFF</em>)</p></td>
 </tr>
 </tbody>
 </table>
