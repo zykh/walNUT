@@ -311,6 +311,13 @@ If you click on the `Undo and close' button [*C*] the provided value will be dis
 
 image::setvars_string.png["Settable vars - STRING", align = "center"]
 
+[NOTE]
+====
+In case you use a version of NUT >= 2.7.1 and if the provided value is longer than the acceptable length, you'll be notified of the error and you won't be able to click on the `Set' button [*B*].
+
+image::setvars_string_error.png["Settable vars - STRING, error", align = "center"]
+====
+
 If the variable is of type `++ENUM++', the enumerated values will be listed in the box: if you click on one of them [*D*] the corresponding value will be sent to the driver.
 Also the actually chosen option will be shown, but it won't be clickable [*E*].
 

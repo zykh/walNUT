@@ -221,6 +221,15 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">C</em>] il valore 
 <p>Variabili modificabili - STRING</p>
 </media>
 </figure>
+<note style="note">
+<p>Nel caso in cui si usi una versione di NUT &gt;= 2.7.1 e il valore inserito dovesse risultare più lungo di quello impostabile, si verrà avvisati dell&#8217;errore e non sarà possibile cliccare sul pulsante &#8216;Imposta&#8217; [<em style="strong">B</em>].</p>
+<figure>
+<media type="image" src="img/setvars_string_error.png"
+>
+<p>Variabili modificabili - STRING, errore</p>
+</media>
+</figure>
+</note>
 <p>Se la variabile è di tipo &#8216;<code>ENUM</code>&#8217;, i vari valori impostabili saranno elencati e cliccando su uno qualsiasi di essi [<em style="strong">D</em>] l&#8217;impostazione verrà inviata al driver.
 Anche l&#8217;opzione attualmente scelta sarà visualizzata, ma non sarà cliccabile [<em style="strong">E</em>].</p>
 <figure>

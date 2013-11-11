@@ -248,6 +248,13 @@ Cliccando sul tasto `Annulla' [*C*] il valore inserito verrà cancellato e il ri
 
 image::setvars_string.png["Variabili modificabili - STRING", align = "center"]
 
+[NOTE]
+====
+Nel caso in cui si usi una versione di NUT >= 2.7.1 e il valore inserito dovesse risultare più lungo di quello impostabile, si verrà avvisati dell'errore e non sarà possibile cliccare sul pulsante `Imposta' [*B*].
+
+image::setvars_string_error.png["Variabili modificabili - STRING, errore", align = "center"]
+====
+
 Se la variabile è di tipo `++ENUM++', i vari valori impostabili saranno elencati e cliccando su uno qualsiasi di essi [*D*] l'impostazione verrà inviata al driver.
 Anche l'opzione attualmente scelta sarà visualizzata, ma non sarà cliccabile [*E*].
 

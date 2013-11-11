@@ -221,6 +221,15 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">C</e
 <p>Settable vars - STRING</p>
 </media>
 </figure>
+<note style="note">
+<p>In case you use a version of NUT &gt;= 2.7.1 and if the provided value is longer than the acceptable length, you&#8217;ll be notified of the error and you won&#8217;t be able to click on the &#8216;Set&#8217; button [<em style="strong">B</em>].</p>
+<figure>
+<media type="image" src="img/setvars_string_error.png"
+>
+<p>Settable vars - STRING, error</p>
+</media>
+</figure>
+</note>
 <p>If the variable is of type &#8216;<code>ENUM</code>&#8217;, the enumerated values will be listed in the box: if you click on one of them [<em style="strong">D</em>] the corresponding value will be sent to the driver.
 Also the actually chosen option will be shown, but it won&#8217;t be clickable [<em style="strong">E</em>].</p>
 <figure>
