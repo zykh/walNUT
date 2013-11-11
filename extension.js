@@ -3036,12 +3036,12 @@ const	SetvarBoxString = new Lang.Class({
 	Name: 'SetvarBoxString',
 	Extends: SetvarBox,
 
-	_init: function(parent, varName, actualValue) {//, len, actualValue) {	TODO: max length not implemented yet in upsrw
+	_init: function(parent, varName, len, actualValue) {
 
 		this.parent(varName, parent);
 
-		// Max length of the string	TODO: max length not implemented yet in upsrw
-	//	this.maxLength = len;
+		// Max length of the string. NOTE: max length is available only in NUT >= 2.7.1
+		this.maxLength = len;
 
 		// Actual value
 		this.actualValue = actualValue;
@@ -3049,20 +3049,20 @@ const	SetvarBoxString = new Lang.Class({
 		let container = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false, style_class: 'walnut-setvar-string-container' });
 		this.actor.add(container, { expand: true });
 
-		// Error box			TODO: max length not implemented yet in upsrw
-	//	this.errorBox = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false });
-	//	this.actor.add(this.errorBox);
+		// Error box
+		this.errorBox = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false });
+		this.actor.add(this.errorBox);
 
-		// Error Icon			TODO: max length not implemented yet in upsrw
-	//	let errorIcon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-setvar-string-error-icon' });
-	//	this.errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
+		// Error Icon
+		let errorIcon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-setvar-string-error-icon' });
+		this.errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
-		// Error message		TODO: max length not implemented yet in upsrw
+		// Error message
 		// TRANSLATORS: Error message @ string setvar
-	//	let errorText = new St.Label({ text: _("String too long"), style_class: 'walnut-setvar-string-error-text' });
-	//	this.errorBox.add(errorText, { expand: true, y_align: St.Align.MIDDLE, y_fill: false });
+		let errorText = new St.Label({ text: _("String too long"), style_class: 'walnut-setvar-string-error-text' });
+		this.errorBox.add(errorText, { expand: true, y_align: St.Align.MIDDLE, y_fill: false });
 
-	//	this.errorBox.hide();
+		this.errorBox.hide();
 
 		// TRANSLATORS: Hint text @ string setvar
 		this.entry = new St.Entry({ text: '', hint_text: _("set this variable to.."), can_focus: true, reactive: true, style_class: 'walnut-setvar-string-entry' });
@@ -3072,10 +3072,10 @@ const	SetvarBoxString = new Lang.Class({
 
 			this.valueToSet = this.entry.get_text();
 
-		//	if (this.valueToSet.trim().length > this.maxLength)	TODO: max length not implemented yet in upsrw
-		//		this.errorBox.show();
-		//	else
-		//		this.errorBox.hide();
+			if (this.maxLength && this.valueToSet.trim().length > this.maxLength)
+				this.errorBox.show();
+			else
+				this.errorBox.hide();
 
 			this._updateOkButton();
 
@@ -3128,7 +3128,7 @@ const	SetvarBoxString = new Lang.Class({
 
 		let len = this.valueToSet.trim().length;
 
-		if (this.actualValue != this.valueToSet && len > 0) {// && len <= this.maxLength) {	TODO: max length not implemented yet in upsrw
+		if (this.actualValue != this.valueToSet && len > 0 && (!this.maxLength || len <= this.maxLength)) {
 			this.go.actor.reactive = true;
 			this.go.actor.can_focus = true;
 		} else {
@@ -3147,7 +3147,7 @@ const	SetvarBoxString = new Lang.Class({
 
 		this.valueToSet = actualValue;
 
-	//	this.errorBox.hide();	TODO: max length not implemented yet in upsrw
+		this.errorBox.hide();
 
 		this._updateOkButton();
 
@@ -3299,9 +3299,9 @@ const	UpsRawDataItem = new Lang.Class({
 	},
 
 	// setVarString: add a SetvarBox for strings
-	setVarString: function(actualValue) {//len, actualValue) {	TODO: max length not implemented yet in upsrw
+	setVarString: function(len, actualValue) {
 
-		this.setvarBox = new SetvarBoxString(this, this.varName, actualValue);//, len, actualValue);	TODO: max length not implemented yet in upsrw
+		this.setvarBox = new SetvarBoxString(this, this.varName, len, actualValue);
 
 		this._addSetvarBox();
 
@@ -3445,7 +3445,7 @@ const	UpsRawDataList = new Lang.Class({
 			let setVar = setVars[item.var];
 
 			if (setVar.type == 'STRING')
-				this['_' + item.var].setVarString(item.value);
+				this['_' + item.var].setVarString(setVar.options, item.value);
 
 			else if (setVar.type == 'ENUM')
 				this['_' + item.var].setVarEnum(setVar.options, item.value);

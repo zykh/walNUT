@@ -133,7 +133,7 @@ function toArr(txt, sep, label1, label2) {
 // options are:
 // if type = RANGE -> an array of the available ranges [ { min: minimum value #1, max: maximum value #1 }, { min: minimum value #2, max: maximum value #2 }, .. ]
 // if type = ENUM -> an array of the available enumerated values [ enum1, enum2, enum3, .. ]
-// if type = STRING -> nothing (I hoped to get the maximum length of the string but it's not implemented yet in upsrw)
+// if type = STRING -> maximum length of the string if NUT >= 2.7.1, otherwise nothing
 function parseSetVar(txt) {
 
 	// [var.name]
@@ -151,6 +151,7 @@ function parseSetVar(txt) {
 	// [var3.name]
 	// Variable's description
 	// Type: STRING
+	// Maximum length: value	<- this line is published only in NUT >= 2.7.1
 	// Value: actual value
 
 	let output = txt.split('\n\n');
@@ -162,7 +163,7 @@ function parseSetVar(txt) {
 
 		let variable = output[i].split('\n');
 
-		// Type unrecognized / no var value (STRING) / no var boundaries (ENUM/RANGE)
+		// Type unrecognized / no var value or maximum length (STRING) / no var boundaries (ENUM/RANGE)
 		if (variable.length < 4)
 			continue;
 
@@ -174,8 +175,15 @@ function parseSetVar(txt) {
 		setVar[varName].type = variable[2].slice(6);
 
 		// type = STRING
-		if (setVar[varName].type != 'ENUM' && setVar[varName].type != 'RANGE')
+		if (setVar[varName].type == 'STRING') {
+
+			// NUT >= 2.7.1
+			if (!variable[3].indexOf('Maximum length: '))
+				setVar[varName].options = variable[3].slice(16);
+
 			continue;
+
+		}
 
 		setVar[varName].options = new Array();
 
@@ -188,7 +196,7 @@ function parseSetVar(txt) {
 
 			let option = variable[j].substring(from, to).trim();
 
-			// varType = ENUM
+			// type = ENUM
 			if (setVar[varName].type == 'ENUM') {
 
 				setVar[varName].options.push(option);
@@ -197,7 +205,7 @@ function parseSetVar(txt) {
 
 			}
 
-			// varType = RANGE
+			// type = RANGE
 
 			let ranges = option.split('-');
 
