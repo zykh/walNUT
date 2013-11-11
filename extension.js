@@ -2514,6 +2514,11 @@ const	UpsCmdList = new Lang.Class({
 
 				this.menu.addMenuItem(cmd);
 
+				// Scroll the parent menu when item gets key-focus
+				cmd.actor.connect('key-focus-in', Lang.bind(this, function() {
+					Util.ensureActorVisibleInScrollView(this.menu.actor, cmd.actor);
+				}));
+
 			}
 
 			return;
@@ -2765,6 +2770,9 @@ const	SetvarBoxRanges = new Lang.Class({
 
 				rangesTable.add(this.rangesCheck[i].actor, { row: row, col: col });
 
+				// Scroll the parent menu when item gets key-focus
+				this._parent.toggleScrollAction([ this.rangesCheck[i].actor ]);
+
 			}
 
 			this.actor.add(rangesTable, { expand: true });
@@ -2772,6 +2780,9 @@ const	SetvarBoxRanges = new Lang.Class({
 		}
 
 		this._resetTo(actualValue);
+
+		// Scroll the parent menu when items get key-focus
+		this._parent.toggleScrollAction([ this.slider.actor, this.minus.actor, this.plus.actor, del.actor, this.go.actor ]);
 
 		this.hide();
 
@@ -2994,6 +3005,9 @@ const	SetvarBoxEnums = new Lang.Class({
 			else
 				this.enumItems[i].setChosen(true);
 
+			// Scroll the parent menu when item gets key-focus
+			this._parent.toggleScrollAction([ this.enumItems[i].actor ]);
+
 		}
 
 		this.hide();
@@ -3102,6 +3116,9 @@ const	SetvarBoxString = new Lang.Class({
 		btns.add_actor(this.go.actor);
 		container.add(btns);
 
+		// Scroll the parent menu when items get key-focus
+		this._parent.toggleScrollAction([ this.entry.clutter_text, del.actor, this.go.actor ]);
+
 		this.hide();
 
 	},
@@ -3182,9 +3199,25 @@ const	UpsRawDataItem = new Lang.Class({
 
 	},
 
+	// toggleScrollAction: Scroll the parent menu when items get key-focus
+	toggleScrollAction: function (items) {
+
+		for each (let item in items) {
+
+			item.connect('key-focus-in', Lang.bind(this, function() {
+				Util.ensureActorVisibleInScrollView(this._parent.actor, this.actor);
+			}));
+
+		}
+
+	},
+
 	_onKeyFocusIn: function (actor) {
 
 		this.setActive(true);
+
+		// Scroll the parent menu when item gets key-focus
+		Util.ensureActorVisibleInScrollView(this._parent.actor, this.actor);
 
 	},
 
