@@ -1940,6 +1940,9 @@ const	DelBox = new Lang.Class({
 			// Give back focus to our 'submenu-toggle button'
 			walnut._del_btn.actor.grab_key_focus();
 
+			// Make the menu close itself to force an update
+			this.emit('activate', null);
+
 		}), 'small');
 
 		// Put buttons together
