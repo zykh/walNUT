@@ -4060,6 +4060,11 @@ const	UpsList = new Lang.Class({
 
 			this.menu.addMenuItem(ups_l);
 
+			// Scroll the parent menu when item gets key-focus
+			ups_l.actor.connect('key-focus-in', Lang.bind(this, function() {
+				Util.ensureActorVisibleInScrollView(this.menu.actor, ups_l.actor);
+			}));
+
 		}
 
 		// Submenu sensitive or not
