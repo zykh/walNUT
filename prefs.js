@@ -293,7 +293,12 @@ const	walNUTPrefsMenu = new GObject.Class({
 		// Horizontal boxes
 		let hbox;
 
-		cmd_desc_box = new Gtk.VBox({ margin_left: 30 });
+		cmd_desc_box = new Gtk.VBox();
+
+		if (cmd_desc_box.get_direction() == Gtk.TextDirection.RTL)
+			cmd_desc_box.margin_right = 30;
+		else
+			cmd_desc_box.margin_left = 30;
 
 		// Child setting of 'device's commands' option
 		for (let setting in settings_cmd_desc) {

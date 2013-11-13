@@ -36,7 +36,14 @@
 /* Delete Device Box */
 .walnut-delbox-icon {
 	icon-size: 4.35em;
+}
+
+.walnut-delbox-icon:ltr {
 	padding: 0 0.666em 0 0;
+}
+
+.walnut-delbox-icon:rtl {
+	padding: 0 0 0 0.666em;
 }
 
 .walnut-delbox-desc {
@@ -58,7 +65,14 @@
 /* Credentials Box */
 .walnut-credbox-icon {
 	icon-size: 4.35em;
+}
+
+.walnut-credbox-icon:ltr {
 	padding: 0 0.666em 0 0;
+}
+
+.walnut-credbox-icon:rtl {
+	padding: 0 0 0 0.666em;
 }
 
 .walnut-credbox-desc {
@@ -93,7 +107,14 @@
 /* Add Device Box*/
 .walnut-addbox-icon {
 	icon-size: 4.35em;
+}
+
+.walnut-addbox-icon:ltr {
 	padding: 0 0.666em 0 0;
+}
+
+.walnut-addbox-icon:rtl {
+	padding: 0 0 0 0.666em;
 }
 
 .walnut-addbox-desc {
@@ -289,7 +310,7 @@
 }
 
 .walnut-raw-data-expandable:rtl {
-	padding-left: 0em;
+	padding-right: 0em;
 }
 
 .walnut-raw-data-expander {
@@ -297,12 +318,8 @@
 	font-weight: bold;
 }
 
-.walnut-raw-data-expander:ltr {
+.walnut-raw-data-expander {
 	padding-left: .5em;
-}
-
-.walnut.raw-data-expander:rtl {
-	padding-right: .5em;
 }
 
 /* Device's commands */
@@ -320,12 +337,26 @@
 .walnut-ups-data-table-label {
 	text-align: right;
 	font-weight: bold;
+}
+
+.walnut-ups-data-table-label:ltr {
 	padding: 0.467em 0.333em 0 0;
+}
+
+.walnut-ups-data-table-label:rtl {
+	padding: 0.467em 0 0 0.333em;
 }
 
 .walnut-ups-data-table-text {
 	text-align: right;
+}
+
+.walnut-ups-data-table-text:ltr {
 	padding: 0 0.333em 0.467em 0;
+}
+
+.walnut-ups-data-table-text:rtl {
+	padding: 0 0 0.467em 0.333em;
 }
 
 /* Device Top Data (Status/Alarm) */
@@ -348,12 +379,11 @@
 }
 
 .walnut-ups-top-data-label {
-	text-align: left;
 	font-weight: bold;
 }
 
 .walnut-ups-top-data-text {
-	text-align: left;
+
 }
 
 /* Device manufacturer/model */
@@ -365,7 +395,14 @@
 /* Error Box */
 .walnut-error-icon {
 	icon-size: 3.3em;
+}
+
+.walnut-error-icon:ltr {
 	padding-right: 0.625em;
+}
+
+.walnut-error-icon:rtl {
+	padding-left: 0.625em;
 }
 
 .walnut-error-label {

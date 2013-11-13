@@ -3559,9 +3559,18 @@ const	UpsDataTable = new Lang.Class({
 		this[cell.type + 'Text'] = new St.Label({ style_class: 'walnut-ups-data-table-text' });
 
 		// Description box {label\ntext}
-		this[cell.type + 'DescBox'] = new St.BoxLayout({ vertical: true })
+		this[cell.type + 'DescBox'] = new St.BoxLayout({ vertical: true });
+
+		// Label
 		this[cell.type + 'DescBox'].add_actor(this[cell.type + 'Label']);
-		this[cell.type + 'DescBox'].add_actor(this[cell.type + 'Text']);
+
+		// Text
+		let textBox = new St.BoxLayout();
+		let expander = new St.Bin();
+		textBox.add(expander, { expand: true });
+		textBox.add(this[cell.type + 'Text']);
+
+		this[cell.type + 'DescBox'].add_actor(textBox);
 
 		// Handle row and column
 		let row, col;
@@ -3615,13 +3624,15 @@ const	UpsDataTable = new Lang.Class({
 
 			cell.type = 'batteryCharge';
 			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
-			cell.value = '%s %'.format(value);
+			// TRANSLATORS: Battery charge level @ data table
+			cell.value = _("%s %").format(value);
 			break;
 
 		case 'L':	// Device Load
 
 			cell.type = 'deviceLoad';
-			cell.value = '%s %'.format(value);
+			// TRANSLATORS: Device load level @ data table
+			cell.value = _("%s %").format(value);
 			break;
 
 		case 'R':	// Backup Time
@@ -3753,13 +3764,15 @@ const	UpsDataTableAlt = new Lang.Class({
 
 			cell.type = 'batteryCharge';
 			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
-			cell.value = '%s %'.format(value);
+			// TRANSLATORS: Battery charge level @ alternative, less noisy, data table
+			cell.value = _("%s %").format(value);
 			break;
 
 		case 'L':	// Device Load
 
 			cell.type = 'deviceLoad';
-			cell.value = '%s %'.format(value);
+			// TRANSLATORS: Device load level @ alternative, less noisy, data table
+			cell.value = _("%s %").format(value);
 			break;
 
 		case 'R':	// Backup Time
