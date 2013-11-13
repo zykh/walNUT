@@ -2424,7 +2424,7 @@ const	UpsCmdList = new Lang.Class({
 		this.actor.can_focus = false;
 
 		// ..and add it to our child St.BoxLayout
-		let labelBox = new St.BoxLayout({ can_focus: true });
+		let labelBox = new St.BoxLayout({ can_focus: true, x_expand: true });
 
 		// Add the label to our St.BoxLayout and put it in its place
 		this.actor.insert_child_below(labelBox, this.label);
@@ -2434,6 +2434,11 @@ const	UpsCmdList = new Lang.Class({
 		// Connect key focus
 		labelBox.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
 		labelBox.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+
+		// Remove the expander
+		let expander = labelBox.get_next_sibling();
+		this.actor.remove_child(expander);
+		expander.destroy();
 
 		// TRANSLATORS: Extradata's label @ Device's commands submenu
 		this.status.text = _("extradata:");
