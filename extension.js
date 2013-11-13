@@ -3102,7 +3102,7 @@ const	SetvarBoxString = new Lang.Class({
 		// TRANSLATORS: Accessible name of 'Set' button @ setvar
 		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
 
-			this.setVar(null, null, upscMonitor.getList()[0], this.varName, this.valueToSet.trim());
+			upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, this.valueToSet.trim());
 
 			// Close the setvarBox and toggle the 'expander'
 			this._parent.close();
