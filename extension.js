@@ -2289,14 +2289,18 @@ const	BottomControls = new Lang.Class({
 
 		this.btns = new St.BoxLayout({ style_class: 'walnut-bottom-controls-box' });
 
-		this.actor.add(this.btns, { expand: true, x_fill: false });
+		this.actor.add(this.btns, { expand: true });
 
 	},
 
 	// addControl: add a button to buttons' box
 	addControl: function(button, status) {
 
-		this.btns.add_actor(button.actor);
+		let container = new St.Bin({ x_expand: true });
+
+		container.add_actor(button.actor);
+
+		this.btns.add_actor(container);
 
 		this.setControl(button, status);
 
@@ -2328,7 +2332,7 @@ const	BottomControls = new Lang.Class({
 
 		for (let i = 0; i < children.length; i++) {
 
-			let child = children[i];
+			let child = children[i].get_first_child();
 
 			// Not a button
 			if (!(child instanceof St.Button))
@@ -2355,7 +2359,7 @@ const	BottomControls = new Lang.Class({
 
 		for (let i = 0; i < children.length; i++) {
 
-			let child = children[i];
+			let child = children[i].get_first_child();
 
 			// Not a button
 			if (!(child instanceof St.Button))
