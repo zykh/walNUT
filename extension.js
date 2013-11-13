@@ -2646,6 +2646,10 @@ const	SetvarBoxRanges = new Lang.Class({
 		this.slider = new Slider.Slider(0.5);
 		this.actor.add(this.slider.actor, { expand: true });
 
+		// Flip slider for RTL locales
+		if (this.slider.actor.get_text_direction() == Clutter.TextDirection.RTL)
+			this.slider.actor.set_scale_with_gravity(-1.0, 1.0, Clutter.Gravity.NORTH);
+
 		// Labels' box
 		let rangeValueBox = new St.BoxLayout({ style_class: 'walnut-setvar-range-value-box' });
 		this.actor.add(rangeValueBox, { expand: true });
