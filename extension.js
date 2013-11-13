@@ -312,7 +312,7 @@ const	UpscMonitor = new Lang.Class({
 		// Retrieve actual UPSes stored in schema
 		let stored = gsettings.get_string('ups');
 
-		// e.g.: got = [ { name: 'name', host: 'host', port: 'port'}, {name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		// e.g.: got = [ { name: 'name', host: 'host', port: 'port' }, { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
 		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
 
 		if (!got.length)
@@ -326,7 +326,7 @@ const	UpscMonitor = new Lang.Class({
 
 		if (host && port) {
 
-			Utilities.Do(['%s'.format(upsc), '-l', '%s:%s'.format(host, port)], Lang.bind(this, this._postGetDevices), [notify, host, port]);
+			Utilities.Do([ '%s'.format(upsc), '-l', '%s:%s'.format(host, port) ], Lang.bind(this, this._postGetDevices), [ notify, host, port ]);
 
 			return;
 
@@ -361,7 +361,7 @@ const	UpscMonitor = new Lang.Class({
 
 		let stored = gsettings.get_string('ups');
 
-		// e.g.: got = [ { name: 'name', host: 'host', port: 'port'}, {name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		// e.g.: got = [ { name: 'name', host: 'host', port: 'port' }, { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
 		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
 
 		// Unable to find an UPS -> returns already available ones
@@ -503,7 +503,7 @@ const	UpscMonitor = new Lang.Class({
 			// Just in case we lose the UPS..
 			item.av = 0;
 
-			Utilities.Do(['%s'.format(upsc), '%s@%s:%s'.format(item.name, item.host, item.port)], Lang.bind(this, this._checkUps), [item]);
+			Utilities.Do([ '%s'.format(upsc), '%s@%s:%s'.format(item.name, item.host, item.port) ], Lang.bind(this, this._checkUps), [ item ]);
 
 		}
 
@@ -559,7 +559,7 @@ const	UpscMonitor = new Lang.Class({
 		// Reset status
 		this._state |= ErrorType.UPS_NA;
 
-		Utilities.Do(['%s'.format(upsc), '%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)], Lang.bind(this, this._processVars), [this._devices[0]]);
+		Utilities.Do([ '%s'.format(upsc), '%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port) ], Lang.bind(this, this._processVars), [ this._devices[0] ]);
 
 	},
 
@@ -769,7 +769,7 @@ const	UpscmdDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do(['%s'.format(upscmd), '-l', '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)], Lang.bind(this, this._processRetrievedCmds), [this._device]);
+		Utilities.Do([ '%s'.format(upscmd), '-l', '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port) ], Lang.bind(this, this._processRetrievedCmds), [ this._device ]);
 
 	},
 
@@ -836,7 +836,7 @@ const	UpscmdDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(['%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra)], Lang.bind(this, this._processExecutedCmd), [device, cmd, extradata, user, pw]);
+			Utilities.Do([ '%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra) ], Lang.bind(this, this._processExecutedCmd), [ device, cmd, extradata, user, pw ]);
 
 		// User, password or both are not available
 		} else {
@@ -931,7 +931,7 @@ const	UpsrwDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do(['%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)], Lang.bind(this, this._processRetrievedSetVars), [this._device]);
+		Utilities.Do([ '%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port) ], Lang.bind(this, this._processRetrievedSetVars), [ this._device ]);
 
 	},
 
@@ -1008,7 +1008,7 @@ const	UpsrwDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(['%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port)], Lang.bind(this, this._processSetVar), [device, varName, varValue, user, pw]);
+			Utilities.Do([ '%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port) ], Lang.bind(this, this._processSetVar), [ device, varName, varValue, user, pw ]);
 
 		// User, password or both are not available
 		} else {
@@ -1101,7 +1101,7 @@ const	walNUT = new Lang.Class({
 			if (_gsmPrefs.get_state() == _gsmPrefs.SHELL_APP_STATE_RUNNING)
 				_gsmPrefs.activate();
 			else
-				_gsmPrefs.launch(global.display.get_current_time_roundtrip(), [Me.metadata.uuid], -1, null);
+				_gsmPrefs.launch(global.display.get_current_time_roundtrip(), [ Me.metadata.uuid ], -1, null);
 
 		});
 
@@ -1162,14 +1162,14 @@ const	walNUT = new Lang.Class({
 
 				// Language code + country code (eg. en_US, it_IT, ..)
 				if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
-					Util.spawn(['yelp', '%s/%s'.format(help.get_path(), locale.split('.')[0])]);
+					Util.spawn([ 'yelp', '%s/%s'.format(help.get_path(), locale.split('.')[0]) ]);
 
 				// Language code (eg. en, it, ..)
 				else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
-					Util.spawn(['yelp', '%s/%s'.format(help.get_path(), locale.split('_')[0])]);
+					Util.spawn([ 'yelp', '%s/%s'.format(help.get_path(), locale.split('_')[0]) ]);
 
 				else
-					Util.spawn(['yelp', '%s/C'.format(help.get_path())]);
+					Util.spawn([ 'yelp', '%s/C'.format(help.get_path()) ]);
 
 			// ..otherwise we'll open the html page
 			} else {
@@ -1179,18 +1179,18 @@ const	walNUT = new Lang.Class({
 
 					// Language code + country code (eg. en_US, it_IT, ..)
 					if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
-						Util.spawn(['xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('.')[0])]);
+						Util.spawn([ 'xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('.')[0]) ]);
 
 					// Language code (eg. en, it, ..)
 					else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
-						Util.spawn(['xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('_')[0])]);
+						Util.spawn([ 'xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('_')[0]) ]);
 
 					else
-						Util.spawn(['xdg-open', '%s/C/help.html'.format(help.get_path())]);
+						Util.spawn([ 'xdg-open', '%s/C/help.html'.format(help.get_path()) ]);
 
 				// ..otherwise we'll open the web page
 				} else
-					Util.spawn(['xdg-open', 'https://github.com/zykh/walNUT']);
+					Util.spawn([ 'xdg-open', 'https://github.com/zykh/walNUT' ]);
 
 			}
 
@@ -1799,7 +1799,7 @@ const	CredDialog = new Lang.Class({
 		this.ok = { label: _("Execute"), action: Lang.bind(this, this._onOk), default: true };
 
 		// TRANSLATORS: Cancel button @ credentials dialog
-		this.setButtons([{ label: _("Cancel"), action: Lang.bind(this, this._onCancel), key: Clutter.KEY_Escape, }, this.ok]);
+		this.setButtons([ { label: _("Cancel"), action: Lang.bind(this, this._onCancel), key: Clutter.KEY_Escape, }, this.ok ]);
 
 		this._updateOkButton(error);
 
@@ -2636,7 +2636,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		this.parent(varName, parent);
 
-		// ranges: [{ min: value, max: value }, { min: value, max: value }, ..]
+		// ranges: [ { min: value, max: value }, { min: value, max: value }, .. ]
 		this.ranges = ranges;
 
 		// rangeAct: { min: value, max: value }
@@ -3894,7 +3894,7 @@ const	UpsTopDataList = new Lang.Class({
 
 		// Device status
 		this.statusIcon = new St.Icon({ icon_name: 'imported-utilities-system-monitor-symbolic', style_class: 'walnut-ups-top-data-icon' });
-		this.statusLabel = new St.Label({ style_class: 'walnut-ups-top-data-label'});
+		this.statusLabel = new St.Label({ style_class: 'walnut-ups-top-data-label' });
 		this.statusText = new St.Label({ style_class: 'walnut-ups-top-data-text' });
 
 		// Description box {label\ntext}

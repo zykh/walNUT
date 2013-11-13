@@ -400,7 +400,7 @@ function createEnumStringSetting(settings, setting) {
 
 	// Combobox
 	let model = new Gtk.ListStore();
-	model.set_column_types([GObject.TYPE_STRING, GObject.TYPE_STRING]);
+	model.set_column_types([ GObject.TYPE_STRING, GObject.TYPE_STRING ]);
 	let setting_enum = new Gtk.ComboBox({ model: model });
 	setting_enum.get_style_context().add_class(Gtk.STYLE_CLASS_RAISED);
 	let renderer = new Gtk.CellRendererText();
@@ -412,7 +412,7 @@ function createEnumStringSetting(settings, setting) {
 		let item = settings[setting].list[i];
 		let iter = model.append();
 
-		model.set(iter, [0, 1], [item.nick, item.name]);
+		model.set(iter, [ 0, 1 ], [ item.nick, item.name ]);
 
 		if (item.nick == gsettings.get_string(setting.replace(/_/g, '-'))) {
 			setting_enum.set_active(item.id);
@@ -422,7 +422,7 @@ function createEnumStringSetting(settings, setting) {
 
 	setting_enum.connect('changed', function(entry) {
 
-		let [success, iter] = setting_enum.get_active_iter();
+		let [ success, iter ] = setting_enum.get_active_iter();
 
 		if (!success)
 			return;
@@ -456,7 +456,7 @@ function createEnumSetting(settings, setting) {
 
 	// Combobox
 	let model = new Gtk.ListStore();
-	model.set_column_types([GObject.TYPE_INT, GObject.TYPE_STRING]);
+	model.set_column_types([ GObject.TYPE_INT, GObject.TYPE_STRING ]);
 	let setting_enum = new Gtk.ComboBox({ model: model });
 	setting_enum.get_style_context().add_class(Gtk.STYLE_CLASS_RAISED);
 	let renderer = new Gtk.CellRendererText();
@@ -468,7 +468,7 @@ function createEnumSetting(settings, setting) {
 		let item = settings[setting].list[i];
 		let iter = model.append();
 
-		model.set(iter, [0, 1], [item.id, item.name]);
+		model.set(iter, [ 0, 1 ], [ item.id, item.name ]);
 
 		if (item.id == gsettings.get_enum(setting.replace(/_/g, '-'))) {
 			setting_enum.set_active(item.id);
@@ -478,7 +478,7 @@ function createEnumSetting(settings, setting) {
 
 	setting_enum.connect('changed', function(entry) {
 
-		let [success, iter] = setting_enum.get_active_iter();
+		let [ success, iter ] = setting_enum.get_active_iter();
 
 		if (!success)
 			return;

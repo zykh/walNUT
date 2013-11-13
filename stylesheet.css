@@ -22,7 +22,7 @@
 
 .walnut-cred-dialog-error-box {
 	padding-top: 1em;
-	spacing: 0.333em;
+	spacing: .333em;
 }
 
 .walnut-cred-dialog-error-icon {
@@ -30,7 +30,7 @@
 }
 
 .walnut-cred-dialog-error-label {
-	font-size: 0.818em;
+	font-size: .818em;
 }
 
 /* Delete Device Box */
@@ -39,27 +39,27 @@
 }
 
 .walnut-delbox-icon:ltr {
-	padding: 0 0.666em 0 0;
+	padding: 0 .666em 0 0;
 }
 
 .walnut-delbox-icon:rtl {
-	padding: 0 0 0 0.666em;
+	padding: 0 0 0 .666em;
 }
 
 .walnut-delbox-desc {
 	font-weight: bold;
-	padding: 0.333em;
+	padding: .333em;
 	text-align: right;
 }
 
 .walnut-delbox-text {
-	padding: 0.333em;
+	padding: .333em;
 	text-align: right;
 }
 
 .walnut-delbox-buttons-box {
-	spacing: 0.333em;
-	padding: 0.333em;
+	spacing: .333em;
+	padding: .333em;
 }
 
 /* Credentials Box */
@@ -68,22 +68,22 @@
 }
 
 .walnut-credbox-icon:ltr {
-	padding: 0 0.666em 0 0;
+	padding: 0 .666em 0 0;
 }
 
 .walnut-credbox-icon:rtl {
-	padding: 0 0 0 0.666em;
+	padding: 0 0 0 .666em;
 }
 
 .walnut-credbox-desc {
 	font-weight: bold;
-	padding: 0.333em;
+	padding: .333em;
 	text-align: right;
 }
 
 .walnut-credbox-username {
 	max-width: 5.333em;
-	padding: 0.333em;
+	padding: .333em;
 }
 
 .walnut-credbox-userbox {
@@ -92,7 +92,7 @@
 
 .walnut-credbox-password {
 	max-width: 5.333em;
-	padding: 0.333em;
+	padding: .333em;
 }
 
 .walnut-credbox-pwbox {
@@ -100,8 +100,8 @@
 }
 
 .walnut-credbox-buttons-box {
-	spacing: 0.333em;
-	padding: 0.333em;
+	spacing: .333em;
+	padding: .333em;
 }
 
 /* Add Device Box*/
@@ -110,22 +110,22 @@
 }
 
 .walnut-addbox-icon:ltr {
-	padding: 0 0.666em 0 0;
+	padding: 0 .666em 0 0;
 }
 
 .walnut-addbox-icon:rtl {
-	padding: 0 0 0 0.666em;
+	padding: 0 0 0 .666em;
 }
 
 .walnut-addbox-desc {
 	font-weight: bold;
-	padding: 0.333em;
+	padding: .333em;
 	text-align: right;
 }
 
 .walnut-addbox-host {
 	max-width: 7.33em;
-	padding: 0.333em;
+	padding: .333em;
 }
 
 .walnut-addbox-hostbox {
@@ -134,7 +134,7 @@
 
 .walnut-addbox-port {
 	max-width: 3.333em;
-	padding: 0.333em;
+	padding: .333em;
 }
 
 .walnut-addbox-portbox {
@@ -142,13 +142,13 @@
 }
 
 .walnut-addbox-buttons-box {
-	spacing: 0.333em;
-	padding: 0.333em;
+	spacing: .333em;
+	padding: .333em;
 }
 
 /* Bottom Control Buttons*/
 .walnut-bottom-controls-box {
-	spacing: 0.666em;
+	spacing: .666em;
 }
 
 /* Buttons */
@@ -165,11 +165,11 @@
 }
 
 .walnut-buttons-big {
-	padding: 0.533em;
+	padding: .533em;
 }
 
 .walnut-buttons-small {
-	padding: 0.2em;
+	padding: .2em;
 }
 
 .walnut-bottom-controls-less-noisy > StIcon {
@@ -197,7 +197,7 @@
 	border-color: #666666;
 	color: #9f9f9f;
 	background-gradient-direction: none;
-	background-color: rgba(102, 102, 102, 0.15);
+	background-color: rgba(102, 102, 102, .15);
 }
 
 /* Setvar */
@@ -216,13 +216,13 @@
 }
 
 .walnut-setvar-buttons-box {
-	spacing: 0.333em;
+	spacing: .333em;
 }
 
 /* Ranges */
 .walnut-setvar-range-value-box {
-	padding-top: 0.333em;
-	padding-bottom: 0.333em;
+	padding-top: .333em;
+	padding-bottom: .333em;
 }
 
 .walnut-setvar-range-value-box:ltr {
@@ -287,7 +287,7 @@
 }
 
 .walnut-setvar-string-error-text {
-	font-size: 0.818em;
+	font-size: .818em;
 }
 
 /* Raw data */
@@ -325,13 +325,13 @@
 /* Device's commands */
 .walnut-cmd-extradata {
 	width: 5.333em;
-	background-color: rgba(0,0,0,0.3);
+	background-color: rgba(0, 0, 0, .3);
 }
 
 /* Device Data Table (Battery Charge, Backup Time, Device Load, Temperature) */
 .walnut-ups-data-table-icon {
 	icon-size: 3.3em;
-	padding: 0.333em;
+	padding: .333em;
 }
 
 .walnut-ups-data-table-label {
@@ -340,11 +340,11 @@
 }
 
 .walnut-ups-data-table-label:ltr {
-	padding: 0.467em 0.333em 0 0;
+	padding: .467em .333em 0 0;
 }
 
 .walnut-ups-data-table-label:rtl {
-	padding: 0.467em 0 0 0.333em;
+	padding: .467em 0 0 .333em;
 }
 
 .walnut-ups-data-table-text {
@@ -352,11 +352,11 @@
 }
 
 .walnut-ups-data-table-text:ltr {
-	padding: 0 0.333em 0.467em 0;
+	padding: 0 .333em .467em 0;
 }
 
 .walnut-ups-data-table-text:rtl {
-	padding: 0 0 0.467em 0.333em;
+	padding: 0 0 .467em .333em;
 }
 
 /* Device Top Data (Status/Alarm) */
@@ -398,11 +398,11 @@
 }
 
 .walnut-error-icon:ltr {
-	padding-right: 0.625em;
+	padding-right: .625em;
 }
 
 .walnut-error-icon:rtl {
-	padding-left: 0.625em;
+	padding-left: .625em;
 }
 
 .walnut-error-label {

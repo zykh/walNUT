@@ -62,7 +62,7 @@ function detect(ex) {
 
 	let path = GLib.find_program_in_path(ex);
 
-	return path ? [path] : undefined;
+	return path ? [ path ] : undefined;
 
 }
 
@@ -98,7 +98,7 @@ function toObj(txt, sep) {
 function toArr(txt, sep, label1, label2) {
 
 	let output = txt.split('\n');
-	let vars = new Array();
+	let vars = [];
 
 	// Iterate through each lines and get every variable
 	for (let i = 0; i < output.length; i++) {
@@ -185,7 +185,7 @@ function parseSetVar(txt) {
 
 		}
 
-		setVar[varName].options = new Array();
+		setVar[varName].options = [];
 
 		// Get every option
 		for (let j = 3; j < variable.length; j++) {
@@ -226,15 +226,15 @@ function parseSetVar(txt) {
 
 // Do: exec argv and when the child process exits call the callback function, passing to it stdout and stderr - if any (otherwise null, e.g.: stderr = null -> no errors) - and opts
 // argv must be an already parsed to array full path-ed executable and its arguments
-// e.g.: ls -alh /tmp -> /usr/bin/ls -alh /tmp -> ['/usr/bin/ls', '-alh', '/tmp']
+// e.g.: ls -alh /tmp -> /usr/bin/ls -alh /tmp -> [ '/usr/bin/ls', '-alh', '/tmp' ]
 function Do(argv, callback, opts) {
 
 	// Exec argv
-	let [exit, pid, stdin_fd, stdout_fd, stderr_fd] = GLib.spawn_async_with_pipes(null,	/* inherit parent working directory */
-											argv,	/* args */
-											null,	/* env */
+	let [ exit, pid, stdin_fd, stdout_fd, stderr_fd ] = GLib.spawn_async_with_pipes(null,	// inherit parent working directory
+											argv,	// args
+											null,	// env
 											GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-											null	/* child setup */);
+											null);	// child setup
 
 	// Wrap stdout file descriptor in a UnixInputStream and then in a DataInputStream
 	let stdout_str = new Gio.UnixInputStream({ fd: stdout_fd, close_fd: true });
@@ -253,24 +253,24 @@ function Do(argv, callback, opts) {
 		// Read stdout and stderr
 		// Method 1: read all
 		// Standard Output
-		let [stdout, out_size] = data_stdout.read_upto('\0', 1, null);
+		let [ stdout, out_size ] = data_stdout.read_upto('\0', 1, null);
 		// Standard Error
-		let [stderr, err_size] = data_stderr.read_upto('\0', 1, null);
+		let [ stderr, err_size ] = data_stderr.read_upto('\0', 1, null);
 
 		// Method 2: read line by line
 		// Standard Output
-//		let [out, out_size] = data_stdout.read_line(null);
+//		let [ out, out_size ] = data_stdout.read_line(null);
 //		let stdout = out ? out + '\n' : out;
 //		while (out_size > 0) {
-//			[out, out_size] = data_stdout.read_line(null);
+//			[ out, out_size ] = data_stdout.read_line(null);
 //			if (out)
 //				stdout += out + '\n';
 //		}
 		// Standard Error
-//		let [err, err_size] = data_stderr.read_line(null);
+//		let [ err, err_size ] = data_stderr.read_line(null);
 //		let stderr = err ? err + '\n' : err;
 //		while (err_size > 0) {
-//			[err, err_size] = data_stderr.read_line(null);
+//			[ err, err_size ] = data_stderr.read_line(null);
 //			if (err)
 //				stderr += err + '\n';
 //		}
@@ -297,7 +297,7 @@ function defaultUps(id) {
 	let settings = Convenience.getSettings();
 
 	// Retrieve actual UPSes stored in schema
-	let got = Array();
+	let got = [];
 	got = JSON.parse(settings.get_string('ups') == '' ? '[]' : settings.get_string('ups'));
 
 	// No UPSes stored in schema? return
@@ -327,7 +327,7 @@ function upsCred(user, pw) {
 	let settings = Convenience.getSettings();
 
 	// Retrieve actual UPSes stored in schema
-	let got = Array();
+	let got = [];
 	got = JSON.parse(settings.get_string('ups') == '' ? '[]' : settings.get_string('ups'));
 
 	// No UPSes stored in schema? return
@@ -362,7 +362,7 @@ function upsDel() {
 	let settings = Convenience.getSettings();
 
 	// Retrieve actual UPSes stored in schema
-	let got = Array();
+	let got = [];
 	got = JSON.parse(settings.get_string('ups') == '' ? '[]' : settings.get_string('ups'));
 
 	// No UPSes stored in schema? return
