@@ -3967,6 +3967,9 @@ const	UpsTopDataList = new Lang.Class({
 			else
 				this.alarmIcon.style_class = 'walnut-ups-top-data-icon';
 
+			if (!this.alarmBox.visible)
+				this.alarmBox.show();
+
 			break;
 
 		default:
