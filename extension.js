@@ -85,13 +85,13 @@ const	icons = {
 	b77:	'nut-battery-empty',
 	// just load
 	//	load full -> 23
-	b23:	'nut-battery-full',
+	b23:	'nut-battery-na-load-full',
 	//	load good -> 17
-	b17:	'nut-battery-good',
+	b17:	'nut-battery-na-load-good',
 	//	load low -> 13
-	b13:	'nut-battery-low',
+	b13:	'nut-battery-na-load-low',
 	//	load empty -> 11
-	b11:	'nut-battery-empty',
+	b11:	'nut-battery-na-load-empty',
 
 	// status = OB (->b) - caution (->a)
 	// no battery/no load -> 1
@@ -122,18 +122,18 @@ const	icons = {
 	ba77:	'nut-battery-empty-caution',
 	// just load
 	//	load full -> 23
-	ba23:	'nut-battery-full-caution',
+	ba23:	'nut-battery-na-load-full-caution',
 	//	load good -> 17
-	ba17:	'nut-battery-good-caution',
+	ba17:	'nut-battery-na-load-good-caution',
 	//	load low -> 13
-	ba13:	'nut-battery-low-caution',
+	ba13:	'nut-battery-na-load-low-caution',
 	//	load empty -> 11
-	ba11:	'nut-battery-empty-caution',
+	ba11:	'nut-battery-na-load-empty-caution',
 
 	// status = OL (->o[+c])
 	// no battery/no load -> 1
-	oc1:	'nut-ghost-ol-charging',
-	o1:	'nut-ghost-ol-charged',
+	oc1:	'nut-ghost-ol-charged',
+	o1:	'nut-ghost-ol-charging',
 	//	battery full -> 2
 	oc2:	'nut-battery-full-charged',
 	o2:	'nut-battery-full-charging',
@@ -165,18 +165,22 @@ const	icons = {
 	o77:	'nut-battery-empty-charging',
 	// just load
 	//	load full -> 23
-	o23:	'nut-battery-full-charging',
+	oc23:	'nut-battery-na-load-full-charged',
+	o23:	'nut-battery-na-load-full-charging',
 	//	load good -> 17
-	o17:	'nut-battery-good-charging',
+	oc17:	'nut-battery-na-load-good-charged',
+	o17:	'nut-battery-na-load-good-charging',
 	//	load low -> 13
-	o13:	'nut-battery-low-charging',
+	oc13:	'nut-battery-na-load-low-charged',
+	o13:	'nut-battery-na-load-low-charging',
 	//	load empty -> 11
-	o11:	'nut-battery-empty-charging',
+	oc11:	'nut-battery-na-load-empty-charged',
+	o11:	'nut-battery-na-load-empty-charging',
 
 	// status = OL (->o[+c]) - caution (->a)
 	// no battery/no load ->
-	oac1:	'nut-ghost-ol-caution-charging',
-	oa1:	'nut-ghost-ol-caution-charged',
+	oac1:	'nut-ghost-ol-caution-charged',
+	oa1:	'nut-ghost-ol-caution-charging',
 	//	battery full -> 2
 	oac2:	'nut-battery-full-caution-charged',
 	oa2:	'nut-battery-full-caution-charging',
@@ -208,13 +212,17 @@ const	icons = {
 	oa77:	'nut-battery-empty-caution-charging',
 	// just load
 	//	load full -> 23
-	oa23:	'nut-battery-full-caution-charging',
+	oac23:	'nut-battery-na-load-full-caution-charged',
+	oa23:	'nut-battery-na-load-full-caution-charging',
 	//	load good -> 17
-	oa17:	'nut-battery-good-caution-charging',
+	oac17:	'nut-battery-na-load-good-caution-charged',
+	oa17:	'nut-battery-na-load-good-caution-charging',
 	//	load low -> 13
-	oa13:	'nut-battery-low-caution-charging',
+	oac13:	'nut-battery-na-load-low-caution-charged',
+	oa13:	'nut-battery-na-load-low-caution-charging',
 	//	load empty -> 11
-	oa11:	'nut-battery-empty-caution-charging'
+	oac11:	'nut-battery-na-load-empty-caution-charged',
+	oa11:	'nut-battery-na-load-empty-caution-charging'
 }
 
 // Battery icon @ menu
@@ -1358,7 +1366,7 @@ const	walNUT = new Lang.Class({
 
 		let status = Utilities.parseStatus(vars['ups.status'], true);
 
-		icon = status.line + (status.alarm || '') + (charged ? 'c' : '') + battery_level * load_level;
+		icon = status.line + (status.alarm || '') + ((status.line == 'o') && charged ? 'c' : '') + battery_level * load_level;
 
 		this._icon.icon_name = icons[icon] + '-symbolic';
 
