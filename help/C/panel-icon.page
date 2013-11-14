@@ -23,9 +23,7 @@ frame="top bottom"
 Panel Icon</media></p></td>
 <td><p>The panel icon standardly displays only battery charge [<em style="strong">A</em>], but it can display also device load [<em style="strong">B</em>], if available.
 In that case the &#8216;seed&#8217; of the walnut will be split up in two pieces: the leftmost [<em style="strong">1</em>] will display battery charge, the rightmost [<em style="strong">2</em>] load level.</p>
-<note style="caution">
-<p>In case you set also to <em>Display load in panel icon</em> in the <link xref="preferences">preferences</link> <em>and</em> battery charge is not available, the icon will be exactly the same as that for battery charge alone [<em style="strong">A</em>]: <em>please pay attention</em>.</p>
-</note></td>
+<p>In case you set also to <em>Display load in panel icon</em> in the <link xref="preferences">preferences</link> <em>and</em> battery charge is not available, the left side of the &#8216;seed&#8217; [<em style="strong">3</em>] will be full and transparent.</p></td>
 </tr>
 <tr>
 <td><p><media type="image" src="img/icon_ol_ob.png"

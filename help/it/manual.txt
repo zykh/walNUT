@@ -79,7 +79,7 @@ Qui è spiegato come si comportano.
 L'icona del pannello normalmente mostra solo il livello di carica della batteria [*A*], ma può visualizzare anche il livello di carico del dispositivo [*B*], se disponibile. +
 In tal caso il `seme' della noce sarà diviso in due parti: quella più a sinistra [*1*] mostrerà il livello di carica della batteria, quella più a destra [*2*] il livello di carico del dispositivo.
 
-CAUTION: Nal caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<preferences,preferenze>> _e_ il livello di carica della batteria non sia disponibile, l'icona sarà esattamente la stessa di quella per il solo livello di carica della batteria [*A*]: _si prega di prestare attenzione_.
+Nel caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<preferences,preferenze>> _e_ il livello di carica della batteria non sia disponibile, la parte sinistra del `seme' [*3*] sarà piena e trasparente.
 |image:icon_ol_ob.png["Icona del pannello - in linea/a batteria + Carico/Caricando"] |
 L'icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l'elettricità non è assente, +ups.status+: +OL+) ci sarà un piccolo fulmine [*C*] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [*D*]. +
 Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile _e_ il dispositivo non ci sta dicendo che si sta caricando o scaricando (+ups.status+: +CHRG+/+DISCHRG+) supporremo che sia carico e il fulmine sarà trasparente [*E*], altrimenti sarà a piena opacità [*F*].

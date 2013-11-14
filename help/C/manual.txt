@@ -133,7 +133,7 @@ ifdef::walnut[]
 :preferences: preferences
 endif::walnut[]
 
-CAUTION: In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the icon will be exactly the same as that for battery charge alone [*A*]: _please pay attention_.
+In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the left side of the `seed' [*3*] will be full and transparent.
 |image:icon_ol_ob.png["Panel Icon - Online/On Battery + Charged/Charging"] |
 The panel icon displays also the state of the line: if the device is on line (mains is not absent, +ups.status+: +OL+) there will be a small lightning [*C*] at the right of the nut that wont be displayed if the device is on battery [*D*]. +
 That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available _and_ the device isn't telling us it's charging or discharging (+ups.status+: +CHRG+/+DISCHRG+) we'll assume it's charged and the lightning will be transparent [*E*], otherwise it'll be at full opacity [*F*].
