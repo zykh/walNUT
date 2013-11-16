@@ -3988,7 +3988,7 @@ const	UpsTopDataList = new Lang.Class({
 
 		// Alarm
 		if (type == 'A' && this.alarmBox.visible) {
-			this.alarmText = '';
+			this.alarmText.text = '';
 			this.alarmBox.hide();
 		}
 
