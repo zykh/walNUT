@@ -243,7 +243,7 @@ const	ErrorType = {
 
 // Max length (in chars)
 const	ERR_LABEL_LENGTH = 35,		// ErrorBox Label
-	ERR_DESC_LENGTH = 40,		// ErrorBox Description
+	ERR_DESC_LENGTH = 35,		// ErrorBox Description
 	MODEL_LENGTH = 40,		// Device manufacturer+model
 	TOPDATA_LENGTH = 40,		// Topdata (status/alarm) description (2nd row)
 	RAW_VAR_LENGTH = 35,		// Raw data list: variable's name
