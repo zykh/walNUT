@@ -167,7 +167,7 @@ PANEL MENU
 ----------
 
 Here's a quick overview of the panel menu. +
-Standardly the menu look like this:
+Standardly the menu looks like this:
 
 image::menustd.png["Panel Menu", align = "center"]
 
