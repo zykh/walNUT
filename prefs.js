@@ -127,7 +127,7 @@ function init() {
 			// TRANSLATORS: Label of setting @ preferences
 			label: _("Display not available devices"),
 			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)")
+			help: _("Display also not available devices in the submenu in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)")
 		},
 
 		// Device model
