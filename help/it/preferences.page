@@ -104,7 +104,7 @@ frame="top bottom"
 <tr>
 <td><p><em style="strong">3</em></p></td>
 <td><p>Mostra il modello del dispositivo</p></td>
-<td><p>Visualizza anche il modello del dispositivo (&#8216;produttore - modelo&#8217;), se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
+<td><p>Visualizza anche il modello del dispositivo (&#8216;produttore - modello&#8217;), se disponibile, nel menu del pannello. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">4</em></p></td>

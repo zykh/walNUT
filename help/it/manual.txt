@@ -439,7 +439,7 @@ Scheda 'Menu' - opzioni relative al <<panel-menu,menu del pannello>>:
 |# |Opzione |Descrizione
 |1 |Usa uno stile meno `rumoroso' per il menu |Se l'esensione deve usare per il menu del pannello uno stile meno `rumoroso', più in linea con quello di Gnome Shell, oppure no. (_default: ON_)
 |2 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
-|3 |Mostra il modello del dispositivo |Visualizza anche il modello del dispositivo (`produttore - modelo'), se disponibile, nel menu del pannello. (_default: ON_)
+|3 |Mostra il modello del dispositivo |Visualizza anche il modello del dispositivo (`produttore - modello'), se disponibile, nel menu del pannello. (_default: ON_)
 |4 |Mostra la carica della batteria |Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (_default: ON_)
 |5 |Mostra il carico del dispositivo |Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
 |6 |Mostra il tempo di backup |Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (_default: ON_)
