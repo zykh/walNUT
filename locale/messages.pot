@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: walNUT 0.1\n"
+"Project-Id-Version: walNUT 0.2\n"
 "Report-Msgid-Bugs-To: hyouko@gmail.com\n"
-"POT-Creation-Date: 2013-06-09 16:56+0200\n"
+"POT-Creation-Date: 2013-11-16 17:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,598 +17,780 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. TRANSLATORS: Notify title/description for error while searching new devices
+#: ../extension.js:381 ../extension.js:480
+msgid "NUT: Error!"
+msgstr ""
+
+#: ../extension.js:381 ../extension.js:480
+msgid "Unable to find new devices at host %s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description on every new device found
+#: ../extension.js:459
+msgid "NUT: new device found"
+msgstr ""
+
+#: ../extension.js:459
+msgid "Found device %s at host %s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description on new devices found (more than one)
+#: ../extension.js:475
+msgid "NUT: new devices found"
+msgstr ""
+
+#: ../extension.js:475
+msgid "Found %d devices at host %s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description on command successfully sent
+#: ../extension.js:893
+msgid "NUT: command handled"
+msgstr ""
+
+#: ../extension.js:893
+msgid "Successfully sent command %s to device %s@%s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description for error on command sent
+#: ../extension.js:901
+msgid "NUT: error while handling command"
+msgstr ""
+
+#: ../extension.js:901
+msgid "Unable to send command %s to device %s@%s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description on setvar successfully sent
+#: ../extension.js:1058
+msgid "NUT: setvar handled"
+msgstr ""
+
+#: ../extension.js:1058
+msgid "Successfully set %s to %s in device %s@%s:%s"
+msgstr ""
+
+#. TRANSLATORS: Notify title/description for error on setvar sent
+#: ../extension.js:1066
+msgid "NUT: error while handling setvar"
+msgstr ""
+
+#: ../extension.js:1066
+msgid "Unable to set %s to %s in device %s@%s:%s"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Preferences' button
+#: ../extension.js:1104
+msgid "Preferences"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Credentials' button
+#: ../extension.js:1118
+msgid "Credentials"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Find new devices' button
+#: ../extension.js:1132
+msgid "Find new devices"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Delete device' button
+#: ../extension.js:1146
+msgid "Delete device"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Help' button
+#: ../extension.js:1160
+msgid "Help"
+msgstr ""
+
 #. TRANSLATORS: Panel text for battery charge
-#: ../extension.js:673
+#: ../extension.js:1392
 msgid "C: %d%"
 msgstr ""
 
 #. TRANSLATORS: Panel text between battery charge and device load
-#: ../extension.js:680
+#: ../extension.js:1400
 msgid ", "
 msgstr ""
 
 #. TRANSLATORS: Panel text for device load
-#: ../extension.js:682
+#: ../extension.js:1403
 msgid "L: %d%"
 msgstr ""
 
 #. TRANSLATORS: Label of credentials dialog
 #. TRANSLATORS: Label @ credentials box
-#: ../extension.js:870 ../extension.js:1049
+#: ../extension.js:1718 ../extension.js:2017
 msgid "UPS Credentials"
 msgstr ""
 
-#. TRANSLATORS: Description @ credentials dialog
-#: ../extension.js:875
-msgid "To execute the command %s on device %s@%s:%s, please insert a valid username and password"
-msgstr ""
-
 #. TRANSLATORS: Username @ credentials dialog
-#: ../extension.js:884
+#: ../extension.js:1731
 msgid "Username:"
 msgstr ""
 
-#. TRANSLATORS: Password # credentials dialog
-#: ../extension.js:908
+#. TRANSLATORS: Password @ credentials dialog
+#: ../extension.js:1758
 msgid "Password:"
 msgstr ""
 
 #. TRANSLATORS: Error message @ credentials dialog
-#: ../extension.js:947
+#: ../extension.js:1802
 msgid "Wrong username or password"
 msgstr ""
 
 #. TRANSLATORS: Execute button @ credentials dialog
-#: ../extension.js:952
+#: ../extension.js:1807
 msgid "Execute"
 msgstr ""
 
 #. TRANSLATORS: Cancel button @ credentials dialog
-#: ../extension.js:954
+#: ../extension.js:1810
 msgid "Cancel"
 msgstr ""
 
+#. TRANSLATORS: Description @ credentials dialog for instant commands
+#: ../extension.js:1865
+msgid "To execute the command %s on device %s@%s:%s, please insert a valid username and password"
+msgstr ""
+
+#. TRANSLATORS: Description @ credentials dialog for setvars
+#: ../extension.js:1892
+msgid "To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password"
+msgstr ""
+
 #. TRANSLATORS: Label @ delete device box
-#: ../extension.js:997
+#: ../extension.js:1922
 msgid "Delete UPS"
 msgstr ""
 
 #. TRANSLATORS: Description @ delete device box
-#: ../extension.js:1002
+#: ../extension.js:1927
 msgid "Do you really want to delete the current UPS from the list?"
 msgstr ""
 
+#. TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
+#: ../extension.js:1932
+msgid "Don't delete"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
+#: ../extension.js:1942
+msgid "Delete"
+msgstr ""
+
 #. TRANSLATORS: Username hint @ credentials box
-#: ../extension.js:1054
+#: ../extension.js:2022
 msgid "username"
 msgstr ""
 
 #. TRANSLATORS: Password hint @ credentials box
-#: ../extension.js:1061
+#: ../extension.js:2029
 msgid "password"
 msgstr ""
 
+#. TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
+#. TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
+#. TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
+#: ../extension.js:2039 ../extension.js:2180 ../extension.js:2705
+#: ../extension.js:3110
+msgid "Undo and close"
+msgstr ""
+
+#. TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
+#: ../extension.js:2049
+msgid "Save credentials"
+msgstr ""
+
 #. TRANSLATORS: Label @ find new devices box
-#: ../extension.js:1144
+#: ../extension.js:2155
 msgid "Find new UPSes"
 msgstr ""
 
 #. TRANSLATORS: Hostname hint @ find new devices box
-#: ../extension.js:1152
+#: ../extension.js:2163
 msgid "hostname"
 msgstr ""
 
 #. TRANSLATORS: Port hint @ find new devices box
-#: ../extension.js:1162
+#: ../extension.js:2173
 msgid "port"
 msgstr ""
 
+#. TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
+#: ../extension.js:2190
+msgid "Start search"
+msgstr ""
+
 #. TRANSLATORS: Label of UPS commands sub menu
-#: ../extension.js:1331
+#: ../extension.js:2431
 msgid "UPS Commands"
 msgstr ""
 
+#. TRANSLATORS: Extradata's label @ Device's commands submenu
+#: ../extension.js:2456
+msgid "extradata:"
+msgstr ""
+
 #. TRANSLATORS: Error @ UPS commands submenu
-#: ../extension.js:1366
+#: ../extension.js:2513
 msgid "Error while retrieving UPS commands"
 msgstr ""
 
-#. TRANSLATORS: default item @ UPS commands combobox
-#: ../extension.js:1385
-msgid "Choose.."
-msgstr ""
-
-#. TRANSLATORS: Description of default item @ UPS commands combobox
-#: ../extension.js:1395
-msgid "Pick one of the commands and then click here"
-msgstr ""
-
 #. TRANSLATORS: Error @ UPS commands submenu
-#: ../extension.js:1445
+#: ../extension.js:2551
 msgid "No UPS command available"
 msgstr ""
 
-#. TRANSLATORS: Notify title/description on command successfully sent
-#: ../extension.js:1479
-msgid "NUT: command handled"
+#. TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
+#: ../extension.js:2677
+msgid "Decrement by one"
 msgstr ""
 
-#: ../extension.js:1479
-msgid "Successfully sent command %s to device %s@%s:%s"
+#. TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
+#: ../extension.js:2691
+msgid "Increment by one"
 msgstr ""
 
-#. TRANSLATORS: Notify title/description for error on command sent
-#: ../extension.js:1483
-msgid "NUT: error while handling command"
+#. TRANSLATORS: Accessible name of 'Set' button @ setvar
+#: ../extension.js:2719 ../extension.js:3124
+msgid "Set"
 msgstr ""
 
-#: ../extension.js:1483
-msgid "Unable to send command %s to device %s@%s:%s"
+#. TRANSLATORS: Range interval @ Setvar box
+#: ../extension.js:2779
+msgid "%s - %s"
+msgstr ""
+
+#. TRANSLATORS: Error message @ string setvar
+#: ../extension.js:3086
+msgid "String too long"
+msgstr ""
+
+#. TRANSLATORS: Hint text @ string setvar
+#: ../extension.js:3092
+msgid "set this variable to.."
 msgstr ""
 
 #. TRANSLATORS: Label of raw data submenu
-#: ../extension.js:1532
+#: ../extension.js:3366
 msgid "Raw Data"
 msgstr ""
 
 #. TRANSLATORS: Label of battery charge @ data table
-#: ../extension.js:1644
+#: ../extension.js:3545
 msgid "Charge"
 msgstr ""
 
 #. TRANSLATORS: Label of device load @ data table
-#: ../extension.js:1649
+#: ../extension.js:3552
 msgid "Load"
 msgstr ""
 
 #. TRANSLATORS: Label of estimated backup time @ data table
-#: ../extension.js:1655
+#. TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
+#: ../extension.js:3560 ../extension.js:3746
 msgid "Backup Time"
 msgstr ""
 
 #. TRANSLATORS: Label of device temperature @ data table
-#: ../extension.js:1661
+#. TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
+#: ../extension.js:3568 ../extension.js:3754
 msgid "Temperature"
 msgstr ""
 
+#. TRANSLATORS: Battery charge level @ data table
+#. TRANSLATORS: Device load level @ data table
+#. TRANSLATORS: Battery charge level @ alternative, less noisy, data table
+#. TRANSLATORS: Device load level @ alternative, less noisy, data table
+#: ../extension.js:3649 ../extension.js:3656 ../extension.js:3789
+#: ../extension.js:3796
+msgid "%s %"
+msgstr ""
+
+#. TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
+#: ../extension.js:3731
+msgid "Battery Charge"
+msgstr ""
+
+#. TRANSLATORS: Label of device load @ alternative, less noisy, data table
+#: ../extension.js:3738
+msgid "Device Load"
+msgstr ""
+
 #. TRANSLATORS: Label of device alarm box
-#: ../extension.js:1787
+#: ../extension.js:3921
 msgid "Alarm!"
 msgstr ""
 
-#. TRANSLATORS: Device not available @ UPS list
-#: ../extension.js:1932
-msgid "%s@%s:%s (N/A)"
+#. TRANSLATORS: Device not available @ devices' list
+#: ../extension.js:4073
+msgid " (N/A)"
 msgstr ""
 
 #. TRANSLATORS: Error label NO NUT @ main menu
-#: ../extension.js:2029
+#: ../extension.js:4204
 msgid "Error! No NUT found"
 msgstr ""
 
 #. TRANSLATORS: Error description NO NUT @ main menu
-#: ../extension.js:2031
+#: ../extension.js:4207
 msgid "walNUT can't find NUT's executable, please check your installation"
 msgstr ""
 
-#. TRANSLATORS: Error label NO TIMEOUT @ main menu
-#: ../extension.js:2035
-msgid "Error! 'timeout' not found"
-msgstr ""
-
-#. TRANSLATORS: Error description NO TIMEOUT @ main menu
-#: ../extension.js:2037
-msgid "walNUT can't find 'timeout' executable, please check your installation"
-msgstr ""
-
 #. TRANSLATORS: Error label NO UPS @ main menu
-#: ../extension.js:2041
+#: ../extension.js:4213
 msgid "Error! No UPS found"
 msgstr ""
 
 #. TRANSLATORS: Error description NO UPS @ main menu
-#: ../extension.js:2043
+#: ../extension.js:4216
 msgid "walNUT can't find any UPS, please add one hostname:port to search in"
 msgstr ""
 
 #. TRANSLATORS: Error label UPS NOT AVAILABLE @ main menu
-#: ../extension.js:2047
+#: ../extension.js:4222
 msgid "Error! UPS not available"
 msgstr ""
 
 #. TRANSLATORS: Error description UPS NOT AVAILABLE @ main menu
-#: ../extension.js:2049
+#: ../extension.js:4225
 msgid "walNUT can't communicate to chosen UPS, please select or add another one or check your installation"
 msgstr ""
 
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2217
-msgid " on line"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2219
-msgid " on battery"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2221
-msgid ", low battery"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2223
-msgid ", replace battery"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2225
-msgid ", charging"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2227
-msgid ", discharging"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2229
-msgid ", bypass"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2231
-msgid ", runtime calibration"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2233
-msgid ", offline"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2235
-msgid ", overloaded"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2237
-msgid ", trimming"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2239
-msgid ", boosting"
-msgstr ""
-
-#. TRANSLATORS: Device status @ device status box
-#: ../extension.js:2241
-msgid ", forced shutdown"
-msgstr ""
-
-#. TRANSLATORS: Stupid comment (from 1973 Walt Disney's Robin Hood) @ device status box
-#: ../extension.js:2253
-msgid "‟..and all's well!” [NUTSY (shouting)]"
-msgstr ""
-
-#. TRANSLATORS: Days @ remaining time
-#: ../extension.js:2262
-msgid "d "
-msgstr ""
-
-#. TRANSLATORS: Hours @ remaining time
-#: ../extension.js:2264
-msgid "h "
-msgstr ""
-
-#. TRANSLATORS: Minutes @ remaining time
-#: ../extension.js:2266
-msgid "m "
-msgstr ""
-
-#. TRANSLATORS: Seconds @ remaining time
-#: ../extension.js:2268
-msgid "s"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2318
-msgid "Turn off the load immediately"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2320
-msgid "Turn on the load immediately"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2322
-msgid "Turn off the load possibly after a delay"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2324
-msgid "Turn on the load possibly after a delay"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2326
-msgid "Turn off the load possibly after a delay and return when power is back"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2328
-msgid "Turn off the load possibly after a delay and remain off even if power returns"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2330
-msgid "Stop a shutdown in progress"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2332
-msgid "Shut down the load briefly while rebooting the UPS"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2334
-msgid "After a delay, shut down the load briefly while rebooting the UPS"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2336
-msgid "Start testing the UPS panel"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2338
-msgid "Stop a UPS panel test"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2340
-msgid "Start a simulated power failure"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2342
-msgid "Stop simulating a power failure"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2344
-msgid "Start a battery test"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2346
-msgid "Start a \"quick\" battery test"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2348
-msgid "Start a \"deep\" battery test"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2350
-msgid "Stop the battery test"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2352
-msgid "Start runtime calibration"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2354
-msgid "Stop runtime calibration"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2356
-msgid "Put the UPS in bypass mode"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2358
-msgid "Take the UPS out of bypass mode"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2360
-msgid "Reset minimum and maximum input voltage status"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2362
-msgid "Reset watchdog timer (forced reboot of load)"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2364
-msgid "Enable UPS beeper/buzzer"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2366
-msgid "Disable UPS beeper/buzzer"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2368
-msgid "Temporarily mute UPS beeper/buzzer"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2370
-msgid "Toggle UPS beeper/buzzer"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2376
-msgid "Turn off the outlet #%d possibly after a delay and return when power is back"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2378
-msgid "Turn off the outlet #%d immediately"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2380
-msgid "Turn on the outlet #%d immediately"
-msgstr ""
-
-#. TRANSLATORS: UPS Command description
-#: ../extension.js:2382
-msgid "Power cycle the outlet #%d immediately"
-msgstr ""
-
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:57
+#: ../prefs.js:56
 msgid "Seconds before next update"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:59
+#: ../prefs.js:58
 msgid "The seconds after walNUT updates the data from the device. (default: 15)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:68
+#: ../prefs.js:69
 msgid "Temperature unit"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:70
+#: ../prefs.js:71
 msgid "The unit (Centigrade or Fahrenheit) walNUT should display the temperature in. (default: Centigrade)"
 msgstr ""
 
 #. TRANSLATORS: Temperature unit @ preferences
-#: ../prefs.js:73
+#: ../prefs.js:74
 msgid "Centigrade"
 msgstr ""
 
 #. TRANSLATORS: Temperature unit @ preferences
-#: ../prefs.js:75
+#: ../prefs.js:76
 msgid "Fahrenheit"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:82
-msgid "Display not available devices"
+#: ../prefs.js:89
+msgid "Display load in the icon"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:84
-msgid "Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)"
-msgstr ""
-
-#. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:90
-msgid "Display raw data"
-msgstr ""
-
-#. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:92
-msgid "Show also raw data in a submenu. (default: OFF)"
-msgstr ""
-
-#. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:98
-msgid "Display device's commands"
-msgstr ""
-
-#. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:100
-msgid "Display device's available commands. Requires upsd user and password to execute them. (default: OFF)"
-msgstr ""
-
-#. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:111
-msgid "Hide password at credentials box"
-msgstr ""
-
-#. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:113
-msgid "Whether the password at credentials box should be hidden or not. (default: ON)"
-msgstr ""
-
-#. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:119
-msgid "Display load in panel icon"
-msgstr ""
-
-#. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:121
+#: ../prefs.js:91
 msgid "Whether the device load should be displayed in panel icon or not. (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:126
-msgid "Display load in panel label"
+#: ../prefs.js:97
+msgid "Display load in the label"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:128
+#: ../prefs.js:99
 msgid "Whether the device load should be displayed in panel label or not. (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:133
-msgid "Display charge in panel label"
+#: ../prefs.js:105
+msgid "Display charge in the label"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:135
+#: ../prefs.js:107
 msgid "Whether the battery charge should be displayed in panel label or not. (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:144
-msgid "Device's commands in a combobox"
+#: ../prefs.js:119
+msgid "Use a less noisy style for the menu"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:146
-msgid "Whether the extension should display the device's commands in a combobox or not (if not, commands are displayed in a sub menu). (default: ON)"
+#: ../prefs.js:121
+msgid "Whether the extension should use a less noisy, more in line with Gnome Shell's own, style or not for the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:159
-msgid "Display description of device's commands (submenu)"
+#: ../prefs.js:128
+msgid "Display not available devices"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:161
-msgid "Display also a localized description of device's available commands in the sub menu. (default: ON)"
+#: ../prefs.js:130
+msgid "Display also not available devices in the combo box in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)"
 msgstr ""
 
-#. TRANSLATORS: Notify title/description for error while searching new devices
-#: ../utilities.js:213 ../utilities.js:276
-msgid "NUT: Error!"
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:137
+msgid "Display device model"
 msgstr ""
 
-#: ../utilities.js:213 ../utilities.js:276
-msgid "Unable to find new devices at host %s:%s"
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:139
+msgid "Show also device model ('manufacturer - model'), if available, in the panel menu. (default: ON)"
 msgstr ""
 
-#. TRANSLATORS: Notify title/description on every new device found
-#: ../utilities.js:261
-msgid "NUT: new device found"
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:146
+msgid "Display battery charge"
 msgstr ""
 
-#: ../utilities.js:261
-msgid "Found device %s at host %s:%s"
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:148
+msgid "Show also battery charge, if available, in the panel menu. (default: ON)"
 msgstr ""
 
-#. TRANSLATORS: Notify title/description on new devices found (more than one)
-#: ../utilities.js:272
-msgid "NUT: new devices found"
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:154
+msgid "Display load level"
 msgstr ""
 
-#: ../utilities.js:272
-msgid "Found %d devices at host %s:%s"
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:156
+msgid "Show also load level, if available, in the panel menu. (default: ON)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:162
+msgid "Display backup time"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:164
+msgid "Show also backup time, if available, in the panel menu. (default: ON)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:170
+msgid "Display device temperature"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:172
+msgid "Show also device temperature, if available, in the panel menu. (default: ON)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:179
+msgid "Display raw data"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:181
+msgid "Show also raw data in a submenu. (default: OFF)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:188
+msgid "Display device's commands"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:190
+msgid "Display device's available commands. Requires upsd user and password to execute them. (default: OFF)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:201
+msgid "Hide password at credentials box"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:203
+msgid "Whether the password at credentials box should be hidden or not. (default: ON)"
+msgstr ""
+
+#. TRANSLATORS: Label of setting @ preferences
+#: ../prefs.js:214
+msgid "Display description of device's commands"
+msgstr ""
+
+#. TRANSLATORS: Hint text of setting @ preferences
+#: ../prefs.js:216
+msgid "Display also a localized description of device's available commands in the submenu. (default: ON)"
+msgstr ""
+
+#. TRANSLATORS: Tab's label @ preferences widget
+#: ../prefs.js:234
+msgid "General/Panel"
+msgstr ""
+
+#. TRANSLATORS: Label @ preferences widget
+#: ../prefs.js:252
+msgid "General options"
+msgstr ""
+
+#. TRANSLATORS: Label @ preferences widget
+#: ../prefs.js:271
+msgid "Panel options"
+msgstr ""
+
+#. TRANSLATORS: Tab's label @ preferences widget
+#: ../prefs.js:291
+msgid "Menu"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:484
+msgid " on line"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:491
+msgid " on battery"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:498
+msgid ", low battery"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:505
+msgid ", replace battery"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:512
+msgid ", charging"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:518
+msgid ", discharging"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:525
+msgid ", bypass"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:532
+msgid ", runtime calibration"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:539
+msgid ", offline"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:545
+msgid ", overloaded"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:552
+msgid ", trimming"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:559
+msgid ", boosting"
+msgstr ""
+
+#. TRANSLATORS: Device status @ device status box
+#: ../utilities.js:566
+msgid ", forced shutdown"
+msgstr ""
+
+#. TRANSLATORS: Stupid comment (from 1973 Walt Disney's Robin Hood) @ device status box
+#: ../utilities.js:591
+msgid "‟..and all's well!” [NUTSY (shouting)]"
+msgstr ""
+
+#. TRANSLATORS: Days @ remaining time
+#: ../utilities.js:604
+msgid "d "
+msgstr ""
+
+#. TRANSLATORS: Hours @ remaining time
+#: ../utilities.js:606
+msgid "h "
+msgstr ""
+
+#. TRANSLATORS: Minutes @ remaining time
+#: ../utilities.js:608
+msgid "m "
+msgstr ""
+
+#. TRANSLATORS: Seconds @ remaining time
+#: ../utilities.js:610
+msgid "s"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:689
+msgid "Turn off the load immediately"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:695
+msgid "Turn on the load immediately"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:701
+msgid "Turn off the load possibly after a delay"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:707
+msgid "Turn on the load possibly after a delay"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:713
+msgid "Turn off the load possibly after a delay and return when power is back"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:719
+msgid "Turn off the load possibly after a delay and remain off even if power returns"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:725
+msgid "Stop a shutdown in progress"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:731
+msgid "Shut down the load briefly while rebooting the UPS"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:737
+msgid "After a delay, shut down the load briefly while rebooting the UPS"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:743
+msgid "Start testing the UPS panel"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:749
+msgid "Stop a UPS panel test"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:755
+msgid "Start a simulated power failure"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:761
+msgid "Stop simulating a power failure"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:767
+msgid "Start a battery test"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:773
+msgid "Start a \"quick\" battery test"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:779
+msgid "Start a \"deep\" battery test"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:785
+msgid "Stop the battery test"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:791
+msgid "Start runtime calibration"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:797
+msgid "Stop runtime calibration"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:803
+msgid "Put the UPS in bypass mode"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:809
+msgid "Take the UPS out of bypass mode"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:815
+msgid "Reset minimum and maximum input voltage status"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:821
+msgid "Reset watchdog timer (forced reboot of load)"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:827
+msgid "Enable UPS beeper/buzzer"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:833
+msgid "Disable UPS beeper/buzzer"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:839
+msgid "Temporarily mute UPS beeper/buzzer"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:845
+msgid "Toggle UPS beeper/buzzer"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:860
+msgid "Turn off the outlet #%d possibly after a delay and return when power is back"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:866
+msgid "Turn off the outlet #%d immediately"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:872
+msgid "Turn on the outlet #%d immediately"
+msgstr ""
+
+#. TRANSLATORS: UPS Command description
+#: ../utilities.js:878
+msgid "Power cycle the outlet #%d immediately"
 msgstr ""
