@@ -190,7 +190,7 @@ You can choose either to display or not not available devices in the <link xref=
 <p>Data Table - 'Noisy' version</p>
 </media>
 </figure>
-<p>If available, [<em style="strong">C</em>] battery charge, [<em style="strong">D</em>] backup time, [<em style="strong">E</em>] device load and [<em style="strong">F</em>] temperature will be shown here.
+<p>If available, [<em style="strong">A</em>] battery charge, [<em style="strong">B</em>] device load, [<em style="strong">C</em>] backup time and [<em style="strong">D</em>] device temperature will be shown here.
 Battery icon [<em style="strong">1</em>] will display actual charge through the number of horizontal bars (as the ones of <link xref="panel-icon">panel icon</link>).</p>
 <p>You can chose whether to display or not these data changing their options in the <link xref="preferences">preferences</link>.</p>
 </section>

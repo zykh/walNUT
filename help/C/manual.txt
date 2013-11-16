@@ -285,7 +285,7 @@ or (`noisy' version):
 
 image::datatable_noisy.png["Data Table - 'Noisy' version", align = "center"]
 
-If available, [*C*] battery charge, [*D*] backup time, [*E*] device load and [*F*] temperature will be shown here. +
+If available, [*A*] battery charge, [*B*] device load, [*C*] backup time and [*D*] device temperature will be shown here. +
 Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
 
 You can chose whether to display or not these data changing their options in the <<{preferences},preferences>>.
@@ -476,8 +476,7 @@ A new window will open, where you can set the various options.
 
 image::pref.png["Preferences - General/Panel", align = "center"]
 
-'General/Panel' tab - extensions' general options and <<{panel-icon},panel icon/label>> options:
-
+'General/Panel' tab - extension's general options and <<{panel-icon},panel icon/label>> options:
 
 [caption=""]
 .Available Options

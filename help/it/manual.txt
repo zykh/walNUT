@@ -222,7 +222,7 @@ oppure (versione `rumorosa'):
 
 image::datatable_noisy.png["Tabella dei dati - Versione 'rumorosa'", align = "center"]
 
-Se disponibili, [*C*] il livello di carica della batteria, [*D*] il tempo stimato di backup, [*E*] il livello di carico e [*F*] la temperatura del dispositivo saranno visualizzati qui. +
+Se disponibili, [*A*] il livello di carica della batteria, [*B*] il livello di carico, [*C*] il tempo stimato di backup e [*D*] la temperatura del dispositivo saranno visualizzati qui. +
 L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<<panel-icon,icona del pannello>>).
 
 È possibile scegliere se visualizzare o meno queste informazioni modificando le relativa opzioni nelle <<preferences,preferenze>>.
