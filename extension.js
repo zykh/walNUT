@@ -39,6 +39,8 @@ const	Gettext = imports.gettext.domain('gnome-shell-extensions-walnut'),
 
 const	Me = imports.misc.extensionUtils.getCurrentExtension(),
 	Convenience = Me.imports.convenience,
+	// Import GJS implementation of NUT's net protocol
+	Nut = Me.imports.nut,
 	// Import utilities.js
 	Utilities = Me.imports.utilities;
 
@@ -238,7 +240,6 @@ const	BatteryIcon = {
 const	ErrorType = {
 	UPS_NA: 2,	// 'Chosen' UPS is not available
 	NO_UPS: 4,	// No device found
-	NO_NUT: 8	// NUT's executables (i.e. upsc) not found
 }
 
 // Max length (in chars)
@@ -256,7 +257,7 @@ const	Lengths = {
 // Interval in milliseconds after which the extension should update the availability of the stored devices (15 minutes)
 const	INTERVAL = 900000;
 
-// UpscMonitor: exec upsc at a given interval and deliver infos
+// UpscMonitor: get vars from NUT at a given interval and deliver infos
 const	UpscMonitor = new Lang.Class({
 	Name: 'UpscMonitor',
 
@@ -270,15 +271,10 @@ const	UpscMonitor = new Lang.Class({
 		this._prevDevices = [];
 
 		// Here we'll store chosen UPS's variables
-		this._ups = {};
-		this._vars = [];
+		this._vars = {};
 
-		// upsc not found
-		if (!upsc)
-			this._state |= ErrorType.NO_NUT;
-		else
-			// Update devices
-			this.update({ forceRefresh: true });
+		// Update devices
+		this.update({ forceRefresh: true });
 
 		// Get time between updates
 		this._interval = gsettings.get_int('update-time');
@@ -363,18 +359,14 @@ const	UpscMonitor = new Lang.Class({
 
 		if (host && port) {
 
-			Utilities.Do({
-				command: [
-					'%s'.format(upsc),
-					'-l',
-					'%s:%s'.format(host, port)
-				],
+			let client = new Nut.NUTHelper({
+				host: host,
+				port: port
+			});
+
+			client.listUPS({
 				callback: Lang.bind(this, this._postGetDevices),
-				opts: [
-					notify,
-					host,
-					port
-				]
+				opts: [	notify ]
 			});
 
 			return;
@@ -391,7 +383,7 @@ const	UpscMonitor = new Lang.Class({
 
 	},
 
-	// _postGetDevices: process the result of the Do() function called by getDevices() and save them in schema and in this._devices as an array of objects:
+	// _postGetDevices: process the result of the *NUTHelper.listUPS()* function called by *this.getDevices()* and save found devices in schema and in *this._devices* as an array of objects:
 	//  {
 	//	name: upsname,
 	//	host: upshostname,
@@ -399,12 +391,33 @@ const	UpscMonitor = new Lang.Class({
 	//	user: username,
 	//	pw: password
 	//  }
-	// then call _checkAll() to fill the devices list with the availability of each stored UPS
-	_postGetDevices: function(stdout, stderr, opts) {
+	// then call *this._checkAll()* to fill the devices list with the availability of each stored UPS
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	opts: optional data passed to the callback function, i.e. [ *notify* ],
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = {
+	//	'ups #1 name': 'ups #1's description',
+	//	'ups #1 name': 'ups #2's description',
+	//		...
+	// }
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_postGetDevices: function(args) {
 
-		let notify = opts[0];
-		let host = opts[1];
-		let port = opts[2];
+		let notify = args.opts[0];
+		let host = args.host;
+		let port = args.port;
 
 		let got = [];
 
@@ -429,7 +442,7 @@ const	UpscMonitor = new Lang.Class({
 		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
 
 		// Unable to find an UPS -> returns already available ones
-		if (!stdout || stdout.length == 0 || (!stdout && !stderr) || (stderr && stderr.slice(0, 7) == 'Error: ')) {
+		if (args.error || !Object.keys(args.data).length) {
 
 			// Notify
 			if (notify)
@@ -462,22 +475,18 @@ const	UpscMonitor = new Lang.Class({
 		// Store here the actual length of the retrieved list
 		let l = got.length;
 
-		// Split upsc answer in token: each token = an UPS
-		let buffer = stdout.split('\n');
+		// Found devices
+		let devices = args.data;
 
 		// Number of devices found
 		let foundDevices = 0;
 
-		// Iterate through each token
-		for (let i = 0; i < buffer.length; i++) {
-
-			// Skip empty token
-			if (buffer[i].length == 0)
-				continue;
+		// Iterate through each device
+		for (let device in devices) {
 
 			let ups = {};
 
-			ups.name = buffer[i];
+			ups.name = device;
 			ups.host = host;
 			ups.port = port;
 
@@ -585,11 +594,14 @@ const	UpscMonitor = new Lang.Class({
 			// Just in case we lose the UPS..
 			item.av = 0;
 
-			Utilities.Do({
-				command: [
-					'%s'.format(upsc),
-					'%s@%s:%s'.format(item.name, item.host, item.port)
-				],
+			let client = new Nut.NUTHelper({
+				host: item.host,
+				port: item.port
+			});
+
+			client.getVar({
+				upsName: item.name,
+				varName: 'ups.status',
 				callback: Lang.bind(this, this._checkUps),
 				opts: [ item ]
 			});
@@ -616,12 +628,31 @@ const	UpscMonitor = new Lang.Class({
 	//	pw: 'pw1',
 	//	av: 0
 	//   }
-	_checkUps: function(stdout, stderr, opts) {
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	varName: name of the variable, i.e. 'ups.status',
+	//	opts: optional data passed to the callback function, i.e. [ *device* ],
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = var's value (e.g. 'OL CHRG')
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_checkUps: function(args) {
 
 		// The UPS we're checking
-		let ups = opts[0];
+		let ups = args.opts[0];
 
-		if (!stdout || stdout.length == 0 || (!stdout && !stderr) || (stderr && stderr.slice(0, 7) == 'Error: '))
+		if (args.error || !args.data.length)
 			ups.av = 0;
 		else
 			ups.av = 1;
@@ -662,33 +693,52 @@ const	UpscMonitor = new Lang.Class({
 		// Reset status
 		this._state |= ErrorType.UPS_NA;
 
-		Utilities.Do({
-			command: [
-				'%s'.format(upsc),
-				'%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)
-			],
-			callback: Lang.bind(this, this._processVars),
-			opts: [ this._devices[0] ]
+		let client = new Nut.NUTHelper({
+			host: this._devices[0].host,
+			port: this._devices[0].port
+		});
+
+		client.listVars({
+			upsName: this._devices[0].name,
+			callback: Lang.bind(this, this._processVars)
 		});
 
 	},
 
-	// _processVars: callback function for _getVars() - update status and vars
-	_processVars: function(stdout, stderr, opts) {
-
-		// The device the currently processed function belongs to
-		let device = opts[0];
+	// _processVars: callback function for *this._getVars()* - update status and vars
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = {
+	//	'var.1 name': 'var.1's value',
+	//	'var.2 name': 'var.2's value',
+	//		...
+	// }
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_processVars: function(args) {
 
 		let hasChanged = false;
 
-		// The actual 'chosen' device
+		// The actually chosen device
 		let act = this._devices[0] || { name: '' };
 
-		// This device is no longer the chosen one
-		if (act.name != device.name || act.host != device.host || act.port != device.port)
+		// The device the currently processed function belongs to is no longer the chosen one
+		if (act.name != args.upsName || act.host != args.host || act.port != args.port)
 			return;
 
-		if (!stdout || stderr || (!stdout && !stderr)) {
+		if (args.error || !Object.keys(args.data).length) {
 
 			this._state |= ErrorType.UPS_NA;
 
@@ -696,8 +746,7 @@ const	UpscMonitor = new Lang.Class({
 
 		} else {
 
-			this._ups = Utilities.toObject(stdout, ':');
-			this._vars = Utilities.toArray(stdout, ':', 'var', 'value');
+			this._vars = args.data;
 
 			this._state &= ~ErrorType.UPS_NA;
 
@@ -747,9 +796,6 @@ const	UpscMonitor = new Lang.Class({
 
 	// _updateTimer: update infos at a given interval
 	_updateTimer: function() {
-
-		if (this._state & ErrorType.NO_NUT)
-			return;
 
 		this.update();
 
@@ -804,7 +850,7 @@ const	UpscMonitor = new Lang.Class({
 
 	},
 
-	// getState: return actual UpscMonitor status (ErrorType.{NO_NUT,NO_UPS, ..})
+	// getState: return actual UpscMonitor status (ErrorType.{NO_UPS, ..})
 	getState: function() {
 
 		return this._state;
@@ -826,24 +872,6 @@ const	UpscMonitor = new Lang.Class({
 	// })
 	getVars: function() {
 
-		return this._ups;
-
-	},
-
-	// getVarsArr: return actual chosen device's variables in an Array of Objects with keys var and value
-	// (e.g.: [
-	//	{
-	//		var: 'battery.charge',
-	//		value: '100'
-	//	},
-	//	{
-	//		var: 'ups.status',
-	//		value: 'OL'
-	//	},
-	//		...
-	// ])
-	getVarsArr: function() {
-
 		return this._vars;
 
 	},
@@ -864,7 +892,7 @@ const	UpscMonitor = new Lang.Class({
 	}
 });
 
-// UpscmdDo: execute upscmd and process the reply
+// UpscmdDo: handle instant commands
 const	UpscmdDo = new Lang.Class({
 	Name: 'UpscmdDo',
 
@@ -885,71 +913,67 @@ const	UpscmdDo = new Lang.Class({
 		this._device = upscMonitor.getList()[0];
 
 		// Don't do anything in case of errors
-		if (upscMonitor.getState() & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))
+		if (upscMonitor.getState() & (ErrorType.NO_UPS | ErrorType.UPS_NA))
 			return;
 
 		this._retrieveCmds();
 
 	},
 
-	// _retrieveCmds: get instant commands from the UPS through upscmd
+	// _retrieveCmds: get instant commands from the UPS
 	_retrieveCmds: function() {
 
-		if (!upscmd) {
-			this._hasCmds = false;
-			return;
-		}
+		let client = new Nut.NUTHelper({
+			host: this._device.host,
+			port: this._device.port
+		});
 
-		Utilities.Do({
-			command: [
-				'%s'.format(upscmd),
-				'-l',
-				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
-			],
-			callback: Lang.bind(this, this._processRetrievedCmds),
-			opts: [ this._device ]
+		client.listCmds({
+			upsName: this._device.name,
+			callback: Lang.bind(this, this._processRetrievedCmds)
 		});
 
 	},
 
 	// _processRetrievedCmds: callback function for _retrieveCmds()
-	_processRetrievedCmds: function(stdout, stderr, opts) {
-
-		// The device the currently processed function belongs to
-		let device = opts[0];
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = {
+	//	'command.1 name': 'command.1's description',
+	//	'command.2 name': 'command.2's description',
+	//	...
+	// }
+	// NOTE: if a command's description is not available, it'll be set as 'Unavailable'
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_processRetrievedCmds: function(args) {
 
 		// The actually chosen device
 		let act = upscMonitor.getList()[0] || { name: '' };
 
-		// This device is no longer the chosen one
-		if (act.name != device.name || act.host != device.host || act.port != device.port)
+		// The device the currently processed function belongs to is no longer the chosen one
+		if (act.name != args.upsName || act.host != args.host || act.port != args.port)
 			return;
 
-		if (!stdout && !stderr) {
+		if (args.error) {
 			this._hasCmds = false;
 			return;
 		}
 
-		let cmds;
-
-		if (stderr)
-			cmds = stderr;
-		else
-			cmds = stdout;
-
-		// Error!
-		if (cmds.length == 0 || cmds.slice(0, 7) == 'Error: ') {
-			this._hasCmds = false;
-			return;
-		}
-
-		this._cmds = [];
-
-		// Parse reply to retrieve upscmd commands
-		this._cmds = Utilities.toArray(cmds, '-', 'cmd', 'desc');
-
-		// Remove leading comment
-		this._cmds.shift();
+		// Store retrieved commands
+		this._cmds = args.data;
 
 		this._hasCmds = true;
 
@@ -988,25 +1012,19 @@ const	UpscmdDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do({
-				command: [
-					'%s'.format(upscmd),
-					'-u',
-					'%s'.format(user),
-					'-p',
-					'%s'.format(pw),
-					'%s@%s:%s'.format(device.name, device.host, device.port),
-					'%s'.format(cmd),
-					'%s'.format(extra)
-				],
+			let client = new Nut.NUTHelper({
+				host: device.host,
+				port: device.port
+			});
+
+			client.instCmd({
+				upsName: device.name,
+				cmdName: cmd,
+				cmdExtraData: extra,
+				username: user,
+				password: pw,
 				callback: Lang.bind(this, this._processExecutedCmd),
-				opts: [
-					device,
-					cmd,
-					extradata,
-					user,
-					pw
-				]
+				opts: [ device ]
 			});
 
 		// User, password or both are not available
@@ -1026,44 +1044,56 @@ const	UpscmdDo = new Lang.Class({
 
 	},
 
-	// _processExecutedCmd: callback function for cmdExec() - process the result of the executed instant command
-	_processExecutedCmd: function(stdout, stderr, opts) {
+	// _processExecutedCmd: callback function for *this.cmdExec()* - process the result of the executed instant command
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	username: username used for authentication,
+	//	password: password used for authentication,
+	//	cmdName: name of the command we tried to execute,
+	//	cmdExtraData: value passed to the command,
+	//	opts: optional data passed to the callback function, i.e. [ *device* ],
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = 'OK'
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_processExecutedCmd: function(args) {
 
-		let device = opts[0];
-
-		let cmd = opts[1];
-
-		let extra = opts[2];
-
-		let user = opts[3];
-
-		let pw = opts[4];
+		let device = args.opts[0];
 
 		let cmdExtra;
 
-		if (extra.length)
-			cmdExtra = '\'%s %s\''.format(cmd, extra);
+		if (args.cmdExtraData && args.cmdExtraData.length)
+			cmdExtra = '\'%s %s\''.format(args.cmdName, args.cmdExtraData);
 		else
-			cmdExtra = cmd;
+			cmdExtra = args.cmdName;
 
-		// Just a note here: upscmd uses always stderr (also if a command has been successfully sent to the driver)
-
-		// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
-		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
+		// args.*error* = 'ERR ACCESS-DENIED' -> Authentication error -> Wrong username or password
+		if (args.error && args.error.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
 			let credDialog = new CredDialogCmd({
 				device: device,
-				username: user,
-				password: pw,
-				command: cmd,
-				extradata: extra,
+				username: args.username,
+				password: args.password,
+				command: args.cmdName,
+				extradata: args.cmdExtraData,
 				error: true
 			});
 			credDialog.open(global.get_current_time());
 
-		// stderr = OK\n -> Command sent to the driver successfully
-		} else if (stderr && stderr.indexOf('OK') != -1) {
+		// args.*data* = OK -> Command sent to the driver successfully
+		} else if (args.data && args.data.indexOf('OK') != -1) {
 
 			Main.notify(
 				// TRANSLATORS: Notify title/description on command successfully sent
@@ -1088,7 +1118,7 @@ const	UpscmdDo = new Lang.Class({
 	}
 });
 
-// UpsrwDo: execute upsrw and process the reply
+// UpsrwDo: handle rw variables
 const	UpsrwDo = new Lang.Class({
 	Name: 'UpsrwDo',
 
@@ -1109,73 +1139,92 @@ const	UpsrwDo = new Lang.Class({
 		this._device = upscMonitor.getList()[0];
 
 		// Don't do anything in case of errors
-		if (upscMonitor.getState() & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))
+		if (upscMonitor.getState() & (ErrorType.NO_UPS | ErrorType.UPS_NA))
 			return;
 
 		this._retrieveSetVars();
 
 	},
 
-	// _retrieveSetVars: get settable vars and their boundaries from the UPS through upsrw
+	// _retrieveSetVars: get settable vars and their boundaries from the UPS
 	_retrieveSetVars: function() {
 
-		if (!upsrw) {
-			this._hasSetVars = false;
-			return;
-		}
+		let client = new Nut.NUTHelper({
+			host: this._device.host,
+			port: this._device.port
+		});
 
-		Utilities.Do({
-			command: [
-				'%s'.format(upsrw),
-				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
-			],
-			callback: Lang.bind(this, this._processRetrievedSetVars),
-			opts: [ this._device ]
+		client.listRWs({
+			upsName: this._device.name,
+			callback: Lang.bind(this, this._processRetrievedSetVars)
 		});
 
 	},
 
 	// _processRetrievedSetVars: callback function for _retrieveSetVars()
-	_processRetrievedSetVars: function(stdout, stderr, opts) {
-
-		// The device the currently processed function belongs to
-		let device = opts[0];
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = {
+	//	'var.1 name': {
+	//		type: var.1's type,
+	//		opts: var.1's options
+	//	},
+	//	'var.2 name': {
+	//		type: var.2's type,
+	//		opts: var.2's options
+	//	},
+	//		...
+	// }
+	// type (args.data['var.n name'].*type*) is one of: RANGE, ENUM, STRING, UNKNOWN (on errors)
+	// options (args.data['var.n name'].*opts*) are:
+	// - if type = RANGE -> an array of the available ranges:
+	//	[
+	//		{
+	//			min: 'range #1's minimum acceptable value',
+	//			max: 'range #1's maximum acceptable value'
+	//		},
+	//		{
+	//			min: 'range #2's minimum acceptable value',
+	//			max: 'range #2's maximum acceptable value'
+	//		},
+	//			...
+	//	]
+	// - if type = ENUM -> an array of the available enumerated values:
+	//	[
+	//		'enumerated value #1',
+	//		'enumerated value #2',
+	//		...
+	//	]
+	// - if type = STRING -> maximum length of the string
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_processRetrievedSetVars: function(args) {
 
 		// The actual 'chosen' device
 		let act = upscMonitor.getList()[0] || { name: '' };
 
-		// This device is no longer the chosen one
-		if (act.name != device.name || act.host != device.host || act.port != device.port)
+		// The device the currently processed function belongs to is no longer the chosen one
+		if (act.name != args.upsName || act.host != args.host || act.port != args.port)
 			return;
 
-		let svreply = '';
-
-		if (!stdout && !stderr) {
+		if (args.error || !Object.keys(args.data).length) {
 			this._hasSetVars = false;
 			return;
 		}
 
-		if (stderr)
-			svreply = stderr;
-		else
-			svreply = stdout;
-
-		// Error!
-		if (svreply.length == 0 || svreply.slice(0, 7) == 'Error: ') {
-			this._hasSetVars = false;
-			return;
-		}
-
-		this._setVar = {};
-
-		// Parse reply to get setvars
-		this._setVar = Utilities.parseSetVar(svreply);
-
-		// No setvars
-		if (!Object.keys(this._setVar).length) {
-			this._hasSetVars = false;
-			return;
-		}
+		this._setVar = args.data;
 
 		this._hasSetVars = true;
 
@@ -1218,25 +1267,19 @@ const	UpsrwDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do({
-				command: [
-					'%s'.format(upsrw),
-					'-s',
-					'%s=%s'.format(varName, varValue),
-					'-u',
-					'%s'.format(user),
-					'-p',
-					'%s'.format(pw),
-					'%s@%s:%s'.format(device.name, device.host, device.port)
-				],
+			let client = new Nut.NUTHelper({
+				host: device.host,
+				port: device.port
+			});
+
+			client.setVar({
+				upsName: device.name,
+				username: user,
+				password: pw,
+				varName: varName,
+				varValue: varValue,
 				callback: Lang.bind(this, this._processSetVar),
-				opts: [
-					device,
-					varName,
-					varValue,
-					user,
-					pw
-				]
+				opts: [ device ]
 			});
 
 		// User, password or both are not available
@@ -1256,42 +1299,54 @@ const	UpsrwDo = new Lang.Class({
 
 	},
 
-	// _processSetVar: callback function for setVar()
-	_processSetVar: function(stdout, stderr, opts) {
+	// _processSetVar: callback function for *this.setVar()*
+	// args = {
+	//	host: hostname we tried to connect to,
+	//	port: port used to connect,
+	//	upsName: name of the UPS,
+	//	username: username used for authentication,
+	//	password: password used for authentication,
+	//	varName: name of the variable,
+	//	varValue: value we tried to set variable to,
+	//	opts: optional data passed to the callback function, i.e. [ *device* ],
+	//	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
+	//	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both
+	// }
+	// args.*data* = 'OK'
+	// args.*error* may be:
+	// - one of NUT's net protocol errors
+	// - 'ERR CLIENT-BUSY' if the TCPClient is busy doing something else when the method is called
+	// - 'ERR CONNECTION-ERROR'/'ERR CONNECTION-ERROR (<error>)' if the TCPClient had some problem connecting
+	// - 'ERR CONNECTION-CANCELLED' if you cancel (i.e. TCPClient.*destroy()*) the connection before it's connected
+	// - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
+	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
+	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
+	// - 'ERR UNKNOWN' - unknown errors
+	_processSetVar: function(args) {
 
-		let device = opts[0];
+		let device = args.opts[0];
 
-		let varName = opts[1];
-
-		let varValue = opts[2];
-
-		let user = opts[3];
-
-		let pw = opts[4];
-
-		// Just a note here: upsrw uses always stderr (also if a setvar has been successfully sent to the driver)
-
-		// stderr = "Unexpected response from upsd: ERR ACCESS-DENIED" -> Authentication error -> Wrong username or password
-		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
+		// args.*error* = 'ERR ACCESS-DENIED' -> Authentication error -> Wrong username or password
+		if (args.error && args.error.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
 			let credDialog = new CredDialogSetvar({
 				device: device,
-				username: user,
-				password: pw,
-				varName: varName,
-				varValue: varValue,
+				username: args.username,
+				password: args.password,
+				varName: args.varName,
+				varValue: args.varValue,
 				error: true
 			});
 			credDialog.open(global.get_current_time());
 
-		// stderr = OK\n -> Setvar sent to the driver successfully
-		} else if (stderr && stderr.indexOf('OK') != -1) {
+		// args.*data* = 'OK' -> Setvar sent to the driver successfully
+		} else if (args.data && args.data.indexOf('OK') != -1) {
 
 			Main.notify(
 				// TRANSLATORS: Notify title/description on setvar successfully sent
 				_("NUT: setvar handled"),
-				_("Successfully set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port)
+				_("Successfully set %s to %s in device %s@%s:%s").format(args.varName, args.varValue, device.name, device.host, device.port)
 			);
 
 			// Update vars/panel/menu (not devices)
@@ -1303,7 +1358,7 @@ const	UpsrwDo = new Lang.Class({
 			Main.notifyError(
 				// TRANSLATORS: Notify title/description for error on setvar sent
 				_("NUT: error while handling setvar"),
-				_("Unable to set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port)
+				_("Unable to set %s to %s in device %s@%s:%s").format(args.varName, args.varValue, device.name, device.host, device.port)
 			);
 
 		}
@@ -1502,19 +1557,16 @@ const	walNUT = new Lang.Class({
 		// Credentials
 		this.menu.controls.addControl({
 			button: this._cred_btn,
-			status: !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive'
+			status: !(this._state & ErrorType.NO_UPS) ? 'active' : 'inactive'
 		});
 
 		// Find new UPSes
-		this.menu.controls.addControl({
-			button: this._add_btn,
-			status: !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive'
-		});
+		this.menu.controls.addControl({ button: this._add_btn });
 
 		// Delete UPS
 		this.menu.controls.addControl({
 			button: this._del_btn,
-			status: !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive'
+			status: !(this._state & ErrorType.NO_UPS) ? 'active' : 'inactive'
 		});
 
 		// Help
@@ -1638,7 +1690,7 @@ const	walNUT = new Lang.Class({
 	_updatePanelIcon: function() {
 
 		// Errors!
-		if (this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA)) {
+		if (this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel icon
 			this._icon.icon_name = Icons.E + '-symbolic';
 			// ..and return
@@ -1676,7 +1728,7 @@ const	walNUT = new Lang.Class({
 	_updatePanelText: function() {
 
 		// Errors!
-		if (this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA)) {
+		if (this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel text
 			this._status.text = '';
 			// ..and return
@@ -1721,8 +1773,8 @@ const	walNUT = new Lang.Class({
 
 		this._state = this._monitor.getState();
 
-		// If upsc is available, the devices list will be shown if at least one UPS is in the list, also if it's not currently available
-		if (!(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS))) {
+		// The devices list will be shown if at least one UPS is in the list, also if it's not currently available
+		if (!(this._state & ErrorType.NO_UPS)) {
 
 			if (forceRefresh)
 				this.refreshList();
@@ -1738,11 +1790,10 @@ const	walNUT = new Lang.Class({
 
 		}
 
-		// If upsc is available and at least one UPS is available -> show menu..
-		if (!(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA))) {
+		// If at least one UPS is available -> show menu..
+		if (!(this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA))) {
 
 			let vars = this._monitor.getVars();
-			let varsArr = this._monitor.getVarsArr();
 			let devices = this._monitor.getList();
 
 			// Hide error box, if visible
@@ -1954,7 +2005,7 @@ const	walNUT = new Lang.Class({
 			// UPS Raw Data
 			if (this._display_raw)
 				this.menu.upsRaw.update({
-					vars: varsArr,
+					vars: vars,
 					forceRefresh: forceRefresh
 				});
 
@@ -1972,7 +2023,7 @@ const	walNUT = new Lang.Class({
 			if (forceRefresh)
 				this.menu.credBox.update({ device: devices[0] });
 
-		// ..else show error 'upsc not found'/'NUT not installed' or 'No UPS found'
+		// ..else show error 'No UPS found'
 		} else {
 
 			// Hide not available infos
@@ -2012,19 +2063,13 @@ const	walNUT = new Lang.Class({
 		// Credentials
 		this.menu.controls.setControl({
 			button: this._cred_btn,
-			status: !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive'
-		});
-
-		// Find new UPSes
-		this.menu.controls.setControl({
-			button: this._add_btn,
-			status: !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive'
+			status: !(this._state & ErrorType.NO_UPS) ? 'active' : 'inactive'
 		});
 
 		// Delete UPS
 		this.menu.controls.setControl({
 			button: this._del_btn,
-			status: !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive'
+			status: !(this._state & ErrorType.NO_UPS) ? 'active' : 'inactive'
 		});
 
 		// Bottom buttons' appearance
@@ -3263,17 +3308,31 @@ const	UpsCmdList = new Lang.Class({
 
 		}
 
-		// Retrieve upscmd commands
+		// Retrieve instant commands
 		let commands = upscmdDo.getCmds();
 
+		// Make sure commands are alphabetically ordered
+		let orderedCommands = [];
+
+		for (let command in commands)
+			orderedCommands.push(command);
+
+		orderedCommands.sort();
+
 		// List available commands, if any
-		if (commands.length > 0) {
+		if (orderedCommands.length > 0) {
 
 			// List UPS commands in submenu
-			for each (let item in commands) {
+			for (let i = 0; i < orderedCommands.length; i++) {
 
-				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, Utilities.parseText(Utilities.cmdI18n(item).desc, Lengths.CMD)) : item.cmd);
-				let command = item.cmd;
+				let command = orderedCommands[i];
+
+				let item = {
+					cmd: command,
+					desc: commands[command]
+				}
+
+				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(command, Utilities.parseText(Utilities.cmdI18n(item).desc, Lengths.CMD)) : command);
 
 				cmd.connect('activate', Lang.bind(this, function() {
 					upscmdDo.cmdExec({
@@ -4357,35 +4416,43 @@ const	UpsRawDataList = new Lang.Class({
 
 		}
 
-		// this._vars = [
-		//	{
-		//		var: 'battery.charge',
-		//		value: '100'
-		//	},
-		//	{
-		//		var: 'ups.status',
-		//		value: 'OL'
-		//	},
+		// this._vars = {
+		//	'battery.charge': '100',
+		//	'ups.status': 'OL',
 		//		...
-		// ]
-		for each (let item in this._vars) {
+		// }
+
+		// Make sure vars are alphabetically ordered
+		let orderedVars = [];
+
+		for (let variable in this._vars)
+			orderedVars.push(variable);
+
+		orderedVars.sort();
+
+		for (let i = 0; i < orderedVars.length; i++) {
+
+			let item = orderedVars[i];
 
 			// Submenu has children and the current var is one of them
-			if (actual && stored[item.var]) {
+			if (actual && stored[item]) {
 
 				// -> update only the variable's value
-				this['_' + item.var].value.text = Utilities.parseText(item.value, Lengths.RAW_VALUE);
+				this['_' + item].value.text = Utilities.parseText(this._vars[item], Lengths.RAW_VALUE);
 
 				// Handle setvars
-				this._handleSetVar(item);
+				this._handleSetVar({
+					var: item,
+					value: this._vars[item]
+				});
 
 				// and delete it from stored -> we won't delete this var
-				delete stored[item.var];
+				delete stored[item];
 
 			// Submenu doesn't have children or the current var isn't one of them
 			} else {
 
-				// this._vars is already alphabetically ordered, but, if a new var arises (e.g. ups.alarm)
+				// Already added vars are alphabetically ordered, but, if a new var arises (e.g. ups.alarm)
 				// now we have to insert new items so that they are alphabetically ordered
 
 				let position;
@@ -4394,37 +4461,40 @@ const	UpsRawDataList = new Lang.Class({
 				if (ab) {
 
 					// add new var to array
-					ab.push(item.var);
+					ab.push(item);
 
 					// and sort the lengthened array alphabetically
 					ab.sort();
 
 					// ..finally get the position
-					position = ab.indexOf(item.var);
+					position = ab.indexOf(item);
 
 				}
 
-				this['_' + item.var] = new UpsRawDataItem({
-					varName: Utilities.parseText(item.var, Lengths.RAW_VAR, '.'),
-					varValue: Utilities.parseText(item.value, Lengths.RAW_VALUE)
+				this['_' + item] = new UpsRawDataItem({
+					varName: Utilities.parseText(item, Lengths.RAW_VAR, '.'),
+					varValue: Utilities.parseText(this._vars[item], Lengths.RAW_VALUE)
 				});
 
 				// Handle setvars
-				this._handleSetVar(item);
+				this._handleSetVar({
+					var: item,
+					value: this._vars[item]
+				});
 
 				// If the var is a new one in an already ordered submenu, add it in the right position
 				if (position)
-					this.menu.addMenuItem(this['_' + item.var], position);
+					this.menu.addMenuItem(this['_' + item], position);
 				// If the var is new as well as the submenu add it at the default position, as vars are already alphabetically ordered
 				else
-					this.menu.addMenuItem(this['_' + item.var]);
+					this.menu.addMenuItem(this['_' + item]);
 
 			}
 
 		}
 
 		// Destroy all children still stored in 'stored' obj
-		for each (let item in stored) {
+		for (let item in stored) {
 			actual[item].destroy();
 		}
 
@@ -4445,19 +4515,19 @@ const	UpsRawDataList = new Lang.Class({
 
 			if (setVar.type == 'STRING')
 				this['_' + item.var].setVarString({
-					len: setVar.options,
+					len: setVar.opts,
 					actualValue: item.value
 				});
 
 			else if (setVar.type == 'ENUM')
 				this['_' + item.var].setVarEnum({
-					enums: setVar.options,
+					enums: setVar.opts,
 					actualValue: item.value
 				});
 
 			else if (setVar.type == 'RANGE')
 				this['_' + item.var].setVarRange({
-					ranges: setVar.options,
+					ranges: setVar.opts,
 					actualValue: item.value
 				});
 
@@ -5283,17 +5353,8 @@ const	ErrorBox = new Lang.Class({
 
 		let label, desc;
 
-		// Unable to find upsc -> ErrorType.NO_NUT
-		if (type & ErrorType.NO_NUT) {
-
-			// TRANSLATORS: Error label NO NUT @ main menu
-			label = _("Error! No NUT found");
-
-			// TRANSLATORS: Error description NO NUT @ main menu
-			desc = _("walNUT can't find NUT's executable, please check your installation");
-
 		// Unable to find any UPS -> ErrorType.NO_UPS
-		} else if (type & ErrorType.NO_UPS) {
+		if (type & ErrorType.NO_UPS) {
 
 			// TRANSLATORS: Error label NO UPS @ main menu
 			label = _("Error! No UPS found");
@@ -5410,13 +5471,10 @@ const	walNUTMenu = new Lang.Class({
 
 // Start!
 let	gsettings,
-	upscMonitor,	// upsc monitor
-	upsrwDo,	// upsrw handler
-	upscmdDo,	// upscmd handler
-	walnut,		// Panel/menu
-	upsc,		// Absolute path of upsc
-	upscmd,		// Absolute path of upscmd
-	upsrw;		// Absolute path of upsrw
+	upscMonitor,	// ups (vars/status) monitor
+	upsrwDo,	// rw variables handler
+	upscmdDo,	// instant commands handler
+	walnut;		// Panel/menu
 
 // Init extension
 function init(extensionMeta) {
@@ -5432,14 +5490,6 @@ function init(extensionMeta) {
 
 // Enable Extension
 function enable() {
-
-	// First, find upsc, upscmd and upsrw
-	// Detect upsc
-	upsc = Utilities.detect('upsc');
-	// Detect upscmd
-	upscmd = Utilities.detect('upscmd');
-	// Detect upsrw
-	upsrw = Utilities.detect('upsrw');
 
 	upscMonitor = new UpscMonitor();
 
