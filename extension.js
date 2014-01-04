@@ -151,8 +151,8 @@ const	icons = {
 	o51:	'nut-battery-good-load-good-charging',
 	o39:	'nut-battery-good-load-low-charging',
 	o33:	'nut-battery-good-load-empty-charging',
-	//	battery low -> 6
-	o6:	'nut-battery-low-charging',
+	//	battery low -> 5
+	o5:	'nut-battery-low-charging',
 	o115:	'nut-battery-low-load-full-charging',
 	o85:	'nut-battery-low-load-good-charging',
 	o65:	'nut-battery-low-load-low-charging',
