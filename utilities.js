@@ -20,7 +20,6 @@
  */
 
 const	GLib = imports.gi.GLib,
-	GObject = imports.gi.GObject,
 	Gio = imports.gi.Gio,
 	Lang = imports.lang;
 
