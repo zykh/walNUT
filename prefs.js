@@ -70,10 +70,18 @@ function init() {
 			// TRANSLATORS: Hint text of setting @ preferences
 			help: _("The unit (Centigrade or Fahrenheit) walNUT should display the temperature in. (default: Centigrade)"),
 			list: [
-				// TRANSLATORS: Temperature unit @ preferences
-				{ nick: 'Centigrade', name: _("Centigrade"), id: 0 },
-				// TRANSLATORS: Temperature unit @ preferences
-				{ nick: 'Fahrenheit', name: _("Fahrenheit"), id: 1 }
+				{
+					nick: 'Centigrade',
+					// TRANSLATORS: Temperature unit @ preferences
+					name: _("Centigrade"),
+					id: 0
+				},
+				{
+					nick: 'Fahrenheit',
+					// TRANSLATORS: Temperature unit @ preferences
+					name: _("Fahrenheit"),
+					id: 1
+				}
 			]
 		}
 
@@ -228,7 +236,11 @@ const	walNUTPrefsGeneral = new GObject.Class({
 
 	_init: function() {
 
-		this.parent({ orientation: Gtk.Orientation.VERTICAL, margin: 10, spacing: 10 });
+		this.parent({
+			orientation: Gtk.Orientation.VERTICAL,
+			margin: 10,
+			spacing: 10
+		});
 
 		// TRANSLATORS: Tab's label @ preferences widget
 		this.label = new Gtk.Label({ label: _("General/Panel") });
@@ -238,7 +250,14 @@ const	walNUTPrefsGeneral = new GObject.Class({
 
 		// General options
 
-		let general = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_bottom: 10, margin_left: 10, margin_right: 10, margin_top: 0, spacing: 5 });
+		let general = new Gtk.Box({
+			orientation: Gtk.Orientation.VERTICAL,
+			margin_bottom: 10,
+			margin_left: 10,
+			margin_right: 10,
+			margin_top: 0,
+			spacing: 5
+		});
 
 		for (let setting in settings_general) {
 
@@ -257,7 +276,14 @@ const	walNUTPrefsGeneral = new GObject.Class({
 
 		// Panel options
 
-		let panel = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_bottom: 10, margin_left: 10, margin_right: 10, margin_top: 0, spacing: 5 });
+		let panel = new Gtk.Box({
+			orientation: Gtk.Orientation.VERTICAL,
+			margin_bottom: 10,
+			margin_left: 10,
+			margin_right: 10,
+			margin_top: 0,
+			spacing: 5
+		});
 
 		for (let setting in settings_panel) {
 
@@ -285,7 +311,11 @@ const	walNUTPrefsMenu = new GObject.Class({
 
 	_init: function() {
 
-		this.parent({ orientation: Gtk.Orientation.VERTICAL, margin: 10, spacing: 5 });
+		this.parent({
+			orientation: Gtk.Orientation.VERTICAL,
+			margin: 10,
+			spacing: 5
+		});
 
 		// TRANSLATORS: Tab's label @ preferences widget
 		this.label = new Gtk.Label({ label: _("Menu") });
@@ -396,7 +426,10 @@ function createEnumStringSetting(settings, setting) {
 	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Combobox
 	let model = new Gtk.ListStore();
@@ -449,10 +482,16 @@ function createEnumStringSetting(settings, setting) {
 // Enum setting
 function createEnumSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 5 });
+	let hbox = new Gtk.Box({
+		orientation: Gtk.Orientation.HORIZONTAL,
+		margin_top: 5
+	});
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Combobox
 	let model = new Gtk.ListStore();
@@ -505,10 +544,16 @@ function createEnumSetting(settings, setting) {
 // String setting
 function createStringSetting(settings, setting) {
 
-	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 0 });
+	let hbox = new Gtk.Box({
+		orientation: Gtk.Orientation.HORIZONTAL,
+		margin_top: 0
+	});
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Entry
 	let setting_string = new Gtk.Entry({ text: gsettings.get_string(setting.replace(/_/g, '-')) });
@@ -540,11 +585,21 @@ function createIntSetting(settings, setting) {
 	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Numbers
-	let adjustment = new Gtk.Adjustment({ lower: 1, upper: 65535, step_increment: 1 });
-	let setting_int = new Gtk.SpinButton({ adjustment: adjustment, snap_to_ticks: true });
+	let adjustment = new Gtk.Adjustment({
+		lower: 1,
+		upper: 65535,
+		step_increment: 1
+	});
+	let setting_int = new Gtk.SpinButton({
+		adjustment: adjustment,
+		snap_to_ticks: true
+	});
 	setting_int.set_value(gsettings.get_int(setting.replace(/_/g, '-')));
 	setting_int.connect('value-changed', function(entry) {
 		gsettings.set_int(setting.replace(/_/g, '-'), entry.value);
@@ -569,7 +624,10 @@ function createBoolSetting(settings, setting) {
 	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Switch
 	let setting_switch = new Gtk.Switch({ active: gsettings.get_boolean(setting.replace(/_/g, '-')) });
@@ -602,7 +660,10 @@ function createRangeSetting(settings, setting) {
 	let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
 	// Label
-	let setting_label = new Gtk.Label({ label: settings[setting].label, xalign: 0 });
+	let setting_label = new Gtk.Label({
+		label: settings[setting].label,
+		xalign: 0
+	});
 
 	// Scale
 	let setting_range = Gtk.HScale.new_with_range(settings[setting].min, settings[setting].max, settings[setting].step);

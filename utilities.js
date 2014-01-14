@@ -124,15 +124,40 @@ function toArr(txt, sep, label1, label2) {
 // parseSetVar: parse upsrw output
 // return an object
 //  {
-//	name of the variable #1: { desc: descritpion of variable #1, type: type of variable #1, options: options of variable #1 },
-//	name of the variable #2: { desc: descritpion of variable #2, type: type of variable #2, options: options of variable #2 },
-//	..
+//	name of the variable #1: {
+//		desc: descritpion of variable #1,
+//		type: type of variable #1,
+//		options: options of variable #1
+//	},
+//	name of the variable #2: {
+//		desc: descritpion of variable #2,
+//		type: type of variable #2,
+//		options: options of variable #2
+//	},
+//		...
 //  }
 // type is one of: RANGE, ENUM, STRING
 // options are:
-// if type = RANGE -> an array of the available ranges [ { min: minimum value #1, max: maximum value #1 }, { min: minimum value #2, max: maximum value #2 }, .. ]
-// if type = ENUM -> an array of the available enumerated values [ enum1, enum2, enum3, .. ]
-// if type = STRING -> maximum length of the string if NUT >= 2.7.1, otherwise nothing
+// - if type = RANGE -> an array of the available ranges:
+//  [
+//	{
+//		min: minimum value #1,
+//		max: maximum value #1
+//	},
+//	{
+//		min: minimum value #2,
+//		max: maximum value #2
+//	},
+//		...
+//  ]
+// - if type = ENUM -> an array of the available enumerated values:
+//  [
+//	enum1,
+//	enum2,
+//	enum3,
+//	...
+//  ]
+// - if type = STRING -> maximum length of the string if NUT >= 2.7.1, otherwise nothing
 function parseSetVar(txt) {
 
 	// [var.name]
@@ -229,60 +254,81 @@ function parseSetVar(txt) {
 function Do(argv, callback, opts) {
 
 	// Exec argv
-	let [ exit, pid, stdin_fd, stdout_fd, stderr_fd ] = GLib.spawn_async_with_pipes(null,	// inherit parent working directory
-											argv,	// args
-											null,	// env
-											GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-											null);	// child setup
+	let [
+		exit,
+		pid,
+		stdin_fd,
+		stdout_fd,
+		stderr_fd
+	] = GLib.spawn_async_with_pipes(
+		null,	// inherit parent working directory
+		argv,	// args
+		null,	// env
+		GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+		null	// child setup
+	);
 
 	// Wrap stdout file descriptor in a UnixInputStream and then in a DataInputStream
-	let stdout_str = new Gio.UnixInputStream({ fd: stdout_fd, close_fd: true });
+	let stdout_str = new Gio.UnixInputStream({
+		fd: stdout_fd,
+		close_fd: true
+	});
 	let data_stdout = new Gio.DataInputStream({ base_stream: stdout_str });
 
 	// Wrap stderr file descriptor in a UnixInputStream and then in a DataInputStream
-	let stderr_str = new Gio.UnixInputStream({ fd: stderr_fd, close_fd: true });
+	let stderr_str = new Gio.UnixInputStream({
+		fd: stderr_fd,
+		close_fd: true
+	});
 	let data_stderr = new Gio.DataInputStream({ base_stream: stderr_str });
 
 	// Close file descriptor for std input opened by g_spawn_async_with_pipes
-	new Gio.UnixOutputStream({ fd: stdin_fd, close_fd: true }).close(null);
+	new Gio.UnixOutputStream({
+		fd: stdin_fd,
+		close_fd: true
+	}).close(null);
 
 	// Child watch: when child process exits get the std{out,err} and call the callback function
-	let child_watch = GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, Lang.bind(this, function(pid, status, requestObj) {
+	let child_watch = GLib.child_watch_add(
+		GLib.PRIORITY_DEFAULT,
+		pid,
+		Lang.bind(this, function(pid, status, requestObj) {
 
-		// Read stdout and stderr
-		// Method 1: read all
-		// Standard Output
-		let [ stdout, out_size ] = data_stdout.read_upto('\0', 1, null);
-		// Standard Error
-		let [ stderr, err_size ] = data_stderr.read_upto('\0', 1, null);
+			// Read stdout and stderr
+			// Method 1: read all
+			// Standard Output
+			let [ stdout, out_size ] = data_stdout.read_upto('\0', 1, null);
+			// Standard Error
+			let [ stderr, err_size ] = data_stderr.read_upto('\0', 1, null);
 
-		// Method 2: read line by line
-		// Standard Output
-//		let [ out, out_size ] = data_stdout.read_line(null);
-//		let stdout = out ? out + '\n' : out;
-//		while (out_size > 0) {
-//			[ out, out_size ] = data_stdout.read_line(null);
-//			if (out)
-//				stdout += out + '\n';
-//		}
-		// Standard Error
-//		let [ err, err_size ] = data_stderr.read_line(null);
-//		let stderr = err ? err + '\n' : err;
-//		while (err_size > 0) {
-//			[ err, err_size ] = data_stderr.read_line(null);
-//			if (err)
-//				stderr += err + '\n';
-//		}
+			// Method 2: read line by line
+			// Standard Output
+//			let [ out, out_size ] = data_stdout.read_line(null);
+//			let stdout = out ? out + '\n' : out;
+//			while (out_size > 0) {
+//				[ out, out_size ] = data_stdout.read_line(null);
+//				if (out)
+//					stdout += out + '\n';
+//			}
+			// Standard Error
+//			let [ err, err_size ] = data_stderr.read_line(null);
+//			let stderr = err ? err + '\n' : err;
+//			while (err_size > 0) {
+//				[ err, err_size ] = data_stderr.read_line(null);
+//				if (err)
+//					stderr += err + '\n';
+//			}
 
-		// Close file descriptors for standard output & error
-		stdout_str.close(null);
-		stderr_str.close(null);
+			// Close file descriptors for standard output & error
+			stdout_str.close(null);
+			stderr_str.close(null);
 
-		GLib.source_remove(child_watch);
+			GLib.source_remove(child_watch);
 
-		callback(stdout, stderr, opts);
+			callback(stdout, stderr, opts);
 
-	}));
+		})
+	);
 
 }
 
@@ -307,7 +353,13 @@ function defaultUps(id) {
 	let chosen = got.splice(id, 1);
 
 	// Then sort UPSes in alphabetical order (host:port, and then name)
-	got.sort(function(a, b) { return ((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? 1 : (((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? -1 : 0); });
+	got.sort(
+		function(a, b) {
+			return ((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? 1 : (
+				((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? -1 : 0
+			);
+		}
+	);
 
 	// And now restore chosen UPS
 	got.unshift(chosen[0]);
@@ -581,13 +633,19 @@ function parseStatus(raw, icon) {
 
 	// For panel/menu icons
 	if (icon)
-		return { line: icon_line, alarm: icon_alarm };
+		return {
+			line: icon_line,
+			alarm: icon_alarm
+		};
 
 	// For menu label/description
 
 	// Trim line, remove leading comma from status and then trim it
-	// TRANSLATORS: Stupid comment (from 1973 Walt Disney's Robin Hood) @ device status box
-	return { line: line.trim(), status: status ? status.substring(1).trim() : _("\u201f..and all's well!\u201d [NUTSY (shouting)]") };
+	return {
+		line: line.trim(),
+		// TRANSLATORS: Stupid comment (from 1973 Walt Disney's Robin Hood) @ device status box
+		status: status ? status.substring(1).trim() : _("\u201f..and all's well!\u201d [NUTSY (shouting)]")
+	};
 
 }
 

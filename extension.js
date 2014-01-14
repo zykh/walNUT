@@ -320,7 +320,22 @@ const	UpscMonitor = new Lang.Class({
 		// Retrieve actual UPSes stored in schema
 		let stored = gsettings.get_string('ups');
 
-		// e.g.: got = [ { name: 'name', host: 'host', port: 'port' }, { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		// e.g.:
+		//  got = [
+		//	{
+		//		name: 'name',
+		//		host: 'host',
+		//		port: 'port'
+		//	},
+		//	{
+		//		name: 'name1',
+		//		host: 'host1',
+		//		port: 'port1',
+		//		user: 'user1',
+		//		pw: 'pw1'
+		//	},
+		//		...
+		//  ]
 		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
 
 		if (!got.length)
@@ -334,7 +349,19 @@ const	UpscMonitor = new Lang.Class({
 
 		if (host && port) {
 
-			Utilities.Do([ '%s'.format(upsc), '-l', '%s:%s'.format(host, port) ], Lang.bind(this, this._postGetDevices), [ notify, host, port ]);
+			Utilities.Do(
+				[
+					'%s'.format(upsc),
+					'-l',
+					'%s:%s'.format(host, port)
+				],
+				Lang.bind(this, this._postGetDevices),
+				[
+					notify,
+					host,
+					port
+				]
+			);
 
 			return;
 
@@ -369,7 +396,22 @@ const	UpscMonitor = new Lang.Class({
 
 		let stored = gsettings.get_string('ups');
 
-		// e.g.: got = [ { name: 'name', host: 'host', port: 'port' }, { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1' } .. ]
+		// e.g.:
+		//  got = [
+		//	{
+		//		name: 'name',
+		//		host: 'host',
+		//		port: 'port'
+		//	},
+		//	{
+		//		name: 'name1',
+		//		host: 'host1',
+		//		port: 'port1',
+		//		user: 'user1',
+		//		pw: 'pw1'
+		//	},
+		//		...
+		// ]
 		got = JSON.parse(!stored || stored == '' ? '[]' : stored);
 
 		// Unable to find an UPS -> returns already available ones
@@ -377,8 +419,11 @@ const	UpscMonitor = new Lang.Class({
 
 			// Notify
 			if (notify)
-				// TRANSLATORS: Notify title/description for error while searching new devices
-				Main.notifyError(_("NUT: Error!"), _("Unable to find new devices at host %s:%s").format(host, port));
+				Main.notifyError(
+					// TRANSLATORS: Notify title/description for error while searching new devices
+					_("NUT: Error!"),
+					_("Unable to find new devices at host %s:%s").format(host, port)
+				);
 
 			this._devices = got;
 
@@ -455,8 +500,11 @@ const	UpscMonitor = new Lang.Class({
 				// Notify
 				if (notify) {
 
-					// TRANSLATORS: Notify title/description on every new device found
-					Main.notify(_("NUT: new device found"), _("Found device %s at host %s:%s").format(ups.name, ups.host, ups.port));
+					Main.notify(
+						// TRANSLATORS: Notify title/description on every new device found
+						_("NUT: new device found"),
+						_("Found device %s at host %s:%s").format(ups.name, ups.host, ups.port)
+					);
 
 					foundDevices++;
 
@@ -471,13 +519,19 @@ const	UpscMonitor = new Lang.Class({
 
 			// Devices found (more than 1)
 			if (foundDevices > 1)
-				// TRANSLATORS: Notify title/description on new devices found (more than one)
-				Main.notify(_("NUT: new devices found"), _("Found %d devices at host %s:%s").format(foundDevices, host, port));
+				Main.notify(
+					// TRANSLATORS: Notify title/description on new devices found (more than one)
+					_("NUT: new devices found"),
+					_("Found %d devices at host %s:%s").format(foundDevices, host, port)
+				);
 
 			// No devices found
 			else if (!foundDevices)
-				// TRANSLATORS: Notify title/description for error while searching new devices
-				Main.notifyError(_("NUT: Error!"), _("Unable to find new devices at host %s:%s").format(host, port));
+				Main.notifyError(
+					// TRANSLATORS: Notify title/description for error while searching new devices
+					_("NUT: Error!"),
+					_("Unable to find new devices at host %s:%s").format(host, port)
+				);
 
 		}
 
@@ -485,7 +539,13 @@ const	UpscMonitor = new Lang.Class({
 		let chosen = got.shift();
 
 		// Then sort UPSes in alphabetical order (host:port, and then name)
-		got.sort(function(a, b) { return ((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? 1 : (((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? -1 : 0); });
+		got.sort(
+			function(a, b) {
+				return ((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? 1 : (
+					((a.host + a.port + a.name) > (b.host + b.port + b.name)) ? -1 : 0
+				);
+			}
+		);
 
 		// And now restore chosen UPS
 		got.unshift(chosen);
@@ -511,7 +571,14 @@ const	UpscMonitor = new Lang.Class({
 			// Just in case we lose the UPS..
 			item.av = 0;
 
-			Utilities.Do([ '%s'.format(upsc), '%s@%s:%s'.format(item.name, item.host, item.port) ], Lang.bind(this, this._checkUps), [ item ]);
+			Utilities.Do(
+				[
+					'%s'.format(upsc),
+					'%s@%s:%s'.format(item.name, item.host, item.port)
+				],
+				Lang.bind(this, this._checkUps),
+				[ item ]
+			);
 
 		}
 
@@ -519,8 +586,22 @@ const	UpscMonitor = new Lang.Class({
 
 	// _checkUps: callback function to tell whether a given UPS is available or not
 	// The currently processed UPS will get added to its properties its availability:
-	// - if available -> av = 1: e.g. { name: 'name', host: 'host', port: 'port', av: 1 }
-	// - if not available -> av = 0: e.g. { name: 'name1', host: 'host1', port: 'port1', user: 'user1', pw: 'pw1', av: 0 }
+	// - if available -> av = 1:
+	//   e.g. {
+	//	name: 'name',
+	//	host: 'host',
+	//	port: 'port',
+	//	av: 1
+	//   }
+	// - if not available -> av = 0:
+	//   e.g. {
+	//	name: 'name1',
+	//	host: 'host1',
+	//	port: 'port1',
+	//	user: 'user1',
+	//	pw: 'pw1',
+	//	av: 0
+	//   }
 	_checkUps: function(stdout, stderr, opts) {
 
 		// The UPS we're checking
@@ -567,7 +648,14 @@ const	UpscMonitor = new Lang.Class({
 		// Reset status
 		this._state |= ErrorType.UPS_NA;
 
-		Utilities.Do([ '%s'.format(upsc), '%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port) ], Lang.bind(this, this._processVars), [ this._devices[0] ]);
+		Utilities.Do(
+			[
+				'%s'.format(upsc),
+				'%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)
+			],
+			Lang.bind(this, this._processVars),
+			[ this._devices[0] ]
+		);
 
 	},
 
@@ -711,14 +799,30 @@ const	UpscMonitor = new Lang.Class({
 
 	},
 
-	// getVars: return actual chosen device's variables in an Obj where keys are variables' names (e.g.: { 'battery.charge': '100', 'ups.status': 'OL', .. })
+	// getVars: return actual chosen device's variables in an Obj where keys are variables' names
+	// (e.g.: {
+	//	'battery.charge': '100',
+	//	'ups.status': 'OL',
+	//		...
+	// })
 	getVars: function() {
 
 		return this._ups;
 
 	},
 
-	// getVarsArr: return actual chosen device's variables in an Array of Obj with keys var and value (e.g.: [ { var: 'battery.charge', value: '100' }, { var: 'ups.status', value: 'OL' }, .. ])
+	// getVarsArr: return actual chosen device's variables in an Array of Obj with keys var and value
+	// (e.g.: [
+	//	{
+	//		var: 'battery.charge',
+	//		value: '100'
+	//	},
+	//	{
+	//		var: 'ups.status',
+	//		value: 'OL'
+	//	},
+	//		...
+	// ])
 	getVarsArr: function() {
 
 		return this._vars;
@@ -777,7 +881,15 @@ const	UpscmdDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do([ '%s'.format(upscmd), '-l', '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port) ], Lang.bind(this, this._processRetrievedCmds), [ this._device ]);
+		Utilities.Do(
+			[
+				'%s'.format(upscmd),
+				'-l',
+				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
+			],
+			Lang.bind(this, this._processRetrievedCmds),
+			[ this._device ]
+		);
 
 	},
 
@@ -844,13 +956,39 @@ const	UpscmdDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do([ '%s'.format(upscmd), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port), '%s'.format(cmd), '%s'.format(extra) ], Lang.bind(this, this._processExecutedCmd), [ device, cmd, extradata, user, pw ]);
+			Utilities.Do(
+				[
+					'%s'.format(upscmd),
+					'-u',
+					'%s'.format(user),
+					'-p',
+					'%s'.format(pw),
+					'%s@%s:%s'.format(device.name, device.host, device.port),
+					'%s'.format(cmd),
+					'%s'.format(extra)
+				],
+				Lang.bind(this, this._processExecutedCmd),
+				[
+					device,
+					cmd,
+					extradata,
+					user,
+					pw
+				]
+			);
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogCmd(device, user, pw, cmd, extra, false);
+			let credDialog = new CredDialogCmd(
+				device,
+				user,
+				pw,
+				cmd,
+				extra,
+				false
+			);
 			credDialog.open(global.get_current_time());
 
 		}
@@ -883,22 +1021,38 @@ const	UpscmdDo = new Lang.Class({
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogCmd(device, user, pw, cmd, extra, true);
+			let credDialog = new CredDialogCmd(
+				device,
+				user,
+				pw,
+				cmd,
+				extra,
+				true
+			);
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Command sent to the driver successfully
 		} else if (stderr && stderr.indexOf('OK') != -1) {
 
-			// TRANSLATORS: Notify title/description on command successfully sent
-			Main.notify(_("NUT: command handled"), _("Successfully sent command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port));
+			Main.notify(
+				// TRANSLATORS: Notify title/description on command successfully sent
+				_("NUT: command handled"),
+				_("Successfully sent command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port)
+			);
 
 			// Update vars/panel/menu (not devices)
 			upscMonitor.update();
 
 		// mmhh.. something's wrong here!
-		} else
-			// TRANSLATORS: Notify title/description for error on command sent
-			Main.notifyError(_("NUT: error while handling command"), _("Unable to send command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port));
+		} else {
+
+			Main.notifyError(
+				// TRANSLATORS: Notify title/description for error on command sent
+				_("NUT: error while handling command"),
+				_("Unable to send command %s to device %s@%s:%s").format(cmdExtra, device.name, device.host, device.port)
+			);
+
+		}
 
 	}
 });
@@ -939,7 +1093,14 @@ const	UpsrwDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do([ '%s'.format(upsrw), '%s@%s:%s'.format(this._device.name, this._device.host, this._device.port) ], Lang.bind(this, this._processRetrievedSetVars), [ this._device ]);
+		Utilities.Do(
+			[
+				'%s'.format(upsrw),
+				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
+			],
+			Lang.bind(this, this._processRetrievedSetVars),
+			[ this._device ]
+		);
 
 	},
 
@@ -1016,13 +1177,39 @@ const	UpsrwDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do([ '%s'.format(upsrw), '-s', '%s=%s'.format(varName, varValue), '-u', '%s'.format(user), '-p', '%s'.format(pw), '%s@%s:%s'.format(device.name, device.host, device.port) ], Lang.bind(this, this._processSetVar), [ device, varName, varValue, user, pw ]);
+			Utilities.Do(
+				[
+					'%s'.format(upsrw),
+					'-s',
+					'%s=%s'.format(varName, varValue),
+					'-u',
+					'%s'.format(user),
+					'-p',
+					'%s'.format(pw),
+					'%s@%s:%s'.format(device.name, device.host, device.port)
+				],
+				Lang.bind(this, this._processSetVar),
+				[
+					device,
+					varName,
+					varValue,
+					user,
+					pw
+				]
+			);
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogSetvar(device, user, pw, varName, varValue, false);
+			let credDialog = new CredDialogSetvar(
+				device,
+				user,
+				pw,
+				varName,
+				varValue,
+				false
+			);
 			credDialog.open(global.get_current_time());
 
 		}
@@ -1048,22 +1235,38 @@ const	UpsrwDo = new Lang.Class({
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogSetvar(device, user, pw, varName, varValue, true);
+			let credDialog = new CredDialogSetvar(
+				device,
+				user,
+				pw,
+				varName,
+				varValue,
+				true
+			);
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Setvar sent to the driver successfully
 		} else if (stderr && stderr.indexOf('OK') != -1) {
 
-			// TRANSLATORS: Notify title/description on setvar successfully sent
-			Main.notify(_("NUT: setvar handled"), _("Successfully set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port));
+			Main.notify(
+				// TRANSLATORS: Notify title/description on setvar successfully sent
+				_("NUT: setvar handled"),
+				_("Successfully set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port)
+			);
 
 			// Update vars/panel/menu (not devices)
 			upscMonitor.update();
 
 		// mmhh.. something's wrong here!
-		} else
-			// TRANSLATORS: Notify title/description for error on setvar sent
-			Main.notifyError(_("NUT: error while handling setvar"), _("Unable to set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port));
+		} else {
+
+			Main.notifyError(
+				// TRANSLATORS: Notify title/description for error on setvar sent
+				_("NUT: error while handling setvar"),
+				_("Unable to set %s to %s in device %s@%s:%s").format(varName, varValue, device.name, device.host, device.port)
+			);
+
+		}
 
 	}
 });
@@ -1083,7 +1286,10 @@ const	walNUT = new Lang.Class({
 		// Panel button
 		let _btnBox = new St.BoxLayout();
 		// Panel icon
-		this._icon = new St.Icon({ icon_name: icons.e + '-symbolic', style_class: 'system-status-icon' });
+		this._icon = new St.Icon({
+			icon_name: icons.e + '-symbolic',
+			style_class: 'system-status-icon'
+		});
 		// Panel label for battery charge and device load
 		this._status = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
 
@@ -1100,109 +1306,153 @@ const	walNUT = new Lang.Class({
 		// Bottom Buttons
 
 		// Settings button
-		// TRANSLATORS: Accessible name of 'Preferences' button
-		this._pref_btn = new Button('imported-preferences-system', _("Preferences"), function() {
+		this._pref_btn = new Button(
+			'imported-preferences-system',
+			// TRANSLATORS: Accessible name of 'Preferences' button
+			_("Preferences"),
+			function() {
 
-			let _appSys = Shell.AppSystem.get_default();
-			let _gsmPrefs = _appSys.lookup_app('gnome-shell-extension-prefs.desktop');
+				let _appSys = Shell.AppSystem.get_default();
+				let _gsmPrefs = _appSys.lookup_app('gnome-shell-extension-prefs.desktop');
 
-			if (_gsmPrefs.get_state() == _gsmPrefs.SHELL_APP_STATE_RUNNING)
-				_gsmPrefs.activate();
-			else
-				_gsmPrefs.launch(global.display.get_current_time_roundtrip(), [ Me.metadata.uuid ], -1, null);
+				if (_gsmPrefs.get_state() == _gsmPrefs.SHELL_APP_STATE_RUNNING)
+					_gsmPrefs.activate();
+				else
+					_gsmPrefs.launch(global.display.get_current_time_roundtrip(), [ Me.metadata.uuid ], -1, null);
 
-		});
+			}
+		);
 
 		// Credentials button
-		// TRANSLATORS: Accessible name of 'Credentials' button
-		this._cred_btn = new Button('imported-dialog-password', _("Credentials"), Lang.bind(this, function() {
+		this._cred_btn = new Button(
+			'imported-dialog-password',
+			// TRANSLATORS: Accessible name of 'Credentials' button
+			_("Credentials"),
+			Lang.bind(this, function() {
 
-			// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
+				// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
 
-			this.menu.addBox.close();
+				this.menu.addBox.close();
 
-			this.menu.delBox.close();
+				this.menu.delBox.close();
 
-			this.menu.credBox.toggle();
+				this.menu.credBox.toggle();
 
-		}));
+			})
+		);
 
 		// Add UPS button
-		// TRANSLATORS: Accessible name of 'Find new devices' button
-		this._add_btn = new Button('imported-edit-find', _("Find new devices"), Lang.bind(this, function() {
+		this._add_btn = new Button(
+			'imported-edit-find',
+			// TRANSLATORS: Accessible name of 'Find new devices' button
+			_("Find new devices"),
+			Lang.bind(this, function() {
 
-			// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
+				// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
 
-			this.menu.credBox.close();
+				this.menu.credBox.close();
 
-			this.menu.delBox.close();
+				this.menu.delBox.close();
 
-			this.menu.addBox.toggle();
+				this.menu.addBox.toggle();
 
-		}));
+			})
+		);
 
 		// Delete UPS from devices' list button
-		// TRANSLATORS: Accessible name of 'Delete device' button
-		this._del_btn = new Button('imported-user-trash', _("Delete device"), Lang.bind(this, function() {
+		this._del_btn = new Button(
+			'imported-user-trash',
+			// TRANSLATORS: Accessible name of 'Delete device' button
+			_("Delete device"),
+			Lang.bind(this, function() {
 
-			// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
+				// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
 
-			this.menu.addBox.close();
+				this.menu.addBox.close();
 
-			this.menu.credBox.close();
+				this.menu.credBox.close();
 
-			this.menu.delBox.toggle();
+				this.menu.delBox.toggle();
 
-		}));
+			})
+		);
 
 		// Help button
-		// TRANSLATORS: Accessible name of 'Help' button
-		this._help_btn = new Button('imported-help-browser', _("Help"), function() {
+		this._help_btn = new Button(
+			'imported-help-browser',
+			// TRANSLATORS: Accessible name of 'Help' button
+			_("Help"),
+			function() {
 
-			let yelp = Utilities.detect('yelp');
-			let help = Me.dir.get_child('help');
+				let yelp = Utilities.detect('yelp');
+				let help = Me.dir.get_child('help');
 
-			// Get locale
-			let locale = Utilities.getLocale();
+				// Get locale
+				let locale = Utilities.getLocale();
 
-			// If yelp is available and the [localized] help is found, we'll use them..
-			if (yelp && help.query_exists(null)) {
-
-				// Language code + country code (eg. en_US, it_IT, ..)
-				if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
-					Util.spawn([ 'yelp', '%s/%s'.format(help.get_path(), locale.split('.')[0]) ]);
-
-				// Language code (eg. en, it, ..)
-				else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
-					Util.spawn([ 'yelp', '%s/%s'.format(help.get_path(), locale.split('_')[0]) ]);
-
-				else
-					Util.spawn([ 'yelp', '%s/C'.format(help.get_path()) ]);
-
-			// ..otherwise we'll open the html page
-			} else {
-
-				// If [localized] help is found, we'll use it
-				if (help.query_exists(null)) {
+				// If yelp is available and the [localized] help is found, we'll use them..
+				if (yelp && help.query_exists(null)) {
 
 					// Language code + country code (eg. en_US, it_IT, ..)
 					if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
-						Util.spawn([ 'xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('.')[0]) ]);
+						Util.spawn([
+							'yelp',
+							'%s/%s'.format(help.get_path(), locale.split('.')[0])
+						]);
 
 					// Language code (eg. en, it, ..)
 					else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
-						Util.spawn([ 'xdg-open', '%s/%s/help.html'.format(help.get_path(), locale.split('_')[0]) ]);
+						Util.spawn([
+							'yelp',
+							'%s/%s'.format(help.get_path(), locale.split('_')[0])
+						]);
 
 					else
-						Util.spawn([ 'xdg-open', '%s/C/help.html'.format(help.get_path()) ]);
+						Util.spawn([
+							'yelp',
+							'%s/C'.format(help.get_path())
+						]);
 
-				// ..otherwise we'll open the web page
-				} else
-					Util.spawn([ 'xdg-open', 'https://github.com/zykh/walNUT' ]);
+				// ..otherwise we'll open the html page
+				} else {
+
+					// If [localized] help is found, we'll use it
+					if (help.query_exists(null)) {
+
+						// Language code + country code (eg. en_US, it_IT, ..)
+						if (locale && help.get_child(locale.split('.')[0]).query_exists(null))
+							Util.spawn([
+								'xdg-open',
+								'%s/%s/help.html'.format(help.get_path(), locale.split('.')[0])
+							]);
+
+						// Language code (eg. en, it, ..)
+						else if (locale && help.get_child(locale.split('_')[0]).query_exists(null))
+							Util.spawn([
+								'xdg-open',
+								'%s/%s/help.html'.format(help.get_path(), locale.split('_')[0])
+							]);
+
+						else
+							Util.spawn([
+								'xdg-open',
+								'%s/C/help.html'.format(help.get_path())
+							]);
+
+					// ..otherwise we'll open the web page
+					} else {
+
+						Util.spawn([
+							'xdg-open',
+							'https://github.com/zykh/walNUT'
+						]);
+
+					}
+
+				}
 
 			}
-
-		});
+		);
 
 		// Always show Bottom Buttons (some won't be reactive in case of certain errors)
 
@@ -1225,14 +1475,12 @@ const	walNUT = new Lang.Class({
 		this._updateOptions();
 
 		// Connect update on settings changed
-		let settingsChangedId = gsettings.connect('changed', Lang.bind(this, function() {
-
-			this._updateOptions();
-
-		}));
+		let settingsChangedId = gsettings.connect('changed', Lang.bind(this, this._updateOptions));
 
 		// Disconnect settings-changed connection on destroy
-		this.connect('destroy', Lang.bind(this, function() { gsettings.disconnect(settingsChangedId); }));
+		this.connect('destroy', Lang.bind(this, function() {
+			gsettings.disconnect(settingsChangedId);
+		}));
 
 		// Init panel/menu
 		this.refreshPanel();
@@ -1357,9 +1605,12 @@ const	walNUT = new Lang.Class({
 
 			charged = vars['battery.charge'] * 1 == 100;
 
-		} else
+		} else {
+
 			// If the UPS isn't telling us it's charging or discharging -> we suppose it's charged
 			charged = vars['ups.status'].indexOf('CHRG') != -1 ? charged : true;
+
+		}
 
 		if (vars['ups.load'] && this._panel_icon_display_load)
 			load_level = Utilities.LoadLevel(vars['ups.load']);
@@ -1702,41 +1953,93 @@ const	CredDialog = new Lang.Class({
 		this._device = device;
 
 		// Main container
-		let container = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout', vertical: false });
-		this.contentLayout.add(container, { x_fill: true, y_fill: true });
+		let container = new St.BoxLayout({
+			style_class: 'prompt-dialog-main-layout',
+			vertical: false
+		});
+		this.contentLayout.add(container, {
+			x_fill: true,
+			y_fill: true
+		});
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-dialog-password-symbolic', style_class: 'walnut-cred-dialog-icon' });
-		container.add(icon, { x_fill: true, y_fill: false, x_align: St.Align.END, y_align: St.Align.MIDDLE });
+		let icon = new St.Icon({
+			icon_name: 'imported-dialog-password-symbolic',
+			style_class: 'walnut-cred-dialog-icon'
+		});
+		container.add(icon, {
+			x_fill: true,
+			y_fill: false,
+			x_align: St.Align.END,
+			y_align: St.Align.MIDDLE
+		});
 
 		// Container for messages and username and password entries
-		let textBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout', vertical: true });
+		let textBox = new St.BoxLayout({
+			style_class: 'prompt-dialog-message-layout',
+			vertical: true
+		});
 		container.add(textBox, { y_align: St.Align.START });
 
 		// Label
-		// TRANSLATORS: Label of credentials dialog
-		let label = new St.Label({ text: _("UPS Credentials"), style_class: 'prompt-dialog-headline walnut-cred-dialog-headline' });
-		textBox.add(label, { y_fill: false, y_align: St.Align.START });
+		let label = new St.Label({
+			// TRANSLATORS: Label of credentials dialog
+			text: _("UPS Credentials"),
+			style_class: 'prompt-dialog-headline walnut-cred-dialog-headline'
+		});
+		textBox.add(label, {
+			y_fill: false,
+			y_align: St.Align.START
+		});
 
 		// Description
-		this.desc = new St.Label({ text: '', style_class: 'prompt-dialog-description walnut-cred-dialog-description' });
-		textBox.add(this.desc, { y_fill: true, y_align: St.Align.START, expand: true });
+		this.desc = new St.Label({
+			text: '',
+			style_class: 'prompt-dialog-description walnut-cred-dialog-description'
+		});
+		textBox.add(this.desc, {
+			y_fill: true,
+			y_align: St.Align.START,
+			expand: true
+		});
 
 		// Username/password table
 		let table = new St.Table({ style_class: 'walnut-cred-dialog-table' });
 		textBox.add(table);
 
 		// Username label
-		// TRANSLATORS: Username @ credentials dialog
-		let userLabel = new St.Label({ text: _("Username:"), style_class: 'prompt-dialog-password-label' });
-		table.add(userLabel, { row: 0, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
+		let userLabel = new St.Label({
+			// TRANSLATORS: Username @ credentials dialog
+			text: _("Username:"),
+			style_class: 'prompt-dialog-password-label'
+		});
+		table.add(userLabel, {
+			row: 0,
+			col: 0,
+			x_expand: false,
+			x_fill: true,
+			x_align: St.Align.START,
+			y_fill: false,
+			y_align: St.Align.MIDDLE
+		});
 
 		// Username entry
-		this.user = new St.Entry({ text: user || '', can_focus: true, reactive: true, style_class: 'walnut-add-entry' });
+		this.user = new St.Entry({
+			text: user || '',
+			can_focus: true,
+			reactive: true,
+			style_class: 'walnut-add-entry'
+		});
 
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
-		table.add(this.user, { row: 0, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
+		table.add(this.user, {
+			row: 0,
+			col: 1,
+			x_expand: true,
+			x_fill: true,
+			y_align: St.Align.END
+		});
 
 		// user_valid tells us whether a username is set or not
 		this.user_valid = user ? true : false;
@@ -1754,19 +2057,41 @@ const	CredDialog = new Lang.Class({
 		}));
 
 		// Password label
-		// TRANSLATORS: Password @ credentials dialog
-		let pwLabel = new St.Label({ text: _("Password:"), style_class: 'prompt-dialog-password-label' });
-		table.add(pwLabel, { row: 1, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_fill: false, y_align: St.Align.MIDDLE });
+		let pwLabel = new St.Label({
+			// TRANSLATORS: Password @ credentials dialog
+			text: _("Password:"),
+			style_class: 'prompt-dialog-password-label'
+		});
+		table.add(pwLabel, {
+			row: 1,
+			col: 0,
+			x_expand: false,
+			x_fill: true,
+			x_align: St.Align.START,
+			y_fill: false,
+			y_align: St.Align.MIDDLE
+		});
 
 		// Password entry
-		this.pw = new St.Entry({ text: pw || '', can_focus: true, reactive: true, style_class: 'prompt-dialog-password-entry' });
+		this.pw = new St.Entry({
+			text: pw || '',
+			can_focus: true,
+			reactive: true,
+			style_class: 'prompt-dialog-password-entry'
+		});
 
 		// Password right-click menu
 		ShellEntry.addContextMenu(this.pw, { isPassword: true });
 
 		// Password visual appearance (hidden)
 		this.pw.clutter_text.set_password_char('\u25cf');
-		table.add(this.pw, { row: 1, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
+		table.add(this.pw, {
+			row: 1,
+			col: 1,
+			x_expand: true,
+			x_fill: true,
+			y_align: St.Align.END
+		});
 
 		// pw_valid tells us whether a password is set or not
 		this.pw_valid = pw ? true : false;
@@ -1794,20 +2119,41 @@ const	CredDialog = new Lang.Class({
 			errorBox.hide();
 
 		// Error Icon
-		let errorIcon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-cred-dialog-error-icon' });
+		let errorIcon = new St.Icon({
+			icon_name: 'imported-dialog-error-symbolic',
+			style_class: 'walnut-cred-dialog-error-icon'
+		});
 		errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
 		// Error message
-		// TRANSLATORS: Error message @ credentials dialog
-		let errorText = new St.Label({ text: _("Wrong username or password"), style_class: 'walnut-cred-dialog-error-label' });
+		let errorText = new St.Label({
+			// TRANSLATORS: Error message @ credentials dialog
+			text: _("Wrong username or password"),
+			style_class: 'walnut-cred-dialog-error-label'
+		});
 		errorText.clutter_text.line_wrap = true;
-		errorBox.add(errorText, { expand: true, y_align: St.Align.MIDDLE, y_fill: false });
+		errorBox.add(errorText, {
+			expand: true,
+			y_align: St.Align.MIDDLE,
+			y_fill: false
+		});
 
-		// TRANSLATORS: Execute button @ credentials dialog
-		this.ok = { label: _("Execute"), action: Lang.bind(this, this._onOk), default: true };
+		this.ok = {
+			// TRANSLATORS: Execute button @ credentials dialog
+			label: _("Execute"),
+			action: Lang.bind(this, this._onOk),
+			default: true
+		};
 
-		// TRANSLATORS: Cancel button @ credentials dialog
-		this.setButtons([ { label: _("Cancel"), action: Lang.bind(this, this._onCancel), key: Clutter.KEY_Escape, }, this.ok ]);
+		this.setButtons([
+			{
+				// TRANSLATORS: Cancel button @ credentials dialog
+				label: _("Cancel"),
+				action: Lang.bind(this, this._onCancel),
+				key: Clutter.KEY_Escape
+			},
+			this.ok
+		]);
 
 		this._updateOkButton(error);
 
@@ -1868,7 +2214,13 @@ const	CredDialogCmd = new Lang.Class({
 
 	_onOk: function() {
 
-		upscmdDo.cmdExec(this.user.get_text(), this.pw.get_text(), this._device, this._cmd, this._extra);
+		upscmdDo.cmdExec(
+			this.user.get_text(),
+			this.pw.get_text(),
+			this._device,
+			this._cmd,
+			this._extra
+		);
 
 		this.parent();
 
@@ -1895,7 +2247,13 @@ const	CredDialogSetvar = new Lang.Class({
 
 	_onOk: function() {
 
-		upsrwDo.setVar(this.user.get_text(), this.pw.get_text(), this._device, this._varName, this._varValue);
+		upsrwDo.setVar(
+			this.user.get_text(),
+			this.pw.get_text(),
+			this._device,
+			this._varName,
+			this._varValue
+		);
 
 		this.parent();
 
@@ -1909,52 +2267,87 @@ const	DelBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		let container = new St.Table();
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-user-trash-symbolic', style_class: 'walnut-delbox-icon' });
-		container.add(icon, { row: 0, col: 0, row_span: 3 });
+		let icon = new St.Icon({
+			icon_name: 'imported-user-trash-symbolic',
+			style_class: 'walnut-delbox-icon'
+		});
+		container.add(icon, {
+			row: 0,
+			col: 0,
+			row_span: 3
+		});
 
 		// Description
-		// TRANSLATORS: Label @ delete device box
-		let desc = new St.Label({ text: _("Delete UPS"), style_class: 'walnut-delbox-desc' });
-		container.add(desc, { row: 0, col: 1 });
+		let desc = new St.Label({
+			// TRANSLATORS: Label @ delete device box
+			text: _("Delete UPS"),
+			style_class: 'walnut-delbox-desc'
+		});
+		container.add(desc, {
+			row: 0,
+			col: 1
+		});
 
 		// Text
-		// TRANSLATORS: Description @ delete device box
-		let text = new St.Label({ text: Utilities.parseText(_("Do you really want to delete the current UPS from the list?"), 30), style_class: 'walnut-delbox-text' });
-		container.add(text, { row: 1, col: 1 });
+		let text = new St.Label({
+			// TRANSLATORS: Description @ delete device box
+			text: Utilities.parseText(_("Do you really want to delete the current UPS from the list?"), 30),
+			style_class: 'walnut-delbox-text'
+		});
+		container.add(text, {
+			row: 1,
+			col: 1
+		});
 
 		// Delete/Go buttons
-		// TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
-		let del = new Button('imported-window-close', _("Don't delete"), Lang.bind(this, function() {
+		let del = new Button(
+			'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
+			_("Don't delete"),
+			Lang.bind(this, function() {
 
-			this.hide();
+				this.hide();
 
-			// Give back focus to our 'submenu-toggle button'
-			walnut._del_btn.actor.grab_key_focus();
+				// Give back focus to our 'submenu-toggle button'
+				walnut._del_btn.actor.grab_key_focus();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
-		// TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
-		let go = new Button('imported-emblem-ok', _("Delete"), Lang.bind(this, function() {
+		let go = new Button(
+			'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
+			_("Delete"),
+			Lang.bind(this, function() {
 
-			Utilities.upsDel();
+				Utilities.upsDel();
 
-			this.hide();
+				this.hide();
 
-			// Give back focus to our 'submenu-toggle button'
-			walnut._del_btn.actor.grab_key_focus();
+				// Give back focus to our 'submenu-toggle button'
+				walnut._del_btn.actor.grab_key_focus();
 
-			// Make the menu close itself to force an update
-			this.emit('activate', null);
+				// Make the menu close itself to force an update
+				this.emit('activate', null);
 
-		}), 'small');
+			}),
+			'small'
+		);
 
 		// Put buttons together
-		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-delbox-buttons-box' });
+		let btns = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-delbox-buttons-box'
+		});
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
@@ -1962,9 +2355,15 @@ const	DelBox = new Lang.Class({
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
-		container.add(btnsBox, { row: 2, col: 1 });
+		container.add(btnsBox, {
+			row: 2,
+			col: 1
+		});
 
-		this.actor.add(container, { expand: true, x_fill: false });
+		this.actor.add(container, {
+			expand: true,
+			x_fill: false
+		});
 
 	},
 
@@ -2004,52 +2403,102 @@ const	CredBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		let container = new St.Table();
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-dialog-password-symbolic', style_class: 'walnut-credbox-icon' });
-		container.add(icon, { row: 0, col: 0, row_span: 3 });
+		let icon = new St.Icon({
+			icon_name: 'imported-dialog-password-symbolic',
+			style_class: 'walnut-credbox-icon'
+		});
+		container.add(icon, {
+			row: 0,
+			col: 0,
+			row_span: 3
+		});
 
 		// Description
-		// TRANSLATORS: Label @ credentials box
-		let desc = new St.Label({ text: _("UPS Credentials"), style_class: 'walnut-credbox-desc' });
-		container.add(desc, { row: 0, col: 1, col_span: 2 });
+		let desc = new St.Label({
+			// TRANSLATORS: Label @ credentials box
+			text: _("UPS Credentials"),
+			style_class: 'walnut-credbox-desc'
+		});
+		container.add(desc, {
+			row: 0,
+			col: 1,
+			col_span: 2
+		});
 
 		// Username
-		// TRANSLATORS: Username hint @ credentials box
-		this.user = new St.Entry({ text: '', hint_text: _("username"), can_focus: true, style_class: 'walnut-credbox-username' });
-		let userBox = new St.Bin({ style_class: 'walnut-credbox-userbox', x_align: St.Align.END });
+		this.user = new St.Entry({
+			text: '',
+			// TRANSLATORS: Username hint @ credentials box
+			hint_text: _("username"),
+			can_focus: true,
+			style_class: 'walnut-credbox-username'
+		});
+		let userBox = new St.Bin({
+			style_class: 'walnut-credbox-userbox',
+			x_align: St.Align.END
+		});
 		userBox.add_actor(this.user);
-		container.add(userBox, { row: 1, col: 1 });
+		container.add(userBox, {
+			row: 1,
+			col: 1
+		});
 
 		// Password
-		// TRANSLATORS: Password hint @ credentials box
-		this.pw = new St.Entry({ text: '', hint_text: _("password"), can_focus: true, style_class: 'walnut-credbox-password' });
-		let pwBox = new St.Bin({ style_class: 'walnut-credbox-pwbox', x_align: St.Align.END });
+		this.pw = new St.Entry({
+			text: '',
+			// TRANSLATORS: Password hint @ credentials box
+			hint_text: _("password"),
+			can_focus: true,
+			style_class: 'walnut-credbox-password'
+		});
+		let pwBox = new St.Bin({
+			style_class: 'walnut-credbox-pwbox',
+			x_align: St.Align.END
+		});
 		pwBox.add_actor(this.pw);
-		container.add(pwBox, { row: 1, col: 2 });
-		this.pw.clutter_text.connect('text-changed', Lang.bind(this, function() {
-			this._updatePwAppearance();
-		}));
+		container.add(pwBox, {
+			row: 1,
+			col: 2
+		});
+		this.pw.clutter_text.connect('text-changed', Lang.bind(this, this._updatePwAppearance));
 
 		// Delete/Go buttons
-		// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
-		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+		let del = new Button(
+			'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
+			_("Undo and close"),
+			Lang.bind(this, function() {
 
-			this._undoAndClose();
+				this._undoAndClose();
 
-			// Give back focus to our 'submenu-toggle button'
-			walnut._cred_btn.actor.grab_key_focus();
+				// Give back focus to our 'submenu-toggle button'
+				walnut._cred_btn.actor.grab_key_focus();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
-		// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
-		let go = new Button('imported-emblem-ok', _("Save credentials"), Lang.bind(this, this._credUpdate), 'small');
+		let go = new Button(
+			'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
+			_("Save credentials"),
+			Lang.bind(this, this._credUpdate),
+			'small'
+		);
 
 		// Put buttons together
-		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-credbox-buttons-box' });
+		let btns = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-credbox-buttons-box'
+		});
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
@@ -2057,9 +2506,16 @@ const	CredBox = new Lang.Class({
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
-		container.add(btnsBox, { row: 2, col: 1, col_span: 2 });
+		container.add(btnsBox, {
+			row: 2,
+			col: 1,
+			col_span: 2
+		});
 
-		this.actor.add(container, { expand: true, x_fill: false });
+		this.actor.add(container, {
+			expand: true,
+			x_fill: false
+		});
 
 	},
 
@@ -2142,55 +2598,121 @@ const	AddBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		let container = new St.Table();
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-edit-find-symbolic', style_class: 'walnut-addbox-icon' });
-		container.add(icon, { row: 0, col: 0, row_span: 3 });
+		let icon = new St.Icon({
+			icon_name: 'imported-edit-find-symbolic',
+			style_class: 'walnut-addbox-icon'
+		});
+		container.add(icon, {
+			row: 0,
+			col: 0,
+			row_span: 3
+		});
 
 		// Description
-		// TRANSLATORS: Label @ find new devices box
-		let desc = new St.Label({ text: _("Find new UPSes"), style_class: 'walnut-addbox-desc' });
-		container.add(desc, { row: 0, col: 1, col_span: 2 });
+		let desc = new St.Label({
+			// TRANSLATORS: Label @ find new devices box
+			text: _("Find new UPSes"),
+			style_class: 'walnut-addbox-desc'
+		});
+		container.add(desc, {
+			row: 0,
+			col: 1,
+			col_span: 2
+		});
 
 		// Hostname - left-aligned
-	//	this.hostname = new St.Entry({ hint_text: _("hostname"), can_focus: true, style_class: 'add-entry', style: 'width: 110px; padding: 5px;' });
-	//	container.add(this.hostname, { row: 1, col: 1 });
+	//	this.hostname = new St.Entry({
+	//		hint_text: _("hostname"),
+	//		can_focus: true,
+	//		style_class: 'add-entry',
+	//		style: 'width: 110px; padding: 5px;'
+	//	});
+	//	container.add(this.hostname, {
+	//		row: 1,
+	//		col: 1
+	//	});
 		// Hostname - right-aligned
-		// TRANSLATORS: Hostname hint @ find new devices box
-		this.hostname = new St.Entry({ hint_text: _("hostname"), can_focus: true, style_class: 'walnut-addbox-host' });
-		let hostnameBox = new St.Bin({ style_class: 'walnut-addbox-hostbox', x_align: St.Align.END });
+		this.hostname = new St.Entry({
+			// TRANSLATORS: Hostname hint @ find new devices box
+			hint_text: _("hostname"),
+			can_focus: true,
+			style_class: 'walnut-addbox-host'
+		});
+		let hostnameBox = new St.Bin({
+			style_class: 'walnut-addbox-hostbox',
+			x_align: St.Align.END
+		});
 		hostnameBox.add_actor(this.hostname);
-		container.add(hostnameBox, { row: 1, col: 1 });
+		container.add(hostnameBox, {
+			row: 1,
+			col: 1
+		});
 
 		// Port - left-aligned
-	//	this.port = new St.Entry({ hint_text: _("port"), can_focus: true, style_class: 'add-entry', style: 'width: 50px; padding: 5px;' });
-	//	container.add(this.port, { row: 1, col: 2 });
+	//	this.port = new St.Entry({
+	//		hint_text: _("port"),
+	//		can_focus: true,
+	//		style_class: 'add-entry',
+	//		style: 'width: 50px; padding: 5px;'
+	//	});
+	//	container.add(this.port, {
+	//		row: 1,
+	//		col: 2
+	//	});
 		// Port - right-aligned
-		// TRANSLATORS: Port hint @ find new devices box
-		this.port = new St.Entry({ hint_text: _("port"), can_focus: true, style_class: 'walnut-addbox-port' });
-		let portBox = new St.Bin({ style_class: 'walnut-addbox-portbox', x_align: St.Align.END });
+		this.port = new St.Entry({
+			// TRANSLATORS: Port hint @ find new devices box
+			hint_text: _("port"),
+			can_focus: true,
+			style_class: 'walnut-addbox-port'
+		});
+		let portBox = new St.Bin({
+			style_class: 'walnut-addbox-portbox',
+			x_align: St.Align.END
+		});
 		portBox.add_actor(this.port);
-		container.add(portBox, { row: 1, col: 2 });
+		container.add(portBox, {
+			row: 1,
+			col: 2
+		});
 
 		// Delete/Go buttons
-		// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
-		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+		let del = new Button(
+			'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
+			_("Undo and close"),
+			Lang.bind(this, function() {
 
-			this._undoAndClose();
+				this._undoAndClose();
 
-			// Give back focus to our 'submenu-toggle button'
-			walnut._add_btn.actor.grab_key_focus();
+				// Give back focus to our 'submenu-toggle button'
+				walnut._add_btn.actor.grab_key_focus();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
-		// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
-		let go = new Button('imported-emblem-ok', _("Start search"), Lang.bind(this, this._addUps), 'small');
+		let go = new Button(
+			'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
+			_("Start search"),
+			Lang.bind(this, this._addUps),
+			'small'
+		);
 
 		// Put buttons together
-		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-addbox-buttons-box' });
+		let btns = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-addbox-buttons-box'
+		});
 		btns.add_actor(del.actor);
 		btns.add_actor(go.actor);
 
@@ -2198,9 +2720,16 @@ const	AddBox = new Lang.Class({
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
 		btnsBox.add_actor(btns);
 
-		container.add(btnsBox, { row: 2, col: 1, col_span: 2 });
+		container.add(btnsBox, {
+			row: 2,
+			col: 1,
+			col_span: 2
+		});
 
-		this.actor.add(container, { expand: true, x_fill: false });
+		this.actor.add(container, {
+			expand: true,
+			x_fill: false
+		});
 
 	},
 
@@ -2211,7 +2740,11 @@ const	AddBox = new Lang.Class({
 		let port = this.port.get_text();
 
 		// Try to find the device
-		upscMonitor.getDevices(true, host || 'localhost', port || '3493');
+		upscMonitor.getDevices(
+			true,
+			host || 'localhost',
+			port || '3493'
+		);
 
 		// Clear and close AddBox
 		this._undoAndClose();
@@ -2270,7 +2803,14 @@ const	Button = new Lang.Class({
 		let button_icon = new St.Icon({ icon_name: icon + '-symbolic' });
 
 		// Button
-		this.actor = new St.Button({ reactive: true, can_focus: true, track_hover: true, accessible_name: accessibleName, style_class: 'system-menu-action walnut-buttons-%s'.format(type), child: button_icon });
+		this.actor = new St.Button({
+			reactive: true,
+			can_focus: true,
+			track_hover: true,
+			accessible_name: accessibleName,
+			style_class: 'system-menu-action walnut-buttons-%s'.format(type),
+			child: button_icon
+		});
 
 		// Set callback, if any
 		if (callback)
@@ -2293,7 +2833,10 @@ const	BottomControls = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		this.btns = new St.BoxLayout({ style_class: 'walnut-bottom-controls-box' });
 
@@ -2436,7 +2979,10 @@ const	UpsCmdList = new Lang.Class({
 		this.actor.can_focus = false;
 
 		// ..and add it to our child St.BoxLayout
-		let labelBox = new St.BoxLayout({ can_focus: true, x_expand: true });
+		let labelBox = new St.BoxLayout({
+			can_focus: true,
+			x_expand: true
+		});
 
 		// Add the label to our St.BoxLayout and put it in its place
 		this.actor.insert_child_below(labelBox, this.label);
@@ -2456,7 +3002,12 @@ const	UpsCmdList = new Lang.Class({
 		this.status.text = _("extradata:");
 
 		// Extradata's entry: we need to start with a nonempty entry otherwise, when clicking-in, the submenu will close itself
-		this.extradata = new St.Entry({ text: ' ', reactive: true, can_focus: true, style_class: 'walnut-cmd-extradata' });
+		this.extradata = new St.Entry({
+			text: ' ',
+			reactive: true,
+			can_focus: true,
+			style_class: 'walnut-cmd-extradata'
+		});
 
 		// For the same reason, if the user leave the entry empty, fill it with a space
 		this.extradata.clutter_text.connect('text-changed', Lang.bind(this, function() {
@@ -2509,8 +3060,16 @@ const	UpsCmdList = new Lang.Class({
 		// Error!
 		if (!upscmdDo.hasCmds()) {
 
-			// TRANSLATORS: Error @ UPS commands submenu
-			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(Utilities.parseText(_("Error while retrieving UPS commands"), CMD_LENGTH), { reactive: false, can_focus: false }));
+			this.menu.addMenuItem(
+				new PopupMenu.PopupMenuItem(
+					// TRANSLATORS: Error @ UPS commands submenu
+					Utilities.parseText(_("Error while retrieving UPS commands"), CMD_LENGTH),
+					{
+						reactive: false,
+						can_focus: false
+					}
+				)
+			);
 
 			return;
 
@@ -2529,7 +3088,13 @@ const	UpsCmdList = new Lang.Class({
 				let command = item.cmd;
 
 				cmd.connect('activate', Lang.bind(this, function() {
-						upscmdDo.cmdExec(this._device.user, this._device.pw, this._device, command, this.extradata.get_text().trim());
+					upscmdDo.cmdExec(
+						this._device.user,
+						this._device.pw,
+						this._device,
+						command,
+						this.extradata.get_text().trim()
+					);
 				}));
 
 				this.menu.addMenuItem(cmd);
@@ -2547,8 +3112,16 @@ const	UpsCmdList = new Lang.Class({
 
 		// No UPS command available
 
-		// TRANSLATORS: Error @ UPS commands submenu
-		this.menu.addMenuItem(new PopupMenu.PopupMenuItem(Utilities.parseText(_("No UPS command available"), CMD_LENGTH), { reactive: false, can_focus: false }));
+		this.menu.addMenuItem(
+			new PopupMenu.PopupMenuItem(
+				// TRANSLATORS: Error @ UPS commands submenu
+				Utilities.parseText(_("No UPS command available"), CMD_LENGTH),
+				{
+					reactive: false,
+					can_focus: false
+				}
+			)
+		);
 
 	},
 
@@ -2595,7 +3168,13 @@ const	SetvarBox = new Lang.Class({
 
 	_init: function(varName, parent) {
 
-		this.actor = new St.BoxLayout({ style_class: 'walnut-setvar-box', vertical: true, reactive: false, track_hover: false, can_focus: false });
+		this.actor = new St.BoxLayout({
+			style_class: 'walnut-setvar-box',
+			vertical: true,
+			reactive: false,
+			track_hover: false,
+			can_focus: false
+		});
 
 		// Variable's name
 		this.varName = varName;
@@ -2644,10 +3223,23 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		this.parent(varName, parent);
 
-		// ranges: [ { min: value, max: value }, { min: value, max: value }, .. ]
+		// ranges: [
+		//	{
+		//		min: value,
+		//		max: value
+		//	},
+		//	{
+		//		min: value,
+		//		max: value
+		//	},
+		//		...
+		// ]
 		this.ranges = ranges;
 
-		// rangeAct: { min: value, max: value }
+		// rangeAct: {
+		//	min: value,
+		//	max: value
+		// }
 		this.rangeAct = {};
 
 		// Slider
@@ -2664,17 +3256,37 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		// Labels
 		this.rangeMinLabel = new St.Label({ text: '' });
-		rangeValueBox.add(this.rangeMinLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+		rangeValueBox.add(this.rangeMinLabel, {
+			expand: true,
+			x_fill: false,
+			align: St.Align.MIDDLE
+		});
 
-		this.rangeActLabel = new St.Label({ text: '', style_class: 'walnut-setvar-range-actual' });
-		rangeValueBox.add(this.rangeActLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+		this.rangeActLabel = new St.Label({
+			text: '',
+			style_class: 'walnut-setvar-range-actual'
+		});
+		rangeValueBox.add(this.rangeActLabel, {
+			expand: true,
+			x_fill: false,
+			align: St.Align.MIDDLE
+		});
 
 		this.rangeMaxLabel = new St.Label({ text: '' });
-		rangeValueBox.add(this.rangeMaxLabel, { expand: true, x_fill: false, align: St.Align.MIDDLE });
+		rangeValueBox.add(this.rangeMaxLabel, {
+			expand: true,
+			x_fill: false,
+			align: St.Align.MIDDLE
+		});
 
 		// Buttons
-		// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
-		this.minus = new Button('imported-list-remove', _("Decrement by one"), null, 'small');
+		this.minus = new Button(
+			'imported-list-remove',
+			// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
+			_("Decrement by one"),
+			null,
+			'small'
+		);
 		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
 
 		this.minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
@@ -2687,8 +3299,13 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
-		this.plus = new Button('imported-list-add', _("Increment by one"), null, 'small');
+		this.plus = new Button(
+			'imported-list-add',
+			// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
+			_("Increment by one"),
+			null,
+			'small'
+		);
 		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
 
 		this.plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
@@ -2701,32 +3318,51 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
-		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+		let del = new Button(
+			'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
+			_("Undo and close"),
+			Lang.bind(this, function() {
 
-			// Reset submenu
-			this._resetTo(this.actualValue);
+				// Reset submenu
+				this._resetTo(this.actualValue);
 
-			// Give focus back to our 'toggle button'
-			this._parent.container.grab_key_focus();
+				// Give focus back to our 'toggle button'
+				this._parent.container.grab_key_focus();
 
-			// Close the setvarBox and toggle the 'expander'
-			this._parent.toggle();
+				// Close the setvarBox and toggle the 'expander'
+				this._parent.toggle();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
-		// TRANSLATORS: Accessible name of 'Set' button @ setvar
-		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
+		this.go = new Button(
+			'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Set' button @ setvar
+			_("Set"),
+			Lang.bind(this, function() {
 
-			upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, '%d'.format(this.valueToSet));
+				upsrwDo.setVar(
+					null,
+					null,
+					upscMonitor.getList()[0],
+					this.varName,
+					'%d'.format(this.valueToSet)
+				);
 
-			// Close the setvarBox and toggle the 'expander'
-			this._parent.close();
+				// Close the setvarBox and toggle the 'expander'
+				this._parent.close();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
 		// Buttons' box
-		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-setvar-buttons-box' });
+		let btns = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-setvar-buttons-box'
+		});
 		btns.add_actor(del.actor);
 		btns.add_actor(this.go.actor);
 		rangeValueBox.add(btns);
@@ -2785,14 +3421,17 @@ const	SetvarBoxRanges = new Lang.Class({
 					this._changeRange(range.min, range.max);
 				}));
 
-				if (i % 2)
+				if (i % 2) {
 					col = 2;
-				else {
+				} else {
 					col = 1;
 					row++;
 				}
 
-				rangesTable.add(this.rangesCheck[i].actor, { row: row, col: col });
+				rangesTable.add(this.rangesCheck[i].actor, {
+					row: row,
+					col: col
+				});
 
 				// Scroll the parent menu when item gets key-focus
 				this._parent.toggleScrollAction([ this.rangesCheck[i].actor ]);
@@ -2806,7 +3445,13 @@ const	SetvarBoxRanges = new Lang.Class({
 		this._resetTo(actualValue);
 
 		// Scroll the parent menu when items get key-focus
-		this._parent.toggleScrollAction([ this.slider.actor, this.minus.actor, this.plus.actor, del.actor, this.go.actor ]);
+		this._parent.toggleScrollAction([
+			this.slider.actor,
+			this.minus.actor,
+			this.plus.actor,
+			del.actor,
+			this.go.actor
+		]);
 
 		this.hide();
 
@@ -2999,7 +3644,12 @@ const	SetvarBoxEnums = new Lang.Class({
 		// Our children are already popup-menu-item, with their paddings, so remove this class
 		this.actor.remove_style_class_name('walnut-setvar-box');
 
-		// enums: { enum1, enum2, enum3, .. }
+		// enums: {
+		//	enum1,
+		//	enum2,
+		//	enum3,
+		//	...
+		// }
 		this.enums = enums;
 
 		// Actual value
@@ -3016,7 +3666,13 @@ const	SetvarBoxEnums = new Lang.Class({
 
 			this.enumItems[i].connect('activate', Lang.bind(this, function() {
 
-				upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, enumValue);
+				upsrwDo.setVar(
+					null,
+					null,
+					upscMonitor.getList()[0],
+					this.varName,
+					enumValue
+				);
 
 				this._parent.toggle();
 
@@ -3070,26 +3726,51 @@ const	SetvarBoxString = new Lang.Class({
 		// Actual value
 		this.actualValue = actualValue;
 
-		let container = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false, style_class: 'walnut-setvar-string-container' });
+		let container = new St.BoxLayout({
+			reactive: false,
+			can_focus: false,
+			track_hover: false,
+			style_class: 'walnut-setvar-string-container'
+		});
 		this.actor.add(container, { expand: true });
 
 		// Error box
-		this.errorBox = new St.BoxLayout({ reactive: false, can_focus: false, track_hover: false });
+		this.errorBox = new St.BoxLayout({
+			reactive: false,
+			can_focus: false,
+			track_hover: false
+		});
 		this.actor.add(this.errorBox);
 
 		// Error Icon
-		let errorIcon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-setvar-string-error-icon' });
+		let errorIcon = new St.Icon({
+			icon_name: 'imported-dialog-error-symbolic',
+			style_class: 'walnut-setvar-string-error-icon'
+		});
 		this.errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
 		// Error message
-		// TRANSLATORS: Error message @ string setvar
-		let errorText = new St.Label({ text: _("String too long"), style_class: 'walnut-setvar-string-error-text' });
-		this.errorBox.add(errorText, { expand: true, y_align: St.Align.MIDDLE, y_fill: false });
+		let errorText = new St.Label({
+			// TRANSLATORS: Error message @ string setvar
+			text: _("String too long"),
+			style_class: 'walnut-setvar-string-error-text'
+		});
+		this.errorBox.add(errorText, {
+			expand: true,
+			y_align: St.Align.MIDDLE,
+			y_fill: false
+		});
 
 		this.errorBox.hide();
 
-		// TRANSLATORS: Hint text @ string setvar
-		this.entry = new St.Entry({ text: '', hint_text: _("set this variable to.."), can_focus: true, reactive: true, style_class: 'walnut-setvar-string-entry' });
+		this.entry = new St.Entry({
+			text: '',
+			// TRANSLATORS: Hint text @ string setvar
+			hint_text: _("set this variable to.."),
+			can_focus: true,
+			reactive: true,
+			style_class: 'walnut-setvar-string-entry'
+		});
 		container.add(this.entry, { expand: true });
 
 		this.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
@@ -3106,42 +3787,65 @@ const	SetvarBoxString = new Lang.Class({
 		}));
 
 		// Buttons
-		// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
-		let del = new Button('imported-window-close', _("Undo and close"), Lang.bind(this, function() {
+		let del = new Button(
+			'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
+			_("Undo and close"),
+			Lang.bind(this, function() {
 
-			// Reset submenu
-			this._resetTo(this.actualValue);
+				// Reset submenu
+				this._resetTo(this.actualValue);
 
-			// Give focus back to our 'toggle button'
-			this._parent.container.grab_key_focus();
+				// Give focus back to our 'toggle button'
+				this._parent.container.grab_key_focus();
 
-			// Close the setvarBox and toggle the 'expander'
-			this._parent.toggle();
+				// Close the setvarBox and toggle the 'expander'
+				this._parent.toggle();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
-		// TRANSLATORS: Accessible name of 'Set' button @ setvar
-		this.go = new Button('imported-emblem-ok', _("Set"), Lang.bind(this, function() {
+		this.go = new Button(
+			'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Set' button @ setvar
+			_("Set"),
+			Lang.bind(this, function() {
 
-			upsrwDo.setVar(null, null, upscMonitor.getList()[0], this.varName, this.valueToSet.trim());
+				upsrwDo.setVar(
+					null,
+					null,
+					upscMonitor.getList()[0],
+					this.varName,
+					this.valueToSet.trim()
+				);
 
-			// Close the setvarBox and toggle the 'expander'
-			this._parent.close();
+				// Close the setvarBox and toggle the 'expander'
+				this._parent.close();
 
-		}), 'small');
+			}),
+			'small'
+		);
 
 		this.valueToSet = this.actualValue;
 
 		this._updateOkButton();
 
 		// Buttons' box
-		let btns = new St.BoxLayout({ vertical: false, style_class: 'walnut-setvar-buttons-box' });
+		let btns = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-setvar-buttons-box'
+		});
 		btns.add_actor(del.actor);
 		btns.add_actor(this.go.actor);
 		container.add(btns);
 
 		// Scroll the parent menu when items get key-focus
-		this._parent.toggleScrollAction([ this.entry.clutter_text, del.actor, this.go.actor ]);
+		this._parent.toggleScrollAction([
+			this.entry.clutter_text,
+			del.actor,
+			this.go.actor
+		]);
 
 		this.hide();
 
@@ -3185,7 +3889,12 @@ const	UpsRawDataItem = new Lang.Class({
 
 	_init: function(label, value) {
 
-		this.parent({ activate: false, reactive: false, can_focus: false, hover: false });
+		this.parent({
+			activate: false,
+			reactive: false,
+			can_focus: false,
+			hover: false
+		});
 
 		// Edit PopupBaseMenuItem to our needs
 		this.actor.vertical = true;
@@ -3196,11 +3905,19 @@ const	UpsRawDataItem = new Lang.Class({
 		this.varName = label;
 
 		// Expander/name/value container
-		this.container = new St.BoxLayout({ can_focus: true, track_hover: true, reactive: true, style_class: 'popup-menu-item walnut-raw-data-container' });
+		this.container = new St.BoxLayout({
+			can_focus: true,
+			track_hover: true,
+			reactive: true,
+			style_class: 'popup-menu-item walnut-raw-data-container'
+		});
 		this.actor.add(this.container);
 
 		// Expander
-		this.expander = new St.Label({ text: '+', style_class: 'walnut-raw-data-expander' });
+		this.expander = new St.Label({
+			text: '+',
+			style_class: 'walnut-raw-data-expander'
+		});
 		this.container.add(this.expander);
 
 		this.expander.hide();
@@ -3287,11 +4004,7 @@ const	UpsRawDataItem = new Lang.Class({
 
 		this.expander.show();
 
-		this.container.connect('button-release-event', Lang.bind(this, function() {
-
-			this.toggle();
-
-		}));
+		this.container.connect('button-release-event', Lang.bind(this, this.toggle));
 
 		this.container.connect('key-press-event', Lang.bind(this, function(actor, event) {
 
@@ -3395,7 +4108,17 @@ const	UpsRawDataList = new Lang.Class({
 
 		}
 
-		// this._vars = [ { var: 'battery.charge', value: '100' }, { var: 'ups.status', value: 'OL' } .. ]
+		// this._vars = [
+		//	{
+		//		var: 'battery.charge',
+		//		value: '100'
+		//	},
+		//	{
+		//		var: 'ups.status',
+		//		value: 'OL'
+		//	},
+		//		...
+		// ]
 		for each (let item in this._vars) {
 
 			// Submenu has children and the current var is one of them
@@ -3523,12 +4246,18 @@ const	UpsDataTable = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		// New table
 		this.table = new St.Table();
 
-		this.actor.add(this.table, { expand: true, x_fill: false });
+		this.actor.add(this.table, {
+			expand: true,
+			x_fill: false
+		});
 
 	},
 
@@ -3575,8 +4304,14 @@ const	UpsDataTable = new Lang.Class({
 
 		}
 
-		this[cell.type + 'Icon'] = new St.Icon({ icon_name: cell.icon ? cell.icon + '-symbolic' : '', style_class: 'walnut-ups-data-table-icon' });
-		this[cell.type + 'Label'] = new St.Label({ text: cell.label, style_class: 'walnut-ups-data-table-label' });
+		this[cell.type + 'Icon'] = new St.Icon({
+			icon_name: cell.icon ? cell.icon + '-symbolic' : '',
+			style_class: 'walnut-ups-data-table-icon'
+		});
+		this[cell.type + 'Label'] = new St.Label({
+			text: cell.label,
+			style_class: 'walnut-ups-data-table-label'
+		});
 		this[cell.type + 'Text'] = new St.Label({ style_class: 'walnut-ups-data-table-text' });
 
 		// Description box {label\ntext}
@@ -3629,8 +4364,14 @@ const	UpsDataTable = new Lang.Class({
 		}
 
 		// Populate table
-		this.table.add(this[cell.type + 'Icon'], { row: row, col: col });
-		this.table.add(this[cell.type + 'DescBox'], { row: row, col: col + 1 });
+		this.table.add(this[cell.type + 'Icon'], {
+			row: row,
+			col: col
+		});
+		this.table.add(this[cell.type + 'DescBox'], {
+			row: row,
+			col: col + 1
+		});
 
 	},
 
@@ -3709,7 +4450,10 @@ const	UpsDataTableAlt = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		// Edit PopupBaseMenuItem to our needs
 		this.actor.vertical = true;
@@ -3770,7 +4514,10 @@ const	UpsDataTableAlt = new Lang.Class({
 			this[cell.type].setIcon(cell.icon + '-symbolic');
 
 		// Add item
-		this.actor.add(this[cell.type].actor, { expand: true, x_fill: true });
+		this.actor.add(this[cell.type].actor, {
+			expand: true,
+			x_fill: true
+		});
 
 	},
 
@@ -3856,12 +4603,21 @@ const	UpsDataTableAltItem = new Lang.Class({
 		this.actor.add(this.icon);
 
 		// Label
-		this.label = new St.Label({ text: '', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
+		this.label = new St.Label({
+			text: '',
+			y_expand: true,
+			y_align: Clutter.ActorAlign.CENTER
+		});
 		this.actor.add(this.label, { expand: true });
 		this.actor.label_actor = this.label;
 
 		// Value
-		this.value = new St.Label({ text: '', style_class: 'popup-status-menu-item', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
+		this.value = new St.Label({
+			text: '',
+			style_class: 'popup-status-menu-item',
+			y_expand: true,
+			y_align: Clutter.ActorAlign.CENTER
+		});
 		this.actor.add(this.value);
 
 	},
@@ -3892,16 +4648,25 @@ const	UpsTopDataList = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		let container = new St.Bin();
 
-		let dataBox = new St.BoxLayout({ vertical: true, style_class: 'walnut-ups-top-data-box' });
+		let dataBox = new St.BoxLayout({
+			vertical: true,
+			style_class: 'walnut-ups-top-data-box'
+		});
 
 		container.set_child(dataBox);
 
 		// Device status
-		this.statusIcon = new St.Icon({ icon_name: 'imported-utilities-system-monitor-symbolic', style_class: 'walnut-ups-top-data-icon' });
+		this.statusIcon = new St.Icon({
+			icon_name: 'imported-utilities-system-monitor-symbolic',
+			style_class: 'walnut-ups-top-data-icon'
+		});
 		this.statusLabel = new St.Label({ style_class: 'walnut-ups-top-data-label' });
 		this.statusText = new St.Label({ style_class: 'walnut-ups-top-data-text' });
 
@@ -3916,9 +4681,15 @@ const	UpsTopDataList = new Lang.Class({
 		statusBox.add_actor(statusDescBox);
 
 		// Alarm
-		this.alarmIcon = new St.Icon({ icon_name: 'imported-dialog-warning-symbolic', style_class: 'walnut-ups-top-data-icon' });
-		// TRANSLATORS: Label of device alarm box
-		let alarmLabel = new St.Label({ text: _("Alarm!"), style_class: 'walnut-ups-top-data-label' });
+		this.alarmIcon = new St.Icon({
+			icon_name: 'imported-dialog-warning-symbolic',
+			style_class: 'walnut-ups-top-data-icon'
+		});
+		let alarmLabel = new St.Label({
+			// TRANSLATORS: Label of device alarm box
+			text: _("Alarm!"),
+			style_class: 'walnut-ups-top-data-label'
+		});
 		this.alarmText = new St.Label({ style_class: 'walnut-ups-top-data-text' });
 
 		// Description box {label\ntext}
@@ -4008,7 +4779,10 @@ const	UpsModel = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		this.label = new St.Label({ style_class: 'walnut-ups-model' });
 
@@ -4033,8 +4807,9 @@ const	UpsModel = new Lang.Class({
 				text = '%s - %s'.format(mfr, model);
 			else
 				text = '%s\n%s'.format(Utilities.parseText(mfr, MODEL_LENGTH), Utilities.parseText(model, MODEL_LENGTH));
-		} else
+		} else {
 			text = Utilities.parseText((mfr || model), MODEL_LENGTH);
+		}
 
 		this.label.text = text;
 
@@ -4159,7 +4934,10 @@ const	ErrorBox = new Lang.Class({
 
 	_init: function() {
 
-		this.parent({ reactive: false, can_focus: false });
+		this.parent({
+			reactive: false,
+			can_focus: false
+		});
 
 		let eBox = new St.BoxLayout({ vertical: false });
 
@@ -4167,8 +4945,16 @@ const	ErrorBox = new Lang.Class({
 		let textBox = new St.BoxLayout({ vertical: true });
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-dialog-error-symbolic', style_class: 'walnut-error-icon' });
-		eBox.add(icon, { x_fill: true, y_fill: false, x_align: St.Align.END, y_align: St.Align.MIDDLE });
+		let icon = new St.Icon({
+			icon_name: 'imported-dialog-error-symbolic',
+			style_class: 'walnut-error-icon'
+		});
+		eBox.add(icon, {
+			x_fill: true,
+			y_fill: false,
+			x_align: St.Align.END,
+			y_align: St.Align.MIDDLE
+		});
 
 		// Error label
 		this.label = new St.Label({ style_class: 'walnut-error-label' });
