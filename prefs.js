@@ -36,9 +36,9 @@ let	gsettings,		// Stored settings
 	settings_general,	// General settings
 	settings_panel,		// Panel settings
 	settings_menu,		// Menu settings
-	settings_cmd_desc;	// Children settings of 'device's commands' option
+	settings_cmd_desc;	// Children settings of 'device commands' option
 
-// Children boxes of 'device's commands' option
+// Children boxes of 'device commands' option
 let	cmd_desc_box;
 
 function init() {
@@ -193,9 +193,9 @@ function init() {
 		display_cmd: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display device's commands"),
+			label: _("Display device commands"),
 			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Display device's available commands. Requires upsd user and password to execute them. (default: OFF)"),
+			help: _("Display available device commands. Requires upsd user and password to execute them. (default: OFF)"),
 			// cb: callback function -> set children sensitivity
 			cb: function(status) {
 				cmd_desc_box.set_sensitive(status);
@@ -213,15 +213,15 @@ function init() {
 
 	};
 
-	// Child setting of 'device's commands' option
+	// Child setting of 'device commands' option
 	settings_cmd_desc = {
 
 		display_cmd_desc: {
 			type: 'b',
 			// TRANSLATORS: Label of setting @ preferences
-			label: _("Display description of device's commands"),
+			label: _("Display description of device commands"),
 			// TRANSLATORS: Hint text of setting @ preferences
-			help: _("Display also a localized description of device's available commands in the submenu. (default: ON)"),
+			help: _("Display also a localized description of available device commands in the submenu. (default: ON)"),
 		}
 
 	};
@@ -330,7 +330,7 @@ const	walNUTPrefsMenu = new GObject.Class({
 		else
 			cmd_desc_box.margin_left = 30;
 
-		// Child setting of 'device's commands' option
+		// Child setting of 'device commands' option
 		for (let setting in settings_cmd_desc) {
 
 			hbox = buildHbox(settings_cmd_desc, setting);

@@ -43,9 +43,9 @@ const	Me = imports.misc.extensionUtils.getCurrentExtension(),
 	Utilities = Me.imports.utilities;
 
 // Panel Icons
-const	icons = {
-	// Error = e
-	e:	'nut-error',
+const	Icons = {
+	// Error = E
+	E:	'nut-error',
 
 	// Battery	| Load
 	// full = 2	| full = 23
@@ -53,185 +53,185 @@ const	icons = {
 	// low = 5	| low = 13
 	// empty = 7	| empty = 11
 	// no battery/no load = 1
-	// +: lightning = online (= status OL = not on battery (OB = b) = mains is not absent): full opacity = charging => o | transparent = charged => c
-	// +: ! = caution (ALARM, BYPASS, OVER, RB..) => a
+	// +: lightning = online (= status OL = not on battery (OB = B) = mains is not absent): full opacity = charging => O | transparent = charged => C
+	// +: ! = caution (ALARM, BYPASS, OVER, RB..) => A
 
-	// status = OB (-> b) - no caution
+	// status = OB (-> B) - no caution
 	// no battery/no load -> 1
-	b1:	'nut-ghost-ob',
+	B1:	'nut-ghost-ob',
 	//	battery full -> 2
-	b2:	'nut-battery-full',
-	b46:	'nut-battery-full-load-full',
-	b34:	'nut-battery-full-load-good',
-	b26:	'nut-battery-full-load-low',
-	b22:	'nut-battery-full-load-empty',
+	B2:	'nut-battery-full',
+	B46:	'nut-battery-full-load-full',
+	B34:	'nut-battery-full-load-good',
+	B26:	'nut-battery-full-load-low',
+	B22:	'nut-battery-full-load-empty',
 	//	battery good -> 3
-	b3:	'nut-battery-good',
-	b69:	'nut-battery-good-load-full',
-	b51:	'nut-battery-good-load-good',
-	b39:	'nut-battery-good-load-low',
-	b33:	'nut-battery-good-load-empty',
+	B3:	'nut-battery-good',
+	B69:	'nut-battery-good-load-full',
+	B51:	'nut-battery-good-load-good',
+	B39:	'nut-battery-good-load-low',
+	B33:	'nut-battery-good-load-empty',
 	//	battery low -> 5
-	b5:	'nut-battery-low',
-	b115:	'nut-battery-low-load-full',
-	b85:	'nut-battery-low-load-good',
-	b65:	'nut-battery-low-load-low',
-	b55:	'nut-battery-low-load-empty',
+	B5:	'nut-battery-low',
+	B115:	'nut-battery-low-load-full',
+	B85:	'nut-battery-low-load-good',
+	B65:	'nut-battery-low-load-low',
+	B55:	'nut-battery-low-load-empty',
 	//	battery empty -> 7
-	b7:	'nut-battery-empty',
-	b161:	'nut-battery-empty-load-full',
-	b119:	'nut-battery-empty-load-good',
-	b91:	'nut-battery-empty-load-low',
-	b77:	'nut-battery-empty',
+	B7:	'nut-battery-empty',
+	B161:	'nut-battery-empty-load-full',
+	B119:	'nut-battery-empty-load-good',
+	B91:	'nut-battery-empty-load-low',
+	B77:	'nut-battery-empty',
 	// just load
 	//	load full -> 23
-	b23:	'nut-battery-na-load-full',
+	B23:	'nut-battery-na-load-full',
 	//	load good -> 17
-	b17:	'nut-battery-na-load-good',
+	B17:	'nut-battery-na-load-good',
 	//	load low -> 13
-	b13:	'nut-battery-na-load-low',
+	B13:	'nut-battery-na-load-low',
 	//	load empty -> 11
-	b11:	'nut-battery-na-load-empty',
+	B11:	'nut-battery-na-load-empty',
 
-	// status = OB (->b) - caution (->a)
+	// status = OB (->B) - caution (->A)
 	// no battery/no load -> 1
-	ba1:	'nut-ghost-ob-caution',
+	BA1:	'nut-ghost-ob-caution',
 	//	battery full -> 2
-	ba2:	'nut-battery-full-caution',
-	ba46:	'nut-battery-full-load-full-caution',
-	ba34:	'nut-battery-full-load-good-caution',
-	ba26:	'nut-battery-full-load-low-caution',
-	ba22:	'nut-battery-full-load-empty-caution',
+	BA2:	'nut-battery-full-caution',
+	BA46:	'nut-battery-full-load-full-caution',
+	BA34:	'nut-battery-full-load-good-caution',
+	BA26:	'nut-battery-full-load-low-caution',
+	BA22:	'nut-battery-full-load-empty-caution',
 	//	battery good -> 3
-	ba3:	'nut-battery-good-caution',
-	ba69:	'nut-battery-good-load-full-caution',
-	ba51:	'nut-battery-good-load-good-caution',
-	ba39:	'nut-battery-good-load-low-caution',
-	ba33:	'nut-battery-good-load-empty-caution',
+	BA3:	'nut-battery-good-caution',
+	BA69:	'nut-battery-good-load-full-caution',
+	BA51:	'nut-battery-good-load-good-caution',
+	BA39:	'nut-battery-good-load-low-caution',
+	BA33:	'nut-battery-good-load-empty-caution',
 	//	battery low -> 5
-	ba5:	'nut-battery-low-caution',
-	ba115:	'nut-battery-low-load-full-caution',
-	ba85:	'nut-battery-low-load-good-caution',
-	ba65:	'nut-battery-low-load-low-caution',
-	ba55:	'nut-battery-low-load-empty-caution',
+	BA5:	'nut-battery-low-caution',
+	BA115:	'nut-battery-low-load-full-caution',
+	BA85:	'nut-battery-low-load-good-caution',
+	BA65:	'nut-battery-low-load-low-caution',
+	BA55:	'nut-battery-low-load-empty-caution',
 	//	battery empty -> 7
-	ba7:	'nut-battery-empty-caution',
-	ba161:	'nut-battery-empty-load-full-caution',
-	ba119:	'nut-battery-empty-load-good-caution',
-	ba91:	'nut-battery-empty-load-low-caution',
-	ba77:	'nut-battery-empty-caution',
+	BA7:	'nut-battery-empty-caution',
+	BA161:	'nut-battery-empty-load-full-caution',
+	BA119:	'nut-battery-empty-load-good-caution',
+	BA91:	'nut-battery-empty-load-low-caution',
+	BA77:	'nut-battery-empty-caution',
 	// just load
 	//	load full -> 23
-	ba23:	'nut-battery-na-load-full-caution',
+	BA23:	'nut-battery-na-load-full-caution',
 	//	load good -> 17
-	ba17:	'nut-battery-na-load-good-caution',
+	BA17:	'nut-battery-na-load-good-caution',
 	//	load low -> 13
-	ba13:	'nut-battery-na-load-low-caution',
+	BA13:	'nut-battery-na-load-low-caution',
 	//	load empty -> 11
-	ba11:	'nut-battery-na-load-empty-caution',
+	BA11:	'nut-battery-na-load-empty-caution',
 
-	// status = OL (->o[+c])
+	// status = OL (->O[+C])
 	// no battery/no load -> 1
-	oc1:	'nut-ghost-ol-charged',
-	o1:	'nut-ghost-ol-charging',
+	OC1:	'nut-ghost-ol-charged',
+	O1:	'nut-ghost-ol-charging',
 	//	battery full -> 2
-	oc2:	'nut-battery-full-charged',
-	o2:	'nut-battery-full-charging',
-	oc46:	'nut-battery-full-load-full-charged',
-	o46:	'nut-battery-full-load-full-charging',
-	oc34:	'nut-battery-full-load-good-charged',
-	o34:	'nut-battery-full-load-good-charging',
-	oc26:	'nut-battery-full-load-low-charged',
-	o26:	'nut-battery-full-load-low-charging',
-	oc22:	'nut-battery-full-load-empty-charged',
-	o22:	'nut-battery-full-load-empty-charging',
+	OC2:	'nut-battery-full-charged',
+	O2:	'nut-battery-full-charging',
+	OC46:	'nut-battery-full-load-full-charged',
+	O46:	'nut-battery-full-load-full-charging',
+	OC34:	'nut-battery-full-load-good-charged',
+	O34:	'nut-battery-full-load-good-charging',
+	OC26:	'nut-battery-full-load-low-charged',
+	O26:	'nut-battery-full-load-low-charging',
+	OC22:	'nut-battery-full-load-empty-charged',
+	O22:	'nut-battery-full-load-empty-charging',
 	//	battery good -> 3
-	o3:	'nut-battery-good-charging',
-	o69:	'nut-battery-good-load-full-charging',
-	o51:	'nut-battery-good-load-good-charging',
-	o39:	'nut-battery-good-load-low-charging',
-	o33:	'nut-battery-good-load-empty-charging',
+	O3:	'nut-battery-good-charging',
+	O69:	'nut-battery-good-load-full-charging',
+	O51:	'nut-battery-good-load-good-charging',
+	O39:	'nut-battery-good-load-low-charging',
+	O33:	'nut-battery-good-load-empty-charging',
 	//	battery low -> 5
-	o5:	'nut-battery-low-charging',
-	o115:	'nut-battery-low-load-full-charging',
-	o85:	'nut-battery-low-load-good-charging',
-	o65:	'nut-battery-low-load-low-charging',
-	o55:	'nut-battery-low-load-empty-charging',
+	O5:	'nut-battery-low-charging',
+	O115:	'nut-battery-low-load-full-charging',
+	O85:	'nut-battery-low-load-good-charging',
+	O65:	'nut-battery-low-load-low-charging',
+	O55:	'nut-battery-low-load-empty-charging',
 	//	battery empty -> 7
-	o7:	'nut-battery-empty-charging',
-	o161:	'nut-battery-empty-load-full-charging',
-	o119:	'nut-battery-empty-load-good-charging',
-	o91:	'nut-battery-empty-load-low-charging',
-	o77:	'nut-battery-empty-charging',
+	O7:	'nut-battery-empty-charging',
+	O161:	'nut-battery-empty-load-full-charging',
+	O119:	'nut-battery-empty-load-good-charging',
+	O91:	'nut-battery-empty-load-low-charging',
+	O77:	'nut-battery-empty-charging',
 	// just load
 	//	load full -> 23
-	oc23:	'nut-battery-na-load-full-charged',
-	o23:	'nut-battery-na-load-full-charging',
+	OC23:	'nut-battery-na-load-full-charged',
+	O23:	'nut-battery-na-load-full-charging',
 	//	load good -> 17
-	oc17:	'nut-battery-na-load-good-charged',
-	o17:	'nut-battery-na-load-good-charging',
+	OC17:	'nut-battery-na-load-good-charged',
+	O17:	'nut-battery-na-load-good-charging',
 	//	load low -> 13
-	oc13:	'nut-battery-na-load-low-charged',
-	o13:	'nut-battery-na-load-low-charging',
+	OC13:	'nut-battery-na-load-low-charged',
+	O13:	'nut-battery-na-load-low-charging',
 	//	load empty -> 11
-	oc11:	'nut-battery-na-load-empty-charged',
-	o11:	'nut-battery-na-load-empty-charging',
+	OC11:	'nut-battery-na-load-empty-charged',
+	O11:	'nut-battery-na-load-empty-charging',
 
-	// status = OL (->o[+c]) - caution (->a)
+	// status = OL (->O[+C]) - caution (->A)
 	// no battery/no load ->
-	oac1:	'nut-ghost-ol-caution-charged',
-	oa1:	'nut-ghost-ol-caution-charging',
+	OAC1:	'nut-ghost-ol-caution-charged',
+	OA1:	'nut-ghost-ol-caution-charging',
 	//	battery full -> 2
-	oac2:	'nut-battery-full-caution-charged',
-	oa2:	'nut-battery-full-caution-charging',
-	oac46:	'nut-battery-full-load-full-caution-charged',
-	oa46:	'nut-battery-full-load-full-caution-charging',
-	oac34:	'nut-battery-full-load-good-caution-charged',
-	oa34:	'nut-battery-full-load-good-caution-charging',
-	oac26:	'nut-battery-full-load-low-caution-charged',
-	oa26:	'nut-battery-full-load-low-caution-charging',
-	oac22:	'nut-battery-full-load-empty-caution-charged',
-	oa22:	'nut-battery-full-load-empty-caution-charging',
+	OAC2:	'nut-battery-full-caution-charged',
+	OA2:	'nut-battery-full-caution-charging',
+	OAC46:	'nut-battery-full-load-full-caution-charged',
+	OA46:	'nut-battery-full-load-full-caution-charging',
+	OAC34:	'nut-battery-full-load-good-caution-charged',
+	OA34:	'nut-battery-full-load-good-caution-charging',
+	OAC26:	'nut-battery-full-load-low-caution-charged',
+	OA26:	'nut-battery-full-load-low-caution-charging',
+	OAC22:	'nut-battery-full-load-empty-caution-charged',
+	OA22:	'nut-battery-full-load-empty-caution-charging',
 	//	battery good -> 3
-	oa3:	'nut-battery-good-caution-charging',
-	oa69:	'nut-battery-good-load-full-caution-charging',
-	oa51:	'nut-battery-good-load-good-caution-charging',
-	oa39:	'nut-battery-good-load-low-caution-charging',
-	oa33:	'nut-battery-good-load-empty-caution-charging',
+	OA3:	'nut-battery-good-caution-charging',
+	OA69:	'nut-battery-good-load-full-caution-charging',
+	OA51:	'nut-battery-good-load-good-caution-charging',
+	OA39:	'nut-battery-good-load-low-caution-charging',
+	OA33:	'nut-battery-good-load-empty-caution-charging',
 	//	battery low -> 5
-	oa5:	'nut-battery-low-caution-charging',
-	oa115:	'nut-battery-low-load-full-caution-charging',
-	oa85:	'nut-battery-low-load-good-caution-charging',
-	oa65:	'nut-battery-low-load-low-caution-charging',
-	oa55:	'nut-battery-low-load-empty-caution-charging',
+	OA5:	'nut-battery-low-caution-charging',
+	OA115:	'nut-battery-low-load-full-caution-charging',
+	OA85:	'nut-battery-low-load-good-caution-charging',
+	OA65:	'nut-battery-low-load-low-caution-charging',
+	OA55:	'nut-battery-low-load-empty-caution-charging',
 	//	battery empty -> 7
-	oa7:	'nut-battery-empty-caution-charging',
-	oa161:	'nut-battery-empty-load-full-caution-charging',
-	oa119:	'nut-battery-empty-load-good-caution-charging',
-	oa91:	'nut-battery-empty-load-low-caution-charging',
-	oa77:	'nut-battery-empty-caution-charging',
+	OA7:	'nut-battery-empty-caution-charging',
+	OA161:	'nut-battery-empty-load-full-caution-charging',
+	OA119:	'nut-battery-empty-load-good-caution-charging',
+	OA91:	'nut-battery-empty-load-low-caution-charging',
+	OA77:	'nut-battery-empty-caution-charging',
 	// just load
 	//	load full -> 23
-	oac23:	'nut-battery-na-load-full-caution-charged',
-	oa23:	'nut-battery-na-load-full-caution-charging',
+	OAC23:	'nut-battery-na-load-full-caution-charged',
+	OA23:	'nut-battery-na-load-full-caution-charging',
 	//	load good -> 17
-	oac17:	'nut-battery-na-load-good-caution-charged',
-	oa17:	'nut-battery-na-load-good-caution-charging',
+	OAC17:	'nut-battery-na-load-good-caution-charged',
+	OA17:	'nut-battery-na-load-good-caution-charging',
 	//	load low -> 13
-	oac13:	'nut-battery-na-load-low-caution-charged',
-	oa13:	'nut-battery-na-load-low-caution-charging',
+	OAC13:	'nut-battery-na-load-low-caution-charged',
+	OA13:	'nut-battery-na-load-low-caution-charging',
 	//	load empty -> 11
-	oac11:	'nut-battery-na-load-empty-caution-charged',
-	oa11:	'nut-battery-na-load-empty-caution-charging'
+	OAC11:	'nut-battery-na-load-empty-caution-charged',
+	OA11:	'nut-battery-na-load-empty-caution-charging'
 }
 
 // Battery icon @ menu
 const	BatteryIcon = {
-	b1:	'imported-battery-missing',
-	b2:	'imported-battery-full',
-	b3:	'imported-battery-good',
-	b5:	'imported-battery-low',
-	b7:	'imported-battery-empty'
+	B1:	'imported-battery-missing',
+	B2:	'imported-battery-full',
+	B3:	'imported-battery-good',
+	B5:	'imported-battery-low',
+	B7:	'imported-battery-empty'
 }
 
 // Errors
@@ -242,14 +242,16 @@ const	ErrorType = {
 }
 
 // Max length (in chars)
-const	ERR_LABEL_LENGTH = 35,		// ErrorBox Label
-	ERR_DESC_LENGTH = 35,		// ErrorBox Description
-	MODEL_LENGTH = 40,		// Device manufacturer+model
-	TOPDATA_LENGTH = 40,		// Topdata (status/alarm) description (2nd row)
-	RAW_VAR_LENGTH = 35,		// Raw data list: variable's name
-	RAW_VALUE_LENGTH = 40,		// Raw data list: variable's value
-	CMD_LENGTH = 45,		// UPS commands list - description
-	CRED_DIALOG_LENGTH = 60;	// Credentials dialog description
+const	Lengths = {
+	ERR_LABEL: 35,	// ErrorBox Label
+	ERR_DESC: 35,	// ErrorBox Description
+	MODEL: 40,	// Device manufacturer+model
+	TOPDATA: 40,	// Topdata (status/alarm) description (2nd row)
+	RAW_VAR: 35,	// Raw data list: variable's name
+	RAW_VALUE: 40,	// Raw data list: variable's value
+	CMD: 45,	// UPS commands list - description
+	CRED_DIALOG: 60	// Credentials dialog description
+}
 
 // Interval in milliseconds after which the extension should update the availability of the stored devices (15 minutes)
 const	INTERVAL = 900000;
@@ -276,7 +278,7 @@ const	UpscMonitor = new Lang.Class({
 			this._state |= ErrorType.NO_NUT;
 		else
 			// Update devices
-			this.update(true);
+			this.update({ forceRefresh: true });
 
 		// Get time between updates
 		this._interval = gsettings.get_int('update-time');
@@ -295,7 +297,7 @@ const	UpscMonitor = new Lang.Class({
 				Mainloop.source_remove(this._forceRefresh);
 
 			// Update devices
-			this.update(true);
+			this.update({ forceRefresh: true });
 
 			// Update infos
 			this._updateTimer();
@@ -309,8 +311,20 @@ const	UpscMonitor = new Lang.Class({
 	// getDevices: Get available devices
 	// if a host:port is given call a function to check whether new UPSes are found there and add them to the already listed ones
 	// otherwise, get stored UPSes or if there's no stored UPS try to find new ones at localhost:3493
-	// - notify: whether we have to notify new devices found/not found or not
-	getDevices: function(notify, host, port) {
+	// args = {
+	//	hostname: hostname,
+	//	port: port,
+	//	notify: whether we have to notify new devices found/not found or not
+	// }
+	getDevices: function(args) {
+
+		let host, port, notify;
+
+		if (args) {
+			host = args.hostname;
+			port = args.port;
+			notify = args.notify;
+		}
 
 		// Save actual devices
 		this._prevDevices = JSON.parse(JSON.stringify(this._devices));
@@ -349,19 +363,19 @@ const	UpscMonitor = new Lang.Class({
 
 		if (host && port) {
 
-			Utilities.Do(
-				[
+			Utilities.Do({
+				command: [
 					'%s'.format(upsc),
 					'-l',
 					'%s:%s'.format(host, port)
 				],
-				Lang.bind(this, this._postGetDevices),
-				[
+				callback: Lang.bind(this, this._postGetDevices),
+				opts: [
 					notify,
 					host,
 					port
 				]
-			);
+			});
 
 			return;
 
@@ -385,7 +399,7 @@ const	UpscMonitor = new Lang.Class({
 	//	user: username,
 	//	pw: password
 	//  }
-	// then call _checkAll() to fill the devices' list with the availability of each stored UPS
+	// then call _checkAll() to fill the devices list with the availability of each stored UPS
 	_postGetDevices: function(stdout, stderr, opts) {
 
 		let notify = opts[0];
@@ -571,14 +585,14 @@ const	UpscMonitor = new Lang.Class({
 			// Just in case we lose the UPS..
 			item.av = 0;
 
-			Utilities.Do(
-				[
+			Utilities.Do({
+				command: [
 					'%s'.format(upsc),
 					'%s@%s:%s'.format(item.name, item.host, item.port)
 				],
-				Lang.bind(this, this._checkUps),
-				[ item ]
-			);
+				callback: Lang.bind(this, this._checkUps),
+				opts: [ item ]
+			});
 
 		}
 
@@ -648,14 +662,14 @@ const	UpscMonitor = new Lang.Class({
 		// Reset status
 		this._state |= ErrorType.UPS_NA;
 
-		Utilities.Do(
-			[
+		Utilities.Do({
+			command: [
 				'%s'.format(upsc),
 				'%s@%s:%s'.format(this._devices[0].name, this._devices[0].host, this._devices[0].port)
 			],
-			Lang.bind(this, this._processVars),
-			[ this._devices[0] ]
-		);
+			callback: Lang.bind(this, this._processVars),
+			opts: [ this._devices[0] ]
+		});
 
 	},
 
@@ -682,8 +696,8 @@ const	UpscMonitor = new Lang.Class({
 
 		} else {
 
-			this._ups = Utilities.toObj(stdout, ':');
-			this._vars = Utilities.toArr(stdout, ':', 'var', 'value');
+			this._ups = Utilities.toObject(stdout, ':');
+			this._vars = Utilities.toArray(stdout, ':', 'var', 'value');
 
 			this._state &= ~ErrorType.UPS_NA;
 
@@ -722,7 +736,7 @@ const	UpscMonitor = new Lang.Class({
 			walnut.refreshPanel();
 
 			if (walnut.menu.isOpen)
-				walnut.refreshMenu(hasChanged);
+				walnut.refreshMenu({ forceRefresh: hasChanged });
 
 		}
 
@@ -749,7 +763,7 @@ const	UpscMonitor = new Lang.Class({
 				walnut.refreshPanel();
 
 				if (walnut.menu.isOpen)
-					walnut.refreshMenu(true);
+					walnut.refreshMenu({ forceRefresh: true });
 
 			}
 
@@ -760,7 +774,12 @@ const	UpscMonitor = new Lang.Class({
 	},
 
 	// update: Search for available devices and then for the first one's variables
-	update: function(hasChanged) {
+	// args = {
+	//	forceRefresh: whether to do a refresh also if INTERVAL time isn't elapsed
+	// }
+	update: function(args) {
+
+		let forceRefresh = args ? args.forceRefresh : false;
 
 		// milliseconds
 		let now = Date.now();
@@ -770,7 +789,7 @@ const	UpscMonitor = new Lang.Class({
 			this._lastTime = now;
 
 		// Update the list
-		if (hasChanged || ((now - this._lastTime) > INTERVAL)) {
+		if (forceRefresh || ((now - this._lastTime) > INTERVAL)) {
 
 			this.getDevices();
 
@@ -799,7 +818,7 @@ const	UpscMonitor = new Lang.Class({
 
 	},
 
-	// getVars: return actual chosen device's variables in an Obj where keys are variables' names
+	// getVars: return actual chosen device's variables in an Object where keys are variables' names
 	// (e.g.: {
 	//	'battery.charge': '100',
 	//	'ups.status': 'OL',
@@ -811,7 +830,7 @@ const	UpscMonitor = new Lang.Class({
 
 	},
 
-	// getVarsArr: return actual chosen device's variables in an Array of Obj with keys var and value
+	// getVarsArr: return actual chosen device's variables in an Array of Objects with keys var and value
 	// (e.g.: [
 	//	{
 	//		var: 'battery.charge',
@@ -881,15 +900,15 @@ const	UpscmdDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do(
-			[
+		Utilities.Do({
+			command: [
 				'%s'.format(upscmd),
 				'-l',
 				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
 			],
-			Lang.bind(this, this._processRetrievedCmds),
-			[ this._device ]
-		);
+			callback: Lang.bind(this, this._processRetrievedCmds),
+			opts: [ this._device ]
+		});
 
 	},
 
@@ -899,7 +918,7 @@ const	UpscmdDo = new Lang.Class({
 		// The device the currently processed function belongs to
 		let device = opts[0];
 
-		// The actual 'chosen' device
+		// The actually chosen device
 		let act = upscMonitor.getList()[0] || { name: '' };
 
 		// This device is no longer the chosen one
@@ -927,7 +946,7 @@ const	UpscmdDo = new Lang.Class({
 		this._cmds = [];
 
 		// Parse reply to retrieve upscmd commands
-		this._cmds = Utilities.toArr(cmds, '-', 'cmd', 'desc');
+		this._cmds = Utilities.toArray(cmds, '-', 'cmd', 'desc');
 
 		// Remove leading comment
 		this._cmds.shift();
@@ -948,16 +967,29 @@ const	UpscmdDo = new Lang.Class({
 
 	},
 
-	// cmdExec: try to exec the command cmd
-	cmdExec: function(user, pw, device, cmd, extradata) {
+	// cmdExec: try to exec a NUT instant command
+	// args = {
+	//	username: username to use to authenticate
+	//	password: password to use to authenticate
+	//	device: device which should get the command
+	//	command: command name
+	//	extradata: extradata to pass to the command
+	// }
+	cmdExec: function(args) {
+
+		let user = args.username;
+		let pw = args.password;
+		let device = args.device;
+		let cmd = args.command;
+		let extradata = args.extradata;
 
 		let extra = extradata.trim();
 
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(
-				[
+			Utilities.Do({
+				command: [
 					'%s'.format(upscmd),
 					'-u',
 					'%s'.format(user),
@@ -967,28 +999,27 @@ const	UpscmdDo = new Lang.Class({
 					'%s'.format(cmd),
 					'%s'.format(extra)
 				],
-				Lang.bind(this, this._processExecutedCmd),
-				[
+				callback: Lang.bind(this, this._processExecutedCmd),
+				opts: [
 					device,
 					cmd,
 					extradata,
 					user,
 					pw
 				]
-			);
+			});
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogCmd(
-				device,
-				user,
-				pw,
-				cmd,
-				extra,
-				false
-			);
+			let credDialog = new CredDialogCmd({
+				device: device,
+				username: user,
+				password: pw,
+				command: cmd,
+				extradata: extra
+			});
 			credDialog.open(global.get_current_time());
 
 		}
@@ -1021,14 +1052,14 @@ const	UpscmdDo = new Lang.Class({
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogCmd(
-				device,
-				user,
-				pw,
-				cmd,
-				extra,
-				true
-			);
+			let credDialog = new CredDialogCmd({
+				device: device,
+				username: user,
+				password: pw,
+				command: cmd,
+				extradata: extra,
+				error: true
+			});
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Command sent to the driver successfully
@@ -1093,14 +1124,14 @@ const	UpsrwDo = new Lang.Class({
 			return;
 		}
 
-		Utilities.Do(
-			[
+		Utilities.Do({
+			command: [
 				'%s'.format(upsrw),
 				'%s@%s:%s'.format(this._device.name, this._device.host, this._device.port)
 			],
-			Lang.bind(this, this._processRetrievedSetVars),
-			[ this._device ]
-		);
+			callback: Lang.bind(this, this._processRetrievedSetVars),
+			opts: [ this._device ]
+		});
 
 	},
 
@@ -1162,11 +1193,21 @@ const	UpsrwDo = new Lang.Class({
 
 	},
 
-	// setVar: try to set varName to varValue in device
-	setVar: function(username, password, device, varName, varValue) {
+	// setVar: try to set args.*varName* to args.*varValue* in args.*device*
+	// args = {
+	//	username: username to use to authenticate
+	//	password: password to use to authenticate
+	//	device: device which should get the variable changed
+	//	varName: variable's name
+	//	varValue: variable's value
+	// }
+	setVar: function(args) {
 
-		let user = username;
-		let pw = password;
+		let device = args.device;
+		let user = args.username;
+		let pw = args.password;
+		let varName = args.varName;
+		let varValue = args.varValue;
 
 		if (!user)
 			user = device.user;
@@ -1177,8 +1218,8 @@ const	UpsrwDo = new Lang.Class({
 		// We have both user and password
 		if (user && pw) {
 
-			Utilities.Do(
-				[
+			Utilities.Do({
+				command: [
 					'%s'.format(upsrw),
 					'-s',
 					'%s=%s'.format(varName, varValue),
@@ -1188,28 +1229,27 @@ const	UpsrwDo = new Lang.Class({
 					'%s'.format(pw),
 					'%s@%s:%s'.format(device.name, device.host, device.port)
 				],
-				Lang.bind(this, this._processSetVar),
-				[
+				callback: Lang.bind(this, this._processSetVar),
+				opts: [
 					device,
 					varName,
 					varValue,
 					user,
 					pw
 				]
-			);
+			});
 
 		// User, password or both are not available
 		} else {
 
 			// ..ask for them
-			let credDialog = new CredDialogSetvar(
-				device,
-				user,
-				pw,
-				varName,
-				varValue,
-				false
-			);
+			let credDialog = new CredDialogSetvar({
+				device: device,
+				username: user,
+				password: pw,
+				varName: varName,
+				varValue: varValue
+			});
 			credDialog.open(global.get_current_time());
 
 		}
@@ -1235,14 +1275,14 @@ const	UpsrwDo = new Lang.Class({
 		if (stderr && stderr.indexOf('ERR ACCESS-DENIED') != -1) {
 
 			// ..ask for them and tell the user the previuosly sent ones were wrong
-			let credDialog = new CredDialogSetvar(
-				device,
-				user,
-				pw,
-				varName,
-				varValue,
-				true
-			);
+			let credDialog = new CredDialogSetvar({
+				device: device,
+				username: user,
+				password: pw,
+				varName: varName,
+				varValue: varValue,
+				error: true
+			});
 			credDialog.open(global.get_current_time());
 
 		// stderr = OK\n -> Setvar sent to the driver successfully
@@ -1287,7 +1327,7 @@ const	walNUT = new Lang.Class({
 		let _btnBox = new St.BoxLayout();
 		// Panel icon
 		this._icon = new St.Icon({
-			icon_name: icons.e + '-symbolic',
+			icon_name: Icons.E + '-symbolic',
 			style_class: 'system-status-icon'
 		});
 		// Panel label for battery charge and device load
@@ -1300,17 +1340,17 @@ const	walNUT = new Lang.Class({
 		this.actor.add_style_class_name('panel-status-button');
 
 		// Menu
-		let menu = new NutMenu(this.actor)
+		let menu = new walNUTMenu({ sourceActor: this.actor });
 		this.setMenu(menu);
 
 		// Bottom Buttons
 
 		// Settings button
-		this._pref_btn = new Button(
-			'imported-preferences-system',
+		this._pref_btn = new Button({
+			icon: 'imported-preferences-system',
 			// TRANSLATORS: Accessible name of 'Preferences' button
-			_("Preferences"),
-			function() {
+			accessibleName: _("Preferences"),
+			callback: function() {
 
 				let _appSys = Shell.AppSystem.get_default();
 				let _gsmPrefs = _appSys.lookup_app('gnome-shell-extension-prefs.desktop');
@@ -1321,14 +1361,14 @@ const	walNUT = new Lang.Class({
 					_gsmPrefs.launch(global.display.get_current_time_roundtrip(), [ Me.metadata.uuid ], -1, null);
 
 			}
-		);
+		});
 
 		// Credentials button
-		this._cred_btn = new Button(
-			'imported-dialog-password',
+		this._cred_btn = new Button({
+			icon: 'imported-dialog-password',
 			// TRANSLATORS: Accessible name of 'Credentials' button
-			_("Credentials"),
-			Lang.bind(this, function() {
+			accessibleName: _("Credentials"),
+			callback: Lang.bind(this, function() {
 
 				// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
 
@@ -1339,14 +1379,14 @@ const	walNUT = new Lang.Class({
 				this.menu.credBox.toggle();
 
 			})
-		);
+		});
 
 		// Add UPS button
-		this._add_btn = new Button(
-			'imported-edit-find',
+		this._add_btn = new Button({
+			icon: 'imported-edit-find',
 			// TRANSLATORS: Accessible name of 'Find new devices' button
-			_("Find new devices"),
-			Lang.bind(this, function() {
+			accessibleName: _("Find new devices"),
+			callback: Lang.bind(this, function() {
 
 				// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
 
@@ -1357,14 +1397,14 @@ const	walNUT = new Lang.Class({
 				this.menu.addBox.toggle();
 
 			})
-		);
+		});
 
-		// Delete UPS from devices' list button
-		this._del_btn = new Button(
-			'imported-user-trash',
+		// Delete UPS from devices list button
+		this._del_btn = new Button({
+			icon: 'imported-user-trash',
 			// TRANSLATORS: Accessible name of 'Delete device' button
-			_("Delete device"),
-			Lang.bind(this, function() {
+			accessibleName: _("Delete device"),
+			callback: Lang.bind(this, function() {
 
 				// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
 
@@ -1375,14 +1415,14 @@ const	walNUT = new Lang.Class({
 				this.menu.delBox.toggle();
 
 			})
-		);
+		});
 
 		// Help button
-		this._help_btn = new Button(
-			'imported-help-browser',
+		this._help_btn = new Button({
+			icon: 'imported-help-browser',
 			// TRANSLATORS: Accessible name of 'Help' button
-			_("Help"),
-			function() {
+			accessibleName: _("Help"),
+			callback: function() {
 
 				let yelp = Utilities.detect('yelp');
 				let help = Me.dir.get_child('help');
@@ -1452,24 +1492,33 @@ const	walNUT = new Lang.Class({
 				}
 
 			}
-		);
+		});
 
 		// Always show Bottom Buttons (some won't be reactive in case of certain errors)
 
 		// Preferences
-		this.menu.controls.addControl(this._pref_btn);
+		this.menu.controls.addControl({ button: this._pref_btn });
 
 		// Credentials
-		this.menu.controls.addControl(this._cred_btn, !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive' );
+		this.menu.controls.addControl({
+			button: this._cred_btn,
+			status: !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive'
+		});
 
 		// Find new UPSes
-		this.menu.controls.addControl(this._add_btn, !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive' );
+		this.menu.controls.addControl({
+			button: this._add_btn,
+			status: !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive'
+		});
 
 		// Delete UPS
-		this.menu.controls.addControl(this._del_btn, !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive' );
+		this.menu.controls.addControl({
+			button: this._del_btn,
+			status: !(this._state & (ErrorType.NO_UPS | ErrorType.NO_NUT)) ? 'active' : 'inactive'
+		});
 
 		// Help
-		this.menu.controls.addControl(this._help_btn);
+		this.menu.controls.addControl({ button: this._help_btn });
 
 		// Update options stored in schema
 		this._updateOptions();
@@ -1484,7 +1533,7 @@ const	walNUT = new Lang.Class({
 
 		// Init panel/menu
 		this.refreshPanel();
-		this.refreshMenu(true);
+		this.refreshMenu({ forceRefresh: true });
 
 	},
 
@@ -1558,7 +1607,7 @@ const	walNUT = new Lang.Class({
 		// open -> update
 		if (open) {
 
-			this.refreshMenu(true);
+			this.refreshMenu({ forceRefresh: true });
 
 			// How ugly is having different values in panel and in menu?
 			this.refreshPanel();
@@ -1591,7 +1640,7 @@ const	walNUT = new Lang.Class({
 		// Errors!
 		if (this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel icon
-			this._icon.icon_name = icons.e + '-symbolic';
+			this._icon.icon_name = Icons.E + '-symbolic';
 			// ..and return
 			return;
 		}
@@ -1601,7 +1650,7 @@ const	walNUT = new Lang.Class({
 
 		if (vars['battery.charge']) {
 
-			battery_level = Utilities.BatteryLevel(vars['battery.charge']);
+			battery_level = Utilities.parseBatteryLevel(vars['battery.charge']);
 
 			charged = vars['battery.charge'] * 1 == 100;
 
@@ -1613,13 +1662,13 @@ const	walNUT = new Lang.Class({
 		}
 
 		if (vars['ups.load'] && this._panel_icon_display_load)
-			load_level = Utilities.LoadLevel(vars['ups.load']);
+			load_level = Utilities.parseLoadLevel(vars['ups.load']);
 
 		let status = Utilities.parseStatus(vars['ups.status'], true);
 
-		icon = status.line + (status.alarm || '') + ((status.line == 'o') && charged ? 'c' : '') + battery_level * load_level;
+		icon = status.line + (status.alarm || '') + ((status.line == 'O') && charged ? 'C' : '') + battery_level * load_level;
 
-		this._icon.icon_name = icons[icon] + '-symbolic';
+		this._icon.icon_name = Icons[icon] + '-symbolic';
 
 	},
 
@@ -1663,14 +1712,19 @@ const	walNUT = new Lang.Class({
 	},
 
 	// refreshMenu: Update menu
-	refreshMenu: function(hasChanged) {
+	// args = {
+	//	forceRefresh: whether the menu has to be forcedly refreshed, e.g. if the chosen device has changed
+	// }
+	refreshMenu: function(args) {
+
+		let forceRefresh = args ? args.forceRefresh : false;
 
 		this._state = this._monitor.getState();
 
-		// If upsc is available, the devices' list will be shown if at least one UPS is in the list, also if it's not currently available
+		// If upsc is available, the devices list will be shown if at least one UPS is in the list, also if it's not currently available
 		if (!(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS))) {
 
-			if (hasChanged)
+			if (forceRefresh)
 				this.refreshList();
 
 			if (!this.menu.upsList.actor.visible)
@@ -1697,7 +1751,10 @@ const	walNUT = new Lang.Class({
 
 			// UPS model
 			if (this._display_device_model && (vars['device.mfr'] || vars['device.model']))
-				this.menu.upsModel.show(vars['device.mfr'], vars['device.model']);
+				this.menu.upsModel.show({
+					manufacturer: vars['device.mfr'],
+					model: vars['device.model']
+				});
 
 			else if (this.menu.upsModel.actor.visible)
 				this.menu.upsModel.hide();
@@ -1705,18 +1762,26 @@ const	walNUT = new Lang.Class({
 			// TopDataList
 
 			// UPS status
-			this.menu.upsTopDataList.update('S', vars['ups.status'], this._less_noisy_menu);
+			this.menu.upsTopDataList.update({
+				type: 'S',
+				value: vars['ups.status'],
+				lessnoisy: this._less_noisy_menu
+			});
 			this.menu.upsTopDataList.show();
 
 			// UPS alarm
 			if (vars['ups.alarm'])
-				this.menu.upsTopDataList.update('A', vars['ups.alarm'], this._less_noisy_menu);
+				this.menu.upsTopDataList.update({
+					type: 'A',
+					value: vars['ups.alarm'],
+					lessnoisy: this._less_noisy_menu
+				});
 			else
-				this.menu.upsTopDataList.hide('A');
+				this.menu.upsTopDataList.hide({ type: 'A' });
 
 			// UpsDataTable
 
-			if (hasChanged) {
+			if (forceRefresh) {
 
 				this.menu.upsDataTable.clean();
 				this.menu.upsDataTable.hide();
@@ -1733,19 +1798,28 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged) {
+				if (forceRefresh) {
 
 					if (this._less_noisy_menu)
-						this.menu.upsDataTableAlt.addData('C');
+						this.menu.upsDataTableAlt.addData({ type: 'C' });
 					else
-						this.menu.upsDataTable.addData('C', count);
+						this.menu.upsDataTable.addData({
+							type: 'C',
+							number: count
+						});
 
 				}
 
 				if (this._less_noisy_menu)
-					this.menu.upsDataTableAlt.update('C', vars['battery.charge']);
+					this.menu.upsDataTableAlt.update({
+						type: 'C',
+						value: vars['battery.charge']
+					});
 				else
-					this.menu.upsDataTable.update('C', vars['battery.charge']);
+					this.menu.upsDataTable.update({
+						type: 'C',
+						value: vars['battery.charge']
+					});
 
 			}
 
@@ -1754,19 +1828,28 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged) {
+				if (forceRefresh) {
 
 					if (this._less_noisy_menu)
-						this.menu.upsDataTableAlt.addData('L');
+						this.menu.upsDataTableAlt.addData({ type: 'L' });
 					else
-						this.menu.upsDataTable.addData('L', count);
+						this.menu.upsDataTable.addData({
+							type: 'L',
+							number: count
+						});
 
 				}
 
 				if (this._less_noisy_menu)
-					this.menu.upsDataTableAlt.update('L', vars['ups.load']);
+					this.menu.upsDataTableAlt.update({
+						type: 'L',
+						value: vars['ups.load']
+					});
 				else
-					this.menu.upsDataTable.update('L', vars['ups.load']);
+					this.menu.upsDataTable.update({
+						type: 'L',
+						value: vars['ups.load']
+					});
 
 			}
 
@@ -1775,19 +1858,28 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged) {
+				if (forceRefresh) {
 
 					if (this._less_noisy_menu)
-						this.menu.upsDataTableAlt.addData('R');
+						this.menu.upsDataTableAlt.addData({ type: 'R' });
 					else
-						this.menu.upsDataTable.addData('R', count);
+						this.menu.upsDataTable.addData({
+							type: 'R',
+							number: count
+						});
 
 				}
 
 				if (this._less_noisy_menu)
-					this.menu.upsDataTableAlt.update('R', vars['battery.runtime']);
+					this.menu.upsDataTableAlt.update({
+						type: 'R',
+						value: vars['battery.runtime']
+					});
 				else
-					this.menu.upsDataTable.update('R', vars['battery.runtime']);
+					this.menu.upsDataTable.update({
+						type: 'R',
+						value: vars['battery.runtime']
+					});
 
 			}
 
@@ -1796,19 +1888,28 @@ const	walNUT = new Lang.Class({
 
 				count++;
 
-				if (hasChanged) {
+				if (forceRefresh) {
 
 					if (this._less_noisy_menu)
-						this.menu.upsDataTableAlt.addData('T');
+						this.menu.upsDataTableAlt.addData({ type: 'T' });
 					else
-						this.menu.upsDataTable.addData('T', count);
+						this.menu.upsDataTable.addData({
+							type: 'T',
+							number: count
+						});
 
 				}
 
 				if (this._less_noisy_menu)
-					this.menu.upsDataTableAlt.update('T', vars['ups.temperature']);
+					this.menu.upsDataTableAlt.update({
+						type: 'T',
+						value: vars['ups.temperature']
+					});
 				else
-					this.menu.upsDataTable.update('T', vars['ups.temperature']);
+					this.menu.upsDataTable.update({
+						type: 'T',
+						value: vars['ups.temperature']
+					});
 
 			}
 
@@ -1844,12 +1945,18 @@ const	walNUT = new Lang.Class({
 				if (!this.menu.separator.actor.visible)
 					this.menu.separator.actor.show();
 
-			} else if (this.menu.separator.actor.visible)
+			} else if (this.menu.separator.actor.visible) {
+
 					this.menu.separator.actor.hide();
+
+			}
 
 			// UPS Raw Data
 			if (this._display_raw)
-				this.menu.upsRaw.update(varsArr, hasChanged);
+				this.menu.upsRaw.update({
+					vars: varsArr,
+					forceRefresh: forceRefresh
+				});
 
 			else if (this.menu.upsRaw.actor.visible)
 				this.menu.upsRaw.hide();
@@ -1862,8 +1969,8 @@ const	walNUT = new Lang.Class({
 				this.menu.upsCmdList.hide();
 
 			// UPS Credentials Box
-			if (hasChanged)
-				this.menu.credBox.update(devices[0]);
+			if (forceRefresh)
+				this.menu.credBox.update({ device: devices[0] });
 
 		// ..else show error 'upsc not found'/'NUT not installed' or 'No UPS found'
 		} else {
@@ -1903,13 +2010,22 @@ const	walNUT = new Lang.Class({
 		// Update Bottom Buttons (some won't be reactive in case of certain errors)
 
 		// Credentials
-		this.menu.controls.setControl(this._cred_btn, !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive' );
+		this.menu.controls.setControl({
+			button: this._cred_btn,
+			status: !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive'
+		});
 
 		// Find new UPSes
-		this.menu.controls.setControl(this._add_btn, !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive' );
+		this.menu.controls.setControl({
+			button: this._add_btn,
+			status: !(this._state & ErrorType.NO_NUT) ? 'active' : 'inactive'
+		});
 
 		// Delete UPS
-		this.menu.controls.setControl(this._del_btn, !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive' );
+		this.menu.controls.setControl({
+			button: this._del_btn,
+			status: !(this._state & (ErrorType.NO_NUT | ErrorType.NO_UPS)) ? 'active' : 'inactive'
+		});
 
 		// Bottom buttons' appearance
 		if (this._less_noisy_menu) {
@@ -1936,7 +2052,7 @@ const	walNUT = new Lang.Class({
 
 		let devices = this._monitor.getList();
 
-		this.menu.upsList.update(devices);
+		this.menu.upsList.update({ devices: devices });
 
 	}
 });
@@ -1946,11 +2062,20 @@ const	CredDialog = new Lang.Class({
 	Name: 'CredDialog',
 	Extends: ModalDialog.ModalDialog,
 
-	_init: function(device, user, pw, error) {
+	// args = {
+	//	device: device for which authenticate
+	//	username: username to use to authenticate
+	//	password: password to use to authenticate
+	//	error: whether to show error 'Wrong username/password' or not
+	// }
+	_init: function(args) {
+
+		this._device = args.device;
+		let user = args.username;
+		let pw = args.password;
+		let error = args.error;
 
 		this.parent({ styleClass: 'walnut-cred-dialog' });
-
-		this._device = device;
 
 		// Main container
 		let container = new St.BoxLayout({
@@ -2047,7 +2172,7 @@ const	CredDialog = new Lang.Class({
 		// Update Execute button when text changes in user entry
 		this.user.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.user_valid = this.user.get_text().length > 0;
-			this._updateOkButton(false);
+			this._updateOkButton({ error: false });
 		}));
 
 		// Hide errorBox, if visible, when selected
@@ -2099,7 +2224,7 @@ const	CredDialog = new Lang.Class({
 		// Update Execute button when text changes in pw entry
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.pw_valid = this.pw.get_text().length > 0;
-			this._updateOkButton(false);
+			this._updateOkButton({ error: false });
 		}));
 
 		// Hide errorBox, if visible, when selected
@@ -2155,13 +2280,17 @@ const	CredDialog = new Lang.Class({
 			this.ok
 		]);
 
-		this._updateOkButton(error);
+		this._updateOkButton({ error: error });
 
 	},
 
-	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0) and if error isn't true
-	_updateOkButton: function(error) {
+	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0) and if args.*error* isn't true
+	// args = {
+	//	error: whether username/password proved to be wrong
+	// }
+	_updateOkButton: function(args) {
 
+		let error = args.error;
 		let valid = false;
 
 		valid = this.user_valid && this.pw_valid;
@@ -2191,13 +2320,26 @@ const	CredDialogCmd = new Lang.Class({
 	Name: 'CredDialogCmd',
 	Extends: CredDialog,
 
-	_init: function(device, user, pw, cmd, extradata, error) {
+	// args = {
+	//	device: device which should get args.*command*
+	//	username: username to use to authenticate
+	//	password: password to use to authenticate
+	//	command: NUT command to send to args.*device*
+	//	extradata: extradata to pass to args.*command*
+	//	error: whether username/password proved to be wrong
+	// }
+	_init: function(args) {
 
-		this.parent(device, user, pw, error);
+		this.parent({
+			device: args.device,
+			username: args.username,
+			password: args.password,
+			error: args.error
+		});
 
-		this._cmd = cmd;
+		this._cmd = args.command;
 
-		this._extra = extradata;
+		this._extra = args.extradata;
 
 		// Description
 		let cmdExtraDesc;
@@ -2208,19 +2350,19 @@ const	CredDialogCmd = new Lang.Class({
 			cmdExtraDesc = this._cmd;
 
 		// TRANSLATORS: Description @ credentials dialog for instant commands
-		this.desc.text = Utilities.parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+		this.desc.text = Utilities.parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), Lengths.CRED_DIALOG);
 
 	},
 
 	_onOk: function() {
 
-		upscmdDo.cmdExec(
-			this.user.get_text(),
-			this.pw.get_text(),
-			this._device,
-			this._cmd,
-			this._extra
-		);
+		upscmdDo.cmdExec({
+			username: this.user.get_text(),
+			password: this.pw.get_text(),
+			device: this._device,
+			command: this._cmd,
+			extradata: this._extra
+		});
 
 		this.parent();
 
@@ -2232,35 +2374,48 @@ const	CredDialogSetvar = new Lang.Class({
 	Name: 'CredDialogSetvar',
 	Extends: CredDialog,
 
-	_init: function(device, user, pw, varName, varValue, error) {
+	// args = {
+	//	device: device in which set args.*varName*
+	//	username: username to use to authenticate
+	//	password: password to use to authenticate
+	//	varName: name of the variable to set
+	//	varValue: value to set args.*varName* to
+	//	error: whether username/password proved to be wrong
+	// }
+	_init: function(args) {
 
-		this.parent(device, user, pw, error);
+		this.parent({
+			device: args.device,
+			username: args.username,
+			password: args.password,
+			error: args.error
+		});
 
-		this._varName = varName;
+		this._varName = args.varName;
 
-		this._varValue = varValue;
+		this._varValue = args.varValue;
 
 		// TRANSLATORS: Description @ credentials dialog for setvars
-		this.desc.text = Utilities.parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), CRED_DIALOG_LENGTH);
+		this.desc.text = Utilities.parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), Lengths.CRED_DIALOG);
 
 	},
 
 	_onOk: function() {
 
-		upsrwDo.setVar(
-			this.user.get_text(),
-			this.pw.get_text(),
-			this._device,
-			this._varName,
-			this._varValue
-		);
+		upsrwDo.setVar({
+			username: this.user.get_text(),
+			password: this.pw.get_text(),
+			device: this._device,
+			varName: this._varName,
+			varValue: this._varValue
+		});
 
 		this.parent();
 
 	}
 });
 
-// DelBox: a box used to delete UPSes from devices' list
+// DelBox: a box used to delete UPSes from devices list
 const	DelBox = new Lang.Class({
 	Name: 'DelBox',
 	Extends: PopupMenu.PopupBaseMenuItem,
@@ -2308,11 +2463,11 @@ const	DelBox = new Lang.Class({
 		});
 
 		// Delete/Go buttons
-		let del = new Button(
-			'imported-window-close',
+		let del = new Button({
+			icon: 'imported-window-close',
 			// TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
-			_("Don't delete"),
-			Lang.bind(this, function() {
+			accessibleName: _("Don't delete"),
+			callback: Lang.bind(this, function() {
 
 				this.hide();
 
@@ -2320,16 +2475,16 @@ const	DelBox = new Lang.Class({
 				walnut._del_btn.actor.grab_key_focus();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		let go = new Button(
-			'imported-emblem-ok',
+		let go = new Button({
+			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
-			_("Delete"),
-			Lang.bind(this, function() {
+			accessibleName: _("Delete"),
+			callback: Lang.bind(this, function() {
 
-				Utilities.upsDel();
+				Utilities.deleteUPS();
 
 				this.hide();
 
@@ -2340,8 +2495,8 @@ const	DelBox = new Lang.Class({
 				this.emit('activate', null);
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
 		// Put buttons together
 		let btns = new St.BoxLayout({
@@ -2471,11 +2626,11 @@ const	CredBox = new Lang.Class({
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, this._updatePwAppearance));
 
 		// Delete/Go buttons
-		let del = new Button(
-			'imported-window-close',
+		let del = new Button({
+			icon: 'imported-window-close',
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
-			_("Undo and close"),
-			Lang.bind(this, function() {
+			accessibleName: _("Undo and close"),
+			callback: Lang.bind(this, function() {
 
 				this._undoAndClose();
 
@@ -2483,16 +2638,16 @@ const	CredBox = new Lang.Class({
 				walnut._cred_btn.actor.grab_key_focus();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		let go = new Button(
-			'imported-emblem-ok',
+		let go = new Button({
+			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
-			_("Save credentials"),
-			Lang.bind(this, this._credUpdate),
-			'small'
-		);
+			accessibleName: _("Save credentials"),
+			callback: Lang.bind(this, this._credUpdate),
+			size: 'small'
+		});
 
 		// Put buttons together
 		let btns = new St.BoxLayout({
@@ -2525,7 +2680,10 @@ const	CredBox = new Lang.Class({
 		let user = this.user.get_text();
 		let pw = this.pw.get_text();
 
-		Utilities.upsCred(user, pw);
+		Utilities.setUPSCredentials({
+			username: user,
+			password: pw
+		});
 
 	},
 
@@ -2543,14 +2701,19 @@ const	CredBox = new Lang.Class({
 	_undoAndClose: function() {
 
 		let device = upscMonitor.getList()[0];
-		this.update(device);
+		this.update({ device: device });
 
 		this.hide();
 
 	},
 
 	// Update username and password
-	update: function(device) {
+	// args = {
+	//	device: device whose user/password should be taken into account
+	// }
+	update: function(args) {
+
+		let device = args.device;
 
 		this.user.text = device.user || '';
 		this.pw.text = device.pw || '';
@@ -2685,11 +2848,11 @@ const	AddBox = new Lang.Class({
 		});
 
 		// Delete/Go buttons
-		let del = new Button(
-			'imported-window-close',
+		let del = new Button({
+			icon: 'imported-window-close',
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
-			_("Undo and close"),
-			Lang.bind(this, function() {
+			accessibleName: _("Undo and close"),
+			callback: Lang.bind(this, function() {
 
 				this._undoAndClose();
 
@@ -2697,16 +2860,16 @@ const	AddBox = new Lang.Class({
 				walnut._add_btn.actor.grab_key_focus();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		let go = new Button(
-			'imported-emblem-ok',
+		let go = new Button({
+			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
-			_("Start search"),
-			Lang.bind(this, this._addUps),
-			'small'
-		);
+			accessibleName: _("Start search"),
+			callback: Lang.bind(this, this._addUps),
+			size: 'small'
+		});
 
 		// Put buttons together
 		let btns = new St.BoxLayout({
@@ -2740,11 +2903,11 @@ const	AddBox = new Lang.Class({
 		let port = this.port.get_text();
 
 		// Try to find the device
-		upscMonitor.getDevices(
-			true,
-			host || 'localhost',
-			port || '3493'
-		);
+		upscMonitor.getDevices({
+			notify: true,
+			hostname: host || 'localhost',
+			port: port || '3493'
+		});
 
 		// Clear and close AddBox
 		this._undoAndClose();
@@ -2794,27 +2957,35 @@ const	AddBox = new Lang.Class({
 const	Button = new Lang.Class({
 	Name: 'Button',
 
-	_init: function(icon, accessibleName, callback, type) {
+	// args = {
+	//	icon: name of the icon to use
+	//	accessibleName: accessible name of the button
+	//	callback: function to call when the button gets clicked
+	//	size: size of the button {small,big}
+	// }
+	_init: function(args) {
 
-		if (!type || type != 'small')
-			type = 'big';
+		let size = args.size;
+
+		if (!size || size != 'small')
+			size = 'big';
 
 		// Icon
-		let button_icon = new St.Icon({ icon_name: icon + '-symbolic' });
+		let button_icon = new St.Icon({ icon_name: args.icon + '-symbolic' });
 
 		// Button
 		this.actor = new St.Button({
 			reactive: true,
 			can_focus: true,
 			track_hover: true,
-			accessible_name: accessibleName,
-			style_class: 'system-menu-action walnut-buttons-%s'.format(type),
+			accessible_name: args.accessibleName,
+			style_class: 'system-menu-action walnut-buttons-%s'.format(size),
 			child: button_icon
 		});
 
 		// Set callback, if any
-		if (callback)
-			this.actor.connect('clicked', callback);
+		if (args.callback)
+			this.actor.connect('clicked', args.callback);
 
 	},
 
@@ -2844,35 +3015,43 @@ const	BottomControls = new Lang.Class({
 
 	},
 
-	// addControl: add a button to buttons' box
-	addControl: function(button, status) {
+	// addControl: add a button to buttons box
+	// args = {
+	//	button: button to add to the buttons box
+	//	status: status of the button {active,inactive}
+	// }
+	addControl: function(args) {
 
 		let container = new St.Bin({ x_expand: true });
 
-		container.add_actor(button.actor);
+		container.add_actor(args.button.actor);
 
 		this.btns.add_actor(container);
 
-		this.setControl(button, status);
+		this.setControl(args);
 
 	},
 
 	// setControl: set the buttons' reactivity
-	setControl: function(button, status) {
+	// args = {
+	//	button: button whose status is to set
+	//	status: status of the button {active,inactive}
+	// }
+	setControl: function(args) {
 
 		let active = true;
 
-		if (status && status == 'inactive')
+		if (args.status && args.status == 'inactive')
 			active = false;
 
 		if (active)
-			button.actor.reactive = true;
+			args.button.actor.reactive = true;
 		else
-			button.actor.reactive = false;
+			args.button.actor.reactive = false;
 
 	},
 
-	// removeStyle: remove 'style' from children buttons' style
+	// removeStyle: remove *style* from children buttons' style
 	removeStyle: function(style) {
 
 		let children = this.btns.get_children();
@@ -2899,7 +3078,7 @@ const	BottomControls = new Lang.Class({
 
 	},
 
-	// addStyle: add 'style' to children buttons' style
+	// addStyle: add *style* to children buttons' style
 	addStyle: function(style) {
 
 		let children = this.btns.get_children();
@@ -2932,11 +3111,16 @@ const	CmdPopupSubMenu = new Lang.Class({
 	Name: 'CmdPopupSubMenu',
 	Extends: PopupMenu.PopupSubMenu,
 
-	_init: function(delegate, sourceActor, sourceArrow) {
+	// args = {
+	//	parent: this submenu's parent
+	//	sourceActor: args.*parent*'s actor
+	//	sourceArrow: args.*parent*'s spinning triangle
+	// }
+	_init: function(args) {
 
-		this._delegate = delegate;
+		this._delegate = args.parent;
 
-		this.parent(sourceActor, sourceArrow);
+		this.parent(args.sourceActor, args.sourceArrow);
 
 	},
 
@@ -2998,7 +3182,7 @@ const	UpsCmdList = new Lang.Class({
 		this.actor.remove_child(expander);
 		expander.destroy();
 
-		// TRANSLATORS: Extradata's label @ Device's commands submenu
+		// TRANSLATORS: Extradata's label @ Device commands submenu
 		this.status.text = _("extradata:");
 
 		// Extradata's entry: we need to start with a nonempty entry otherwise, when clicking-in, the submenu will close itself
@@ -3023,7 +3207,11 @@ const	UpsCmdList = new Lang.Class({
 		this.extradata.hide();
 
 		// Override base PopupSubMenu with our sub menu that update itself only and every time it is opened
-		this.menu = new CmdPopupSubMenu(this, this.actor, this._triangle);
+		this.menu = new CmdPopupSubMenu({
+			parent: this,
+			sourceActor: this.actor,
+			sourceArrow: this._triangle
+		});
 
 		// Connect our extradata-toggle
 		this.menu.connect('open-state-changed', Lang.bind(this, this._extradataToggle));
@@ -3063,7 +3251,7 @@ const	UpsCmdList = new Lang.Class({
 			this.menu.addMenuItem(
 				new PopupMenu.PopupMenuItem(
 					// TRANSLATORS: Error @ UPS commands submenu
-					Utilities.parseText(_("Error while retrieving UPS commands"), CMD_LENGTH),
+					Utilities.parseText(_("Error while retrieving UPS commands"), Lengths.CMD),
 					{
 						reactive: false,
 						can_focus: false
@@ -3084,17 +3272,17 @@ const	UpsCmdList = new Lang.Class({
 			// List UPS commands in submenu
 			for each (let item in commands) {
 
-				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, Utilities.parseText(Utilities.cmdI18n(item).desc, CMD_LENGTH)) : item.cmd);
+				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, Utilities.parseText(Utilities.cmdI18n(item).desc, Lengths.CMD)) : item.cmd);
 				let command = item.cmd;
 
 				cmd.connect('activate', Lang.bind(this, function() {
-					upscmdDo.cmdExec(
-						this._device.user,
-						this._device.pw,
-						this._device,
-						command,
-						this.extradata.get_text().trim()
-					);
+					upscmdDo.cmdExec({
+						username: this._device.user,
+						password: this._device.pw,
+						device: this._device,
+						command: command,
+						extradata: this.extradata.get_text().trim()
+					});
 				}));
 
 				this.menu.addMenuItem(cmd);
@@ -3115,7 +3303,7 @@ const	UpsCmdList = new Lang.Class({
 		this.menu.addMenuItem(
 			new PopupMenu.PopupMenuItem(
 				// TRANSLATORS: Error @ UPS commands submenu
-				Utilities.parseText(_("No UPS command available"), CMD_LENGTH),
+				Utilities.parseText(_("No UPS command available"), Lengths.CMD),
 				{
 					reactive: false,
 					can_focus: false
@@ -3166,7 +3354,11 @@ const	UpsCmdList = new Lang.Class({
 const	SetvarBox = new Lang.Class({
 	Name: 'SetvarBox',
 
-	_init: function(varName, parent) {
+	// args = {
+	//	parent: container this box belongs to
+	//	varName: name of the settable variable
+	// }
+	_init: function(args) {
 
 		this.actor = new St.BoxLayout({
 			style_class: 'walnut-setvar-box',
@@ -3177,18 +3369,21 @@ const	SetvarBox = new Lang.Class({
 		});
 
 		// Variable's name
-		this.varName = varName;
+		this.varName = args.varName;
 
 		// Our toggle-button
-		this._parent = parent;
+		this._parent = args.parent;
 
 	},
 
 	// open: open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
-	open: function(actualValue) {
+	// args = {
+	//	actualValue: actual value of the settable variable
+	// }
+	open: function(args) {
 
-		if (actualValue != this.actualValue)
-			this._resetTo(actualValue);
+		if (args.actualValue != this.actualValue)
+			this._resetTo(args.actualValue);
 
 		this.show();
 
@@ -3219,9 +3414,18 @@ const	SetvarBoxRanges = new Lang.Class({
 	Name: 'SetvarBoxRanges',
 	Extends: SetvarBox,
 
-	_init: function(parent, varName, ranges, actualValue) {
+	// args = {
+	//	parent: container this box belongs to
+	//	varName: name of the settable variable
+	//	rages: available ranges of the settable variable
+	//	actualValue: actual value of the settable variable
+	// }
+	_init: function(args) {
 
-		this.parent(varName, parent);
+		this.parent({
+			varName: args.varName,
+			parent: args.parent
+		});
 
 		// ranges: [
 		//	{
@@ -3234,7 +3438,7 @@ const	SetvarBoxRanges = new Lang.Class({
 		//	},
 		//		...
 		// ]
-		this.ranges = ranges;
+		this.ranges = args.ranges;
 
 		// rangeAct: {
 		//	min: value,
@@ -3250,7 +3454,7 @@ const	SetvarBoxRanges = new Lang.Class({
 		if (this.slider.actor.get_text_direction() == Clutter.TextDirection.RTL)
 			this.slider.actor.set_scale_with_gravity(-1.0, 1.0, Clutter.Gravity.NORTH);
 
-		// Labels' box
+		// Labels box
 		let rangeValueBox = new St.BoxLayout({ style_class: 'walnut-setvar-range-value-box' });
 		this.actor.add(rangeValueBox, { expand: true });
 
@@ -3280,13 +3484,12 @@ const	SetvarBoxRanges = new Lang.Class({
 		});
 
 		// Buttons
-		this.minus = new Button(
-			'imported-list-remove',
+		this.minus = new Button({
+			icon: 'imported-list-remove',
 			// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
-			_("Decrement by one"),
-			null,
-			'small'
-		);
+			accessibleName: _("Decrement by one"),
+			size: 'small'
+		});
 		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
 
 		this.minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
@@ -3299,13 +3502,12 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		this.plus = new Button(
-			'imported-list-add',
+		this.plus = new Button({
+			icon: 'imported-list-add',
 			// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
-			_("Increment by one"),
-			null,
-			'small'
-		);
+			accessibleName: _("Increment by one"),
+			size: 'small'
+		});
 		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
 
 		this.plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
@@ -3318,11 +3520,11 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		let del = new Button(
-			'imported-window-close',
+		let del = new Button({
+			icon: 'imported-window-close',
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
-			_("Undo and close"),
-			Lang.bind(this, function() {
+			accessibleName: _("Undo and close"),
+			callback: Lang.bind(this, function() {
 
 				// Reset submenu
 				this._resetTo(this.actualValue);
@@ -3334,31 +3536,29 @@ const	SetvarBoxRanges = new Lang.Class({
 				this._parent.toggle();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		this.go = new Button(
-			'imported-emblem-ok',
+		this.go = new Button({
+			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
-			_("Set"),
-			Lang.bind(this, function() {
+			accessibleName: _("Set"),
+			callback: Lang.bind(this, function() {
 
-				upsrwDo.setVar(
-					null,
-					null,
-					upscMonitor.getList()[0],
-					this.varName,
-					'%d'.format(this.valueToSet)
-				);
+				upsrwDo.setVar({
+					device: upscMonitor.getList()[0],
+					varName: this.varName,
+					varValue: '%d'.format(this.valueToSet)
+				});
 
 				// Close the setvarBox and toggle the 'expander'
 				this._parent.close();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		// Buttons' box
+		// Buttons box
 		let btns = new St.BoxLayout({
 			vertical: false,
 			style_class: 'walnut-setvar-buttons-box'
@@ -3418,7 +3618,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 				// Connect handlers
 				this.rangesCheck[i].actor.connect('clicked', Lang.bind(this, function() {
-					this._changeRange(range.min, range.max);
+					this._changeRangeTo(range);
 				}));
 
 				if (i % 2) {
@@ -3442,7 +3642,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}
 
-		this._resetTo(actualValue);
+		this._resetTo(args.actualValue);
 
 		// Scroll the parent menu when items get key-focus
 		this._parent.toggleScrollAction([
@@ -3507,13 +3707,17 @@ const	SetvarBoxRanges = new Lang.Class({
 
 	},
 
-	// _changeRange: change actual range to the one whose maximum and minimum settable value are 'max' and 'min'
-	_changeRange: function(min, max) {
+	// _changeRangeTo: change actual range to the one whose maximum and minimum settable value are args.*max* and args.*min*
+	// args = {
+	//	min: lower limit of the range
+	//	max: upper limit of the range
+	// }
+	_changeRangeTo: function(args) {
 
-		this.rangeAct.min = min;
+		this.rangeAct.min = args.min;
 		this.rangeMinLabel.text = '%d'.format(this.rangeAct.min);
 
-		this.rangeAct.max = max;
+		this.rangeAct.max = args.max;
 		this.rangeMaxLabel.text = '%d'.format(this.rangeAct.max);
 
 		if (this.ranges.length > 1) {
@@ -3552,7 +3756,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 	},
 
-	// _updateButtons: 'Set' button is usable only when this.valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range's limit
+	// _updateButtons: 'Set' button is usable only when this.valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
 	_updateButtons: function() {
 
 		if (this.actualValue != this.valueToSet) {
@@ -3581,7 +3785,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to actualValue
+	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
 		this.actualValue = actualValue * 1;
@@ -3598,7 +3802,7 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}
 
-		this._changeRange(this.rangeAct.min, this.rangeAct.max);
+		this._changeRangeTo(this.rangeAct);
 
 	}
 });
@@ -3637,9 +3841,18 @@ const	SetvarBoxEnums = new Lang.Class({
 	Name: 'SetvarBoxEnums',
 	Extends: SetvarBox,
 
-	_init: function(parent, varName, enums, actualValue) {
+	// args = {
+	//	parent: container this box belongs to
+	//	varName: name of the settable variable
+	//	enums: available enumerated values of the settable variable
+	//	actualValue: actual value of the settable variable
+	// }
+	_init: function(args) {
 
-		this.parent(varName, parent);
+		this.parent({
+			varName: args.varName,
+			parent: args.parent
+		});
 
 		// Our children are already popup-menu-item, with their paddings, so remove this class
 		this.actor.remove_style_class_name('walnut-setvar-box');
@@ -3650,10 +3863,10 @@ const	SetvarBoxEnums = new Lang.Class({
 		//	enum3,
 		//	...
 		// }
-		this.enums = enums;
+		this.enums = args.enums;
 
 		// Actual value
-		this.actualValue = actualValue;
+		this.actualValue = args.actualValue;
 
 		this.enumItems = [];
 
@@ -3666,13 +3879,11 @@ const	SetvarBoxEnums = new Lang.Class({
 
 			this.enumItems[i].connect('activate', Lang.bind(this, function() {
 
-				upsrwDo.setVar(
-					null,
-					null,
-					upscMonitor.getList()[0],
-					this.varName,
-					enumValue
-				);
+				upsrwDo.setVar({
+					device: upscMonitor.getList()[0],
+					varName: this.varName,
+					varValue: enumValue
+				});
 
 				this._parent.toggle();
 
@@ -3694,7 +3905,7 @@ const	SetvarBoxEnums = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to actualValue
+	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
 		this.actualValue = actualValue;
@@ -3716,15 +3927,24 @@ const	SetvarBoxString = new Lang.Class({
 	Name: 'SetvarBoxString',
 	Extends: SetvarBox,
 
-	_init: function(parent, varName, len, actualValue) {
+	// args = {
+	//	parent: container this box belongs to
+	//	varName: name of the settable variable
+	//	len: maximum length of the settable string
+	//	actualValue: actual value of the settable variable
+	// }
+	_init: function(args) {
 
-		this.parent(varName, parent);
+		this.parent({
+			varName: args.varName,
+			parent: args.parent
+		});
 
 		// Max length of the string. NOTE: max length is available only in NUT >= 2.7.1
-		this.maxLength = len;
+		this.maxLength = args.len;
 
 		// Actual value
-		this.actualValue = actualValue;
+		this.actualValue = args.actualValue;
 
 		let container = new St.BoxLayout({
 			reactive: false,
@@ -3787,11 +4007,11 @@ const	SetvarBoxString = new Lang.Class({
 		}));
 
 		// Buttons
-		let del = new Button(
-			'imported-window-close',
+		let del = new Button({
+			icon: 'imported-window-close',
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
-			_("Undo and close"),
-			Lang.bind(this, function() {
+			accessibleName: _("Undo and close"),
+			callback: Lang.bind(this, function() {
 
 				// Reset submenu
 				this._resetTo(this.actualValue);
@@ -3803,35 +4023,33 @@ const	SetvarBoxString = new Lang.Class({
 				this._parent.toggle();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
-		this.go = new Button(
-			'imported-emblem-ok',
+		this.go = new Button({
+			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
-			_("Set"),
-			Lang.bind(this, function() {
+			accessibleName: _("Set"),
+			callback: Lang.bind(this, function() {
 
-				upsrwDo.setVar(
-					null,
-					null,
-					upscMonitor.getList()[0],
-					this.varName,
-					this.valueToSet.trim()
-				);
+				upsrwDo.setVar({
+					device: upscMonitor.getList()[0],
+					varName: this.varName,
+					varValue: this.valueToSet.trim()
+				});
 
 				// Close the setvarBox and toggle the 'expander'
 				this._parent.close();
 
 			}),
-			'small'
-		);
+			size: 'small'
+		});
 
 		this.valueToSet = this.actualValue;
 
 		this._updateOkButton();
 
-		// Buttons' box
+		// Buttons box
 		let btns = new St.BoxLayout({
 			vertical: false,
 			style_class: 'walnut-setvar-buttons-box'
@@ -3866,7 +4084,7 @@ const	SetvarBoxString = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to actualValue
+	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
 		this.actualValue = actualValue;
@@ -3887,7 +4105,11 @@ const	UpsRawDataItem = new Lang.Class({
 	Name: 'UpsRawDataItem',
 	Extends: PopupMenu.PopupBaseMenuItem,
 
-	_init: function(label, value) {
+	// args = {
+	//	varName: name of the variable
+	//	varValue: actual value of the variable
+	// }
+	_init: function(args) {
 
 		this.parent({
 			activate: false,
@@ -3902,7 +4124,7 @@ const	UpsRawDataItem = new Lang.Class({
 		this.actor.remove_style_class_name('popup-menu-item');
 
 		// Variable's name
-		this.varName = label;
+		this.varName = args.varName;
 
 		// Expander/name/value container
 		this.container = new St.BoxLayout({
@@ -3923,11 +4145,11 @@ const	UpsRawDataItem = new Lang.Class({
 		this.expander.hide();
 
 		// Label of variable's name
-		this.label = new St.Label({ text: label });
+		this.label = new St.Label({ text: args.varName });
 		this.container.add(this.label, { expand: true });
 
 		// Label of variable's value
-		this.value = new St.Label({ text: value });
+		this.value = new St.Label({ text: args.varValue });
 		this.container.add(this.value);
 
 		// Handle focus and its visual representation
@@ -3940,8 +4162,8 @@ const	UpsRawDataItem = new Lang.Class({
 
 	},
 
-	// toggleScrollAction: Scroll the parent menu when items get key-focus
-	toggleScrollAction: function (items) {
+	// toggleScrollAction: Scroll the parent menu when items listed in *items* (array) get key-focus
+	toggleScrollAction: function(items) {
 
 		for each (let item in items) {
 
@@ -3953,7 +4175,7 @@ const	UpsRawDataItem = new Lang.Class({
 
 	},
 
-	_onKeyFocusIn: function (actor) {
+	_onKeyFocusIn: function(actor) {
 
 		this.setActive(true);
 
@@ -3962,19 +4184,19 @@ const	UpsRawDataItem = new Lang.Class({
 
 	},
 
-	_onKeyFocusOut: function (actor) {
+	_onKeyFocusOut: function(actor) {
 
 		this.setActive(false);
 
 	},
 
-	_onHoverChanged: function (actor) {
+	_onHoverChanged: function(actor) {
 
 		this.setActive(actor.hover);
 
 	},
 
-	setActive: function (active) {
+	setActive: function(active) {
 
 		let activeChanged = active != this.active;
 
@@ -4018,27 +4240,54 @@ const	UpsRawDataItem = new Lang.Class({
 	},
 
 	// setVarRange: add a SetvarBox for ranges
-	setVarRange: function(ranges, actualValue) {
+	// args = {
+	//	ranges: available ranges of the settable variable
+	//	actualValue: actual value of the settable variable
+	// }
+	setVarRange: function(args) {
 
-		this.setvarBox = new SetvarBoxRanges(this, this.varName, ranges, actualValue);
+		this.setvarBox = new SetvarBoxRanges({
+			parent: this,
+			varName: this.varName,
+			ranges: args.ranges,
+			actualValue: args.actualValue
+		});
 
 		this._addSetvarBox();
 
 	},
 
 	// setVarEnum: add a SetvarBox for enumerated values
-	setVarEnum: function(enums, actualValue) {
+	// args = {
+	//	enums: available enumerated values of the settable variable
+	//	actualValue: actual value of the settable variable
+	// }
+	setVarEnum: function(args) {
 
-		this.setvarBox = new SetvarBoxEnums(this, this.varName, enums, actualValue);
+		this.setvarBox = new SetvarBoxEnums({
+			parent: this,
+			varName: this.varName,
+			enums: args.enums,
+			actualValue: args.actualValue
+		});
 
 		this._addSetvarBox();
 
 	},
 
 	// setVarString: add a SetvarBox for strings
-	setVarString: function(len, actualValue) {
+	// args = {
+	//	len: maximum length of the settable string
+	//	actualValue: actual value of the settable variable
+	// }
+	setVarString: function(args) {
 
-		this.setvarBox = new SetvarBoxString(this, this.varName, len, actualValue);
+		this.setvarBox = new SetvarBoxString({
+			parent: this,
+			varName: this.varName,
+			len: args.len,
+			actualValue: args.actualValue
+		});
 
 		this._addSetvarBox();
 
@@ -4052,7 +4301,7 @@ const	UpsRawDataItem = new Lang.Class({
 			this.setvarBox.hide();
 		} else {
 			this.expander.text = '-';
-			this.setvarBox.open(this.value.text);
+			this.setvarBox.open({ actualValue: this.value.text });
 		}
 
 	},
@@ -4125,7 +4374,7 @@ const	UpsRawDataList = new Lang.Class({
 			if (actual && stored[item.var]) {
 
 				// -> update only the variable's value
-				this['_' + item.var].value.text = Utilities.parseText(item.value, RAW_VALUE_LENGTH);
+				this['_' + item.var].value.text = Utilities.parseText(item.value, Lengths.RAW_VALUE);
 
 				// Handle setvars
 				this._handleSetVar(item);
@@ -4155,7 +4404,10 @@ const	UpsRawDataList = new Lang.Class({
 
 				}
 
-				this['_' + item.var] = new UpsRawDataItem(Utilities.parseText(item.var, RAW_VAR_LENGTH, '.'), Utilities.parseText(item.value, RAW_VALUE_LENGTH));
+				this['_' + item.var] = new UpsRawDataItem({
+					varName: Utilities.parseText(item.var, Lengths.RAW_VAR, '.'),
+					varValue: Utilities.parseText(item.value, Lengths.RAW_VALUE)
+				});
 
 				// Handle setvars
 				this._handleSetVar(item);
@@ -4192,13 +4444,22 @@ const	UpsRawDataList = new Lang.Class({
 			let setVar = setVars[item.var];
 
 			if (setVar.type == 'STRING')
-				this['_' + item.var].setVarString(setVar.options, item.value);
+				this['_' + item.var].setVarString({
+					len: setVar.options,
+					actualValue: item.value
+				});
 
 			else if (setVar.type == 'ENUM')
-				this['_' + item.var].setVarEnum(setVar.options, item.value);
+				this['_' + item.var].setVarEnum({
+					enums: setVar.options,
+					actualValue: item.value
+				});
 
 			else if (setVar.type == 'RANGE')
-				this['_' + item.var].setVarRange(setVar.options, item.value);
+				this['_' + item.var].setVarRange({
+					ranges: setVar.options,
+					actualValue: item.value
+				});
 
 			return;
 
@@ -4206,16 +4467,20 @@ const	UpsRawDataList = new Lang.Class({
 
 	},
 
-	// update: Update variables and show the menu if not already visible, if hasChanged is true destroy the menu and rebuild it
-	update: function(vars, hasChanged) {
+	// update: Update variables and show the menu if not already visible
+	// args = {
+	//	vars: device's variables
+	//	forceRefresh: boolean, whether to destroy the menu and rebuild it or not
+	// }
+	update: function(args) {
 
-		if (hasChanged && !this.menu.isEmpty())
+		if (args.forceRefresh && !this.menu.isEmpty())
 			this.menu.removeAll();
 
 		if (!this.actor.visible)
 			this.show();
 
-		this._vars = vars;
+		this._vars = args.vars;
 
 		this._buildInfo();
 
@@ -4261,11 +4526,15 @@ const	UpsDataTable = new Lang.Class({
 
 	},
 
-	addData: function(type, count) {
+	// args = {
+	//	type: type of the data to add {'C','L','R','T'}
+	//	number: progressive number of items in the table
+	// }
+	addData: function(args) {
 
 		let cell = {};
 
-		switch (type)
+		switch (args.type)
 		{
 		case 'C':	// Battery Charge
 
@@ -4331,7 +4600,7 @@ const	UpsDataTable = new Lang.Class({
 		// Handle row and column
 		let row, col;
 
-		switch (count)
+		switch (args.number)
 		{
 		case 1:
 
@@ -4376,37 +4645,41 @@ const	UpsDataTable = new Lang.Class({
 	},
 
 	// update: update table's data/icons
-	update: function(type, value) {
+	// args = {
+	//	type: type of the data to update {'C','L','R','T'}
+	//	value: actual value of this type of data
+	// }
+	update: function(args) {
 
 		let cell = {};
 
-		switch (type)
+		switch (args.type)
 		{
 		case 'C':	// Battery Charge
 
 			cell.type = 'batteryCharge';
-			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
+			cell.icon = BatteryIcon['B' + Utilities.parseBatteryLevel(args.value)];
 			// TRANSLATORS: Battery charge level @ data table
-			cell.value = _("%s %").format(value);
+			cell.value = _("%s %").format(args.value);
 			break;
 
 		case 'L':	// Device Load
 
 			cell.type = 'deviceLoad';
 			// TRANSLATORS: Device load level @ data table
-			cell.value = _("%s %").format(value);
+			cell.value = _("%s %").format(args.value);
 			break;
 
 		case 'R':	// Backup Time
 
 			cell.type = 'backupTime';
-			cell.value = Utilities.parseTime(value);
+			cell.value = Utilities.parseTime(args.value);
 			break;
 
 		case 'T':	// Device Temperature
 
 			cell.type = 'deviceTemp';
-			cell.value = Utilities.formatTemp(value);
+			cell.value = Utilities.formatTemp(args.value);
 			break;
 
 		default:
@@ -4462,11 +4735,14 @@ const	UpsDataTableAlt = new Lang.Class({
 
 	},
 
-	addData: function(type) {
+	// args = {
+	//	type: type of the data to add {'C','L','R','T'}
+	// }
+	addData: function(args) {
 
 		let cell = {};
 
-		switch (type)
+		switch (args.type)
 		{
 		case 'C':	// Battery Charge
 
@@ -4522,37 +4798,41 @@ const	UpsDataTableAlt = new Lang.Class({
 	},
 
 	// update: update table's data/icons
-	update: function(type, value) {
+	// args = {
+	//	type: type of the data to update {'C','L','R','T'}
+	//	value: actual value of this type of data
+	// }
+	update: function(args) {
 
 		let cell = {};
 
-		switch (type)
+		switch (args.type)
 		{
 		case 'C':	// Battery Charge
 
 			cell.type = 'batteryCharge';
-			cell.icon = BatteryIcon['b' + Utilities.BatteryLevel(value)];
+			cell.icon = BatteryIcon['B' + Utilities.parseBatteryLevel(args.value)];
 			// TRANSLATORS: Battery charge level @ alternative, less noisy, data table
-			cell.value = _("%s %").format(value);
+			cell.value = _("%s %").format(args.value);
 			break;
 
 		case 'L':	// Device Load
 
 			cell.type = 'deviceLoad';
 			// TRANSLATORS: Device load level @ alternative, less noisy, data table
-			cell.value = _("%s %").format(value);
+			cell.value = _("%s %").format(args.value);
 			break;
 
 		case 'R':	// Backup Time
 
 			cell.type = 'backupTime';
-			cell.value = Utilities.parseTime(value);
+			cell.value = Utilities.parseTime(args.value);
 			break;
 
 		case 'T':	// Device Temperature
 
 			cell.type = 'deviceTemp';
-			cell.value = Utilities.formatTemp(value);
+			cell.value = Utilities.formatTemp(args.value);
 			break;
 
 		default:
@@ -4711,18 +4991,23 @@ const	UpsTopDataList = new Lang.Class({
 	},
 
 	// update: update displayed data
-	update: function(type, value, lessnoisy) {
+	// args = {
+	//	type: type of the data to update {'S','A'}
+	//	value: actual value of this type of data
+	//	lessnoisy: boolean, whether to use a less noisy style or not
+	// }
+	update: function(args) {
 
-		switch (type)
+		switch (args.type)
 		{
 		case 'S':	// Device status
 
-			let status = Utilities.parseStatus(value);
+			let status = Utilities.parseStatus(args.value);
 
 			this.statusLabel.text = status.line;
-			this.statusText.text = Utilities.parseText(status.status, TOPDATA_LENGTH);
+			this.statusText.text = Utilities.parseText(status.status, Lengths.TOPDATA);
 
-			if (lessnoisy)
+			if (args.lessnoisy)
 				this.statusIcon.style_class = 'popup-menu-icon';
 			else
 				this.statusIcon.style_class = 'walnut-ups-top-data-icon';
@@ -4731,9 +5016,9 @@ const	UpsTopDataList = new Lang.Class({
 
 		case 'A':	// Alarm
 
-			this.alarmText.text = Utilities.parseText(value, TOPDATA_LENGTH);
+			this.alarmText.text = Utilities.parseText(args.value, Lengths.TOPDATA);
 
-			if (lessnoisy)
+			if (args.lessnoisy)
 				this.alarmIcon.style_class = 'popup-menu-icon';
 			else
 				this.alarmIcon.style_class = 'walnut-ups-top-data-icon';
@@ -4751,14 +5036,19 @@ const	UpsTopDataList = new Lang.Class({
 
 	},
 
-	hide: function(type) {
+	// args = {
+	//	type: type of the data to hide {'S','A'}
+	// }
+	hide: function(args) {
 
 		// All UpsTopDataList
-		if (!type)
+		if (!args || !args.type) {
 			this.actor.hide();
+			return;
+		}
 
 		// Alarm
-		if (type == 'A' && this.alarmBox.visible) {
+		if (args.type == 'A' && this.alarmBox.visible) {
 			this.alarmText.text = '';
 			this.alarmBox.hide();
 		}
@@ -4798,17 +5088,24 @@ const	UpsModel = new Lang.Class({
 
 	},
 
-	show: function(mfr, model) {
+	// args = {
+	//	manufacturer: UPS manufacturer
+	//	model: UPS model
+	// }
+	show: function(args) {
+
+		let mfr = args.manufacturer;
+		let model = args.model;
 
 		let text = '';
 
 		if (mfr && model) {
-			if ((mfr.length + model.length) < MODEL_LENGTH)
+			if ((mfr.length + model.length) < Lengths.MODEL)
 				text = '%s - %s'.format(mfr, model);
 			else
-				text = '%s\n%s'.format(Utilities.parseText(mfr, MODEL_LENGTH), Utilities.parseText(model, MODEL_LENGTH));
+				text = '%s\n%s'.format(Utilities.parseText(mfr, Lengths.MODEL), Utilities.parseText(model, Lengths.MODEL));
 		} else {
-			text = Utilities.parseText((mfr || model), MODEL_LENGTH);
+			text = Utilities.parseText((mfr || model), Lengths.MODEL);
 		}
 
 		this.label.text = text;
@@ -4844,7 +5141,7 @@ const	UpsList = new Lang.Class({
 
 			// N/A
 			if (item.av != 1)
-				// TRANSLATORS: Device not available @ devices' list
+				// TRANSLATORS: Device not available @ devices list
 				label += _(" (N/A)");
 
 			if (i == 0) {
@@ -4857,7 +5154,7 @@ const	UpsList = new Lang.Class({
 			let index = i;
 
 			ups_l.connect('activate', Lang.bind(this, function() {
-				Utilities.defaultUps(index);
+				Utilities.setAsDefaultUPS(index);
 			}));
 
 			// N/A -> Style = popup-menu-item:insensitive
@@ -4891,10 +5188,13 @@ const	UpsList = new Lang.Class({
 	},
 
 	// update: Empty the submenu and update it with the new device list
-	update: function(devices) {
+	// args = {
+	//	devices: available devices
+	// }
+	update: function(args) {
 
 		// Update device list
-		this._devices = devices;
+		this._devices = args.devices;
 
 		// Destroy all previously added items, if any
 		if (this.menu._getMenuItems().length)
@@ -5012,8 +5312,8 @@ const	ErrorBox = new Lang.Class({
 
 		}
 
-		this.label.text = Utilities.parseText(label, ERR_LABEL_LENGTH);
-		this.desc.text = Utilities.parseText(desc, ERR_DESC_LENGTH);
+		this.label.text = Utilities.parseText(label, Lengths.ERR_LABEL);
+		this.desc.text = Utilities.parseText(desc, Lengths.ERR_DESC);
 
 		this.actor.show();
 
@@ -5021,13 +5321,16 @@ const	ErrorBox = new Lang.Class({
 });
 
 // Panel menu
-const	NutMenu = new Lang.Class({
-	Name: 'NutMenu',
+const	walNUTMenu = new Lang.Class({
+	Name: 'walNUTMenu',
 	Extends: PopupMenu.PopupMenu,
 
-	_init: function(sourceActor) {
+	// args = {
+	//	sourceActor: actor of the menu's parent
+	// }
+	_init: function(args) {
 
-		this.parent(sourceActor, 0.0, St.Side.TOP);
+		this.parent(args.sourceActor, 0.0, St.Side.TOP);
 
 		// Override base style
 		this.actor.add_style_class_name('walnut-menu');
@@ -5036,7 +5339,7 @@ const	NutMenu = new Lang.Class({
 		this.errorBox = new ErrorBox();
 		this.errorBox.hide();
 
-		// Devices' list
+		// Devices list
 		this.upsList = new UpsList();
 		this.upsList.hide();
 
@@ -5078,7 +5381,7 @@ const	NutMenu = new Lang.Class({
 
 		// Put menu together
 
-		// Devices' list
+		// Devices list
 		this.addMenuItem(this.upsList);
 
 		// Error Box

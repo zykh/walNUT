@@ -65,8 +65,8 @@ function detect(ex) {
 
 }
 
-// parserO: create an object[val1] = val2 splitting each line of txt using sep as separator in val1 (up to sep) and val2 (from sep to end of line)
-function toObj(txt, sep) {
+// toObject: create an object[val1] = val2 splitting each line of *txt* using *sep* as separator in val1 (up to *sep*) and val2 (from *sep* to end of line)
+function toObject(txt, sep) {
 
 	let output = txt.split('\n');
 	let vars = {};
@@ -88,13 +88,13 @@ function toObj(txt, sep) {
 
 }
 
-// parserA: create an array of object
+// toArray: create an array of objects
 //  {
-//	label1: val1,
-//	label2: val2
+//	*label1*: val1,
+//	*label2*: val2
 //  }
-// splitting each line of txt using sep as separator in val1 (up to sep) and val2 (from sep to end of line)
-function toArr(txt, sep, label1, label2) {
+// splitting each line of *txt* using *sep* as separator in val1 (up to *sep*) and val2 (from *sep* to end of line)
+function toArray(txt, sep, label1, label2) {
 
 	let output = txt.split('\n');
 	let vars = [];
@@ -248,10 +248,18 @@ function parseSetVar(txt) {
 
 }
 
-// Do: exec argv and when the child process exits call the callback function, passing to it stdout and stderr - if any (otherwise null, e.g.: stderr = null -> no errors) - and opts
-// argv must be an already parsed to array full path-ed executable and its arguments
-// e.g.: ls -alh /tmp -> /usr/bin/ls -alh /tmp -> [ '/usr/bin/ls', '-alh', '/tmp' ]
-function Do(argv, callback, opts) {
+// Do: exec args.*command* and when the child process exits call the args.*callback* function, passing to it stdout and stderr - if any (otherwise null, e.g.: stderr = null -> no errors) - and args.*opts*
+// args = {
+//	command: an already parsed to array full path-ed executable and its arguments
+//		 (e.g.: ls -alh /tmp -> /usr/bin/ls -alh /tmp -> [ '/usr/bin/ls', '-alh', '/tmp' ])
+//	callback: callback function
+//	opts: optional data to pass to the callback function
+// }
+function Do(args) {
+
+	let argv = args.command;
+	let callback = args.callback;
+	let opts = args.opts;
 
 	// Exec argv
 	let [
@@ -332,8 +340,8 @@ function Do(argv, callback, opts) {
 
 }
 
-// defaultUps: pick chosen UPS
-function defaultUps(id) {
+// setAsDefaultUPS: pick chosen UPS
+function setAsDefaultUPS(id) {
 
 	// Don't do anything if UPS is already the chosen one
 	if (id == 0)
@@ -364,7 +372,7 @@ function defaultUps(id) {
 	// And now restore chosen UPS
 	got.unshift(chosen[0]);
 
-	// Store newly ordered devices' list in schema
+	// Store newly ordered devices list in schema
 	settings.set_string('ups', '%s'.format(JSON.stringify(got)));
 
 	// and then return
@@ -372,8 +380,15 @@ function defaultUps(id) {
 
 }
 
-// upsCred: update chosen UPS's (the first one in devices' list stored in schema) credentials (user & pw)
-function upsCred(user, pw) {
+// setUPSCredentials: update chosen UPS's (the first one in devices list stored in schema) credentials (user & password)
+// args = {
+//	username: username to authenticate
+//	password: password to authenticate
+// }
+function setUPSCredentials(args) {
+
+	let user = args.username;
+	let pw = args.password;
 
 	let settings = Convenience.getSettings();
 
@@ -387,7 +402,7 @@ function upsCred(user, pw) {
 
 	// We're going to operate on the first item (index = 0)
 	// since the only way to update credentials is through the panel menu
-	// and for the chosen UPS, that's at first position in devices' list
+	// and for the chosen UPS, that's at first position in devices list
 	// If user or password are empty we'll delete them from UPS's properties
 	if (user.length > 0)
 		got[0].user = user;
@@ -399,7 +414,7 @@ function upsCred(user, pw) {
 	else
 		delete got[0].pw;
 
-	// Store back devices' list in schema
+	// Store back devices list in schema
 	settings.set_string('ups', '%s'.format(JSON.stringify(got)));
 
 	// and then return
@@ -407,8 +422,8 @@ function upsCred(user, pw) {
 
 }
 
-// upsDel: remove chosen UPS (the first one) from devices' list stored in schema
-function upsDel() {
+// deleteUPS: remove chosen UPS (the first one) from devices list stored in schema
+function deleteUPS() {
 
 	let settings = Convenience.getSettings();
 
@@ -422,10 +437,10 @@ function upsDel() {
 
 	// We're going to operate on the first item (index = 0)
 	// since the only way to delete an UPS is through the panel menu
-	// and for the chosen UPS, that's at first position in devices' list
+	// and for the chosen UPS, that's at first position in devices list
 	got.shift();
 
-	// Store back devices' list in schema
+	// Store back devices list in schema
 	settings.set_string('ups', '%s'.format(JSON.stringify(got)));
 
 	// and then return
@@ -433,8 +448,8 @@ function upsDel() {
 
 }
 
-// BatteryLevel: battery level for icons
-function BatteryLevel(raw) {
+// parseBatteryLevel: parse battery level for icons
+function parseBatteryLevel(raw) {
 
 	// Battery Level:
 	//	unknown	-> 1
@@ -463,8 +478,8 @@ function BatteryLevel(raw) {
 
 }
 
-// LoadLevel: load level for icons
-function LoadLevel(raw) {
+// parseLoadLevel: parse load level for icons
+function parseLoadLevel(raw) {
 
 	// Load Level:
 	//	unknown	-> 1
@@ -518,6 +533,8 @@ function formatTemp(value) {
 }
 
 // parseStatus: Status Parser
+//  *raw*: raw status from the device (e.g. 'OB ALARM')
+//  *icon*: boolean, whether this function is used for icons (true) or not (false)
 function parseStatus(raw, icon) {
 
 	let st = raw.split(' ');
@@ -533,28 +550,28 @@ function parseStatus(raw, icon) {
 
 			// TRANSLATORS: Device status @ device status box
 			line += _(" on line");
-			icon_line = 'o';
+			icon_line = 'O';
 			break;
 
 		case 'OB':
 
 			// TRANSLATORS: Device status @ device status box
 			line += _(" on battery");
-			icon_line = 'b';
+			icon_line = 'B';
 			break;
 
 		case 'LB':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", low battery");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'RB':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", replace battery");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'CHRG':
@@ -567,21 +584,21 @@ function parseStatus(raw, icon) {
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", discharging");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'BYPASS':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", bypass");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'CAL':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", runtime calibration");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'OFF':
@@ -594,33 +611,33 @@ function parseStatus(raw, icon) {
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", overloaded");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'TRIM':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", trimming");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'BOOST':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", boosting");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'FSD':
 
 			// TRANSLATORS: Device status @ device status box
 			status += _(", forced shutdown");
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		case 'ALARM':
 
-			icon_alarm = 'a';
+			icon_alarm = 'A';
 			break;
 
 		default:
@@ -669,9 +686,9 @@ function parseTime(raw) {
 
 }
 
-// parseText: from a raw text to multi-row text where each row is at most len char long.
-// If words (tokens from raw separated by sep) are shorter then len they won't be split
-// otherwise they'll be split so that the resulting row will have a length of len chars
+// parseText: from a raw text to multi-row text where each row is at most *len* char long.
+// If words (tokens from *raw* separated by *sep*) are shorter then *len* they won't be split
+// otherwise they'll be split so that the resulting row will have a length of *len* chars
 function parseText(raw, len, sep) {
 
 	// Don't do anything if raw is shorter than len
@@ -735,204 +752,208 @@ function parseText(raw, len, sep) {
 
 }
 
-// cmdI18n: Translate description of device's commands
+// cmdI18n: Translate description of device commands
+// cmd = {
+//	cmd: command name
+//	desc: command description
+// }
 function cmdI18n(cmd) {
 
-	switch (cmd['cmd'])
+	switch (cmd.cmd)
 	{
 	case 'load.off':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load immediately");
+		cmd.desc = _("Turn off the load immediately");
 		break;
 
 	case 'load.on':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn on the load immediately");
+		cmd.desc = _("Turn on the load immediately");
 		break;
 
 	case 'load.off.delay':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay");
+		cmd.desc = _("Turn off the load possibly after a delay");
 		break;
 
 	case 'load.on.delay':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn on the load possibly after a delay");
+		cmd.desc = _("Turn on the load possibly after a delay");
 		break;
 
 	case 'shutdown.return':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay and return when power is back");
+		cmd.desc = _("Turn off the load possibly after a delay and return when power is back");
 		break;
 
 	case 'shutdown.stayoff':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Turn off the load possibly after a delay and remain off even if power returns");
+		cmd.desc = _("Turn off the load possibly after a delay and remain off even if power returns");
 		break;
 
 	case 'shutdown.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop a shutdown in progress");
+		cmd.desc = _("Stop a shutdown in progress");
 		break;
 
 	case 'shutdown.reboot':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Shut down the load briefly while rebooting the UPS");
+		cmd.desc = _("Shut down the load briefly while rebooting the UPS");
 		break;
 
 	case 'shutdown.reboot.graceful':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("After a delay, shut down the load briefly while rebooting the UPS");
+		cmd.desc = _("After a delay, shut down the load briefly while rebooting the UPS");
 		break;
 
 	case 'test.panel.start':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start testing the UPS panel");
+		cmd.desc = _("Start testing the UPS panel");
 		break;
 
 	case 'test.panel.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop a UPS panel test");
+		cmd.desc = _("Stop a UPS panel test");
 		break;
 
 	case 'test.failure.start':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a simulated power failure");
+		cmd.desc = _("Start a simulated power failure");
 		break;
 
 	case 'test.failure.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop simulating a power failure");
+		cmd.desc = _("Stop simulating a power failure");
 		break;
 
 	case 'test.battery.start':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a battery test");
+		cmd.desc = _("Start a battery test");
 		break;
 
 	case 'test.battery.start.quick':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a \"quick\" battery test");
+		cmd.desc = _("Start a \"quick\" battery test");
 		break;
 
 	case 'test.battery.start.deep':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start a \"deep\" battery test");
+		cmd.desc = _("Start a \"deep\" battery test");
 		break;
 
 	case 'test.battery.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop the battery test");
+		cmd.desc = _("Stop the battery test");
 		break;
 
 	case 'calibrate.start':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Start runtime calibration");
+		cmd.desc = _("Start runtime calibration");
 		break;
 
 	case 'calibrate.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Stop runtime calibration");
+		cmd.desc = _("Stop runtime calibration");
 		break;
 
 	case 'bypass.start':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Put the UPS in bypass mode");
+		cmd.desc = _("Put the UPS in bypass mode");
 		break;
 
 	case 'bypass.stop':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Take the UPS out of bypass mode");
+		cmd.desc = _("Take the UPS out of bypass mode");
 		break;
 
 	case 'reset.input.minmax':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Reset minimum and maximum input voltage status");
+		cmd.desc = _("Reset minimum and maximum input voltage status");
 		break;
 
 	case 'reset.watchdog':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Reset watchdog timer (forced reboot of load)");
+		cmd.desc = _("Reset watchdog timer (forced reboot of load)");
 		break;
 
 	case 'beeper.enable':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Enable UPS beeper/buzzer");
+		cmd.desc = _("Enable UPS beeper/buzzer");
 		break;
 
 	case 'beeper.disable':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Disable UPS beeper/buzzer");
+		cmd.desc = _("Disable UPS beeper/buzzer");
 		break;
 
 	case 'beeper.mute':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Temporarily mute UPS beeper/buzzer");
+		cmd.desc = _("Temporarily mute UPS beeper/buzzer");
 		break;
 
 	case 'beeper.toggle':
 
 		// TRANSLATORS: UPS Command description
-		cmd['desc'] = _("Toggle UPS beeper/buzzer");
+		cmd.desc = _("Toggle UPS beeper/buzzer");
 		break;
 
 	// outlet.n.{shutdown.return,load.off,load.on,load.cycle}
 	default:
 
-		if (cmd['cmd'].slice(0, 6) == 'outlet') {
+		if (cmd.cmd.slice(0, 6) == 'outlet') {
 
-			let buf = cmd['cmd'].split('.');
+			let buf = cmd.cmd.split('.');
 
 			switch (buf[2] + '.' + buf[3])
 			{
 			case 'shutdown.return':
 
 				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn off the outlet #%d possibly after a delay and return when power is back").format(buf[1]);
+				cmd.desc = _("Turn off the outlet #%d possibly after a delay and return when power is back").format(buf[1]);
 				break;
 
 			case 'load.off':
 
 				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn off the outlet #%d immediately").format(buf[1]);
+				cmd.desc = _("Turn off the outlet #%d immediately").format(buf[1]);
 				break;
 
 			case 'load.on':
 
 				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Turn on the outlet #%d immediately").format(buf[1]);
+				cmd.desc = _("Turn on the outlet #%d immediately").format(buf[1]);
 				break;
 
 			case 'load.cycle':
 
 				// TRANSLATORS: UPS Command description
-				cmd['desc'] = _("Power cycle the outlet #%d immediately").format(buf[1]);
+				cmd.desc = _("Power cycle the outlet #%d immediately").format(buf[1]);
 				break;
 
 			default:

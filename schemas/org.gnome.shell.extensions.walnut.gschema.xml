@@ -72,14 +72,14 @@
 		<!-- UPS Commands -->
 		<key type="b" name="display-cmd">
 			<default>false</default>
-			<summary>Display device's commands</summary>
-			<description>Display device's available commands.</description>
+			<summary>Display device commands</summary>
+			<description>Display available device commands.</description>
 		</key>
 
 		<key type="b" name="display-cmd-desc">
 			<default>true</default>
-			<summary>Display description of device's commands</summary>
-			<description>Display also a localized description of the device's available commands in the submenu.</description>
+			<summary>Display description of device commands</summary>
+			<description>Display also a localized description of available device commands in the submenu.</description>
 		</key>
 
 		<!-- Credentials Box Options -->
