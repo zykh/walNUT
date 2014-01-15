@@ -245,7 +245,7 @@ Anche l&#8217;opzione attualmente scelta sarà visualizzata, ma non sarà clicca
 <p>Variabili modificabili - RANGE, più di uno</p>
 </media>
 </figure>
-<p>Una volta selezionato l&#8217;intervallo desiderato (nel caso gli intervalli siano più di uno) [<em style="strong">F</em>], saranno mostrati i suoi limit [<em style="strong">G</em>, <em style="strong">H</em>] e al centro il valore attuale [<em style="strong">I</em>].</p>
+<p>Una volta selezionato l&#8217;intervallo desiderato (nel caso gli intervalli siano più di uno) [<em style="strong">F</em>], saranno mostrati i suoi limiti [<em style="strong">G</em>, <em style="strong">H</em>] e al centro il valore attuale [<em style="strong">I</em>].</p>
 <figure>
 <media type="image" src="img/setvars_ranges_set.png"
 >
@@ -261,7 +261,7 @@ Anche l&#8217;opzione attualmente scelta sarà visualizzata, ma non sarà clicca
 </figure>
 <p>Cliccando sul tasto &#8216;Imposta&#8217; [<em style="strong">M</em>] il valore inserito verrà inviato al driver.
 Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore inserito verrà cancellato e il riquadro chiuso.</p>
-<p>Nel caso in cu sia disponibile un solo intervallo, solo i limiti di quest&#8217;ultimo saranno mostrati.</p>
+<p>Nel caso in cui sia disponibile un solo intervallo, solo i limiti di quest&#8217;ultimo saranno mostrati.</p>
 <figure>
 <media type="image" src="img/setvars_range.png"
 >

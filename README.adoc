@@ -193,7 +193,7 @@ The menu can be split up in various sections:
 |D |<<{device-alarm},Device Alarm>>
 |E |<<{data-table},Data Table>>
 |F |<<{raw-vars},Raw Vars>>
-|G |<<{device-commands},Device's Commands>>
+|G |<<{device-commands},Device Commands>>
 |H a|Box for control buttons' functions
 
 :credentials-box: 49-credentials-box
@@ -205,7 +205,7 @@ ifdef::walnut[]
 :delete-devices: delete-devices
 endif::walnut[]
 
-- <<{credentials-box},Device's credentials box>>
+- <<{credentials-box},Device credentials box>>
 - <<{find-new-devices},Find new devices box>>
 - <<{delete-devices},Delete device box>>
 |I |<<{control-buttons},Control Buttons>>
@@ -244,7 +244,7 @@ If available both device manufacturer and device model will be shown here.
 
 TIP: If your device isn't providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in http://www.networkupstools.org/docs/man/ups.conf.html[ups.conf].
 
-You can chose whether to display or not this information changing its option in the <<{preferences},preferences>>.
+You can choose whether to display or not this information changing its option in the <<{preferences},preferences>>.
 
 
 [[device-status]]
@@ -288,7 +288,7 @@ image::datatable_noisy.png["Data Table - 'Noisy' version", align = "center"]
 If available, [*A*] battery charge, [*B*] device load, [*C*] backup time and [*D*] device temperature will be shown here. +
 Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
 
-You can chose whether to display or not these data changing their options in the <<{preferences},preferences>>.
+You can choose whether to display or not these data changing their options in the <<{preferences},preferences>>.
 
 [[raw-vars]]
 RAW VARS
@@ -344,16 +344,16 @@ image::setvars_range.png["Settable vars - RANGE", align = "center"]
 
 
 [[device-commands]]
-DEVICE'S COMMANDS
-~~~~~~~~~~~~~~~~~
+DEVICE COMMANDS
+~~~~~~~~~~~~~~~
 
-image::cmd.png["Device's Commands", align = "center"]
+image::cmd.png["Device Commands", align = "center"]
 
-If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device's commands_ option in the <<{preferences},preferences>>.
+If you want to execute NUT's instant commands through _walNUT_ you have to set the _Display device commands_ option in the <<{preferences},preferences>>.
 
-You can also pass to the command some extra data filling, before you click on the command, the entry [*A*] that will appear next to the submenu of the device's commands when it is opened.
+You can also pass to the command some extra data filling, before you click on the command, the entry [*A*] that will appear next to the device commands submenu when it is opened.
 
-image::cmd_extra.png["Device's Commands - Extra data", align = "center"]
+image::cmd_extra.png["Device Commands - Extra data", align = "center"]
 
 Note that, when you click on a command, it'll be executed.
 
@@ -361,12 +361,12 @@ Note that, when you click on a command, it'll be executed.
 --
 _walNUT_ standardly displays also a localized description of the commands [*B*], but if you think that it steals too much space you can set not to display it [*C*] in the <<{preferences},preferences>>.
 
-image::cmd_sm_vs.png["Device's Commands - Sub Menu, with or w/o description", align = "center"]
+image::cmd_sm_vs.png["Device Commands - Sub Menu, with or w/o description", align = "center"]
 --
 
 Once a command has been executed, you'll be notified whether it has been successfully sent to the driver [*D*] or not [*E*].
 
-image::cmd_notify.png["Device's Commands - Notify", align = "center"]
+image::cmd_notify.png["Device Commands - Notify", align = "center"]
 
 
 [[control-buttons]]
@@ -386,7 +386,7 @@ image::btns_box.png["Control Buttons + Control Box", align = "center"]
 The buttons will show:
 
 1. <<{preferences},Preferences>>
-2. <<{credentials-box},Device's crendetials box>>
+2. <<{credentials-box},Device crendetials box>>
 3. <<{find-new-devices},Find new devices box>>
 4. <<{delete-devices},Delete devices box>>
 5. <<{help},Help>>
@@ -476,7 +476,7 @@ A new window will open, where you can set the various options.
 
 image::pref.png["Preferences - General/Panel", align = "center"]
 
-'General/Panel' tab - extension's general options and <<{panel-icon},panel icon/label>> options:
+'General/Panel' tab - extension general options and <<{panel-icon},panel icon/label>> options:
 
 [caption=""]
 .Available Options
@@ -509,8 +509,8 @@ image::pref_menu.png["Preferences - Menu", align = "center"]
 |6 |Display backup time |Show also backup time, if available, in the panel menu. (_default: ON_)
 |7 |Display device temperature |Show also device temperature, if available, in the panel menu. (_default: ON_)
 |8 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
-|9 |Display device's commands |Display device's available commands. You'll need upsd user and password to execute them. (_default: OFF_)
-|10 |Display description of device's commands |Display also a localized description of the device's available commands in the submenu. (_default: ON_)
+|9 |Display device commands |Display available device commands. You'll need upsd user and password to execute them. (_default: OFF_)
+|10 |Display description of device commands |Display also a localized description of available device commands in the submenu. (_default: ON_)
 |11 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
 |====
 

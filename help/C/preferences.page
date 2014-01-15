@@ -26,7 +26,7 @@
 <p>Preferences - General/Panel</p>
 </media>
 </figure>
-<p><em>General/Panel</em> tab - extension&#8217;s general options and <link xref="panel-icon">panel icon/label</link> options:</p>
+<p><em>General/Panel</em> tab - extension general options and <link xref="panel-icon">panel icon/label</link> options:</p>
 <table rules="rows"
 frame="top bottom"
 >
@@ -133,13 +133,13 @@ frame="top bottom"
 </tr>
 <tr>
 <td><p><em style="strong">9</em></p></td>
-<td><p>Display device&#8217;s commands</p></td>
-<td><p>Display device&#8217;s available commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
+<td><p>Display device commands</p></td>
+<td><p>Display available device commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">10</em></p></td>
-<td><p>Display description of device&#8217;s commands</p></td>
-<td><p>Display also a localized description of the device&#8217;s available commands in the submenu. (<em>default: ON</em>)</p></td>
+<td><p>Display description of device commands</p></td>
+<td><p>Display also a localized description of available device commands in the submenu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
 <td><p><em style="strong">11</em></p></td>

@@ -264,7 +264,7 @@ Se la variabile è di tipo `++RANGE++', verranno visualizzati tutti gli interval
 
 image::setvars_ranges.png["Variabili modificabili - RANGE, più di uno", align = "center"]
 
-Una volta selezionato l'intervallo desiderato (nel caso gli intervalli siano più di uno) [*F*], saranno mostrati i suoi limit [*G*, *H*] e al centro il valore attuale [*I*].
+Una volta selezionato l'intervallo desiderato (nel caso gli intervalli siano più di uno) [*F*], saranno mostrati i suoi limiti [*G*, *H*] e al centro il valore attuale [*I*].
 
 image::setvars_ranges_set.png["Variabili modificabili - RANGE, modifica", align = "center"]
 
@@ -275,7 +275,7 @@ image::setvars_ranges_btn.png["Variabili modificabili - RANGE, pulsanti", align 
 Cliccando sul tasto `Imposta' [*M*] il valore inserito verrà inviato al driver.
 Cliccando sul tasto `Annulla' [*N*] il valore inserito verrà cancellato e il riquadro chiuso.
 
-Nel caso in cu sia disponibile un solo intervallo, solo i limiti di quest'ultimo saranno mostrati.
+Nel caso in cui sia disponibile un solo intervallo, solo i limiti di quest'ultimo saranno mostrati.
 
 image::setvars_range.png["Variabili modificabili - RANGE", align = "center"]
 
@@ -380,7 +380,7 @@ Se si desidera eseguire i <<device-commands,comandi instantanei>> di un disposit
 
 NOTE: Se il nome utente e la password salvati si dimostrassero errati, verrebbero richiesti con la <<credentials-dialog,finestra delle credenziali>>, qualora si provasse ad eseguire un comando.
 
-IMPORTANT: Se si sceglie di salvare il nome utente e la password per usarli sia per i comandi istantanei che per modificare le variabili, ci si assicure che il nome utente fornito abbia le appropriate opzioni impostate per entrambi nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] (ad esempio +actions = set+ e +instcmds = all+).
+IMPORTANT: Se si sceglie di salvare il nome utente e la password per usarli sia per i comandi istantanei che per modificare le variabili, ci si assicuri che il nome utente fornito abbia le appropriate opzioni impostate per entrambi nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] (ad esempio +actions = set+ e +instcmds = all+).
 
 
 [[credentials-dialog]]
@@ -455,7 +455,7 @@ Scheda 'Menu' - opzioni relative al <<panel-menu,menu del pannello>>:
 AIUTO
 -----
 
-Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare dell'aiuto nella mailing list di NUT:
+Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare aiuto nella mailing list di NUT:
 
 - *NUT Users* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsuser
 

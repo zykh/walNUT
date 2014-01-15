@@ -71,7 +71,7 @@ frame="top bottom"
 </tr>
 <tr>
 <td><p><em style="strong">G</em></p></td>
-<td><p><link xref="panel-menu#device-commands">Device&#8217;s Commands</link></p></td>
+<td><p><link xref="panel-menu#device-commands">Device Commands</link></p></td>
 </tr>
 <tr>
 <td><p><em style="strong">H</em></p></td>
@@ -79,7 +79,7 @@ frame="top bottom"
 <list>
 <item>
 <p>
-<link xref="panel-menu#credentials-box">Device&#8217;s credentials box</link>
+<link xref="panel-menu#credentials-box">Device credentials box</link>
 </p>
 </item>
 <item>
@@ -139,7 +139,7 @@ You can choose either to display or not not available devices in the <link xref=
 <note style="tip">
 <p>If your device isn&#8217;t providing one of device manufacturer/model or both or if you want a more appealing label, you can override one of them or both in <link href="http://www.networkupstools.org/docs/man/ups.conf.html">ups.conf</link>.</p>
 </note>
-<p>You can chose whether to display or not this information changing its option in the <link xref="preferences">preferences</link>.</p>
+<p>You can choose whether to display or not this information changing its option in the <link xref="preferences">preferences</link>.</p>
 </section>
 <section id="device-status"><links type="section"/><links type="topic"/><title>4.3. DEVICE STATUS</title>
 <figure>
@@ -192,7 +192,7 @@ You can choose either to display or not not available devices in the <link xref=
 </figure>
 <p>If available, [<em style="strong">A</em>] battery charge, [<em style="strong">B</em>] device load, [<em style="strong">C</em>] backup time and [<em style="strong">D</em>] device temperature will be shown here.
 Battery icon [<em style="strong">1</em>] will display actual charge through the number of horizontal bars (as the ones of <link xref="panel-icon">panel icon</link>).</p>
-<p>You can chose whether to display or not these data changing their options in the <link xref="preferences">preferences</link>.</p>
+<p>You can choose whether to display or not these data changing their options in the <link xref="preferences">preferences</link>.</p>
 </section>
 <section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. RAW VARS</title>
 <figure>
@@ -269,19 +269,19 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 </media>
 </figure>
 </section>
-<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. DEVICE&#8217;S COMMANDS</title>
+<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. DEVICE COMMANDS</title>
 <figure>
 <media type="image" src="img/cmd.png"
 >
-<p>Device's Commands</p>
+<p>Device Commands</p>
 </media>
 </figure>
-<p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device&#8217;s commands</em> option in the <link xref="preferences">preferences</link>.</p>
-<p>You can also pass to the command some extra data filling, before you click on the command, the entry [<em style="strong">A</em>] that will appear next to the submenu of the device&#8217;s commands when it is opened.</p>
+<p>If you want to execute NUT&#8217;s instant commands through <em>walNUT</em> you have to set the <em>Display device commands</em> option in the <link xref="preferences">preferences</link>.</p>
+<p>You can also pass to the command some extra data filling, before you click on the command, the entry [<em style="strong">A</em>] that will appear next to the device commands submenu when it is opened.</p>
 <figure>
 <media type="image" src="img/cmd_extra.png"
 >
-<p>Device's Commands - Extra data</p>
+<p>Device Commands - Extra data</p>
 </media>
 </figure>
 <p>Note that, when you click on a command, it&#8217;ll be executed.</p>
@@ -290,7 +290,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 <figure>
 <media type="image" src="img/cmd_sm_vs.png"
 >
-<p>Device's Commands - Sub Menu, with or w/o description</p>
+<p>Device Commands - Sub Menu, with or w/o description</p>
 </media>
 </figure>
 </note>
@@ -298,7 +298,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 <figure>
 <media type="image" src="img/cmd_notify.png"
 >
-<p>Device's Commands - Notify</p>
+<p>Device Commands - Notify</p>
 </media>
 </figure>
 </section>
@@ -332,7 +332,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 </item>
 <item>
 <p>
-<link xref="panel-menu#credentials-box">Device&#8217;s crendetials box</link>
+<link xref="panel-menu#credentials-box">Device crendetials box</link>
 </p>
 </item>
 <item>
