@@ -12,7 +12,11 @@
 <links type="topic"/>
 <links type="section"/>
 <listing><title style="heading">COS'È?</title></listing>
-<p><em style="strong"><em>walNUT</em></em> non è niente di più che un&#8217;interfaccia fra voi e NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>), usando <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link>, <link href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</link> e <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link> di NUT.
+<p><em style="strong"><em>walNUT</em></em> non è niente di più che un&#8217;estensione per Gnome Shell che fornisce un&#8217;interfaccia grafica per NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>).
 Fornisce un pratico <link xref="panel-menu">menu del pannello</link> e un'<link xref="panel-icon">icona</link> per monitorare i propri dispositivi ed eseguire i <link xref="panel-menu#device-commands">comandi</link> istantanei di NUT.</p>
-<p>Prima di <link xref="installation">cominciare</link>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <link xref="first-execution">fin da subito</link>.</p>
+<p>Prima di <link xref="installation">cominciare</link>, è necessario avere NUT già installato e funzionante sul computer che monitora i gruppi di continutà (si noti che non è necessario avere installato NUT nel computer in cui si vuole eseguire <em>walNUT</em> nel caso in cui non fosse direttamente questo a gestire la comunicazione con il gruppo di continuità): in ogni caso, se tutto va bene con <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link>, <link href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</link> e <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link>, le probabilità sono alte che <em>walNUT</em> funzioni già <link xref="first-execution">fin da subito</link>.</p>
+<note style="note">
+<p>Dal momento che l&#8217;implementazione in GJS del protocollo di rete di NUT non supporta ancora il TLS, nel caso in cui se ne abbia bisogno, è possibile ottenerlo usando la versione di <em>walNUT</em> che si appoggia a upsc, upsrw e upscmd:</p>
+<p><link href="https://github.com/zykh/walNUT/tree/tls-through-nut">https://github.com/zykh/walNUT/tree/tls-through-nut</link></p>
+</note>
 </page>

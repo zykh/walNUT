@@ -22,9 +22,20 @@
 <div id="preamble">
 <div class="sectionbody">
 <h2 id="_cos_è" class="float">COS'È?</h2>
-<div class="paragraph"><p><strong><em>walNUT</em></strong> non è niente di più che un&#8217;interfaccia fra voi e NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), usando <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> e <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a> di NUT.
+<div class="paragraph"><p><strong><em>walNUT</em></strong> non è niente di più che un&#8217;estensione per Gnome Shell che fornisce un&#8217;interfaccia grafica per NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>).
 Fornisce un pratico <a href="#panel-menu">menu del pannello</a> e un'<a href="#panel-icon">icona</a> per monitorare i propri dispositivi ed eseguire i <a href="#device-commands">comandi</a> istantanei di NUT.</p></div>
-<div class="paragraph"><p>Prima di <a href="#installation">cominciare</a>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che <em>walNUT</em> funzioni già <a href="#first-execution">fin da subito</a>.</p></div>
+<div class="paragraph"><p>Prima di <a href="#installation">cominciare</a>, è necessario avere NUT già installato e funzionante sul computer che monitora i gruppi di continutà (si noti che non è necessario avere installato NUT nel computer in cui si vuole eseguire <em>walNUT</em> nel caso in cui non fosse direttamente questo a gestire la comunicazione con il gruppo di continuità): in ogni caso, se tutto va bene con <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> e <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>, le probabilità sono alte che <em>walNUT</em> funzioni già <a href="#first-execution">fin da subito</a>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Nota" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Dal momento che l&#8217;implementazione in GJS del protocollo di rete di NUT non supporta ancora il TLS, nel caso in cui se ne abbia bisogno, è possibile ottenerlo usando la versione di <em>walNUT</em> che si appoggia a upsc, upsrw e upscmd:</p></div>
+<div class="paragraph"><p><a href="https://github.com/zykh/walNUT/tree/tls-through-nut">https://github.com/zykh/walNUT/tree/tls-through-nut</a></p></div>
+</td>
+</tr></table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -847,7 +858,7 @@ cellspacing="0" cellpadding="4">
 </ul></div>
 <div class="sect2">
 <h3 id="_traduttori">7.1. TRADUTTORI</h3>
-<div class="paragraph"><p>Una guida alla traduzione delle estensioni può essere trovata nelle <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a> sulle estensioni di Gnome Shell.</p></div>
+<div class="paragraph"><p>Una guida alla traduzione delle estensioni può essere trovata nelle <a href="https://wiki.gnome.org/Projects/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a> sulle estensioni di Gnome Shell.</p></div>
 <div class="paragraph"><p>La documentazione di <em>walNUT</em> è scritta in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> e quindi elaborata sia per la versione in html che per la versione in <a href="http://projectmallard.org/">Mallard</a> per <a href="http://projects.gnome.org/yelp/">Yelp</a>.</p></div>
 <div class="paragraph"><p>I file di aiuto devono essere messi nella cartella help dell&#8217;estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).</p></div>
 <div class="paragraph"><p>La versione in html deve essere compilata con:</p></div>
@@ -940,7 +951,7 @@ Elaborare il file temporaneo precedentemente creato <code>temp.page</code> con:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2014-01-15 23:40:06 CET
+Last updated 2014-01-17 23:27:53 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

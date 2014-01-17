@@ -12,7 +12,11 @@
 <links type="topic"/>
 <links type="section"/>
 <listing><title style="heading">WHAT IS IT?</title></listing>
-<p><em style="strong"><em>walNUT</em></em> is nothing more than an interface between you and NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>), using NUT&#8217;s own <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link>, <link href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</link> and <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link>.
+<p><em style="strong"><em>walNUT</em></em> is nothing more than a Gnome Shell extension providing a graphical interface to NUT (<link href="http://www.networkupstools.org">Network UPS Tools</link>).
 It provides you a handy <link xref="panel-menu">panel menu</link> and <link xref="panel-icon">icon</link> to monitor your devices and execute NUT&#8217;s instant <link xref="panel-menu#device-commands">commands</link>.</p>
-<p>Before <link xref="installation">you start</link>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that <em>walNUT</em> will work right <link xref="first-execution">out of the box</link>.</p>
+<p>Before <link xref="installation">you start</link>, you need an already up and running NUT on the machine that will monitor the UPSes (it&#8217;s not necessary to have NUT installed on the same computer you want <em>walNUT</em> to run in, provided that it isn&#8217;t the one that&#8217;s in charge of communicating with the UPS): having said that, if everything goes well with <link href="http://www.networkupstools.org/docs/man/upsc.html">upsc</link>, <link href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</link> and <link href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</link>, chances are high that <em>walNUT</em> will work right <link xref="first-execution">out of the box</link>.</p>
+<note style="note">
+<p>Since the GJS implementation of NUT&#8217;s net protocol doesn&#8217;t support yet TLS, if you need it, you can get it using the <em>walNUT</em> version that relies on upsc, upsrw and upscmd:</p>
+<p><link href="https://github.com/zykh/walNUT/tree/tls-through-nut">https://github.com/zykh/walNUT/tree/tls-through-nut</link></p>
+</note>
 </page>

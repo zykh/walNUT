@@ -22,9 +22,20 @@
 <div id="preamble">
 <div class="sectionbody">
 <h2 id="_what_is_it" class="float">WHAT IS IT?</h2>
-<div class="paragraph"><p><strong><em>walNUT</em></strong> is nothing more than an interface between you and NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>), using NUT&#8217;s own <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> and <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>.
+<div class="paragraph"><p><strong><em>walNUT</em></strong> is nothing more than a Gnome Shell extension providing a graphical interface to NUT (<a href="http://www.networkupstools.org">Network UPS Tools</a>).
 It provides you a handy <a href="#panel-menu">panel menu</a> and <a href="#panel-icon">icon</a> to monitor your devices and execute NUT&#8217;s instant <a href="#device-commands">commands</a>.</p></div>
-<div class="paragraph"><p>Before <a href="#installation">you start</a>, you need an already up and running NUT: basically if everything goes well with upsc and upscmd, chances are high that <em>walNUT</em> will work right <a href="#first-execution">out of the box</a>.</p></div>
+<div class="paragraph"><p>Before <a href="#installation">you start</a>, you need an already up and running NUT on the machine that will monitor the UPSes (it&#8217;s not necessary to have NUT installed on the same computer you want <em>walNUT</em> to run in, provided that it isn&#8217;t the one that&#8217;s in charge of communicating with the UPS): having said that, if everything goes well with <a href="http://www.networkupstools.org/docs/man/upsc.html">upsc</a>, <a href="http://www.networkupstools.org/docs/man/upsrw.html">upsrw</a> and <a href="http://www.networkupstools.org/docs/man/upscmd.html">upscmd</a>, chances are high that <em>walNUT</em> will work right <a href="#first-execution">out of the box</a>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../ad/icons/note.png" alt="Note" />
+</td>
+<td class="content">
+<div class="paragraph"><p>Since the GJS implementation of NUT&#8217;s net protocol doesn&#8217;t support yet TLS, if you need it, you can get it using the <em>walNUT</em> version that relies on upsc, upsrw and upscmd:</p></div>
+<div class="paragraph"><p><a href="https://github.com/zykh/walNUT/tree/tls-through-nut">https://github.com/zykh/walNUT/tree/tls-through-nut</a></p></div>
+</td>
+</tr></table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -848,7 +859,7 @@ cellspacing="0" cellpadding="4">
 </ul></div>
 <div class="sect2">
 <h3 id="_translators">7.1. TRANSLATORS</h3>
-<div class="paragraph"><p>A guide to translate extensions can be found in Gnome Shell extensions' <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a>.</p></div>
+<div class="paragraph"><p>A guide to translate extensions can be found in Gnome Shell extensions' <a href="https://wiki.gnome.org/Projects/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</a>.</p></div>
 <div class="paragraph"><p><em>walNUT</em>'s documentation is done in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> and then processed either to the html version and to the <a href="http://projectmallard.org/">Mallard</a> version for <a href="http://projects.gnome.org/yelp/">Yelp</a>.</p></div>
 <div class="paragraph"><p>The help files must be put in the extension&#8217;s help subdir, creating a directory named after the desired locale&#8217;s language code (e.g. en, it, ..) or, for country-specific locales, language code and country code (e.g. pt_BR, pt_PT).</p></div>
 <div class="paragraph"><p>The html version must be compiled with:</p></div>
@@ -941,7 +952,7 @@ Process the previously created temp file <code>temp.page</code> with it:
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br />
-Last updated 2014-01-15 23:14:50 CET
+Last updated 2014-01-17 23:27:43 CET
 </div>
 <div id="footer-badges">
 <a href="http://validator.w3.org/check?uri=referer">

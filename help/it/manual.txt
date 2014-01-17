@@ -18,10 +18,17 @@ v0.2, October 2013
 COS'È?
 ------
 
-*_walNUT_* non è niente di più che un'interfaccia fra voi e NUT (http://www.networkupstools.org[Network UPS Tools]), usando http://www.networkupstools.org/docs/man/upsc.html[upsc], http://www.networkupstools.org/docs/man/upsrw.html[upsrw] e http://www.networkupstools.org/docs/man/upscmd.html[upscmd] di NUT.
+*_walNUT_* non è niente di più che un'estensione per Gnome Shell che fornisce un'interfaccia grafica per NUT (http://www.networkupstools.org[Network UPS Tools]).
 Fornisce un pratico <<panel-menu,menu del pannello>> e un'<<panel-icon,icona>> per monitorare i propri dispositivi ed eseguire i <<device-commands,comandi>> istantanei di NUT.
 
-Prima di <<installation,cominciare>>, è necessario avere NUT già installato e funzionante: in pratica, se tutto va bene con upsc e upscmd, le probabilità sono alte che _walNUT_ funzioni già <<first-execution,fin da subito>>.
+Prima di <<installation,cominciare>>, è necessario avere NUT già installato e funzionante sul computer che monitora i gruppi di continutà (si noti che non è necessario avere installato NUT nel computer in cui si vuole eseguire _walNUT_ nel caso in cui non fosse direttamente questo a gestire la comunicazione con il gruppo di continuità): in ogni caso, se tutto va bene con http://www.networkupstools.org/docs/man/upsc.html[upsc], http://www.networkupstools.org/docs/man/upsrw.html[upsrw] e http://www.networkupstools.org/docs/man/upscmd.html[upscmd], le probabilità sono alte che _walNUT_ funzioni già <<first-execution,fin da subito>>.
+
+[NOTE]
+====
+Dal momento che l'implementazione in GJS del protocollo di rete di NUT non supporta ancora il TLS, nel caso in cui se ne abbia bisogno, è possibile ottenerlo usando la versione di _walNUT_ che si appoggia a upsc, upsrw e upscmd:
+
+https://github.com/zykh/walNUT/tree/tls-through-nut
+====
 
 
 [[installation]]
@@ -467,7 +474,7 @@ Se volete aiutare, sarete i benvenuti nella mailing list di NUT e nella mailing 
 TRADUTTORI
 ~~~~~~~~~~
 
-Una guida alla traduzione delle estensioni può essere trovata nelle https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ] sulle estensioni di Gnome Shell.
+Una guida alla traduzione delle estensioni può essere trovata nelle https://wiki.gnome.org/Projects/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ] sulle estensioni di Gnome Shell.
 
 La documentazione di _walNUT_ è scritta in http://www.methods.co.nz/asciidoc/[AsciiDoc] e quindi elaborata sia per la versione in html che per la versione in http://projectmallard.org/[Mallard] per http://projects.gnome.org/yelp/[Yelp].
 
