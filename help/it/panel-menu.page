@@ -222,7 +222,7 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">C</em>] il valore 
 </media>
 </figure>
 <note style="note">
-<p>Nel caso in cui si usi una versione di NUT &gt;= 2.7.1 e il valore inserito dovesse risultare più lungo di quello impostabile, si verrà avvisati dell&#8217;errore e non sarà possibile cliccare sul pulsante &#8216;Imposta&#8217; [<em style="strong">B</em>].</p>
+<p>Nel caso in cui il valore inserito dovesse risultare più lungo di quello impostabile, si verrà avvisati dell&#8217;errore e non sarà possibile cliccare sul pulsante &#8216;Imposta&#8217; [<em style="strong">B</em>].</p>
 <figure>
 <media type="image" src="img/setvars_string_error.png"
 >

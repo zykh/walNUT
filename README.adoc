@@ -320,7 +320,7 @@ image::setvars_string.png["Settable vars - STRING", align = "center"]
 
 [NOTE]
 ====
-In case you use a version of NUT >= 2.7.1 and if the provided value is longer than the acceptable length, you'll be notified of the error and you won't be able to click on the `Set' button [*B*].
+In case the provided value is longer than the acceptable length, you'll be notified of the error and you won't be able to click on the `Set' button [*B*].
 
 image::setvars_string_error.png["Settable vars - STRING, error", align = "center"]
 ====

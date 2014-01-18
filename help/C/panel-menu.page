@@ -222,7 +222,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">C</e
 </media>
 </figure>
 <note style="note">
-<p>In case you use a version of NUT &gt;= 2.7.1 and if the provided value is longer than the acceptable length, you&#8217;ll be notified of the error and you won&#8217;t be able to click on the &#8216;Set&#8217; button [<em style="strong">B</em>].</p>
+<p>In case the provided value is longer than the acceptable length, you&#8217;ll be notified of the error and you won&#8217;t be able to click on the &#8216;Set&#8217; button [<em style="strong">B</em>].</p>
 <figure>
 <media type="image" src="img/setvars_string_error.png"
 >
