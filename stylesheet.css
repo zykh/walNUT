@@ -182,14 +182,14 @@
 .walnut-buttons-small:focus {
 	color: white;
 	background-color: #4c4c4c;
-	border: 1px solid #4c4c4c;
+	border: 2px solid #4c4c4c;
 }
 
 .walnut-buttons-big:active,
 .walnut-buttons-small:active {
 	color: black;
 	background-color: #6f6f6f;
-	border: 1px solid #6f6f6f;
+	border: 2px solid #6f6f6f;
 }
 
 .walnut-buttons-big:insensitive,
