@@ -16,13 +16,6 @@
 			<description>The unit ('Centigrade' or 'Fahrenheit', without quotes) the extension should display the temperature in.</description>
 		</key>
 
-		<!-- Menu style -->
-		<key type="b" name="less-noisy-menu">
-			<default>true</default>
-			<summary>Use a less noisy style for the menu</summary>
-			<description>Whether the extension should use a less noisy, more in line with Gnome Shell's own, style or not for the panel menu.</description>
-		</key>
-
 		<!-- Device List Options -->
 		<key type="b" name="display-na">
 			<default>false</default>
