@@ -146,57 +146,24 @@
 	padding: .333em;
 }
 
-/* Bottom Control Buttons*/
-.walnut-bottom-controls-box {
-	spacing: .666em;
-}
-
 /* Buttons */
-.walnut-buttons-big > StIcon {
-	height: 2.475em;
-	icon-size: 2.475em;
-	padding: 0;
-}
-
-.walnut-buttons-small > StIcon {
-	height: 1.1em;
-	icon-size: 1.1em;
-	padding: 0;
+.walnut-buttons-small {
+	padding: 3px;
 }
 
 .walnut-buttons-big {
-	padding: .533em;
+
 }
 
-.walnut-buttons-small {
-	padding: .2em;
-}
-
-.walnut-bottom-controls-less-noisy > StIcon {
-	padding: .65em;
-}
-
-.walnut-buttons-big:hover,
-.walnut-buttons-big:focus,
 .walnut-buttons-small:hover,
 .walnut-buttons-small:focus {
-	color: white;
-	background-color: #4c4c4c;
-	border: 2px solid #4c4c4c;
-}
-
-.walnut-buttons-big:active,
-.walnut-buttons-small:active {
-	color: black;
-	background-color: #6f6f6f;
-	border: 2px solid #6f6f6f;
+	padding: 5px;
 }
 
 .walnut-buttons-big:insensitive,
 .walnut-buttons-small:insensitive {
 	border-color: #666666;
 	color: #9f9f9f;
-	background-gradient-direction: none;
 	background-color: rgba(102, 102, 102, .15);
 }
 
@@ -328,37 +295,6 @@
 	background-color: rgba(0, 0, 0, .3);
 }
 
-/* Device Data Table (Battery Charge, Backup Time, Device Load, Temperature) */
-.walnut-ups-data-table-icon {
-	icon-size: 3.3em;
-	padding: .333em;
-}
-
-.walnut-ups-data-table-label {
-	text-align: right;
-	font-weight: bold;
-}
-
-.walnut-ups-data-table-label:ltr {
-	padding: .467em .333em 0 0;
-}
-
-.walnut-ups-data-table-label:rtl {
-	padding: .467em 0 0 .333em;
-}
-
-.walnut-ups-data-table-text {
-	text-align: right;
-}
-
-.walnut-ups-data-table-text:ltr {
-	padding: 0 .333em .467em 0;
-}
-
-.walnut-ups-data-table-text:rtl {
-	padding: 0 0 .467em .333em;
-}
-
 /* Device Top Data (Status/Alarm) */
 .walnut-ups-top-data-box {
 
@@ -372,10 +308,6 @@
 	padding-bottom: 0em;
 	padding-left: 0em;
 	padding-right: 0em;
-}
-
-.walnut-ups-top-data-icon {
-	icon-size: 3.3em;
 }
 
 .walnut-ups-top-data-label {
