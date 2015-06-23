@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-const	CheckBox = imports.ui.checkBox,
+const	Atk = imports.gi.Atk,
 	Clutter = imports.gi.Clutter,
 	Config = imports.misc.config,
 	Lang = imports.lang,
@@ -256,6 +256,13 @@ const	Lengths = {
 
 // Interval in milliseconds after which the extension should update the availability of the stored devices (15 minutes)
 const	INTERVAL = 900000;
+
+// Raw data button ornament
+const RawDataButtonOrnament = {
+	NONE:	0,
+	OPENED:	1,
+	CLOSED:	2
+};
 
 // UpscMonitor: exec upsc at a given interval and deliver infos
 const	UpscMonitor = new Lang.Class({
@@ -3155,39 +3162,34 @@ const	UpsCmdList = new Lang.Class({
 // SetvarBox: box used to handle setvars
 const	SetvarBox = new Lang.Class({
 	Name: 'SetvarBox',
+	Extends: PopupMenu.PopupMenuSection,
 
 	// args = {
-	//	parent: container this box belongs to
 	//	varName: name of the settable variable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
 	_init: function(args) {
 
-		this.actor = new St.BoxLayout({
-			style_class: 'walnut-setvar-box',
-			vertical: true,
-			reactive: false,
-			track_hover: false,
-			can_focus: false
-		});
+		this.parent();
 
 		// Variable's name
-		this.varName = args.varName;
+		this._varName = args.varName;
 
 		// Our toggle-button
-		this._parent = args.parent;
+		this._scrollView = args.scrollView;
 
 	},
 
-	// open: open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
+	// show: open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
 	// args = {
 	//	actualValue: actual value of the settable variable
 	// }
-	open: function(args) {
+	show: function(args) {
 
-		if (args.actualValue != this.actualValue)
+		if (args.actualValue != this._actualValue)
 			this._resetTo(args.actualValue);
 
-		this.show();
+		this.actor.show();
 
 	},
 
@@ -3198,15 +3200,52 @@ const	SetvarBox = new Lang.Class({
 
 	},
 
-	show: function() {
+	isClosed: function() {
 
-		this.actor.show();
+		return !this.actor.visible;
+
+	}
+});
+
+// SetvarRangeItem: one of the available ranges displayed in SetvarBoxRanges
+const	SetvarRangeItem = new Lang.Class({
+	Name: 'SetvarRangeItem',
+	Extends: PopupMenu.PopupMenuItem,
+
+	// args = {
+	//	range: {
+	//		min: lower limit of the range
+	//		max: upper limit of the range
+	//	},
+	//	callback: function to call, passing to it *range*, when activated; if not set, the item is treated (and represented) as the actual range
+	// }
+	_init: function(args) {
+
+		this._range = args.range;
+		// TRANSLATORS: Range interval @ Setvar box
+		let rangeLabel = _("%s - %s").format(this._range.min, this._range.max);
+
+		this._callback = args.callback;
+		if (this._callback != null) {
+			this.parent(rangeLabel);
+		} else {
+			this.parent(rangeLabel, { activate: false });
+			// Set the item as checked if it represents actual range
+			this.setOrnament(PopupMenu.Ornament.DOT);
+		}
+
+		// Spacer
+		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		this.actor.insert_child_below(spacer, this._ornamentLabel)
 
 	},
 
-	destroy: function() {
+	activate: function(event) {
 
-		this.actor.destroy();
+		if (this._callback != null)
+			this._callback(this._range);
+
+		return;
 
 	}
 });
@@ -3217,19 +3256,19 @@ const	SetvarBoxRanges = new Lang.Class({
 	Extends: SetvarBox,
 
 	// args = {
-	//	parent: container this box belongs to
 	//	varName: name of the settable variable
 	//	rages: available ranges of the settable variable
 	//	actualValue: actual value of the settable variable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
 	_init: function(args) {
 
 		this.parent({
 			varName: args.varName,
-			parent: args.parent
+			scrollView: args.scrollView
 		});
 
-		// ranges: [
+		// _ranges: [
 		//	{
 		//		min: value,
 		//		max: value
@@ -3240,66 +3279,78 @@ const	SetvarBoxRanges = new Lang.Class({
 		//	},
 		//		...
 		// ]
-		this.ranges = args.ranges;
+		this._ranges = args.ranges;
 
-		// rangeAct: {
+		// _rangeAct: {
 		//	min: value,
 		//	max: value
 		// }
-		this.rangeAct = {};
+		this._rangeAct = {};
 
 		// Slider
-		this.slider = new Slider.Slider(0.5);
-		this.actor.add(this.slider.actor, { expand: true });
+		this._slider = new Slider.Slider(0.5);
+		let sliderItem = new PopupMenu.PopupBaseMenuItem({ activate: false });
+		sliderItem.actor.add(this._slider.actor, { expand: true });
+		sliderItem.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+			return this._slider.startDragging(event);
+		}));
+		sliderItem.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+			return this._slider.onKeyPressEvent(actor, event);
+		}));
+		this.addMenuItem(sliderItem);
 
 		// Flip slider for RTL locales
-		if (this.slider.actor.get_text_direction() == Clutter.TextDirection.RTL)
-			this.slider.actor.set_scale_with_gravity(-1.0, 1.0, Clutter.Gravity.NORTH);
+		if (this._slider.actor.get_text_direction() == Clutter.TextDirection.RTL)
+			this._slider.actor.set_scale_with_gravity(-1.0, 1.0, Clutter.Gravity.NORTH);
 
 		// Labels box
-		let rangeValueBox = new St.BoxLayout({ style_class: 'walnut-setvar-range-value-box' });
+		let rangeValueBox = new St.BoxLayout({ style_class: 'popup-menu-item' });
 		this.actor.add(rangeValueBox, { expand: true });
 
+		// Spacer
+		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		rangeValueBox.add(spacer);
+
 		// Labels
-		this.rangeMinLabel = new St.Label({ text: '' });
-		rangeValueBox.add(this.rangeMinLabel, {
+		this._rangeMinLabel = new St.Label({ text: '' });
+		rangeValueBox.add(this._rangeMinLabel, {
 			expand: true,
 			x_fill: false,
 			align: St.Align.MIDDLE
 		});
 
-		this.rangeActLabel = new St.Label({
+		this._rangeActLabel = new St.Label({
 			text: '',
 			style_class: 'walnut-setvar-range-actual'
 		});
-		rangeValueBox.add(this.rangeActLabel, {
+		rangeValueBox.add(this._rangeActLabel, {
 			expand: true,
 			x_fill: false,
 			align: St.Align.MIDDLE
 		});
 
-		this.rangeMaxLabel = new St.Label({ text: '' });
-		rangeValueBox.add(this.rangeMaxLabel, {
+		this._rangeMaxLabel = new St.Label({ text: '' });
+		rangeValueBox.add(this._rangeMaxLabel, {
 			expand: true,
 			x_fill: false,
 			align: St.Align.MIDDLE
 		});
 
 		// Buttons
-		this.minus = new Button({
+		this._minus = new Button({
 			icon: 'imported-list-remove',
 			// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
 			accessibleName: _("Decrement by one"),
 			size: 'small'
 		});
-		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
-		rangeValueBox.child_set(this.minus.actor, {
+		rangeValueBox.insert_child_below(this._minus.actor, this._rangeActLabel);
+		rangeValueBox.child_set(this._minus.actor, {
 			x_fill: false,
 			y_fill: false
 		});
 
-		this.minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
-		this.minus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+		this._minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
+		this._minus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
 
 			let key = event.get_key_symbol();
 
@@ -3308,20 +3359,20 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		}));
 
-		this.plus = new Button({
+		this._plus = new Button({
 			icon: 'imported-list-add',
 			// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
 			accessibleName: _("Increment by one"),
 			size: 'small'
 		});
-		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
-		rangeValueBox.child_set(this.plus.actor, {
+		rangeValueBox.insert_child_above(this._plus.actor, this._rangeActLabel);
+		rangeValueBox.child_set(this._plus.actor, {
 			x_fill: false,
 			y_fill: false
 		});
 
-		this.plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
-		this.plus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+		this._plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
+		this._plus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
 
 			let key = event.get_key_symbol();
 
@@ -3337,19 +3388,19 @@ const	SetvarBoxRanges = new Lang.Class({
 			callback: Lang.bind(this, function() {
 
 				// Reset submenu
-				this._resetTo(this.actualValue);
+				this._resetTo(this._actualValue);
 
 				// Give focus back to our 'toggle button'
-				this._parent.container.grab_key_focus();
+				this._parent._button.actor.grab_key_focus();
 
-				// Close the setvarBox and toggle the 'expander'
-				this._parent.toggle();
+				// Close the setvarBox and change the ornament
+				this._parent.fold();
 
 			}),
 			size: 'small'
 		});
 
-		this.go = new Button({
+		this._go = new Button({
 			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
 			accessibleName: _("Set"),
@@ -3357,12 +3408,12 @@ const	SetvarBoxRanges = new Lang.Class({
 
 				upsrwDo.setVar({
 					device: upscMonitor.getList()[0],
-					varName: this.varName,
-					varValue: '%d'.format(this.valueToSet)
+					varName: this._varName,
+					varValue: '%d'.format(this._valueToSet)
 				});
 
-				// Close the setvarBox and toggle the 'expander'
-				this._parent.close();
+				// Close the setvarBox and change the ornament
+				this._parent.fold();
 
 			}),
 			size: 'small'
@@ -3377,22 +3428,22 @@ const	SetvarBoxRanges = new Lang.Class({
 			x_fill: false,
 			y_fill: false
 		});
-		btns.add(this.go.actor, {
+		btns.add(this._go.actor, {
 			x_fill: false,
 			y_fill: false
 		});
 		rangeValueBox.add(btns);
 
 		// Connect slider
-		this.slider.connect('value-changed', Lang.bind(this, function(item) {
+		this._slider.connect('value-changed', Lang.bind(this, function(item) {
 
-			let rangeWindow = this.rangeAct.max - this.rangeAct.min;
+			let rangeWindow = this._rangeAct.max - this._rangeAct.min;
 
 			// Get value
-			this.valueToSet = this.rangeAct.min + Math.round(item._value * rangeWindow);
+			this._valueToSet = this._rangeAct.min + Math.round(item._value * rangeWindow);
 
 			// Update value's label
-			this.rangeActLabel.text = '%d'.format(this.valueToSet);
+			this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 			// Update buttons' clickability
 			this._updateButtons();
@@ -3400,74 +3451,37 @@ const	SetvarBoxRanges = new Lang.Class({
 		}));
 
 		// 'Grab' the scroll (i.e. 'ungrab' it from the PopupSubMenu) when mouse is over the slider
-		this.slider.actor.connect('enter-event', Lang.bind(this, function(actor, event) {
+		this._slider.actor.connect('enter-event', Lang.bind(this, function(actor, event) {
 			if (event.is_pointer_emulated())
 				return;
 			this._parent._parent.actor.set_mouse_scrolling(false);
 		}));
 
 		// 'Ungrab' the scroll (i.e. give it back to the PopupSubMenu) when mouse leaves the slider
-		this.slider.actor.connect('leave-event', Lang.bind(this, function(actor, event) {
+		this._slider.actor.connect('leave-event', Lang.bind(this, function(actor, event) {
 			if (event.is_pointer_emulated())
 				return;
 			this._parent._parent.actor.set_mouse_scrolling(true);
 		}));
 
-		// Add settable ranges
-		if (this.ranges.length > 1) {
-
-			let row = 0;
-			let col;
-
-			let rangesTable = new St.Table({ style_class: 'walnut-setvar-range-table' });
-
-			this.rangesCheck = [];
-
-			for (let i = 0; i < this.ranges.length; i++) {
-
-				let range = this.ranges[i];
-
-				// TRANSLATORS: Range interval @ Setvar box
-				this.rangesCheck[i] = new CheckBox.CheckBox(_("%s - %s").format(range.min, range.max));
-
-				this.rangesCheck[i].actor.name = '%d - %d'.format(range.min, range.max);
-
-				// Connect handlers
-				this.rangesCheck[i].actor.connect('clicked', Lang.bind(this, function() {
-					this._changeRangeTo(range);
-				}));
-
-				if (i % 2) {
-					col = 2;
-				} else {
-					col = 1;
-					row++;
-				}
-
-				rangesTable.add(this.rangesCheck[i].actor, {
-					row: row,
-					col: col
-				});
-
-				// Scroll the parent menu when item gets key-focus
-				this._parent.toggleScrollAction([ this.rangesCheck[i].actor ]);
-
-			}
-
-			this.actor.add(rangesTable, { expand: true });
-
-		}
-
 		this._resetTo(args.actualValue);
 
-		// Scroll the parent menu when items get key-focus
-		this._parent.toggleScrollAction([
-			this.slider.actor,
-			this.minus.actor,
-			this.plus.actor,
-			del.actor,
-			this.go.actor
-		]);
+		// Scroll the menu when items get key-focus
+		sliderItem.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, self);
+		}));
+		this._minus.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
+		}));
+		this._plus.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
+		}));
+		del.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
+		}));
+		this._go.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
+		}));
 
 		this.hide();
 
@@ -3476,22 +3490,22 @@ const	SetvarBoxRanges = new Lang.Class({
 	// _minusAction: actions to execute when 'minus' button gets activated
 	_minusAction: function() {
 
-		if (this.valueToSet <= this.rangeAct.min)
-			this.valueToSet = this.rangeAct.min
+		if (this._valueToSet <= this._rangeAct.min)
+			this._valueToSet = this._rangeAct.min
 
-		else if (this.valueToSet > this.rangeAct.max)
-			this.valueToSet = this.rangeAct.max
+		else if (this._valueToSet > this._rangeAct.max)
+			this._valueToSet = this._rangeAct.max
 
-		// this.rangeAct.min < this.valueToSet <= this.rangeAct.max
+		// this._rangeAct.min < this._valueToSet <= this._rangeAct.max
 		else
-			this.valueToSet--;
+			this._valueToSet--;
 
 		// Update value's label
-		this.rangeActLabel.text = '%d'.format(this.valueToSet);
+		this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 		// Update slider's appearance
-		let rangeActInRange = (this.valueToSet - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min)
-		this.slider.setValue(rangeActInRange);
+		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min)
+		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
 		this._updateButtons();
@@ -3501,22 +3515,22 @@ const	SetvarBoxRanges = new Lang.Class({
 	// _plusAction: actions to execute when 'plus' button gets activated
 	_plusAction: function() {
 
-		if (this.valueToSet < this.rangeAct.min)
-			this.valueToSet = this.rangeAct.min
+		if (this._valueToSet < this._rangeAct.min)
+			this._valueToSet = this._rangeAct.min
 
-		else if (this.valueToSet >= this.rangeAct.max)
-			this.valueToSet = this.rangeAct.max
+		else if (this._valueToSet >= this._rangeAct.max)
+			this._valueToSet = this._rangeAct.max
 
-		// this.rangeAct.min <= this.valueToSet < this.rangeAct.max
+		// this._rangeAct.min <= this._valueToSet < this._rangeAct.max
 		else
-			this.valueToSet++;
+			this._valueToSet++;
 
 		// Update value's label
-		this.rangeActLabel.text = '%d'.format(this.valueToSet);
+		this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 		// Update slider's appearance
-		let rangeActInRange = (this.valueToSet - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min)
-		this.slider.setValue(rangeActInRange);
+		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min)
+		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
 		this._updateButtons();
@@ -3530,73 +3544,79 @@ const	SetvarBoxRanges = new Lang.Class({
 	// }
 	_changeRangeTo: function(args) {
 
-		this.rangeAct.min = args.min;
-		this.rangeMinLabel.text = '%d'.format(this.rangeAct.min);
+		// Update actual range
+		// - min
+		this._rangeAct.min = args.min;
+		this._rangeMinLabel.text = '%d'.format(this._rangeAct.min);
+		// - max
+		this._rangeAct.max = args.max;
+		this._rangeMaxLabel.text = '%d'.format(this._rangeAct.max);
+		// - actual value
+		this._rangeActLabel.text = '%d'.format(this._actualValue);
 
-		this.rangeAct.max = args.max;
-		this.rangeMaxLabel.text = '%d'.format(this.rangeAct.max);
+		// Reset this._valueToSet
+		this._valueToSet = this._actualValue;
 
-		if (this.ranges.length > 1) {
-
-			for (let i = 0; i < this.rangesCheck.length; i++) {
-
-				let range = this.rangesCheck[i];
-
-				if (range.actor.name != '%d - %d'.format(this.rangeAct.min, this.rangeAct.max))
-					range.actor.checked = false;
-
-				else
-					// Set the CheckBox as checked if it represents actual range
-					range.actor.checked = true;
-
-			}
-
-		}
-
+		// Slider
 		let rangeActInRange = 0;
-
-		if (this.actualValue >= this.rangeAct.min && this.actualValue <= this.rangeAct.max) {
-
-			rangeActInRange = (this.actualValue - this.rangeAct.min) / (this.rangeAct.max - this.rangeAct.min);
-
-		}
-
-		this.slider.setValue(rangeActInRange);
-
-		this.rangeActLabel.text = '%d'.format(this.actualValue);
-
-		this.valueToSet = this.actualValue;
+		if (this._actualValue >= this._rangeAct.min && this._actualValue <= this._rangeAct.max)
+			rangeActInRange = (this._actualValue - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
+		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
 		this._updateButtons();
 
+		// Remove old ranges, if any
+		if (this._rangeItems && this._rangeItems.length)
+			for (let i = 0; i < this._rangeItems.length; i++)
+				this._rangeItems[i].destroy();
+		// Add settable ranges
+		this._rangeItems = [];
+		if (this._ranges.length > 1)
+			for (let i = 0; i < this._ranges.length; i++) {
+				let range = this._ranges[i];
+				// The item represents actual range
+				if (this._rangeAct.min == range.min && this._rangeAct.max == range.max)
+					this._rangeItems[i] = new SetvarRangeItem({ range: range });
+				else
+					this._rangeItems[i] = new SetvarRangeItem({
+						range: range,
+						callback: Lang.bind(this, this._changeRangeTo)
+					});
+				this.addMenuItem(this._rangeItems[i]);
+				// Scroll the menu when item gets key-focus
+				this._rangeItems[i].actor.connect('key-focus-in', Lang.bind(this, function(self) {
+					Util.ensureActorVisibleInScrollView(this._scrollView, self);
+				}));
+			}
+
 	},
 
-	// _updateButtons: 'Set' button is usable only when this.valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
+	// _updateButtons: 'Set' button is usable only when this._valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
 	_updateButtons: function() {
 
-		if (this.actualValue != this.valueToSet) {
-			this.go.actor.reactive = true;
-			this.go.actor.can_focus = true;
+		if (this._actualValue != this._valueToSet) {
+			this._go.actor.reactive = true;
+			this._go.actor.can_focus = true;
 		} else {
-			this.go.actor.reactive = false;
-			this.go.actor.can_focus = false;
+			this._go.actor.reactive = false;
+			this._go.actor.can_focus = false;
 		}
 
-		if (this.valueToSet > this.rangeAct.min) {
-			this.minus.actor.reactive = true;
-			this.minus.actor.can_focus = true;
+		if (this._valueToSet > this._rangeAct.min) {
+			this._minus.actor.reactive = true;
+			this._minus.actor.can_focus = true;
 		} else {
-			this.minus.actor.reactive = false;
-			this.minus.actor.can_focus = false;
+			this._minus.actor.reactive = false;
+			this._minus.actor.can_focus = false;
 		}
 
-		if (this.valueToSet < this.rangeAct.max) {
-			this.plus.actor.reactive = true;
-			this.plus.actor.can_focus = true;
+		if (this._valueToSet < this._rangeAct.max) {
+			this._plus.actor.reactive = true;
+			this._plus.actor.can_focus = true;
 		} else {
-			this.plus.actor.reactive = false;
-			this.plus.actor.can_focus = false;
+			this._plus.actor.reactive = false;
+			this._plus.actor.can_focus = false;
 		}
 
 	},
@@ -3604,21 +3624,19 @@ const	SetvarBoxRanges = new Lang.Class({
 	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
-		this.actualValue = actualValue * 1;
+		this._actualValue = actualValue * 1;
 
-		for each (let range in this.ranges) {
+		let rangeAct = {};
 
-			if (!(this.actualValue >= range.min && this.actualValue <= range.max))
+		for each (let range in this._ranges) {
+			if (!(this._actualValue >= range.min && this._actualValue <= range.max))
 				continue;
-
-			this.rangeAct.min = range.min;
-			this.rangeAct.max = range.max;
-
+			rangeAct.min = range.min;
+			rangeAct.max = range.max;
 			break;
-
 		}
 
-		this._changeRangeTo(this.rangeAct);
+		this._changeRangeTo(rangeAct);
 
 	}
 });
@@ -3628,26 +3646,24 @@ const	SetvarEnumItem = new Lang.Class({
 	Name: 'SetvarEnumItem',
 	Extends: PopupMenu.PopupMenuItem,
 
-	_init: function(label) {
+	// args = {
+	//	enumValue: enumerated value this item represents
+	//	callback: function to call when activated; if not set, the item is treated (and represented) as the actually chosen one
+	// }
+	_init: function(args) {
 
-		this.parent('\u2022 ' + label);
-
-	},
-
-	// setChosen: take as argument whether the current enumerated value is chosen or not and set its style/clickability accordingly
-	setChosen: function(chosen) {
-
-		if (chosen) {
-
-			this.setSensitive(false);
-			this.actor.add_style_class_name('walnut-setvar-enums-chosen');
-
+		if (args.callback != null) {
+			this.parent(args.enumValue);
+			this.connect('activate', args.callback);
 		} else {
-
-			this.setSensitive(true);
-			this.actor.remove_style_class_name('walnut-setvar-enums-chosen');
-
+			this.parent(args.enumValue, { activate: false });
+			// Set the item as checked if it represents actual value
+			this.setOrnament(PopupMenu.Ornament.DOT);
 		}
+
+		// Spacer
+		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		this.actor.insert_child_below(spacer, this._ornamentLabel)
 
 	}
 });
@@ -3658,20 +3674,17 @@ const	SetvarBoxEnums = new Lang.Class({
 	Extends: SetvarBox,
 
 	// args = {
-	//	parent: container this box belongs to
 	//	varName: name of the settable variable
 	//	enums: available enumerated values of the settable variable
 	//	actualValue: actual value of the settable variable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
 	_init: function(args) {
 
 		this.parent({
 			varName: args.varName,
-			parent: args.parent
+			scrollView: args.scrollView
 		});
-
-		// Our children are already popup-menu-item, with their paddings, so remove this class
-		this.actor.remove_style_class_name('walnut-setvar-box');
 
 		// enums: {
 		//	enum1,
@@ -3679,43 +3692,10 @@ const	SetvarBoxEnums = new Lang.Class({
 		//	enum3,
 		//	...
 		// }
-		this.enums = args.enums;
+		this._enums = args.enums;
 
-		// Actual value
-		this.actualValue = args.actualValue;
-
-		this.enumItems = [];
-
-		// Iterate through all the enumerated values
-		for (let i = 0; i < this.enums.length; i++) {
-
-			let enumValue = this.enums[i];
-
-			this.enumItems[i] = new SetvarEnumItem(enumValue);
-
-			this.enumItems[i].connect('activate', Lang.bind(this, function() {
-
-				upsrwDo.setVar({
-					device: upscMonitor.getList()[0],
-					varName: this.varName,
-					varValue: enumValue
-				});
-
-				this._parent.toggle();
-
-			}));
-
-			this.actor.add(this.enumItems[i].actor, { expand: true });
-
-			if (this.enums[i] != this.actualValue)
-				this.enumItems[i].setChosen(false);
-			else
-				this.enumItems[i].setChosen(true);
-
-			// Scroll the parent menu when item gets key-focus
-			this._parent.toggleScrollAction([ this.enumItems[i].actor ]);
-
-		}
+		// Reset to actual value
+		this._resetTo(args.actualValue);
 
 		this.hide();
 
@@ -3724,15 +3704,42 @@ const	SetvarBoxEnums = new Lang.Class({
 	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
-		this.actualValue = actualValue;
+		if (this._actualValue == actualValue)
+			return;
 
-		for (let i = 0; i < this.enumItems.length; i++) {
+		// Update actual value
+		this._actualValue = actualValue;
 
-			if (this.enumItems[i].label.text != this.actualValue)
-				this.enumItems[i].setChosen(false);
+		// Remove old enums, if any
+		if (this._enumItems && this._enumItems.length)
+			for (let i = 0; i < this._enumItems.length; i++)
+				this._enumItems[i].destroy();
+		// Add settable enums
+		this._enumItems = [];
+		// Iterate through all the enumerated values
+		for (let i = 0; i < this._enums.length; i++) {
+			let enumValue = this._enums[i];
+			// The item represents actual value
+			if (enumValue == this._actualValue)
+				this._enumItems[i] = new SetvarEnumItem({ enumValue: enumValue });
 			else
-				this.enumItems[i].setChosen(true);
+				this._enumItems[i] = new SetvarEnumItem({
+					enumValue: enumValue,
+					callback: Lang.bind(this, function() {
+						upsrwDo.setVar({
+							device: upscMonitor.getList()[0],
+							varName: this._varName,
+							varValue: enumValue
+						});
+						this._parent.fold();
+					})
+				});
 
+			this.addMenuItem(this._enumItems[i]);
+			// Scroll the menu when item gets key-focus
+			this._enumItems[i].actor.connect('key-focus-in', Lang.bind(this, function(self) {
+				Util.ensureActorVisibleInScrollView(this._scrollView, self);
+			}));
 		}
 
 	}
@@ -3744,46 +3751,54 @@ const	SetvarBoxString = new Lang.Class({
 	Extends: SetvarBox,
 
 	// args = {
-	//	parent: container this box belongs to
 	//	varName: name of the settable variable
 	//	len: maximum length of the settable string
 	//	actualValue: actual value of the settable variable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
 	_init: function(args) {
 
 		this.parent({
 			varName: args.varName,
-			parent: args.parent
+			scrollView: args.scrollView
 		});
 
-		// Max length of the string. NOTE: max length is available only in NUT >= 2.7.1
-		this.maxLength = args.len;
+		// Max length of the string
+		this._maxLength = args.len;
 
 		// Actual value
-		this.actualValue = args.actualValue;
+		this._actualValue = args.actualValue;
 
 		let container = new St.BoxLayout({
 			reactive: false,
 			can_focus: false,
 			track_hover: false,
-			style_class: 'walnut-setvar-string-container'
+			style_class: 'popup-menu-item'
 		});
 		this.actor.add(container, { expand: true });
 
+		// Spacer
+		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		container.add(spacer);
+
 		// Error box
-		this.errorBox = new St.BoxLayout({
-			reactive: false,
+		this._errorBox = new St.BoxLayout({
 			can_focus: false,
-			track_hover: false
+			track_hover: false,
+			style_class: 'popup-menu-item'
 		});
-		this.actor.add(this.errorBox);
+		this.actor.add(this._errorBox);
+
+		// Spacer
+		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		this._errorBox.add(spacer);
 
 		// Error Icon
 		let errorIcon = new St.Icon({
 			icon_name: 'imported-dialog-error-symbolic',
 			style_class: 'walnut-setvar-string-error-icon'
 		});
-		this.errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
+		this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
 		// Error message
 		let errorText = new St.Label({
@@ -3791,15 +3806,15 @@ const	SetvarBoxString = new Lang.Class({
 			text: _("String too long"),
 			style_class: 'walnut-setvar-string-error-text'
 		});
-		this.errorBox.add(errorText, {
+		this._errorBox.add(errorText, {
 			expand: true,
 			y_align: St.Align.MIDDLE,
 			y_fill: false
 		});
 
-		this.errorBox.hide();
+		this._errorBox.hide();
 
-		this.entry = new St.Entry({
+		this._entry = new St.Entry({
 			text: '',
 			// TRANSLATORS: Hint text @ string setvar
 			hint_text: _("set this variable to.."),
@@ -3807,16 +3822,16 @@ const	SetvarBoxString = new Lang.Class({
 			reactive: true,
 			style_class: 'walnut-setvar-string-entry'
 		});
-		container.add(this.entry, { expand: true });
+		container.add(this._entry, { expand: true });
 
-		this.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
+		this._entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
 
-			this.valueToSet = this.entry.get_text();
+			this._valueToSet = this._entry.get_text();
 
-			if (this.maxLength && this.valueToSet.trim().length > this.maxLength)
-				this.errorBox.show();
+			if (this._maxLength && this._valueToSet.trim().length > this._maxLength)
+				this._errorBox.show();
 			else
-				this.errorBox.hide();
+				this._errorBox.hide();
 
 			this._updateOkButton();
 
@@ -3830,19 +3845,19 @@ const	SetvarBoxString = new Lang.Class({
 			callback: Lang.bind(this, function() {
 
 				// Reset submenu
-				this._resetTo(this.actualValue);
+				this._resetTo(this._actualValue);
 
 				// Give focus back to our 'toggle button'
-				this._parent.container.grab_key_focus();
+				this._parent._button.actor.grab_key_focus();
 
 				// Close the setvarBox and toggle the 'expander'
-				this._parent.toggle();
+				this._parent.fold();
 
 			}),
 			size: 'small'
 		});
 
-		this.go = new Button({
+		this._go = new Button({
 			icon: 'imported-emblem-ok',
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
 			accessibleName: _("Set"),
@@ -3850,18 +3865,18 @@ const	SetvarBoxString = new Lang.Class({
 
 				upsrwDo.setVar({
 					device: upscMonitor.getList()[0],
-					varName: this.varName,
-					varValue: this.valueToSet.trim()
+					varName: this._varName,
+					varValue: this._valueToSet.trim()
 				});
 
-				// Close the setvarBox and toggle the 'expander'
-				this._parent.close();
+				// Close the setvarBox and change the ornament
+				this._parent.fold();
 
 			}),
 			size: 'small'
 		});
 
-		this.valueToSet = this.actualValue;
+		this._valueToSet = this._actualValue;
 
 		this._updateOkButton();
 
@@ -3874,34 +3889,38 @@ const	SetvarBoxString = new Lang.Class({
 			x_fill: false,
 			y_fill: false
 		});
-		btns.add(this.go.actor, {
+		btns.add(this._go.actor, {
 			x_fill: false,
 			y_fill: false
 		});
 		container.add(btns);
 
-		// Scroll the parent menu when items get key-focus
-		this._parent.toggleScrollAction([
-			this.entry.clutter_text,
-			del.actor,
-			this.go.actor
-		]);
+		// Scroll the menu when items get key-focus
+		this._entry.clutter_text.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
+		}));
+		del.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
+		}));
+		this._go.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
+		}));
 
 		this.hide();
 
 	},
 
-	// _updateOkButton: 'Set' button is usable only when this.valueToSet != actual value
+	// _updateOkButton: 'Set' button is usable only when this._valueToSet != actual value
 	_updateOkButton: function() {
 
-		let len = this.valueToSet.trim().length;
+		let len = this._valueToSet.trim().length;
 
-		if (this.actualValue != this.valueToSet && len > 0 && (!this.maxLength || len <= this.maxLength)) {
-			this.go.actor.reactive = true;
-			this.go.actor.can_focus = true;
+		if (this._actualValue != this._valueToSet && len > 0 && (!this._maxLength || len <= this._maxLength)) {
+			this._go.actor.reactive = true;
+			this._go.actor.can_focus = true;
 		} else {
-			this.go.actor.reactive = false;
-			this.go.actor.can_focus = false;
+			this._go.actor.reactive = false;
+			this._go.actor.can_focus = false;
 		}
 
 	},
@@ -3909,15 +3928,144 @@ const	SetvarBoxString = new Lang.Class({
 	// _resetTo: reset setvar box to *actualValue*
 	_resetTo: function(actualValue) {
 
-		this.actualValue = actualValue;
+		this._actualValue = actualValue;
 
-		this.entry.text = '';
+		this._entry.text = '';
 
-		this.valueToSet = actualValue;
+		this._valueToSet = actualValue;
 
-		this.errorBox.hide();
+		this._errorBox.hide();
 
 		this._updateOkButton();
+
+	}
+});
+
+// RawDataButton: expander/name/value
+const	RawDataButton = new Lang.Class({
+	Name: 'RawDataButton',
+	Extends: PopupMenu.PopupBaseMenuItem,
+
+	// args = {
+	//	varName: name of the variable
+	//	varValue: actual value of the variable
+	//	setvarBox: child setvar box; if not set, the item won't be activatable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
+	// }
+	_init: function(args) {
+
+		this._setvarBox = args.setvarBox;
+		if (this._setvarBox != null) {
+			this.parent();
+			this.actor.add_accessible_state(Atk.StateType.EXPANDABLE);
+			this.setOrnament(RawDataButtonOrnament.CLOSED);
+		} else {
+			this.parent({ activate: false });
+		}
+
+		// Variable's name
+		this._varName = new St.Label({
+			text: '',
+			y_expand: true,
+			y_align: Clutter.ActorAlign.CENTER
+		});
+		this.varName = args.varName;
+		this.actor.add(this._varName, { expand: true });
+		this.actor.label_actor = this._varName;
+
+		// Variable's value
+		this._varValue = new St.Label({
+			text: '',
+			y_expand: true,
+			y_align: Clutter.ActorAlign.CENTER
+		});
+		this.varValue = args.varValue;
+		this.actor.add(this._varValue);
+
+		// Scroll the menu when items get key-focus
+		this._scrollView = args.scrollView;
+		this.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			Util.ensureActorVisibleInScrollView(this._scrollView, self);
+		}));
+
+	},
+
+	_toggle: function() {
+
+		if (this._setvarBox == null)
+			return;
+
+		if (this._setvarBox.isClosed()) {
+			this._setvarBox.show({ actualValue: this.varValue });
+			this.setOrnament(RawDataButtonOrnament.OPENED);
+		} else {
+			this._setvarBox.hide();
+			this.setOrnament(RawDataButtonOrnament.CLOSED);
+		}
+
+	},
+
+	close: function() {
+
+		if (this._setvarBox == null)
+			return;
+
+		if (this._setvarBox.isClosed())
+			return;
+
+		this._setvarBox.hide();
+		this.setOrnament(RawDataButtonOrnament.CLOSED);
+
+	},
+
+	activate: function(event) {
+
+		if (this._setvarBox != null)
+			this._toggle();
+
+	},
+
+	setOrnament: function(ornament) {
+
+		if (ornament == this._ornament)
+			return;
+
+		this._ornament = ornament;
+
+		if (ornament == RawDataButtonOrnament.CLOSED) {
+			this._ornamentLabel.text = '+';
+			this.actor.remove_accessible_state(Atk.StateType.EXPANDED);
+		} else if (ornament == RawDataButtonOrnament.OPENED) {
+			this._ornamentLabel.text = '-';
+			this.actor.add_accessible_state(Atk.StateType.EXPANDED);
+		} else if (ornament == RawDataButtonOrnament.NONE) {
+			this._ornamentLabel.text = '';
+			this.actor.remove_accessible_state(Atk.StateType.EXPANDED);
+		}
+
+	},
+
+	get varName() {
+
+		return this._varName.get_clutter_text().text;
+
+	},
+
+	set varName(name) {
+
+		this._varName.text = Utilities.parseText(name, Lengths.RAW_VAR, '.');
+
+	},
+
+	get varValue() {
+
+		return this._varValue.get_clutter_text().text;
+
+	},
+
+	set varValue(value) {
+
+		this._varValue.text = Utilities.parseText(value, Lengths.RAW_VALUE);
 
 	}
 });
@@ -3925,139 +4073,75 @@ const	SetvarBoxString = new Lang.Class({
 // UpsRawDataItem: each item of the raw data submenu
 const	UpsRawDataItem = new Lang.Class({
 	Name: 'UpsRawDataItem',
-	Extends: PopupMenu.PopupBaseMenuItem,
+	Extends: PopupMenu.PopupMenuSection,
 
 	// args = {
 	//	varName: name of the variable
 	//	varValue: actual value of the variable
+	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
 	_init: function(args) {
 
-		this.parent({
-			activate: false,
-			reactive: false,
-			can_focus: false,
-			hover: false
-		});
+		this.parent();
 
-		// Edit PopupBaseMenuItem to our needs
-		this.actor.vertical = true;
-		this.actor.remove_child(this._ornamentLabel);
-		this.actor.remove_style_class_name('popup-menu-item');
+		// Variable's name/value
+		this._varName = args.varName;
+		this._varValue = args.varValue;
 
-		// Variable's name
-		this.varName = args.varName;
+		// Set scrollView
+		this._scrollView = args.scrollView;
 
 		// Expander/name/value container
-		this.container = new St.BoxLayout({
-			can_focus: true,
-			track_hover: true,
-			reactive: true,
-			style_class: 'popup-menu-item walnut-raw-data-container'
+		this._button = new RawDataButton({
+			varName: this._varName,
+			varValue: this._varValue,
+			scrollView: this._scrollView
 		});
-		this.actor.add(this.container);
-
-		// Expander
-		this.expander = new St.Label({
-			text: '+',
-			style_class: 'walnut-raw-data-expander'
-		});
-		this.container.add(this.expander);
-
-		this.expander.hide();
-
-		// Label of variable's name
-		this.label = new St.Label({ text: args.varName });
-		this.container.add(this.label, { expand: true });
-
-		// Label of variable's value
-		this.value = new St.Label({ text: args.varValue });
-		this.container.add(this.value);
-
-		// Handle focus and its visual representation
-		this.active = false;
-
-		this.container.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
-
-		this.container.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
-		this.container.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+		this.addMenuItem(this._button);
 
 	},
 
-	// toggleScrollAction: Scroll the parent menu when items listed in *items* (array) get key-focus
-	toggleScrollAction: function(items) {
+	get varName() {
 
-		for each (let item in items) {
-
-			item.connect('key-focus-in', Lang.bind(this, function() {
-				Util.ensureActorVisibleInScrollView(this._parent.actor, this.actor);
-			}));
-
-		}
+		return this._varName;
 
 	},
 
-	_onKeyFocusIn: function(actor) {
+	set varName(name) {
 
-		this.setActive(true);
-
-		// Scroll the parent menu when item gets key-focus
-		Util.ensureActorVisibleInScrollView(this._parent.actor, this.actor);
+		this._varName = name;
+		this._button.varName = name;
 
 	},
 
-	_onKeyFocusOut: function(actor) {
+	get varValue() {
 
-		this.setActive(false);
-
-	},
-
-	_onHoverChanged: function(actor) {
-
-		this.setActive(actor.hover);
+		return this._varValue;
 
 	},
 
-	setActive: function(active) {
+	set varValue(value) {
 
-		let activeChanged = active != this.active;
-
-		if (activeChanged) {
-
-			this.active = active;
-
-			if (active) {
-				this.container.add_style_pseudo_class('active');
-				this.container.grab_key_focus();
-			} else {
-				this.container.remove_style_pseudo_class('active');
-			}
-
-			this.emit('active-changed', active);
-
-		}
+		this._varValue = value;
+		this._button.varValue = value;
 
 	},
 
 	// _addSetvarBox: common function for adding a SetvarBox
 	_addSetvarBox: function() {
 
-		this.actor.add(this.setvarBox.actor);
+		// Expander/name/value container
+		let button = new RawDataButton({
+			varName: this._varName,
+			varValue: this._button.varValue,
+			setvarBox: this.setvarBox,
+			scrollView: this._scrollView
+		});
+		this._button.destroy();
+		this._button = button;
+		this.addMenuItem(this._button);
 
-		this.container.add_style_class_name('walnut-raw-data-expandable');
-
-		this.expander.show();
-
-		this.container.connect('button-release-event', Lang.bind(this, this.toggle));
-
-		this.container.connect('key-press-event', Lang.bind(this, function(actor, event) {
-
-			let symbol = event.get_key_symbol();
-
-			if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return)
-				this.toggle();
-
-		}));
+		this.addMenuItem(this.setvarBox);
 
 	},
 
@@ -4069,10 +4153,10 @@ const	UpsRawDataItem = new Lang.Class({
 	setVarRange: function(args) {
 
 		this.setvarBox = new SetvarBoxRanges({
-			parent: this,
 			varName: this.varName,
 			ranges: args.ranges,
-			actualValue: args.actualValue
+			actualValue: args.actualValue,
+			scrollView: this._scrollView
 		});
 
 		this._addSetvarBox();
@@ -4087,10 +4171,10 @@ const	UpsRawDataItem = new Lang.Class({
 	setVarEnum: function(args) {
 
 		this.setvarBox = new SetvarBoxEnums({
-			parent: this,
 			varName: this.varName,
 			enums: args.enums,
-			actualValue: args.actualValue
+			actualValue: args.actualValue,
+			scrollView: this._scrollView
 		});
 
 		this._addSetvarBox();
@@ -4105,36 +4189,21 @@ const	UpsRawDataItem = new Lang.Class({
 	setVarString: function(args) {
 
 		this.setvarBox = new SetvarBoxString({
-			parent: this,
 			varName: this.varName,
 			len: args.len,
-			actualValue: args.actualValue
+			actualValue: args.actualValue,
+			scrollView: this._scrollView
 		});
 
 		this._addSetvarBox();
 
 	},
 
-	// toggle: toggle the setvarBox
-	toggle: function() {
+	// fold: close the setvarBox, change button ornament
+	fold: function() {
 
-		if (this.setvarBox.actor.visible) {
-			this.expander.text = '+';
-			this.setvarBox.hide();
-		} else {
-			this.expander.text = '-';
-			this.setvarBox.open({ actualValue: this.value.text });
-		}
-
-	},
-
-	// close: close the setvarBox
-	close: function() {
-
-		if (this.setvarBox.actor.visible) {
-			this.expander.text = '+';
-			this.setvarBox.hide();
-		}
+		if (this._button != null)
+			this._button.close();
 
 	}
 });
@@ -4170,10 +4239,10 @@ const	UpsRawDataList = new Lang.Class({
 			for (let i = 0; i < actual.length; i++) {
 
 				// e.g.: stored['battery.charge'] = '0';
-				stored[actual[i].label.get_clutter_text().text] = '%d'.format(i);
+				stored[actual[i].varName] = '%d'.format(i);
 
 				// e.g.: ab[0] = 'battery.charge';
-				ab[i] = actual[i].label.get_clutter_text().text;
+				ab[i] = actual[i].varName;
 
 			}
 
@@ -4196,7 +4265,7 @@ const	UpsRawDataList = new Lang.Class({
 			if (actual && stored[item.var]) {
 
 				// -> update only the variable's value
-				this['_' + item.var].value.text = Utilities.parseText(item.value, Lengths.RAW_VALUE);
+				this['_' + item.var].varValue = item.value;
 
 				// Handle setvars
 				this._handleSetVar(item);
@@ -4227,8 +4296,9 @@ const	UpsRawDataList = new Lang.Class({
 				}
 
 				this['_' + item.var] = new UpsRawDataItem({
-					varName: Utilities.parseText(item.var, Lengths.RAW_VAR, '.'),
-					varValue: Utilities.parseText(item.value, Lengths.RAW_VALUE)
+					varName: item.var,
+					varValue: item.value,
+					scrollView: this.menu.actor
 				});
 
 				// Handle setvars
@@ -4329,19 +4399,11 @@ const	UpsRawDataList = new Lang.Class({
 // UpsDataTableAlt: Alternative, less noisy, data table
 const	UpsDataTableAlt = new Lang.Class({
 	Name: 'UpsDataTableAlt',
-	Extends: PopupMenu.PopupBaseMenuItem,
+	Extends: PopupMenu.PopupMenuSection,
 
 	_init: function() {
 
-		this.parent({
-			reactive: false,
-			can_focus: false
-		});
-
-		// Edit PopupBaseMenuItem to our needs
-		this.actor.vertical = true;
-		this.actor.remove_child(this._ornamentLabel);
-		this.actor.remove_style_class_name('popup-menu-item');
+		this.parent();
 
 	},
 
@@ -4400,10 +4462,7 @@ const	UpsDataTableAlt = new Lang.Class({
 			this[cell.type].setIcon(cell.icon + '-symbolic');
 
 		// Add item
-		this.actor.add(this[cell.type].actor, {
-			expand: true,
-			x_fill: true
-		});
+		this.addMenuItem(this[cell.type]);
 
 	},
 
