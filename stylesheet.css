@@ -157,6 +157,13 @@
 
 .walnut-buttons-small:hover,
 .walnut-buttons-small:focus {
+	padding: 4px;
+}
+
+.walnut-gs-3-12 .walnut-buttons-small:hover,
+.walnut-gs-3-12 .walnut-buttons-small:focus,
+.walnut-gs-3-14 .walnut-buttons-small:hover,
+.walnut-gs-3-14 .walnut-buttons-small:focus {
 	padding: 5px;
 }
 

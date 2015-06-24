@@ -21,6 +21,7 @@
 
 const	CheckBox = imports.ui.checkBox,
 	Clutter = imports.gi.Clutter,
+	Config = imports.misc.config,
 	Lang = imports.lang,
 	Main = imports.ui.main,
 	Mainloop = imports.mainloop,
@@ -4994,6 +4995,9 @@ const	walNUTMenu = new Lang.Class({
 
 		// Override base style
 		this.actor.add_style_class_name('walnut-menu');
+		// Highlight Gnome Shell version
+		let [ major, minor ] = Config.PACKAGE_VERSION.split('.');
+		this.actor.add_style_class_name('walnut-gs-%s-%s'.format(major, minor));
 
 		// Error Box
 		this.errorBox = new ErrorBox();
