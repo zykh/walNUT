@@ -2524,12 +2524,7 @@ const	CredBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-credbox-username'
 		});
-		let userBox = new St.Bin({
-			style_class: 'walnut-credbox-userbox',
-			x_align: St.Align.END
-		});
-		userBox.add_actor(this.user);
-		container.add(userBox, {
+		container.add(this.user, {
 			row: 1,
 			col: 1
 		});
@@ -2542,12 +2537,7 @@ const	CredBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-credbox-password'
 		});
-		let pwBox = new St.Bin({
-			style_class: 'walnut-credbox-pwbox',
-			x_align: St.Align.END
-		});
-		pwBox.add_actor(this.pw);
-		container.add(pwBox, {
+		container.add(this.pw, {
 			row: 1,
 			col: 2
 		});
@@ -2719,58 +2709,26 @@ const	AddBox = new Lang.Class({
 			col_span: 2
 		});
 
-		// Hostname - left-aligned
-	//	this.hostname = new St.Entry({
-	//		hint_text: _("hostname"),
-	//		can_focus: true,
-	//		style_class: 'add-entry',
-	//		style: 'width: 110px; padding: 5px;'
-	//	});
-	//	container.add(this.hostname, {
-	//		row: 1,
-	//		col: 1
-	//	});
-		// Hostname - right-aligned
+		// Hostname
 		this.hostname = new St.Entry({
 			// TRANSLATORS: Hostname hint @ find new devices box
 			hint_text: _("hostname"),
 			can_focus: true,
 			style_class: 'walnut-addbox-host'
 		});
-		let hostnameBox = new St.Bin({
-			style_class: 'walnut-addbox-hostbox',
-			x_align: St.Align.END
-		});
-		hostnameBox.add_actor(this.hostname);
-		container.add(hostnameBox, {
+		container.add(this.hostname, {
 			row: 1,
 			col: 1
 		});
 
-		// Port - left-aligned
-	//	this.port = new St.Entry({
-	//		hint_text: _("port"),
-	//		can_focus: true,
-	//		style_class: 'add-entry',
-	//		style: 'width: 50px; padding: 5px;'
-	//	});
-	//	container.add(this.port, {
-	//		row: 1,
-	//		col: 2
-	//	});
-		// Port - right-aligned
+		// Port
 		this.port = new St.Entry({
 			// TRANSLATORS: Port hint @ find new devices box
 			hint_text: _("port"),
 			can_focus: true,
 			style_class: 'walnut-addbox-port'
 		});
-		let portBox = new St.Bin({
-			style_class: 'walnut-addbox-portbox',
-			x_align: St.Align.END
-		});
-		portBox.add_actor(this.port);
-		container.add(portBox, {
+		container.add(this.port, {
 			row: 1,
 			col: 2
 		});
@@ -3050,6 +3008,7 @@ const	UpsCmdList = new Lang.Class({
 
 		// TRANSLATORS: Extradata's label @ Device commands submenu
 		this.status.text = _("extradata:");
+		this.status.add_style_class_name('walnut-cmd-extradata-label');
 
 		// Extradata's entry: we need to start with a nonempty entry otherwise, when clicking-in, the submenu will close itself
 		this.extradata = new St.Entry({

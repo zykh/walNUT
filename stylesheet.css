@@ -1,3 +1,21 @@
+/* Reset StEntry to our needs */
+.walnut-menu StEntry {
+	border-width: 0;
+	border-style: none;
+	border-radius: 0;
+	box-shadow: 0 1px #1c1f1f;
+}
+
+.walnut-menu StEntry:focus {
+	box-shadow: 0 1px rgba(154, 154, 142, 0.5);
+}
+
+.walnut-gs-3-10.walnut-menu StEntry,
+.walnut-gs-3-12.walnut-menu StEntry,
+.walnut-gs-3-14.walnut-menu StEntry {
+	box-shadow: none;
+}
+
 /* Credentials Dialog */
 .walnut-cred-dialog {
 	min-width: 33.34em;
@@ -82,21 +100,13 @@
 }
 
 .walnut-credbox-username {
-	max-width: 5.333em;
-	padding: .333em;
-}
-
-.walnut-credbox-userbox {
 	width: 5.333em;
+	padding: 0 .333em;
 }
 
 .walnut-credbox-password {
-	max-width: 5.333em;
-	padding: .333em;
-}
-
-.walnut-credbox-pwbox {
 	width: 5.333em;
+	padding: 0 .333em;
 }
 
 .walnut-credbox-buttons-box {
@@ -124,21 +134,13 @@
 }
 
 .walnut-addbox-host {
-	max-width: 7.33em;
-	padding: .333em;
-}
-
-.walnut-addbox-hostbox {
 	width: 7.33em;
+	padding: 0 .333em;
 }
 
 .walnut-addbox-port {
-	max-width: 3.333em;
-	padding: .333em;
-}
-
-.walnut-addbox-portbox {
 	width: 3.333em;
+	padding: 0 .333em;
 }
 
 .walnut-addbox-buttons-box {
@@ -244,14 +246,7 @@
 
 .walnut-setvar-string-entry {
 	max-width: 8em;
-}
-
-.walnut-setvar-string-entry:ltr {
-	padding-right: .333em;
-}
-
-.walnut-setvar-string-entry:rtl {
-	padding-left: .333em;
+	padding: 0 .333em;
 }
 
 .walnut-setvar-string-error-icon {
@@ -297,8 +292,19 @@
 }
 
 /* Device commands */
+.walnut-cmd-extradata-label {
+	font-weight: normal;
+}
+
 .walnut-cmd-extradata {
 	width: 5.333em;
+	font-weight: normal;
+	padding: 0;
+}
+
+.walnut-gs-3-10 .walnut-cmd-extradata,
+.walnut-gs-3-12 .walnut-cmd-extradata,
+.walnut-gs-3-14 .walnut-cmd-extradata {
 	background-color: rgba(0, 0, 0, .3);
 }
 
