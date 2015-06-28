@@ -2386,8 +2386,14 @@ const	DelBox = new Lang.Class({
 			vertical: false,
 			style_class: 'walnut-delbox-buttons-box'
 		});
-		btns.add_actor(del.actor);
-		btns.add_actor(go.actor);
+		btns.add(del.actor, {
+			x_fill: false,
+			y_fill: false
+		});
+		btns.add(go.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 
 		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
@@ -2527,8 +2533,14 @@ const	CredBox = new Lang.Class({
 			vertical: false,
 			style_class: 'walnut-credbox-buttons-box'
 		});
-		btns.add_actor(del.actor);
-		btns.add_actor(go.actor);
+		btns.add(del.actor, {
+			x_fill: false,
+			y_fill: false
+		});
+		btns.add(go.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 
 		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
@@ -2717,8 +2729,14 @@ const	AddBox = new Lang.Class({
 			vertical: false,
 			style_class: 'walnut-addbox-buttons-box'
 		});
-		btns.add_actor(del.actor);
-		btns.add_actor(go.actor);
+		btns.add(del.actor, {
+			x_fill: false,
+			y_fill: false
+		});
+		btns.add(go.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 
 		// Right-align buttons in table
 		let btnsBox = new St.Bin({ x_align: St.Align.END });
@@ -2859,7 +2877,11 @@ const	BottomControls = new Lang.Class({
 	// }
 	addControl: function(args) {
 
-		this.actor.add(args.button.actor, { expand: true, x_fill: false });
+		this.actor.add(args.button.actor, {
+			expand: true,
+			x_fill: false,
+			y_fill: false
+		});
 
 		this.setControl(args);
 
@@ -3271,6 +3293,10 @@ const	SetvarBoxRanges = new Lang.Class({
 			size: 'small'
 		});
 		rangeValueBox.insert_child_below(this.minus.actor, this.rangeActLabel);
+		rangeValueBox.child_set(this.minus.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 
 		this.minus.actor.connect('button-release-event', Lang.bind(this, this._minusAction));
 		this.minus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
@@ -3289,6 +3315,10 @@ const	SetvarBoxRanges = new Lang.Class({
 			size: 'small'
 		});
 		rangeValueBox.insert_child_above(this.plus.actor, this.rangeActLabel);
+		rangeValueBox.child_set(this.plus.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 
 		this.plus.actor.connect('button-release-event', Lang.bind(this, this._plusAction));
 		this.plus.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
@@ -3343,8 +3373,14 @@ const	SetvarBoxRanges = new Lang.Class({
 			vertical: false,
 			style_class: 'walnut-setvar-buttons-box'
 		});
-		btns.add_actor(del.actor);
-		btns.add_actor(this.go.actor);
+		btns.add(del.actor, {
+			x_fill: false,
+			y_fill: false
+		});
+		btns.add(this.go.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 		rangeValueBox.add(btns);
 
 		// Connect slider
@@ -3834,8 +3870,14 @@ const	SetvarBoxString = new Lang.Class({
 			vertical: false,
 			style_class: 'walnut-setvar-buttons-box'
 		});
-		btns.add_actor(del.actor);
-		btns.add_actor(this.go.actor);
+		btns.add(del.actor, {
+			x_fill: false,
+			y_fill: false
+		});
+		btns.add(this.go.actor, {
+			x_fill: false,
+			y_fill: false
+		});
 		container.add(btns);
 
 		// Scroll the parent menu when items get key-focus
