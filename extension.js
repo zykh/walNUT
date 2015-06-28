@@ -2358,7 +2358,9 @@ const	DelBox = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
@@ -2500,7 +2502,9 @@ const	CredBox = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
@@ -2699,7 +2703,9 @@ const	AddBox = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
@@ -3107,7 +3113,9 @@ const	UpsCmdList = new Lang.Class({
 					// TRANSLATORS: Error @ UPS commands submenu
 					Utilities.parseText(_("Error while retrieving UPS commands"), Lengths.CMD),
 					{
-						reactive: false,
+						reactive: true,
+						activate: false,
+						hover: false,
 						can_focus: false
 					}
 				)
@@ -3173,7 +3181,9 @@ const	UpsCmdList = new Lang.Class({
 				// TRANSLATORS: Error @ UPS commands submenu
 				Utilities.parseText(_("No UPS command available"), Lengths.CMD),
 				{
-					reactive: false,
+					reactive: true,
+					activate: false,
+					hover: false,
 					can_focus: false
 				}
 			)
@@ -3829,7 +3839,6 @@ const	SetvarBoxString = new Lang.Class({
 		this._actualValue = args.actualValue;
 
 		let container = new St.BoxLayout({
-			reactive: false,
 			can_focus: false,
 			track_hover: false,
 			style_class: 'popup-menu-item'
@@ -4615,7 +4624,7 @@ const	UpsDataTableAltItem = new Lang.Class({
 
 	_init: function() {
 
-		this.parent();
+		this.parent({ activate: false });
 
 		// Icon
 		this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
@@ -4668,7 +4677,9 @@ const	UpsTopDataList = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
@@ -4800,7 +4811,9 @@ const	UpsModel = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
@@ -4965,7 +4978,9 @@ const	ErrorBox = new Lang.Class({
 	_init: function() {
 
 		this.parent({
-			reactive: false,
+			reactive: true,
+			activate: false,
+			hover: false,
 			can_focus: false
 		});
 
