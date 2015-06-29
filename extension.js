@@ -3427,6 +3427,9 @@ const	SetvarBoxRanges = new Lang.Class({
 				// Close the setvarBox and change the ornament
 				this._parent.fold();
 
+				// Close top menu
+				this.itemActivated();
+
 			}),
 			size: 'small'
 		});
@@ -3896,6 +3899,9 @@ const	SetvarBoxString = new Lang.Class({
 
 				// Close the setvarBox and change the ornament
 				this._parent.fold();
+
+				// Close top menu
+				this.itemActivated();
 
 			}),
 			size: 'small'
