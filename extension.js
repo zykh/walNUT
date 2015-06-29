@@ -3105,8 +3105,10 @@ const	UpsCmdList = new Lang.Class({
 				this.menu.addMenuItem(cmd);
 
 				// Scroll the parent menu when item gets key-focus
-				cmd.actor.connect('key-focus-in', Lang.bind(this, function() {
-					Util.ensureActorVisibleInScrollView(this.menu.actor, cmd.actor);
+				cmd.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+					if (self.get_hover())
+						return;
+					Util.ensureActorVisibleInScrollView(this.menu.actor, self);
 				}));
 
 			}
@@ -3478,18 +3480,28 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		// Scroll the menu when items get key-focus
 		sliderItem.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, self);
 		}));
 		this._minus.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
 		}));
 		this._plus.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
 		}));
 		del.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
 		}));
 		this._go.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, rangeValueBox);
 		}));
 
@@ -3596,6 +3608,8 @@ const	SetvarBoxRanges = new Lang.Class({
 				this.addMenuItem(this._rangeItems[i]);
 				// Scroll the menu when item gets key-focus
 				this._rangeItems[i].actor.connect('key-focus-in', Lang.bind(this, function(self) {
+					if (self.get_hover())
+						return;
 					Util.ensureActorVisibleInScrollView(this._scrollView, self);
 				}));
 			}
@@ -3748,6 +3762,8 @@ const	SetvarBoxEnums = new Lang.Class({
 			this.addMenuItem(this._enumItems[i]);
 			// Scroll the menu when item gets key-focus
 			this._enumItems[i].actor.connect('key-focus-in', Lang.bind(this, function(self) {
+				if (self.get_hover())
+					return;
 				Util.ensureActorVisibleInScrollView(this._scrollView, self);
 			}));
 		}
@@ -3909,9 +3925,13 @@ const	SetvarBoxString = new Lang.Class({
 			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
 		}));
 		del.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
 		}));
 		this._go.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, this.actor);
 		}));
 
@@ -3994,6 +4014,8 @@ const	RawDataButton = new Lang.Class({
 		// Scroll the menu when items get key-focus
 		this._scrollView = args.scrollView;
 		this.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+			if (self.get_hover())
+				return;
 			Util.ensureActorVisibleInScrollView(this._scrollView, self);
 		}));
 
@@ -4846,8 +4868,10 @@ const	UpsList = new Lang.Class({
 			this.menu.addMenuItem(ups_l);
 
 			// Scroll the parent menu when item gets key-focus
-			ups_l.actor.connect('key-focus-in', Lang.bind(this, function() {
-				Util.ensureActorVisibleInScrollView(this.menu.actor, ups_l.actor);
+			ups_l.actor.connect('key-focus-in', Lang.bind(this, function(self) {
+				if (self.get_hover())
+					return;
+				Util.ensureActorVisibleInScrollView(this.menu.actor, self);
 			}));
 
 		}
