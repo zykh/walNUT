@@ -3257,7 +3257,7 @@ const	SetvarRangeItem = new Lang.Class({
 		if (this._callback != null)
 			this._callback(this._range);
 
-		return;
+		this._parent.focusSlider();
 
 	}
 });
@@ -3664,6 +3664,13 @@ const	SetvarBoxRanges = new Lang.Class({
 		}
 
 		this._changeRangeTo(rangeAct);
+
+	},
+
+	// focusSlider: move key focus to the slider
+	focusSlider: function() {
+
+		this._slider.actor.get_parent().grab_key_focus();
 
 	}
 });
