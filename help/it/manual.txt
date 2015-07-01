@@ -1,7 +1,7 @@
 walNUT
 ======
 Daniele Pezzini <hyouko@gmail.com>
-v0.2, October 2013
+v0.3, July 2015
 :numbered:
 :imagesdir: img
 :icons:
@@ -117,17 +117,9 @@ Di base il menu ha questo aspetto:
 
 image::menustd.png["Menu del pannello", align = "center"]
 
-È possibile, inoltre, visualizzare una versione più `rumorosa', ma che potrebbe essere, in alcuni casi, più leggibile, impostando la relativa opzione nelle <<preferences,preferenze>>:
-
-image::menustd_noisy.png["Menu del pannello - Versione 'rumorosa'", align = "center"]
-
 Con tutte le opzioni disponibili impostate:
 
 image::menu.png["Menu del pannello - Completo", align = "center"]
-
-Nella versione `rumorosa':
-
-image::menu_noisy.png["Menu del pannello - Completo, versione 'rumorosa'", align = "center"]
 
 Il menu può essere suddiviso in varie sezioni:
 
@@ -190,10 +182,6 @@ STATO DEL DISPOSITIVO
 
 image::devicestatus.png["Stato del dispositivo", align = "center"]
 
-oppure (versione `rumorosa'):
-
-image::devicestatus_noisy.png["Stato del dispositivo - Versione 'rumorosa'", align = "center"]
-
 Lo stato del dispositivo mostrerà: lo stato della linea elettrica [*A*] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [*B*] (bypass, smorzamento, ..).
 
 
@@ -202,10 +190,6 @@ ALLARME DEL DISPOSITIVO
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 image::devicealarm.png["Allarme del dispositivo", align = "center"]
-
-oppure (versione `rumorosa'):
-
-image::devicealarm_noisy.png["Allarme del dispositivo - Versione 'rumorosa'", align = "center"]
 
 Se viene riportato un allarme (+ups.status+: +ALARM+ e +ups.alarm+) sarà mostrato qui.
 
@@ -217,10 +201,6 @@ TABELLA DEI DATI
 ~~~~~~~~~~~~~~~~
 
 image::datatable.png["Tabella dei dati", align = "center"]
-
-oppure (versione `rumorosa'):
-
-image::datatable_noisy.png["Tabella dei dati - Versione 'rumorosa'", align = "center"]
 
 Se disponibili, [*A*] il livello di carica della batteria, [*B*] il livello di carico, [*C*] il tempo stimato di backup e [*D*] la temperatura del dispositivo saranno visualizzati qui. +
 L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<<panel-icon,icona del pannello>>).
@@ -311,10 +291,6 @@ PULSANTI DI CONTROLLO
 ~~~~~~~~~~~~~~~~~~~~~
 
 image::btns.png["Pulsanti di controllo", align = "center"]
-
-oppure (versione `rumorosa'):
-
-image::btns_noisy.png["Pulsanti di controllo - Versione 'rumorosa'", align = "center"]
 
 In fondo al <<panel-menu,menu del pannello>> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [*A*] appena prima della riga dei pulsanti di controllo [*B*].
 
@@ -437,17 +413,16 @@ Scheda 'Menu' - opzioni relative al <<panel-menu,menu del pannello>>:
 [cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
 |====
 |# |Opzione |Descrizione
-|1 |Usa uno stile meno `rumoroso' per il menu |Se l'esensione deve usare per il menu del pannello uno stile meno `rumoroso', più in linea con quello di Gnome Shell, oppure no. (_default: ON_)
-|2 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
-|3 |Mostra il modello del dispositivo |Visualizza anche il modello del dispositivo (`produttore - modello'), se disponibile, nel menu del pannello. (_default: ON_)
-|4 |Mostra la carica della batteria |Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (_default: ON_)
-|5 |Mostra il carico del dispositivo |Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
-|6 |Mostra il tempo di backup |Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (_default: ON_)
-|7 |Mostra la temperatura del dispositivo |Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
-|8 |Mostra i dati grezzi |Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
-|9 |Mostra i comandi del disposivo |Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
-|10 |Mostra la descrizione dei comandi del dispositivo |Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (_default: ON_)
-|11 |Nascondi la password nel riquadro delle credenziali |Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
+|1 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
+|2 |Mostra il modello del dispositivo |Visualizza anche il modello del dispositivo (`produttore - modello'), se disponibile, nel menu del pannello. (_default: ON_)
+|3 |Mostra la carica della batteria |Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (_default: ON_)
+|4 |Mostra il carico del dispositivo |Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
+|5 |Mostra il tempo di backup |Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (_default: ON_)
+|6 |Mostra la temperatura del dispositivo |Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
+|7 |Mostra i dati grezzi |Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
+|8 |Mostra i comandi del disposivo |Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
+|9 |Mostra la descrizione dei comandi del dispositivo |Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (_default: ON_)
+|10 |Nascondi la password nel riquadro delle credenziali |Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
 |====
 
 

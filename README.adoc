@@ -1,7 +1,7 @@
 walNUT
 ======
 Daniele Pezzini <hyouko@gmail.com>
-v0.2, October 2013
+v0.3, July 2015
 :numbered:
 :imagesdir: help/C/img
 :icons:
@@ -171,17 +171,9 @@ Standardly the menu looks like this:
 
 image::menustd.png["Panel Menu", align = "center"]
 
-You can also choose to use a more `noisy' version, that could end up being more readable in some cases, setting the appropriate option in the <<{preferences},preferences>>:
-
-image::menustd_noisy.png["Panel Menu - 'Noisy' version", align = "center"]
-
 With all the available options set:
 
 image::menu.png["Panel Menu - Complete", align = "center"]
-
-`Noisy' version:
-
-image::menu_noisy.png["Panel Menu - Complete, 'noisy' version", align = "center"]
 
 The menu can be split up in various sections:
 
@@ -253,10 +245,6 @@ DEVICE STATUS
 
 image::devicestatus.png["Device Status", align = "center"]
 
-or (`noisy' version):
-
-image::devicestatus_noisy.png["Device Status - 'Noisy' version", align = "center"]
-
 Device status will show: line status [*A*] (online/on battery), and then, on the second row, every status reported by the device [*B*] (bypass, trim, ..).
 
 
@@ -265,10 +253,6 @@ DEVICE ALARM
 ~~~~~~~~~~~~
 
 image::devicealarm.png["Device Alarm", align = "center"]
-
-or (`noisy' version):
-
-image::devicealarm_noisy.png["Device Alarm - 'Noisy' version", align = "center"]
 
 If an alarm is set (+ups.status+: +ALARM+ and +ups.alarm+) it'll be shown here.
 
@@ -280,10 +264,6 @@ DATA TABLE
 ~~~~~~~~~~
 
 image::datatable.png["Data Table", align = "center"]
-
-or (`noisy' version):
-
-image::datatable_noisy.png["Data Table - 'Noisy' version", align = "center"]
 
 If available, [*A*] battery charge, [*B*] device load, [*C*] backup time and [*D*] device temperature will be shown here. +
 Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
@@ -374,10 +354,6 @@ CONTROL BUTTONS
 ~~~~~~~~~~~~~~~
 
 image::btns.png["Control Buttons", align = "center"]
-
-or (`noisy' version):
-
-image::btns_noisy.png["Control Buttons - 'Noisy' version", align = "center"]
 
 At the bottom of the <<{panel-menu},panel menu>> there's a handful of control buttons, some of which will open their own box [*A*] just before the controls row [*B*].
 
@@ -501,17 +477,16 @@ image::pref_menu.png["Preferences - Menu", align = "center"]
 [cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
 |====
 |# |Option |Description
-|1 |Use a less `noisy' style for the menu |Whether the extension should use a less `noisy', more in line with Gnome Shell's own, style or not for the panel menu. (_default: ON_)
-|2 |Display not available devices |Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
-|3 |Display device model |Show also device model (`manufacturer - model'), if available, in the panel menu. (_default: ON_)
-|4 |Display battery charge |Show also battery charge, if available, in the panel menu. (_default: ON_)
-|5 |Display load level |Show also load level, if available, in the panel menu. (_default: ON_)
-|6 |Display backup time |Show also backup time, if available, in the panel menu. (_default: ON_)
-|7 |Display device temperature |Show also device temperature, if available, in the panel menu. (_default: ON_)
-|8 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
-|9 |Display device commands |Display available device commands. You'll need upsd user and password to execute them. (_default: OFF_)
-|10 |Display description of device commands |Display also a localized description of available device commands in the submenu. (_default: ON_)
-|11 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
+|1 |Display not available devices |Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
+|2 |Display device model |Show also device model (`manufacturer - model'), if available, in the panel menu. (_default: ON_)
+|3 |Display battery charge |Show also battery charge, if available, in the panel menu. (_default: ON_)
+|4 |Display load level |Show also load level, if available, in the panel menu. (_default: ON_)
+|5 |Display backup time |Show also backup time, if available, in the panel menu. (_default: ON_)
+|6 |Display device temperature |Show also device temperature, if available, in the panel menu. (_default: ON_)
+|7 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
+|8 |Display device commands |Display available device commands. You'll need upsd user and password to execute them. (_default: OFF_)
+|9 |Display description of device commands |Display also a localized description of available device commands in the submenu. (_default: ON_)
+|10 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
 |====
 
 
