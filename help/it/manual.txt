@@ -32,7 +32,7 @@ INSTALLAZIONE
 
 ----
 cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+git clone --depth 1 https://github.com/zykh/walNUT.git walnut@networkupstools
 glib-compile-schemas walnut@networkupstools/schemas/
 ----
 
@@ -48,9 +48,10 @@ Quindi è possibile attivare l'esensione attraverso https://live.gnome.org/Gnome
 Se si usa una versione precedente di _walNUT_, in fase di aggiornamento, è sempre necessario ricompilare lo schema:
 
 ----
-cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
-glib-compile-schemas walnut@networkupstools/schemas/
+cd ~/.local/share/gnome-shell/extensions/walnut@networkupstools
+git fetch
+git merge
+glib-compile-schemas schemas/
 ----
 ====
 
