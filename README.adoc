@@ -88,7 +88,7 @@ You can install this extension for your user by executing:
 
 ----
 cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+git clone --depth 1 https://github.com/zykh/walNUT.git walnut@networkupstools
 glib-compile-schemas walnut@networkupstools/schemas/
 ----
 
@@ -104,9 +104,10 @@ Then you can enable the extension through https://live.gnome.org/GnomeTweakTool[
 Users of previous versions of _walNUT_, when upgrading, must always recompile the schema:
 
 ----
-cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
-glib-compile-schemas walnut@networkupstools/schemas/
+cd ~/.local/share/gnome-shell/extensions/walnut@networkupstools
+git fetch
+git merge
+glib-compile-schemas schemas/
 ----
 ====
 
