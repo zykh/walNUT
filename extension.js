@@ -3216,6 +3216,14 @@ const	SetvarBox = new Lang.Class({
 
 		return !this.actor.visible;
 
+	},
+
+	// _resetTo: reset setvar box to *value*
+	_resetTo: function(value) {
+
+		if (this._actualValue != value)
+			this._actualValue = value;
+
 	}
 });
 
@@ -3576,17 +3584,20 @@ const	SetvarBoxRanges = new Lang.Class({
 		// - max
 		this._rangeAct.max = args.max;
 		this._rangeMaxLabel.text = '%d'.format(this._rangeAct.max);
-		// - actual value
-		this._rangeActLabel.text = '%d'.format(this._actualValue);
 
 		// Reset this._valueToSet
-		this._valueToSet = this._actualValue;
+		if (this._actualValueNumeric != undefined)
+			this._valueToSet = this._actualValueNumeric;
+		else
+			this._valueToSet = this._rangeAct.min;
+		// Actual value to set label
+		this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 		// Slider
 		let rangeActInRange = 0;
-		if (this._actualValue >= this._rangeAct.min && this._actualValue <= this._rangeAct.max)
-			rangeActInRange = (this._actualValue - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
-		else if (this._actualValue > this._rangeAct.max)
+		if (this._valueToSet >= this._rangeAct.min && this._valueToSet <= this._rangeAct.max)
+			rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
+		else if (this._valueToSet > this._rangeAct.max)
 			rangeActInRange = 1;
 		this._slider.setValue(rangeActInRange);
 
@@ -3624,7 +3635,10 @@ const	SetvarBoxRanges = new Lang.Class({
 	// _updateButtons: 'Set' button is usable only when this._valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
 	_updateButtons: function() {
 
-		if (this._actualValue != this._valueToSet) {
+		if (
+			this._actualValueNumeric == undefined ||
+			this._actualValueNumeric != this._valueToSet
+		) {
 			this._go.actor.reactive = true;
 			this._go.actor.can_focus = true;
 		} else {
@@ -3650,19 +3664,59 @@ const	SetvarBoxRanges = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to *actualValue*
-	_resetTo: function(actualValue) {
+	// _resetTo: reset setvar box to *value*
+	_resetTo: function(value) {
 
-		this._actualValue = actualValue * 1;
+		this._actualValue = value;
+		this._actualValueNumeric = Number(this._actualValue);
 
 		let rangeAct = {};
 
-		for each (let range in this._ranges) {
-			if (!(this._actualValue >= range.min && this._actualValue <= range.max))
-				continue;
-			rangeAct.min = range.min;
-			rangeAct.max = range.max;
-			break;
+		// Actual value is an acceptable number
+		if (!isNaN(this._actualValueNumeric) && isFinite(this._actualValueNumeric)) {
+
+			// Ranges only support ints
+			this._actualValueNumeric = parseInt(this._actualValue);
+
+			for each (let range in this._ranges) {
+				if (!(this._actualValueNumeric >= range.min && this._actualValueNumeric <= range.max))
+					continue;
+				rangeAct.min = range.min;
+				rangeAct.max = range.max;
+				break;
+			}
+
+			// Actual value is out of the available ranges, choose the nearest one
+			if (rangeAct.min == null || rangeAct.max == null) {
+				if (this._ranges.length > 1) {
+					let delta;
+					for each (let range in this._ranges) {
+						let localDelta;
+						// Less than minimum
+						if (this._actualValueNumeric < range.min)
+							localDelta = range.min - this._actualValueNumeric;
+						// Greater than maximum
+						else
+							localDelta = this._actualValueNumeric - range.max;
+						if (delta == undefined || localDelta < delta) {
+							delta = localDelta;
+							rangeAct.min = range.min;
+							rangeAct.max = range.max;
+						}
+					}
+				} else {
+					rangeAct.min = this._ranges[0].min;
+					rangeAct.max = this._ranges[0].max;
+				}
+			}
+
+		// Actual value is not an acceptable number -> use first available range
+		} else {
+
+			rangeAct.min = this._ranges[0].min;
+			rangeAct.max = this._ranges[0].max;
+			this._actualValueNumeric = undefined;
+
 		}
 
 		this._changeRangeTo(rangeAct);
@@ -3737,14 +3791,14 @@ const	SetvarBoxEnums = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to *actualValue*
-	_resetTo: function(actualValue) {
+	// _resetTo: reset setvar box to *value*
+	_resetTo: function(value) {
 
-		if (this._actualValue == actualValue)
+		if (this._actualValue == value)
 			return;
 
 		// Update actual value
-		this._actualValue = actualValue;
+		this._actualValue = value;
 
 		// Remove old enums, if any
 		if (this._enumItems && this._enumItems.length)
@@ -3979,14 +4033,14 @@ const	SetvarBoxString = new Lang.Class({
 
 	},
 
-	// _resetTo: reset setvar box to *actualValue*
-	_resetTo: function(actualValue) {
+	// _resetTo: reset setvar box to *value*
+	_resetTo: function(value) {
 
-		this._actualValue = actualValue;
+		this._actualValue = value;
 
 		this._entry.text = '';
 
-		this._valueToSet = actualValue;
+		this._valueToSet = value;
 
 		this._errorBox.hide();
 
