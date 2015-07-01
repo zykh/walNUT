@@ -3756,7 +3756,17 @@ const	SetvarBoxEnums = new Lang.Class({
 		for (let i = 0; i < this._enums.length; i++) {
 			let enumValue = this._enums[i];
 			// The item represents actual value
-			if (enumValue == this._actualValue)
+			if (
+				enumValue == this._actualValue ||
+				// Take into account different notations for numbers
+				(
+					!isNaN(Number(enumValue)) &&
+					isFinite(Number(enumValue)) &&
+					!isNaN(Number(this._actualValue)) &&
+					isFinite(Number(this._actualValue)) &&
+					parseFloat(enumValue) == parseFloat(this._actualValue)
+				)
+			)
 				this._enumItems[i] = new SetvarEnumItem({ enumValue: enumValue });
 			else
 				this._enumItems[i] = new SetvarEnumItem({
