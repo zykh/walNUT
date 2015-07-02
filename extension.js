@@ -3537,7 +3537,8 @@ const	SetvarBoxRanges = new Lang.Class({
 		this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 		// Update slider's appearance
-		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min)
+		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
+		rangeActInRange = isFinite(rangeActInRange) ? rangeActInRange : 0.5;
 		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
@@ -3562,7 +3563,8 @@ const	SetvarBoxRanges = new Lang.Class({
 		this._rangeActLabel.text = '%d'.format(this._valueToSet);
 
 		// Update slider's appearance
-		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min)
+		let rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
+		rangeActInRange = isFinite(rangeActInRange) ? rangeActInRange : 0.5;
 		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
@@ -3595,10 +3597,12 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		// Slider
 		let rangeActInRange = 0;
-		if (this._valueToSet >= this._rangeAct.min && this._valueToSet <= this._rangeAct.max)
+		if (this._valueToSet >= this._rangeAct.min && this._valueToSet <= this._rangeAct.max) {
 			rangeActInRange = (this._valueToSet - this._rangeAct.min) / (this._rangeAct.max - this._rangeAct.min);
-		else if (this._valueToSet > this._rangeAct.max)
+			rangeActInRange = isFinite(rangeActInRange) ? rangeActInRange : 0.5;
+		} else if (this._valueToSet > this._rangeAct.max) {
 			rangeActInRange = 1;
+		}
 		this._slider.setValue(rangeActInRange);
 
 		// Update buttons' clickability
