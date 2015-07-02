@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-menu">
-<title>4. PANEL MENU</title>
+<title>4. Panel menu</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="device-credentials"/>
 </info>
@@ -19,13 +19,6 @@ Standardly the menu looks like this:</p>
 <p>Panel Menu</p>
 </media>
 </figure>
-<p>You can also choose to use a more &#8216;noisy&#8217; version, that could end up being more readable in some cases, setting the appropriate option in the <link xref="preferences">preferences</link>:</p>
-<figure>
-<media type="image" src="img/menustd_noisy.png"
->
-<p>Panel Menu - 'Noisy' version</p>
-</media>
-</figure>
 <p>With all the available options set:</p>
 <figure>
 <media type="image" src="img/menu.png"
@@ -33,49 +26,47 @@ Standardly the menu looks like this:</p>
 <p>Panel Menu - Complete</p>
 </media>
 </figure>
-<p>&#8216;Noisy&#8217; version:</p>
-<figure>
-<media type="image" src="img/menu_noisy.png"
->
-<p>Panel Menu - Complete, 'noisy' version</p>
-</media>
-</figure>
 <p>The menu can be split up in various sections:</p>
-<table rules="rows"
-frame="top bottom"
->
-<tbody>
-<tr>
-<td><p><em style="strong">A</em></p></td>
-<td><p><link xref="panel-menu#device-list">Device List</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">B</em></p></td>
-<td><p><link xref="panel-menu#device-model">Device Model</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">C</em></p></td>
-<td><p><link xref="panel-menu#device-status">Device Status</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">D</em></p></td>
-<td><p><link xref="panel-menu#device-alarm">Device Alarm</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">E</em></p></td>
-<td><p><link xref="panel-menu#data-table">Data Table</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">F</em></p></td>
-<td><p><link xref="panel-menu#raw-vars">Raw Vars</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">G</em></p></td>
-<td><p><link xref="panel-menu#device-commands">Device Commands</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">H</em></p></td>
-<td><p>Box for control buttons' functions</p>
+<list type="upper-alpha">
+<item>
+<p>
+<link xref="panel-menu#device-list">Device List</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-model">Device Model</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-status">Device Status</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-alarm">Device Alarm</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#data-table">Data Table</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#raw-vars">Raw Vars</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-commands">Device Commands</link>
+</p>
+</item>
+<item>
+<p>
+Box for control buttons' functions
+</p>
 <list>
 <item>
 <p>
@@ -92,14 +83,14 @@ frame="top bottom"
 <link xref="panel-menu#delete-devices">Delete device box</link>
 </p>
 </item>
-</list></td>
-</tr>
-<tr>
-<td><p><em style="strong">I</em></p></td>
-<td><p><link xref="panel-menu#control-buttons">Control Buttons</link></p></td>
-</tr>
-</tbody>
-</table>
+</list>
+</item>
+<item>
+<p>
+<link xref="panel-menu#control-buttons">Control Buttons</link>
+</p>
+</item>
+</list>
 <p>In case of errors, the menu appears like this:</p>
 <figure>
 <media type="image" src="img/menuerr.png"
@@ -108,7 +99,7 @@ frame="top bottom"
 </media>
 </figure>
 <p>Where the device list [<em style="strong">A</em>] is visible or not, depending on the type of error [<em style="strong">L</em>].</p>
-<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. DEVICE LIST</title>
+<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. Device list</title>
 <figure>
 <media type="image" src="img/devicelist.png"
 >
@@ -128,7 +119,7 @@ frame="top bottom"
 <p>Not available devices are signaled with a <em style="strong">(N/A)</em> [<em style="strong">A</em>] at their right.
 You can choose either to display or not not available devices in the <link xref="preferences">preferences</link>.</p>
 </section>
-<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. DEVICE MODEL</title>
+<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. Device model</title>
 <figure>
 <media type="image" src="img/devicemodel.png"
 >
@@ -141,34 +132,20 @@ You can choose either to display or not not available devices in the <link xref=
 </note>
 <p>You can choose whether to display or not this information changing its option in the <link xref="preferences">preferences</link>.</p>
 </section>
-<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. DEVICE STATUS</title>
+<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. Device status</title>
 <figure>
 <media type="image" src="img/devicestatus.png"
 >
 <p>Device Status</p>
 </media>
 </figure>
-<p>or (&#8216;noisy&#8217; version):</p>
-<figure>
-<media type="image" src="img/devicestatus_noisy.png"
->
-<p>Device Status - 'Noisy' version</p>
-</media>
-</figure>
 <p>Device status will show: line status [<em style="strong">A</em>] (online/on battery), and then, on the second row, every status reported by the device [<em style="strong">B</em>] (bypass, trim, ..).</p>
 </section>
-<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. DEVICE ALARM</title>
+<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. Device alarm</title>
 <figure>
 <media type="image" src="img/devicealarm.png"
 >
 <p>Device Alarm</p>
-</media>
-</figure>
-<p>or (&#8216;noisy&#8217; version):</p>
-<figure>
-<media type="image" src="img/devicealarm_noisy.png"
->
-<p>Device Alarm - 'Noisy' version</p>
 </media>
 </figure>
 <p>If an alarm is set (<code>ups.status</code>: <code>ALARM</code> and <code>ups.alarm</code>) it&#8217;ll be shown here.</p>
@@ -176,25 +153,18 @@ You can choose either to display or not not available devices in the <link xref=
 <p>An alarm will be signaled also through an &#8216;exclamation mark&#8217; on the <link xref="panel-icon">panel icon</link>.</p>
 </note>
 </section>
-<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. DATA TABLE</title>
+<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. Data table</title>
 <figure>
 <media type="image" src="img/datatable.png"
 >
 <p>Data Table</p>
 </media>
 </figure>
-<p>or (&#8216;noisy&#8217; version):</p>
-<figure>
-<media type="image" src="img/datatable_noisy.png"
->
-<p>Data Table - 'Noisy' version</p>
-</media>
-</figure>
 <p>If available, [<em style="strong">A</em>] battery charge, [<em style="strong">B</em>] device load, [<em style="strong">C</em>] backup time and [<em style="strong">D</em>] device temperature will be shown here.
 Battery icon [<em style="strong">1</em>] will display actual charge through the number of horizontal bars (as the ones of <link xref="panel-icon">panel icon</link>).</p>
 <p>You can choose whether to display or not these data changing their options in the <link xref="preferences">preferences</link>.</p>
 </section>
-<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. RAW VARS</title>
+<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. Raw vars</title>
 <figure>
 <media type="image" src="img/raw.png"
 >
@@ -269,7 +239,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 </media>
 </figure>
 </section>
-<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. DEVICE COMMANDS</title>
+<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. Device commands</title>
 <figure>
 <media type="image" src="img/cmd.png"
 >
@@ -302,18 +272,11 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 </media>
 </figure>
 </section>
-<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. CONTROL BUTTONS</title>
+<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. Control buttons</title>
 <figure>
 <media type="image" src="img/btns.png"
 >
 <p>Control Buttons</p>
-</media>
-</figure>
-<p>or (&#8216;noisy&#8217; version):</p>
-<figure>
-<media type="image" src="img/btns_noisy.png"
->
-<p>Control Buttons - 'Noisy' version</p>
 </media>
 </figure>
 <p>At the bottom of the <link xref="panel-menu">panel menu</link> there&#8217;s a handful of control buttons, some of which will open their own box [<em style="strong">A</em>] just before the controls row [<em style="strong">B</em>].</p>
@@ -352,7 +315,7 @@ If you click on the &#8216;Undo and close&#8217; button [<em style="strong">N</e
 </item>
 </list>
 </section>
-<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. CREDENTIALS BOX</title>
+<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. Credentials box</title>
 <figure>
 <media type="image" src="img/credbox.png"
 >
@@ -369,7 +332,7 @@ This box is used to store username and password for devices so that you don&#821
 <p>Standardly the password is hidden, but if you want, you can choose not to hide it in the <link xref="preferences">preferences</link>.</p>
 </note>
 </section>
-<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. FIND NEW DEVICES/FIND NEW DEVICES BOX</title>
+<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. Find new devices/find new devices box</title>
 <figure>
 <media type="image" src="img/addbox.png"
 >
@@ -388,7 +351,7 @@ This box is used to store username and password for devices so that you don&#821
 </media>
 </figure>
 </section>
-<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. DELETE DEVICES/DELETE DEVICES BOX</title>
+<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. Delete devices/delete devices box</title>
 <figure>
 <media type="image" src="img/delbox.png"
 >
