@@ -3,9 +3,9 @@ walNUT
 Daniele Pezzini <hyouko@gmail.com>
 v0.3, July 2015
 :numbered:
-:imagesdir: help/C/img
+:imagesdir: img
 :icons:
-:iconsdir: help/ad/icons
+:iconsdir: ../ad/icons
 :badges:
 :disable-javascript:
 :linkcss:
@@ -13,33 +13,7 @@ v0.3, July 2015
 :stylesheet: custom.css
 :max-width: 1024px
 
-// The following ones are used by the GitHub README.adoc
-:installation: 1-installation
-:first-execution: 2-first-execution
-:panel-icon: 3-panel-iconlabel
-:panel-menu: 4-panel-menu
-:device-list: 41-device-list
-:device-model: 42-device-model
-:device-status: 43-device-status
-:device-alarm: 44-device-alarm
-:data-table: 45-data-table
-:raw-vars: 46-raw-vars
-:device-commands: 47-devices-commands
-:control-buttons: 48-control-buttons
-:credentials-box: 49-credentials-box
-:find-new-devices: 410-find-new-devicesfind-new-devices-box
-:delete-devices: 411-delete-devicesdelete-devices-box
-:device-credentials: 5-device-credentials
-:credentials-dialog: 51-credentials-dialog
-:preferences: 6-preferences
-:help: 8-help
-
-// Override them and images' directories for the html/mallard versions calling asciidoc with the 'walnut' attribute (i.e. -a walnut)
-ifdef::walnut[]
-
-:imagesdir: img
-:iconsdir: ../ad/icons
-
+// Xrefs
 :installation: installation
 :first-execution: first-execution
 :panel-icon: panel-icon
@@ -60,7 +34,32 @@ ifdef::walnut[]
 :preferences: preferences
 :help: help
 
-endif::walnut[]
+// Override xrefs and images' directory for GitHub's README.adoc
+ifdef::env-github[]
+
+:imagesdir: help/C/img
+
+:installation: 1-installation
+:first-execution: 2-first-execution
+:panel-icon: 3-panel-iconlabel
+:panel-menu: 4-panel-menu
+:device-list: 41-device-list
+:device-model: 42-device-model
+:device-status: 43-device-status
+:device-alarm: 44-device-alarm
+:data-table: 45-data-table
+:raw-vars: 46-raw-vars
+:device-commands: 47-devices-commands
+:control-buttons: 48-control-buttons
+:credentials-box: 49-credentials-box
+:find-new-devices: 410-find-new-devicesfind-new-devices-box
+:delete-devices: 411-delete-devicesdelete-devices-box
+:device-credentials: 5-device-credentials
+:credentials-dialog: 51-credentials-dialog
+:preferences: 6-preferences
+:help: 8-help
+
+endif::env-github[]
 
 
 [float]
@@ -132,14 +131,9 @@ Here is explained how they behave.
 
 [cols="1^.^,9.^",frame="topbot",grid="rows",align="center",options="autowidth"]
 |====
-|image:icons.png["Panel Icon"] a|
+|image:icons.png["Panel Icon"] |
 The panel icon standardly displays only battery charge [*A*], but it can display also device load [*B*], if available. +
 In that case the `seed' of the walnut will be split up in two pieces: the leftmost [*1*] will display battery charge, the rightmost [*2*] load level.
-
-:preferences: 6-preferences
-ifdef::walnut[]
-:preferences: preferences
-endif::walnut[]
 
 In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the left side of the `seed' [*3*] will be full and transparent.
 |image:icon_ol_ob.png["Panel Icon - Online/On Battery + Charged/Charging"] |
@@ -196,14 +190,14 @@ The menu can be split up in various sections:
 |G |<<{device-commands},Device Commands>>
 |H a|Box for control buttons' functions
 
-:credentials-box: 49-credentials-box
-:find-new-devices: 410-find-new-devicesfind-new-devices-box
-:delete-devices: 411-delete-devicesdelete-devices-box
-ifdef::walnut[]
 :credentials-box: credentials-box
 :find-new-devices: find-new-devices
 :delete-devices: delete-devices
-endif::walnut[]
+ifdef::env-github[]
+:credentials-box: 49-credentials-box
+:find-new-devices: 410-find-new-devicesfind-new-devices-box
+:delete-devices: 411-delete-devicesdelete-devices-box
+endif::env-github[]
 
 - <<{credentials-box},Device credentials box>>
 - <<{find-new-devices},Find new devices box>>
