@@ -3,15 +3,15 @@ walNUT
 Daniele Pezzini <hyouko@gmail.com>
 v0.3, July 2015
 :numbered:
-:imagesdir: img
+:imagesdir:		img
 :icons:
-:iconsdir: ../ad/icons
+:iconsdir:		../ad/icons
 :badges:
 :disable-javascript:
 :linkcss:
-:stylesdir: ../ad/style
-:stylesheet: custom.css
-:max-width: 1024px
+:stylesdir:		../ad/style
+:stylesheet:		custom.css
+:max-width:		1024px
 
 
 [float]
@@ -76,35 +76,29 @@ Qui è spiegato come si comportano.
 
 [cols="1^.^,9.^",frame="topbot",grid="rows",align="center",options="autowidth"]
 |====
-|image:icons.png["Icona del pannello"] a|
-L'icona del pannello normalmente mostra solo il livello di carica della batteria [*A*], ma può visualizzare anche il livello di carico del dispositivo [*B*], se disponibile. +
-In tal caso il `seme' della noce sarà diviso in due parti: quella più a sinistra [*1*] mostrerà il livello di carica della batteria, quella più a destra [*2*] il livello di carico del dispositivo.
+|image:icons.png["Icona del pannello"]							|L'icona del pannello normalmente mostra solo il livello di carica della batteria [*A*], ma può visualizzare anche il livello di carico del dispositivo [*B*], se disponibile. +
+											 In tal caso il `seme' della noce sarà diviso in due parti: quella più a sinistra [*1*] mostrerà il livello di carica della batteria, quella più a destra [*2*] il livello di carico del dispositivo.
 
-Nel caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<preferences,preferenze>> _e_ il livello di carica della batteria non sia disponibile, la parte sinistra del `seme' [*3*] sarà piena e trasparente.
-|image:icon_ol_ob.png["Icona del pannello - in linea/a batteria + Carico/Caricando"] |
-L'icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l'elettricità non è assente, +ups.status+: +OL+) ci sarà un piccolo fulmine [*C*] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [*D*]. +
-Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile _e_ il dispositivo non ci sta dicendo che si sta caricando o scaricando (+ups.status+: +CHRG+/+DISCHRG+) supporremo che sia carico e il fulmine sarà trasparente [*E*], altrimenti sarà a piena opacità [*F*].
-|image:icon_caution.png["Icona del pannello - Attenzione"] |
-Per gli altri stati (+ups.status+: +BYPASS+, +TRIM+, ..) o se si verifica un allarme (+ups.status+: +ALARM+ + +ups.alarm+) ci sarà un punto esclamativo nell'angolo in alto a destra della noce.
-|image:icon_ghost.png["Icona del pannello - Fantasma"] |
-Se il livello di carica della batteria non è disponibile oppure se anche l'opzione _Mostra il carico del dispositivo nell'icona del pannello_ è selezionata nelle <<preferences,preferenze>> _e_ *sia* il livello di carico del dispositivo, *sia* il livello di carica della batteria non sono disponibili l'icona sarà una noce piena e trasparente.
-|image:icon_error.png["Icona del pannello - Errore"] |
-Questa è l'icona visualizzata in caso di errori.
-|image:icon_labels.png["Etichette sul pannello"] |
-_walNUT_ può anche mostrare un'etichetta, alla destra dell'icona sul pannello, con il livello di carica della batteria [*G*], il livello di carico del dispositivo [*H*] o entrambi [*I*], se disponibili.
+											 Nel caso in cui si imposti anche _Mostra il carico del dispositivo nell'icona del pannello_ nelle <<preferences,preferenze>> _e_ il livello di carica della batteria non sia disponibile, la parte sinistra del `seme' [*3*] sarà piena e trasparente.
+|image:icon_ol_ob.png["Icona del pannello - in linea/a batteria + Carico/Caricando"]	|L'icona del pannello visualizza anche lo stato della linea elettrica: se il dispositivo è connesso alla rete (l'elettricità non è assente, +ups.status+: +OL+) ci sarà un piccolo fulmine [*C*] alla destra della noce che non sarà visualizzato se il dispositivo è alimentato dalla batteria [*D*]. +
+											 Questo fulmine mostrerà anche se il dispositivo è carico oppure no: se il livello di carica della batteria è del 100% o se il livello di carica della batteria non è disponibile _e_ il dispositivo non ci sta dicendo che si sta caricando o scaricando (+ups.status+: +CHRG+/+DISCHRG+) supporremo che sia carico e il fulmine sarà trasparente [*E*], altrimenti sarà a piena opacità [*F*].
+|image:icon_caution.png["Icona del pannello - Attenzione"]				|Per gli altri stati (+ups.status+: +BYPASS+, +TRIM+, ..) o se si verifica un allarme (+ups.status+: +ALARM+ + +ups.alarm+) ci sarà un punto esclamativo nell'angolo in alto a destra della noce.
+|image:icon_ghost.png["Icona del pannello - Fantasma"]					|Se il livello di carica della batteria non è disponibile oppure se anche l'opzione _Mostra il carico del dispositivo nell'icona del pannello_ è selezionata nelle <<preferences,preferenze>> _e_ *sia* il livello di carico del dispositivo, *sia* il livello di carica della batteria non sono disponibili l'icona sarà una noce piena e trasparente.
+|image:icon_error.png["Icona del pannello - Errore"]					|Questa è l'icona visualizzata in caso di errori.
+|image:icon_labels.png["Etichette sul pannello"]					|_walNUT_ può anche mostrare un'etichetta, alla destra dell'icona sul pannello, con il livello di carica della batteria [*G*], il livello di carico del dispositivo [*H*] o entrambi [*I*], se disponibili.
 |====
 
 [NOTE]
 ====
 L'icona mostra il livello di carica della batteria e il livello di carico del dispositivo attraverso tre barre:
 
-[cols="1^.^,2.^,7.^",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="1^.^,2.^,7.^",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|Icona |Barre |Significato
-|image:icon_3bars.png["3 barre per livello di carica della batteria/livello del carico"] |3 barre |Più del 75%
-|image:icon_2bars.png["2 barre per livello di carica della batteria/livello del carico"] |2 barre |Tra il 50% e il 75%
-|image:icon_1bar.png["1 barra per livello di carica della batteria/livello del carico"] |1 barra |Tra il 25% e il 50%
-|image:icon_0bars.png["Nessuna barra per livello di carica della batteria/livello del carico"] |nessuna barra |Meno del 25%
+|Icona												|Barre		|Significato
+|image:icon_3bars.png["3 barre per livello di carica della batteria/livello del carico"]	|3 barre	|Più del 75%
+|image:icon_2bars.png["2 barre per livello di carica della batteria/livello del carico"]	|2 barre	|Tra il 50% e il 75%
+|image:icon_1bar.png["1 barra per livello di carica della batteria/livello del carico"]		|1 barra	|Tra il 25% e il 50%
+|image:icon_0bars.png["Nessuna barra per livello di carica della batteria/livello del carico"]	|nessuna barra	|Meno del 25%
 |====
 ====
 
@@ -124,22 +118,18 @@ image::menu.png["Menu del pannello - Completo", align = "center"]
 
 Il menu può essere suddiviso in varie sezioni:
 
-[cols="1^s,9<",options="autowidth",frame="topbot",grid="rows",align="center"]
-|====
-|A |<<device-list,Lista dei dispositivi>>
-|B |<<device-model,Modello del dispositivo>>
-|C |<<device-status,Stato del dispositivo>>
-|D |<<device-alarm,Allarme del dispositivo>>
-|E |<<data-table,Tabella dei dati>>
-|F |<<raw-vars,Dati grezzi>>
-|G |<<device-commands,Comandi del dispositivo>>
-|H a|Riquadro per le funzioni dei pulsanti di controllo
-
-- <<credentials-box,Riquadro delle credenziali del dispositivo>>
-- <<find-new-devices,Riquadro per cercare nuovi dispositivi>>
-- <<delete-devices,Riquadro per rimuovere un dispositivo>>
-|I |<<control-buttons,Pulsanti di controllo>>
-|====
+A. <<device-list,Lista dei dispositivi>>
+B. <<device-model,Modello del dispositivo>>
+C. <<device-status,Stato del dispositivo>>
+D. <<device-alarm,Allarme del dispositivo>>
+E. <<data-table,Tabella dei dati>>
+F. <<raw-vars,Dati grezzi>>
+G. <<device-commands,Comandi del dispositivo>>
+H. Riquadro per le funzioni dei pulsanti di controllo
+   - <<credentials-box,Riquadro delle credenziali del dispositivo>>
+   - <<find-new-devices,Riquadro per cercare nuovi dispositivi>>
+   - <<delete-devices,Riquadro per rimuovere un dispositivo>>
+I. <<control-buttons,Pulsanti di controllo>>
 
 In caso di errore, il menu appare in questo modo:
 
@@ -207,6 +197,7 @@ Se disponibili, [*A*] il livello di carica della batteria, [*B*] il livello di c
 L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<<panel-icon,icona del pannello>>).
 
 È possibile scegliere se visualizzare o meno queste informazioni modificando le relativa opzioni nelle <<preferences,preferenze>>.
+
 
 [[raw-vars]]
 DATI GREZZI
@@ -393,16 +384,16 @@ Scheda 'Generiche/Pannello' - opzioni generali dell'estensione e relative all'<<
 
 [caption=""]
 .Opzioni disponibili
-[cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="5>s,20<,75<",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|# |Opzione |Descrizione
+|#	|Opzione						|Descrizione
 3+<e|Opzioni generiche
-|1 |Secondi prima del prossimo aggiornamento |I secondi dopo i quali _walNUT_ aggiorna i dati del dispositivo. (_default: 15_)
-|2 |Unità di misura della temperatura |L'unità di misura (Centigradi o Fahrenheit) in cui _walNUT_ deve mostrare la temperatura. (_default: Centigradi_)
+|1	|Secondi prima del prossimo aggiornamento		|I secondi dopo i quali _walNUT_ aggiorna i dati del dispositivo. (_default: 15_)
+|2	|Unità di misura della temperatura			|L'unità di misura (Centigradi o Fahrenheit) in cui _walNUT_ deve mostrare la temperatura. (_default: Centigradi_)
 3+<e|Opzioni del pannello
-|3 |Mostra il carico del dispositivo nell'icona |Se il livello di carico del dispositivo deve essere visualizzato nell'icona sul pannello oppure no. (_default: OFF_)
-|4 |Mostra il carico del dispositivo nell'etichetta |Se il livello di carico del dispositivo deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
-|5 |Mostra la carica della batteria nell'etichetta |Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
+|3	|Mostra il carico del dispositivo nell'icona		|Se il livello di carico del dispositivo deve essere visualizzato nell'icona sul pannello oppure no. (_default: OFF_)
+|4	|Mostra il carico del dispositivo nell'etichetta	|Se il livello di carico del dispositivo deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
+|5	|Mostra la carica della batteria nell'etichetta		|Se il livello di carica della batteria deve essere visualizzato nell'etichetta sul pannello oppure no. (_default: OFF_)
 |====
 
 image::pref_menu.png["Preferenze - Menu", align = "center"]
@@ -411,19 +402,19 @@ Scheda 'Menu' - opzioni relative al <<panel-menu,menu del pannello>>:
 
 [caption=""]
 .Opzioni disponibili
-[cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="5>s,20<,75<",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|# |Opzione |Descrizione
-|1 |Mostra i dispositivi non disponibili |Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
-|2 |Mostra il modello del dispositivo |Visualizza anche il modello del dispositivo (`produttore - modello'), se disponibile, nel menu del pannello. (_default: ON_)
-|3 |Mostra la carica della batteria |Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (_default: ON_)
-|4 |Mostra il carico del dispositivo |Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
-|5 |Mostra il tempo di backup |Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (_default: ON_)
-|6 |Mostra la temperatura del dispositivo |Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
-|7 |Mostra i dati grezzi |Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
-|8 |Mostra i comandi del disposivo |Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
-|9 |Mostra la descrizione dei comandi del dispositivo |Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (_default: ON_)
-|10 |Nascondi la password nel riquadro delle credenziali |Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
+|#	|Opzione						|Descrizione
+|1	|Mostra i dispositivi non disponibili			|Visualizza anche i dispositivi non disponibili nel sotto-menu del menu del pannello (il dispositivo scelto sarà sempre mostrato, anche se non disponibile, a dispetto di questa opzione). (_default: OFF_)
+|2	|Mostra il modello del dispositivo			|Visualizza anche il modello del dispositivo (`produttore - modello'), se disponibile, nel menu del pannello. (_default: ON_)
+|3	|Mostra la carica della batteria			|Visualizza anche il livello di carica della batteria, se disponibile, nel menu del pannello. (_default: ON_)
+|4	|Mostra il carico del dispositivo			|Visualizza anche il livello di carico del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
+|5	|Mostra il tempo di backup				|Visualizza anche il tempo stimato di backup, se disponibile, nel menu del pannello. (_default: ON_)
+|6	|Mostra la temperatura del dispositivo			|Visualizza anche la temperatura del dispositivo, se disponibile, nel menu del pannello. (_default: ON_)
+|7	|Mostra i dati grezzi					|Visualizza anche i dati grezzi in un sotto-menu. (_default: OFF_)
+|8	|Mostra i comandi del disposivo				|Visualizza i comandi del dispositivo disponibili. Sono necessari nome utente e password di upsd per eseguirli. (_default: OFF_)
+|9	|Mostra la descrizione dei comandi del dispositivo	|Visualizza anche una descrizione localizzata dei comandi del dispositivo disponibili. (_default: ON_)
+|10	|Nascondi la password nel riquadro delle credenziali	|Se la password nel riquadro delle credenziali deve essere nascosta oppure no. (_default: ON_)
 |====
 
 
@@ -468,7 +459,6 @@ Mentre la versione in Mallard necessita di qualche ulteriore passaggio:
 ----
 asciidoc --backend install mallard.zip
 ----
-
 3. Compilare il file sorgente (ad esempio +manual.txt+) con:
 +
 ----
@@ -478,14 +468,12 @@ asciidoc --backend=mallard \
 	 --out-file temp.page \
 	 manual.txt
 ----
-
 4. Scaricare lo https://github.com/zykh/mallard-backend/raw/master/chunkenizer[script di bash +chunkenizer+] (documentazione https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc[qui])
 5. Dare allo script di bash +chunkenizer+ i permessi di esecuzione:
 +
 ----
 chmod +x chunkenizer
 ----
-
 6. Elaborare il file temporaneo precedentemente creato +temp.page+ con:
 +
 ----
@@ -509,4 +497,3 @@ AUTORE
 ------
 
 Daniele Pezzini <hyouko@gmail.com>
-
