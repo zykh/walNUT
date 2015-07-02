@@ -15,7 +15,7 @@ v0.3, July 2015
 
 
 [float]
-COS'È?
+Cos'è?
 ------
 
 *_walNUT_* non è niente di più che un'estensione per Gnome Shell che fornisce un'interfaccia grafica per NUT (http://www.networkupstools.org[Network UPS Tools]).
@@ -32,7 +32,7 @@ Dal momento che l'implementazione in GJS del protocollo di rete di NUT non suppo
 
 
 [[installation]]
-INSTALLAZIONE
+Installazione
 -------------
 
 È possibile installare questa estensione per il proprio utente eseguendo:
@@ -64,7 +64,7 @@ glib-compile-schemas schemas/
 
 
 [[first-execution]]
-PRIMA ESECUZIONE
+Prima esecuzione
 ----------------
 
 Una volta che si è <<installation,installato>> _walNUT_, quando viene eseguito per la prima volta, od ogni volta che la sua lista dei dispositivi è vuota, proverà a cercare automaticamente nuovi dispositivi in _localhost:3493_. +
@@ -75,7 +75,7 @@ In caso contrario, è necessario aggiungerli tramite il <<find-new-devices,riqua
 
 
 [[panel-icon]]
-ICONA/ETICHETTA DEL PANNELLO
+Icona/etichetta del pannello
 ----------------------------
 
 L'icona e l'etichetta di _walNUT_ sono personalizzabili tramite le <<preferences,preferenze>>. +
@@ -111,7 +111,7 @@ L'icona mostra il livello di carica della batteria e il livello di carico del di
 
 
 [[panel-menu]]
-MENU DEL PANNELLO
+Menu del pannello
 -----------------
 
 Ecco una rapida panoramica del menu del pannello. +
@@ -146,7 +146,7 @@ Dove la lista dei dispositivi [*A*] è visibile o meno, a seconda del tipo di er
 
 
 [[device-list]]
-LISTA DEI DISPOSITIVI
+Lista dei dispositivi
 ~~~~~~~~~~~~~~~~~~~~~
 
 image::devicelist.png["Lista dei dispositivi", align = "center"]
@@ -162,7 +162,7 @@ I dispositivi non disponibili sono segnalati con *(N/D)* [*A*] alla loro destra.
 
 
 [[device-model]]
-MODELLO DEL DISPOSITIVO
+Modello del dispositivo
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 image::devicemodel.png["Modello del dispositivo", align = "center"]
@@ -175,7 +175,7 @@ TIP: Se il dispositivo non sta fornendo uno fra produttore o modello oppure entr
 
 
 [[device-status]]
-STATO DEL DISPOSITIVO
+Stato del dispositivo
 ~~~~~~~~~~~~~~~~~~~~~
 
 image::devicestatus.png["Stato del dispositivo", align = "center"]
@@ -184,7 +184,7 @@ Lo stato del dispositivo mostrerà: lo stato della linea elettrica [*A*] (in lin
 
 
 [[device-alarm]]
-ALLARME DEL DISPOSITIVO
+Allarme del dispositivo
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 image::devicealarm.png["Allarme del dispositivo", align = "center"]
@@ -195,7 +195,7 @@ NOTE: L'allarme viene segnalato anche attraverso un `punto esclamativo' nell'<<p
 
 
 [[data-table]]
-TABELLA DEI DATI
+Tabella dei dati
 ~~~~~~~~~~~~~~~~
 
 image::datatable.png["Tabella dei dati", align = "center"]
@@ -207,7 +207,7 @@ L'icona della batteria [*1*] mostrerà l'effettivo livello di carica tramite il 
 
 
 [[raw-vars]]
-DATI GREZZI
+Dati grezzi
 ~~~~~~~~~~~
 
 image::raw.png["Dati grezzi", align = "center"]
@@ -260,7 +260,7 @@ image::setvars_range.png["Variabili modificabili - RANGE", align = "center"]
 
 
 [[device-commands]]
-COMANDI DEL DISPOSITIVO
+Comandi del dispositivo
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 image::cmd.png["Comandi del dispositivo", align = "center"]
@@ -286,7 +286,7 @@ image::cmd_notify.png["Comandi del dispositivo - Notifica", align = "center"]
 
 
 [[control-buttons]]
-PULSANTI DI CONTROLLO
+Pulsanti di controllo
 ~~~~~~~~~~~~~~~~~~~~~
 
 image::btns.png["Pulsanti di controllo", align = "center"]
@@ -305,7 +305,7 @@ I pulsanti mostreranno:
 
 
 [[credentials-box]]
-RIQUADRO DELLE CREDENZIALI
+Riquadro delle credenziali
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::credbox.png["Riquadro delle credenziali", align = "center"]
@@ -320,7 +320,7 @@ TIP: Di base la password è nascosta, ma se lo si desidera, è possibile sceglie
 
 
 [[find-new-devices]]
-TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI
+Trovare nuovi dispositivi/riquadro per cercare nuovi dispositivi
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::addbox.png["Riquadro per trovare nuovi dispositivi", align = "center"]
@@ -335,7 +335,7 @@ image::add_notify.png["Trova nuovi dispositivi - Notifica", align = "center"]
 
 
 [[delete-devices]]
-RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO
+Rimuovere dispositivi/riquadro per rimuovere un dispositivo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::delbox.png["Riquadro per rimuovere un dispositivo", align = "center"]
@@ -347,7 +347,7 @@ NOTE: Se si vuole rimuovere un dispositivo che non è al momento disponibile, co
 
 
 [[device-credentials]]
-CREDENZIALI DEL DISPOSITIVO
+Credenziali del dispositivo
 ---------------------------
 
 Se si desidera eseguire i <<device-commands,comandi instantanei>> di un dispositivo e <<raw-vars,modificarne le variabili>>, è necessario fornire un nome utente e una password validi (_come impostati nel file di configurazione http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user]_).
@@ -359,7 +359,7 @@ IMPORTANT: Se si sceglie di salvare il nome utente e la password per usarli sia 
 
 
 [[credentials-dialog]]
-FINESTRA DELLE CREDENZIALI
+Finestra delle credenziali
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::creddialog.png["Finestra delle credenziali", align = "center"]
@@ -374,7 +374,7 @@ CAUTION: Dopo aver inserito nome utente e password, quando si clicca sul pulsant
 
 
 [[preferences]]
-PREFERENZE
+Preferenze
 ----------
 
 Per personalizzare _walNUT_ in base alle proprie esigenze si può decidere di modificare alcune opzioni.
@@ -426,7 +426,7 @@ Scheda 'Menu' - opzioni relative al <<panel-menu,menu del pannello>>:
 
 
 [[help]]
-AIUTO
+Aiuto
 -----
 
 Se questo manuale non risponde alle vostre domande o per qualsiasi problema che possiate incontrare, è possibile trovare aiuto nella mailing list di NUT:
@@ -438,7 +438,7 @@ Se volete aiutare, sarete i benvenuti nella mailing list di NUT e nella mailing 
 - *NUT Developers* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev
 
 
-TRADUTTORI
+Traduttori
 ~~~~~~~~~~
 
 Una guida alla traduzione delle estensioni può essere trovata nelle https://wiki.gnome.org/Projects/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ] sulle estensioni di Gnome Shell.
@@ -500,7 +500,7 @@ ln -s ../C/img img
 
 
 [[author]]
-AUTORE
+Autore
 ------
 
 Daniele Pezzini <hyouko@gmail.com>

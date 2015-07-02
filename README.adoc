@@ -63,7 +63,7 @@ endif::env-github[]
 
 
 [float]
-WHAT IS IT?
+What is it?
 -----------
 
 *_walNUT_* is nothing more than a Gnome Shell extension providing a graphical interface to NUT (http://www.networkupstools.org[Network UPS Tools]).
@@ -80,7 +80,7 @@ Since the GJS implementation of NUT's net protocol doesn't support yet TLS, if y
 
 
 [[installation]]
-INSTALLATION
+Installation
 ------------
 
 You can install this extension for your user by executing:
@@ -112,7 +112,7 @@ glib-compile-schemas schemas/
 
 
 [[first-execution]]
-FIRST EXECUTION
+First execution
 ---------------
 
 Once you've <<{installation},installed>> _walNUT_, when it's executed for the first time, or every time its device list is empty, it'll try and search automatically for new devices at _localhost:3493_. +
@@ -123,7 +123,7 @@ It's important that you understand how _walNUT_ communicates with you and how yo
 
 
 [[panel-icon]]
-PANEL ICON/LABEL
+Panel icon/label
 ----------------
 
 _walNUT_'s icon and label are customizable through the <<{preferences},preferences>>. +
@@ -159,7 +159,7 @@ The icon shows charge/load through 3 bars:
 
 
 [[panel-menu]]
-PANEL MENU
+Panel menu
 ----------
 
 Here's a quick overview of the panel menu. +
@@ -194,7 +194,7 @@ Where the device list [*A*] is visible or not, depending on the type of error [*
 
 
 [[device-list]]
-DEVICE LIST
+Device list
 ~~~~~~~~~~~
 
 image::devicelist.png["Device List", align = "center"]
@@ -210,7 +210,7 @@ You can choose either to display or not not available devices in the <<{preferen
 
 
 [[device-model]]
-DEVICE MODEL
+Device model
 ~~~~~~~~~~~~
 
 image::devicemodel.png["Device Model", align = "center"]
@@ -223,7 +223,7 @@ You can choose whether to display or not this information changing its option in
 
 
 [[device-status]]
-DEVICE STATUS
+Device status
 ~~~~~~~~~~~~~
 
 image::devicestatus.png["Device Status", align = "center"]
@@ -232,7 +232,7 @@ Device status will show: line status [*A*] (online/on battery), and then, on the
 
 
 [[device-alarm]]
-DEVICE ALARM
+Device alarm
 ~~~~~~~~~~~~
 
 image::devicealarm.png["Device Alarm", align = "center"]
@@ -243,7 +243,7 @@ NOTE: An alarm will be signaled also through an `exclamation mark' on the <<{pan
 
 
 [[data-table]]
-DATA TABLE
+Data table
 ~~~~~~~~~~
 
 image::datatable.png["Data Table", align = "center"]
@@ -255,7 +255,7 @@ You can choose whether to display or not these data changing their options in th
 
 
 [[raw-vars]]
-RAW VARS
+Raw vars
 ~~~~~~~~
 
 image::raw.png["Raw Vars", align = "center"]
@@ -308,7 +308,7 @@ image::setvars_range.png["Settable vars - RANGE", align = "center"]
 
 
 [[device-commands]]
-DEVICE COMMANDS
+Device commands
 ~~~~~~~~~~~~~~~
 
 image::cmd.png["Device Commands", align = "center"]
@@ -334,7 +334,7 @@ image::cmd_notify.png["Device Commands - Notify", align = "center"]
 
 
 [[control-buttons]]
-CONTROL BUTTONS
+Control buttons
 ~~~~~~~~~~~~~~~
 
 image::btns.png["Control Buttons", align = "center"]
@@ -353,7 +353,7 @@ The buttons will show:
 
 
 [[credentials-box]]
-CREDENTIALS BOX
+Credentials box
 ~~~~~~~~~~~~~~~
 
 image::credbox.png["Credentials Box", align = "center"]
@@ -369,7 +369,7 @@ TIP: Standardly the password is hidden, but if you want, you can choose not to h
 
 
 [[find-new-devices]]
-FIND NEW DEVICES/FIND NEW DEVICES BOX
+Find new devices/find new devices box
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::addbox.png["Find new devices Box", align = "center"]
@@ -384,7 +384,7 @@ image::add_notify.png["Find new devices - Notify", align = "center"]
 
 
 [[delete-devices]]
-DELETE DEVICES/DELETE DEVICES BOX
+Delete devices/delete devices box
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 image::delbox.png["Delete device Box", align = "center"]
@@ -396,7 +396,7 @@ NOTE: If you want to delete a device that's not currently available, check first
 
 
 [[device-credentials]]
-DEVICE CREDENTIALS
+Device credentials
 ------------------
 
 If you want to execute a device's <<{device-commands},instant commands>> or to set a <<{raw-vars},settable variable>>, you have to provide a valid username and password (_as set in http://www.networkupstools.org/docs/man/upsd.users.html[upsd.user] configuration file_).
@@ -408,7 +408,7 @@ IMPORTANT: If you choose to save the user and password and then use them for bot
 
 
 [[credentials-dialog]]
-CREDENTIALS DIALOG
+Credentials dialog
 ~~~~~~~~~~~~~~~~~~
 
 image::creddialog.png["Credentials dialog", align = "center"]
@@ -423,7 +423,7 @@ CAUTION: Once you have inserted the username and the password, when you click on
 
 
 [[preferences]]
-PREFERENCES
+Preferences
 -----------
 
 To fine tune _walNUT_ to suit your needs you may want to change some options.
@@ -475,7 +475,7 @@ image::pref_menu.png["Preferences - Menu", align = "center"]
 
 
 [[help]]
-HELP
+Help
 ----
 
 If this manual doesn't answer your questions or for every problem you may encounter, you can find some help at NUT's list:
@@ -487,7 +487,7 @@ If you want to help, you are welcomed in NUT's list and NUT's developers list:
 - *NUT Developers* - http://lists.alioth.debian.org/mailman/listinfo/nut-upsdev
 
 
-TRANSLATORS
+Translators
 ~~~~~~~~~~~
 
 A guide to translate extensions can be found in Gnome Shell extensions' https://wiki.gnome.org/Projects/GnomeShell/Extensions/FAQ/CreatingExtensions[FAQ].
@@ -549,7 +549,7 @@ ln -s ../C/img img
 
 
 [[author]]
-AUTHOR
+Author
 ------
 
 Daniele Pezzini <hyouko@gmail.com>
