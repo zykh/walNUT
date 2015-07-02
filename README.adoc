@@ -3,61 +3,61 @@ walNUT
 Daniele Pezzini <hyouko@gmail.com>
 v0.3, July 2015
 :numbered:
-:imagesdir: img
+:imagesdir:		img
 :icons:
-:iconsdir: ../ad/icons
+:iconsdir:		../ad/icons
 :badges:
 :disable-javascript:
 :linkcss:
-:stylesdir: ../ad/style
-:stylesheet: custom.css
-:max-width: 1024px
+:stylesdir:		../ad/style
+:stylesheet:		custom.css
+:max-width:		1024px
 
 // Xrefs
-:installation: installation
-:first-execution: first-execution
-:panel-icon: panel-icon
-:panel-menu: panel-menu
-:device-list: device-list
-:device-model: device-model
-:device-status: device-status
-:device-alarm: device-alarm
-:data-table: data-table
-:raw-vars: raw-vars
-:device-commands: device-commands
-:control-buttons: control-buttons
-:credentials-box: credentials-box
-:find-new-devices: find-new-devices
-:delete-devices: delete-devices
-:device-credentials: device-credentials
-:credentials-dialog: credentials-dialog
-:preferences: preferences
-:help: help
+:installation:		installation
+:first-execution:	first-execution
+:panel-icon:		panel-icon
+:panel-menu:		panel-menu
+:device-list:		device-list
+:device-model:		device-model
+:device-status:		device-status
+:device-alarm:		device-alarm
+:data-table:		data-table
+:raw-vars:		raw-vars
+:device-commands:	device-commands
+:control-buttons:	control-buttons
+:credentials-box:	credentials-box
+:find-new-devices:	find-new-devices
+:delete-devices:	delete-devices
+:device-credentials:	device-credentials
+:credentials-dialog:	credentials-dialog
+:preferences:		preferences
+:help:			help
 
 // Override xrefs and images' directory for GitHub's README.adoc
 ifdef::env-github[]
 
 :imagesdir: help/C/img
 
-:installation: 1-installation
-:first-execution: 2-first-execution
-:panel-icon: 3-panel-iconlabel
-:panel-menu: 4-panel-menu
-:device-list: 41-device-list
-:device-model: 42-device-model
-:device-status: 43-device-status
-:device-alarm: 44-device-alarm
-:data-table: 45-data-table
-:raw-vars: 46-raw-vars
-:device-commands: 47-devices-commands
-:control-buttons: 48-control-buttons
-:credentials-box: 49-credentials-box
-:find-new-devices: 410-find-new-devicesfind-new-devices-box
-:delete-devices: 411-delete-devicesdelete-devices-box
-:device-credentials: 5-device-credentials
-:credentials-dialog: 51-credentials-dialog
-:preferences: 6-preferences
-:help: 8-help
+:installation:		1-installation
+:first-execution:	2-first-execution
+:panel-icon:		3-panel-iconlabel
+:panel-menu:		4-panel-menu
+:device-list:		41-device-list
+:device-model:		42-device-model
+:device-status:		43-device-status
+:device-alarm:		44-device-alarm
+:data-table:		45-data-table
+:raw-vars:		46-raw-vars
+:device-commands:	47-devices-commands
+:control-buttons:	48-control-buttons
+:credentials-box:	49-credentials-box
+:find-new-devices:	410-find-new-devicesfind-new-devices-box
+:delete-devices:	411-delete-devicesdelete-devices-box
+:device-credentials:	5-device-credentials
+:credentials-dialog:	51-credentials-dialog
+:preferences:		6-preferences
+:help:			8-help
 
 endif::env-github[]
 
@@ -75,7 +75,7 @@ Before <<{installation},you start>>, you need an already up and running NUT on t
 ====
 Since the GJS implementation of NUT's net protocol doesn't support yet TLS, if you need it, you can get it using the _walNUT_ version that relies on upsc, upsrw and upscmd:
 
-https://github.com/zykh/walNUT/tree/tls-through-nut
+- https://github.com/zykh/walNUT/tree/tls-through-nut
 ====
 
 
@@ -131,35 +131,29 @@ Here is explained how they behave.
 
 [cols="1^.^,9.^",frame="topbot",grid="rows",align="center",options="autowidth"]
 |====
-|image:icons.png["Panel Icon"] |
-The panel icon standardly displays only battery charge [*A*], but it can display also device load [*B*], if available. +
-In that case the `seed' of the walnut will be split up in two pieces: the leftmost [*1*] will display battery charge, the rightmost [*2*] load level.
+|image:icons.png["Panel Icon"]							|The panel icon standardly displays only battery charge [*A*], but it can display also device load [*B*], if available. +
+										 In that case the `seed' of the walnut will be split up in two pieces: the leftmost [*1*] will display battery charge, the rightmost [*2*] load level.
 
-In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the left side of the `seed' [*3*] will be full and transparent.
-|image:icon_ol_ob.png["Panel Icon - Online/On Battery + Charged/Charging"] |
-The panel icon displays also the state of the line: if the device is on line (mains is not absent, +ups.status+: +OL+) there will be a small lightning [*C*] at the right of the nut that wont be displayed if the device is on battery [*D*]. +
-That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available _and_ the device isn't telling us it's charging or discharging (+ups.status+: +CHRG+/+DISCHRG+) we'll assume it's charged and the lightning will be transparent [*E*], otherwise it'll be at full opacity [*F*].
-|image:icon_caution.png["Panel Icon - Caution"] |
-For other status (+ups.status+: +BYPASS+, +TRIM+, ..) or if an alarm arises (+ups.status+: +ALARM+ + +ups.alarm+) there will be an exclamation mark on the right top angle of the nut.
-|image:icon_ghost.png["Panel Icon - Ghost"] |
-If battery charge is not available or if also _Display load in panel icon_ option is selected in the <<{preferences},preferences>> _and_ *both* device load and battery charge aren't available the icon will be a full transparent nut.
-|image:icon_error.png["Panel Icon - Error"] |
-That's the icon displayed in case of errors.
-|image:icon_labels.png["Panel Labels"] |
-_walNUT_ can also display a label, at the right of the icon in the panel, with battery charge [*G*], device load [*H*] or both [*I*], if available.
+										 In case you set also to _Display load in panel icon_ in the <<{preferences},preferences>> _and_ battery charge is not available, the left side of the `seed' [*3*] will be full and transparent.
+|image:icon_ol_ob.png["Panel Icon - Online/On Battery + Charged/Charging"]	|The panel icon displays also the state of the line: if the device is on line (mains is not absent, +ups.status+: +OL+) there will be a small lightning [*C*] at the right of the nut that wont be displayed if the device is on battery [*D*]. +
+										 That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available _and_ the device isn't telling us it's charging or discharging (+ups.status+: +CHRG+/+DISCHRG+) we'll assume it's charged and the lightning will be transparent [*E*], otherwise it'll be at full opacity [*F*].
+|image:icon_caution.png["Panel Icon - Caution"]					|For other status (+ups.status+: +BYPASS+, +TRIM+, ..) or if an alarm arises (+ups.status+: +ALARM+ + +ups.alarm+) there will be an exclamation mark on the right top angle of the nut.
+|image:icon_ghost.png["Panel Icon - Ghost"]					|If battery charge is not available or if also _Display load in panel icon_ option is selected in the <<{preferences},preferences>> _and_ *both* device load and battery charge aren't available the icon will be a full transparent nut.
+|image:icon_error.png["Panel Icon - Error"]					|That's the icon displayed in case of errors.
+|image:icon_labels.png["Panel Labels"]						|_walNUT_ can also display a label, at the right of the icon in the panel, with battery charge [*G*], device load [*H*] or both [*I*], if available.
 |====
 
 [NOTE]
 ====
 The icon shows charge/load through 3 bars:
 
-[cols="1^.^,2.^,7.^",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="1^.^,2.^,7.^",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|Icon |Bars |Meaning
-|image:icon_3bars.png["3 bars for charge/load"] |3 bars |More than 75%
-|image:icon_2bars.png["2 bars for charge/load"] |2 bars |Between 50% and 75%
-|image:icon_1bar.png["1 bar for charge/load"] |1 bar |Between 25% and 50%
-|image:icon_0bars.png["No bars for charge/load"] |no bars |Less than 25%
+|Icon							|Bars		|Meaning
+|image:icon_3bars.png["3 bars for charge/load"]		|3 bars		|More than 75%
+|image:icon_2bars.png["2 bars for charge/load"]		|2 bars		|Between 50% and 75%
+|image:icon_1bar.png["1 bar for charge/load"]		|1 bar		|Between 25% and 50%
+|image:icon_0bars.png["No bars for charge/load"]	|no bars	|Less than 25%
 |====
 ====
 
@@ -179,31 +173,18 @@ image::menu.png["Panel Menu - Complete", align = "center"]
 
 The menu can be split up in various sections:
 
-[cols="1^s,9<",options="autowidth",frame="topbot",grid="rows",align="center"]
-|====
-|A |<<{device-list},Device List>>
-|B |<<{device-model},Device Model>>
-|C |<<{device-status},Device Status>>
-|D |<<{device-alarm},Device Alarm>>
-|E |<<{data-table},Data Table>>
-|F |<<{raw-vars},Raw Vars>>
-|G |<<{device-commands},Device Commands>>
-|H a|Box for control buttons' functions
-
-:credentials-box: credentials-box
-:find-new-devices: find-new-devices
-:delete-devices: delete-devices
-ifdef::env-github[]
-:credentials-box: 49-credentials-box
-:find-new-devices: 410-find-new-devicesfind-new-devices-box
-:delete-devices: 411-delete-devicesdelete-devices-box
-endif::env-github[]
-
-- <<{credentials-box},Device credentials box>>
-- <<{find-new-devices},Find new devices box>>
-- <<{delete-devices},Delete device box>>
-|I |<<{control-buttons},Control Buttons>>
-|====
+A. <<{device-list},Device List>>
+B. <<{device-model},Device Model>>
+C. <<{device-status},Device Status>>
+D. <<{device-alarm},Device Alarm>>
+E. <<{data-table},Data Table>>
+F. <<{raw-vars},Raw Vars>>
+G. <<{device-commands},Device Commands>>
+H. Box for control buttons' functions
+   - <<{credentials-box},Device credentials box>>
+   - <<{find-new-devices},Find new devices box>>
+   - <<{delete-devices},Delete device box>>
+I. <<{control-buttons},Control Buttons>>
 
 In case of errors, the menu appears like this:
 
@@ -271,6 +252,7 @@ If available, [*A*] battery charge, [*B*] device load, [*C*] backup time and [*D
 Battery icon [*1*] will display actual charge through the number of horizontal bars (as the ones of <<{panel-icon},panel icon>>).
 
 You can choose whether to display or not these data changing their options in the <<{preferences},preferences>>.
+
 
 [[raw-vars]]
 RAW VARS
@@ -458,16 +440,16 @@ image::pref.png["Preferences - General/Panel", align = "center"]
 
 [caption=""]
 .Available Options
-[cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="5>s,20<,75<",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|# |Option |Description
+|#	|Option				|Description
 3+<e|General options
-|1 |Seconds before next update |The seconds after _walNUT_ updates the data from the device. (_default: 15_)
-|2 |Temperature unit |The unit (Centigrade or Fahrenheit) _walNUT_ should display the temperature in. (_default: Centigrade_)
+|1	|Seconds before next update	|The seconds after _walNUT_ updates the data from the device. (_default: 15_)
+|2	|Temperature unit		|The unit (Centigrade or Fahrenheit) _walNUT_ should display the temperature in. (_default: Centigrade_)
 3+<e|Panel options
-|3 |Display load in the icon |Whether the device load should be displayed in the panel icon or not. (_default: OFF_)
-|4 |Display load in the label |Whether the device load should be displayed in the panel label or not. (_default: OFF_)
-|5 |Display charge in the label |Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
+|3	|Display load in the icon	|Whether the device load should be displayed in the panel icon or not. (_default: OFF_)
+|4	|Display load in the label	|Whether the device load should be displayed in the panel label or not. (_default: OFF_)
+|5	|Display charge in the label	|Whether the battery charge should be displayed in the panel label or not. (_default: OFF_)
 |====
 
 image::pref_menu.png["Preferences - Menu", align = "center"]
@@ -476,19 +458,19 @@ image::pref_menu.png["Preferences - Menu", align = "center"]
 
 [caption=""]
 .Available Options
-[cols="5>s,20<,75<",options="header,autowidth",frame="topbot",grid="rows",align="center"]
+[cols="5>s,20<,75<",frame="topbot",grid="rows",align="center",options="header,autowidth"]
 |====
-|# |Option |Description
-|1 |Display not available devices |Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
-|2 |Display device model |Show also device model (`manufacturer - model'), if available, in the panel menu. (_default: ON_)
-|3 |Display battery charge |Show also battery charge, if available, in the panel menu. (_default: ON_)
-|4 |Display load level |Show also load level, if available, in the panel menu. (_default: ON_)
-|5 |Display backup time |Show also backup time, if available, in the panel menu. (_default: ON_)
-|6 |Display device temperature |Show also device temperature, if available, in the panel menu. (_default: ON_)
-|7 |Display raw data |Show also raw data in a submenu. (_default: OFF_)
-|8 |Display device commands |Display available device commands. You'll need upsd user and password to execute them. (_default: OFF_)
-|9 |Display description of device commands |Display also a localized description of available device commands in the submenu. (_default: ON_)
-|10 |Hide password at credentials box |Whether the password at credentials box should be hidden or not. (_default: ON_)
+|#	|Option					|Description
+|1	|Display not available devices		|Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (_default: OFF_)
+|2	|Display device model			|Show also device model (`manufacturer - model'), if available, in the panel menu. (_default: ON_)
+|3	|Display battery charge			|Show also battery charge, if available, in the panel menu. (_default: ON_)
+|4	|Display load level			|Show also load level, if available, in the panel menu. (_default: ON_)
+|5	|Display backup time			|Show also backup time, if available, in the panel menu. (_default: ON_)
+|6	|Display device temperature		|Show also device temperature, if available, in the panel menu. (_default: ON_)
+|7	|Display raw data			|Show also raw data in a submenu. (_default: OFF_)
+|8	|Display device commands		|Display available device commands. You'll need upsd user and password to execute them. (_default: OFF_)
+|9	|Display description of device commands	|Display also a localized description of available device commands in the submenu. (_default: ON_)
+|10	|Hide password at credentials box	|Whether the password at credentials box should be hidden or not. (_default: ON_)
 |====
 
 
@@ -533,7 +515,6 @@ While the Mallard version needs some further steps:
 ----
 asciidoc --backend install mallard.zip
 ----
-
 3. Compile your source file (e.g. +manual.txt+) with:
 +
 ----
@@ -543,14 +524,12 @@ asciidoc --backend=mallard \
 	 --out-file temp.page \
 	 manual.txt
 ----
-
 4. Download https://github.com/zykh/mallard-backend/raw/master/chunkenizer[+chunkenizer+ bash script] (documentation https://github.com/zykh/mallard-backend/blob/master/chunkenizer.adoc[here])
 5. Give +chunkenizer+ bash script executable permissions:
 +
 ----
 chmod +x chunkenizer
 ----
-
 6. Process the previously created temp file +temp.page+ with it:
 +
 ----
@@ -574,4 +553,3 @@ AUTHOR
 ------
 
 Daniele Pezzini <hyouko@gmail.com>
-
