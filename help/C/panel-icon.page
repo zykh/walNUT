@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-icon">
-<title>3. PANEL ICON/LABEL</title>
+<title>3. Panel icon/label</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="panel-menu"/>
 </info>
@@ -22,15 +22,15 @@ frame="top bottom"
 >
 Panel Icon</media></p></td>
 <td><p>The panel icon standardly displays only battery charge [<em style="strong">A</em>], but it can display also device load [<em style="strong">B</em>], if available.
-In that case the &#8216;seed&#8217; of the walnut will be split up in two pieces: the leftmost [<em style="strong">1</em>] will display battery charge, the rightmost [<em style="strong">2</em>] load level.</p>
-<p>In case you set also to <em>Display load in panel icon</em> in the <link xref="preferences">preferences</link> <em>and</em> battery charge is not available, the left side of the &#8216;seed&#8217; [<em style="strong">3</em>] will be full and transparent.</p></td>
+                                                                                 In that case the &#8216;seed&#8217; of the walnut will be split up in two pieces: the leftmost [<em style="strong">1</em>] will display battery charge, the rightmost [<em style="strong">2</em>] load level.</p>
+<p>                                                                                 In case you set also to <em>Display load in panel icon</em> in the <link xref="preferences">preferences</link> <em>and</em> battery charge is not available, the left side of the &#8216;seed&#8217; [<em style="strong">3</em>] will be full and transparent.</p></td>
 </tr>
 <tr>
 <td><p><media type="image" src="img/icon_ol_ob.png"
 >
 Panel Icon - Online/On Battery + Charged/Charging</media></p></td>
 <td><p>The panel icon displays also the state of the line: if the device is on line (mains is not absent, <code>ups.status</code>: <code>OL</code>) there will be a small lightning [<em style="strong">C</em>] at the right of the nut that wont be displayed if the device is on battery [<em style="strong">D</em>].
-That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available <em>and</em> the device isn&#8217;t telling us it&#8217;s charging or discharging (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) we&#8217;ll assume it&#8217;s charged and the lightning will be transparent [<em style="strong">E</em>], otherwise it&#8217;ll be at full opacity [<em style="strong">F</em>].</p></td>
+                                                                                 That lightning will show also if the device is charged or not: if battery charge is 100% or if battery charge is not available <em>and</em> the device isn&#8217;t telling us it&#8217;s charging or discharging (<code>ups.status</code>: <code>CHRG</code>/<code>DISCHRG</code>) we&#8217;ll assume it&#8217;s charged and the lightning will be transparent [<em style="strong">E</em>], otherwise it&#8217;ll be at full opacity [<em style="strong">F</em>].</p></td>
 </tr>
 <tr>
 <td><p><media type="image" src="img/icon_caution.png"
@@ -65,8 +65,8 @@ frame="top bottom"
 >
 <thead>
 <tr>
-<td><p>Icon </p></td>
-<td><p>Bars </p></td>
+<td><p>Icon                                                   </p></td>
+<td><p>Bars           </p></td>
 <td><p>Meaning</p></td>
 </tr>
 </thead>

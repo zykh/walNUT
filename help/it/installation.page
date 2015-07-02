@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="installation">
-<title>1. INSTALLAZIONE</title>
+<title>1. Installazione</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="first-execution"/>
 </info>
@@ -14,7 +14,7 @@
 <p>È possibile installare questa estensione per il proprio utente eseguendo:</p>
 <listing>
 <code>cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
+git clone --depth 1 https://github.com/zykh/walNUT.git walnut@networkupstools
 glib-compile-schemas walnut@networkupstools/schemas/</code>
 </listing>
 <p>Dopo l&#8217;installazione è necessario riavviare Gnome Shell:</p>
@@ -34,9 +34,10 @@ Inserire <code>r</code> per riavviare Gnome Shell
 <note style="important">
 <p>Se si usa una versione precedente di <em>walNUT</em>, in fase di aggiornamento, è sempre necessario ricompilare lo schema:</p>
 <listing>
-<code>cd ~/.local/share/gnome-shell/extensions
-git clone git://github.com/zykh/walNUT.git walnut@networkupstools
-glib-compile-schemas walnut@networkupstools/schemas/</code>
+<code>cd ~/.local/share/gnome-shell/extensions/walnut@networkupstools
+git fetch
+git merge
+glib-compile-schemas schemas/</code>
 </listing>
 </note>
 </page>

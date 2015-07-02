@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="preferences">
-<title>6. PREFERENCES</title>
+<title>6. Preferences</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="help"/>
 </info>
@@ -33,8 +33,8 @@ frame="top bottom"
 <title>Available Options</title>
 <thead>
 <tr>
-<td><p># </p></td>
-<td><p>Option </p></td>
+<td><p>#      </p></td>
+<td><p>Option                         </p></td>
 <td><p>Description</p></td>
 </tr>
 </thead>
@@ -85,64 +85,59 @@ frame="top bottom"
 <title>Available Options</title>
 <thead>
 <tr>
-<td><p># </p></td>
-<td><p>Option </p></td>
+<td><p>#      </p></td>
+<td><p>Option                                 </p></td>
 <td><p>Description</p></td>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><p><em style="strong">1</em></p></td>
-<td><p>Use a less &#8216;noisy&#8217; style for the menu</p></td>
-<td><p>Whether the extension should use a less &#8216;noisy&#8217;, more in line with Gnome Shell&#8217;s own, style or not for the panel menu. (<em>default: ON</em>)</p></td>
-</tr>
-<tr>
-<td><p><em style="strong">2</em></p></td>
 <td><p>Display not available devices</p></td>
 <td><p>Display also not available devices in the submenu in the panel menu (chosen device will be always displayed, also if not available, in spite of this option). (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">3</em></p></td>
+<td><p><em style="strong">2</em></p></td>
 <td><p>Display device model</p></td>
 <td><p>Show also device model (&#8216;manufacturer - model&#8217;), if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">4</em></p></td>
+<td><p><em style="strong">3</em></p></td>
 <td><p>Display battery charge</p></td>
 <td><p>Show also battery charge, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">5</em></p></td>
+<td><p><em style="strong">4</em></p></td>
 <td><p>Display load level</p></td>
 <td><p>Show also load level, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">6</em></p></td>
+<td><p><em style="strong">5</em></p></td>
 <td><p>Display backup time</p></td>
 <td><p>Show also backup time, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">7</em></p></td>
+<td><p><em style="strong">6</em></p></td>
 <td><p>Display device temperature</p></td>
 <td><p>Show also device temperature, if available, in the panel menu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">8</em></p></td>
+<td><p><em style="strong">7</em></p></td>
 <td><p>Display raw data</p></td>
 <td><p>Show also raw data in a submenu. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">9</em></p></td>
+<td><p><em style="strong">8</em></p></td>
 <td><p>Display device commands</p></td>
 <td><p>Display available device commands. You&#8217;ll need upsd user and password to execute them. (<em>default: OFF</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">10</em></p></td>
+<td><p><em style="strong">9</em></p></td>
 <td><p>Display description of device commands</p></td>
 <td><p>Display also a localized description of available device commands in the submenu. (<em>default: ON</em>)</p></td>
 </tr>
 <tr>
-<td><p><em style="strong">11</em></p></td>
+<td><p><em style="strong">10</em></p></td>
 <td><p>Hide password at credentials box</p></td>
 <td><p>Whether the password at credentials box should be hidden or not. (<em>default: ON</em>)</p></td>
 </tr>

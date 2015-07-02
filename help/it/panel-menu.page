@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="panel-menu">
-<title>4. MENU DEL PANNELLO</title>
+<title>4. Menu del pannello</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="device-credentials"/>
 </info>
@@ -19,13 +19,6 @@ Di base il menu ha questo aspetto:</p>
 <p>Menu del pannello</p>
 </media>
 </figure>
-<p>È possibile, inoltre, visualizzare una versione più &#8216;rumorosa&#8217;, ma che potrebbe essere, in alcuni casi, più leggibile, impostando la relativa opzione nelle <link xref="preferences">preferenze</link>:</p>
-<figure>
-<media type="image" src="img/menustd_noisy.png"
->
-<p>Menu del pannello - Versione 'rumorosa'</p>
-</media>
-</figure>
 <p>Con tutte le opzioni disponibili impostate:</p>
 <figure>
 <media type="image" src="img/menu.png"
@@ -33,49 +26,47 @@ Di base il menu ha questo aspetto:</p>
 <p>Menu del pannello - Completo</p>
 </media>
 </figure>
-<p>Nella versione &#8216;rumorosa&#8217;:</p>
-<figure>
-<media type="image" src="img/menu_noisy.png"
->
-<p>Menu del pannello - Completo, versione 'rumorosa'</p>
-</media>
-</figure>
 <p>Il menu può essere suddiviso in varie sezioni:</p>
-<table rules="rows"
-frame="top bottom"
->
-<tbody>
-<tr>
-<td><p><em style="strong">A</em></p></td>
-<td><p><link xref="panel-menu#device-list">Lista dei dispositivi</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">B</em></p></td>
-<td><p><link xref="panel-menu#device-model">Modello del dispositivo</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">C</em></p></td>
-<td><p><link xref="panel-menu#device-status">Stato del dispositivo</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">D</em></p></td>
-<td><p><link xref="panel-menu#device-alarm">Allarme del dispositivo</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">E</em></p></td>
-<td><p><link xref="panel-menu#data-table">Tabella dei dati</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">F</em></p></td>
-<td><p><link xref="panel-menu#raw-vars">Dati grezzi</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">G</em></p></td>
-<td><p><link xref="panel-menu#device-commands">Comandi del dispositivo</link></p></td>
-</tr>
-<tr>
-<td><p><em style="strong">H</em></p></td>
-<td><p>Riquadro per le funzioni dei pulsanti di controllo</p>
+<list type="upper-alpha">
+<item>
+<p>
+<link xref="panel-menu#device-list">Lista dei dispositivi</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-model">Modello del dispositivo</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-status">Stato del dispositivo</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-alarm">Allarme del dispositivo</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#data-table">Tabella dei dati</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#raw-vars">Dati grezzi</link>
+</p>
+</item>
+<item>
+<p>
+<link xref="panel-menu#device-commands">Comandi del dispositivo</link>
+</p>
+</item>
+<item>
+<p>
+Riquadro per le funzioni dei pulsanti di controllo
+</p>
 <list>
 <item>
 <p>
@@ -92,14 +83,14 @@ frame="top bottom"
 <link xref="panel-menu#delete-devices">Riquadro per rimuovere un dispositivo</link>
 </p>
 </item>
-</list></td>
-</tr>
-<tr>
-<td><p><em style="strong">I</em></p></td>
-<td><p><link xref="panel-menu#control-buttons">Pulsanti di controllo</link></p></td>
-</tr>
-</tbody>
-</table>
+</list>
+</item>
+<item>
+<p>
+<link xref="panel-menu#control-buttons">Pulsanti di controllo</link>
+</p>
+</item>
+</list>
 <p>In caso di errore, il menu appare in questo modo:</p>
 <figure>
 <media type="image" src="img/menuerr.png"
@@ -108,7 +99,7 @@ frame="top bottom"
 </media>
 </figure>
 <p>Dove la lista dei dispositivi [<em style="strong">A</em>] è visibile o meno, a seconda del tipo di errore [<em style="strong">L</em>].</p>
-<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. LISTA DEI DISPOSITIVI</title>
+<section id="device-list"><links type="section"/><links type="topic"/><title>4.1. Lista dei dispositivi</title>
 <figure>
 <media type="image" src="img/devicelist.png"
 >
@@ -128,7 +119,7 @@ frame="top bottom"
 <p>I dispositivi non disponibili sono segnalati con <em style="strong">(N/D)</em> [<em style="strong">A</em>] alla loro destra.
 È possibile scegliere di visualizzare o meno i dispositivi non disponibili nelle <link xref="preferences">preferenze</link>.</p>
 </section>
-<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. MODELLO DEL DISPOSITIVO</title>
+<section id="device-model"><links type="section"/><links type="topic"/><title>4.2. Modello del dispositivo</title>
 <figure>
 <media type="image" src="img/devicemodel.png"
 >
@@ -141,34 +132,20 @@ frame="top bottom"
 </note>
 <p>È possibile scegliere se visualizzare o meno questo dato modificando la relativa opzione nelle <link xref="preferences">preferenze</link>.</p>
 </section>
-<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. STATO DEL DISPOSITIVO</title>
+<section id="device-status"><links type="section"/><links type="topic"/><title>4.3. Stato del dispositivo</title>
 <figure>
 <media type="image" src="img/devicestatus.png"
 >
 <p>Stato del dispositivo</p>
 </media>
 </figure>
-<p>oppure (versione &#8216;rumorosa&#8217;):</p>
-<figure>
-<media type="image" src="img/devicestatus_noisy.png"
->
-<p>Stato del dispositivo - Versione 'rumorosa'</p>
-</media>
-</figure>
 <p>Lo stato del dispositivo mostrerà: lo stato della linea elettrica [<em style="strong">A</em>] (in linea/a batteria), e quindi, nella seconda riga, ogni stato segnalato dal dispositivo [<em style="strong">B</em>] (bypass, smorzamento, ..).</p>
 </section>
-<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. ALLARME DEL DISPOSITIVO</title>
+<section id="device-alarm"><links type="section"/><links type="topic"/><title>4.4. Allarme del dispositivo</title>
 <figure>
 <media type="image" src="img/devicealarm.png"
 >
 <p>Allarme del dispositivo</p>
-</media>
-</figure>
-<p>oppure (versione &#8216;rumorosa&#8217;):</p>
-<figure>
-<media type="image" src="img/devicealarm_noisy.png"
->
-<p>Allarme del dispositivo - Versione 'rumorosa'</p>
 </media>
 </figure>
 <p>Se viene riportato un allarme (<code>ups.status</code>: <code>ALARM</code> e <code>ups.alarm</code>) sarà mostrato qui.</p>
@@ -176,25 +153,18 @@ frame="top bottom"
 <p>L&#8217;allarme viene segnalato anche attraverso un &#8216;punto esclamativo&#8217; nell'<link xref="panel-icon">icona del pannello</link>.</p>
 </note>
 </section>
-<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. TABELLA DEI DATI</title>
+<section id="data-table"><links type="section"/><links type="topic"/><title>4.5. Tabella dei dati</title>
 <figure>
 <media type="image" src="img/datatable.png"
 >
 <p>Tabella dei dati</p>
 </media>
 </figure>
-<p>oppure (versione &#8216;rumorosa&#8217;):</p>
-<figure>
-<media type="image" src="img/datatable_noisy.png"
->
-<p>Tabella dei dati - Versione 'rumorosa'</p>
-</media>
-</figure>
 <p>Se disponibili, [<em style="strong">A</em>] il livello di carica della batteria, [<em style="strong">B</em>] il livello di carico, [<em style="strong">C</em>] il tempo stimato di backup e [<em style="strong">D</em>] la temperatura del dispositivo saranno visualizzati qui.
 L&#8217;icona della batteria [<em style="strong">1</em>] mostrerà l&#8217;effettivo livello di carica tramite il numero di barre orizzontali (come quelle dell'<link xref="panel-icon">icona del pannello</link>).</p>
 <p>È possibile scegliere se visualizzare o meno queste informazioni modificando le relativa opzioni nelle <link xref="preferences">preferenze</link>.</p>
 </section>
-<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. DATI GREZZI</title>
+<section id="raw-vars"><links type="section"/><links type="topic"/><title>4.6. Dati grezzi</title>
 <figure>
 <media type="image" src="img/raw.png"
 >
@@ -269,7 +239,7 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 </media>
 </figure>
 </section>
-<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. COMANDI DEL DISPOSITIVO</title>
+<section id="device-commands"><links type="section"/><links type="topic"/><title>4.7. Comandi del dispositivo</title>
 <figure>
 <media type="image" src="img/cmd.png"
 >
@@ -302,18 +272,11 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 </media>
 </figure>
 </section>
-<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. PULSANTI DI CONTROLLO</title>
+<section id="control-buttons"><links type="section"/><links type="topic"/><title>4.8. Pulsanti di controllo</title>
 <figure>
 <media type="image" src="img/btns.png"
 >
 <p>Pulsanti di controllo</p>
-</media>
-</figure>
-<p>oppure (versione &#8216;rumorosa&#8217;):</p>
-<figure>
-<media type="image" src="img/btns_noisy.png"
->
-<p>Pulsanti di controllo - Versione 'rumorosa'</p>
 </media>
 </figure>
 <p>In fondo al <link xref="panel-menu">menu del pannello</link> si trova una manciata di pulsanti di controllo, alcuni dei quali apriranno il loro riquadro [<em style="strong">A</em>] appena prima della riga dei pulsanti di controllo [<em style="strong">B</em>].</p>
@@ -352,7 +315,7 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 </item>
 </list>
 </section>
-<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. RIQUADRO DELLE CREDENZIALI</title>
+<section id="credentials-box"><links type="section"/><links type="topic"/><title>4.9. Riquadro delle credenziali</title>
 <figure>
 <media type="image" src="img/credbox.png"
 >
@@ -368,7 +331,7 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 <p>Di base la password è nascosta, ma se lo si desidera, è possibile scegliere di non nasconderla nelle <link xref="preferences">preferenze</link>.</p>
 </note>
 </section>
-<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. TROVARE NUOVI DISPOSITIVI/RIQUADRO PER CERCARE NUOVI DISPOSITIVI</title>
+<section id="find-new-devices"><links type="section"/><links type="topic"/><title>4.10. Trovare nuovi dispositivi/riquadro per cercare nuovi dispositivi</title>
 <figure>
 <media type="image" src="img/addbox.png"
 >
@@ -387,7 +350,7 @@ Cliccando sul tasto &#8216;Annulla&#8217; [<em style="strong">N</em>] il valore 
 </media>
 </figure>
 </section>
-<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. RIMUOVERE DISPOSITIVI/RIQUADRO PER RIMUOVERE UN DISPOSITIVO</title>
+<section id="delete-devices"><links type="section"/><links type="topic"/><title>4.11. Rimuovere dispositivi/riquadro per rimuovere un dispositivo</title>
 <figure>
 <media type="image" src="img/delbox.png"
 >

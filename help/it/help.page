@@ -1,11 +1,11 @@
 <page xmlns="http://projectmallard.org/1.0/" type="guide" id="help">
-<title>7. AIUTO</title>
+<title>7. Aiuto</title>
 <info>
 <credit type="author copyright">
 <name>Daniele Pezzini</name>
 <email>hyouko@gmail.com</email>
 </credit>
-<revision version="0.2" date="October 2013"/>
+<revision version="0.3" date="July 2015"/>
 <link type="guide" xref="index"/>
 <link type="next" xref="author"/>
 </info>
@@ -27,7 +27,7 @@
 </p>
 </item>
 </list>
-<section id="_traduttori"><links type="section"/><links type="topic"/><title>7.1. TRADUTTORI</title>
+<section id="_traduttori"><links type="section"/><links type="topic"/><title>7.1. Traduttori</title>
 <p>Una guida alla traduzione delle estensioni può essere trovata nelle <link href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions">FAQ</link> sulle estensioni di Gnome Shell.</p>
 <p>La documentazione di <em>walNUT</em> è scritta in <link href="http://www.methods.co.nz/asciidoc/">AsciiDoc</link> e quindi elaborata sia per la versione in html che per la versione in <link href="http://projectmallard.org/">Mallard</link> per <link href="http://projects.gnome.org/yelp/">Yelp</link>.</p>
 <p>I file di aiuto devono essere messi nella cartella help dell&#8217;estensione, creando una cartella con il nome del language code del locale desiderato (ad esempio en, it, ..) o, per i locale specifici di una nazione, con il nome del language code e il codice della nazione (ad esempio pt_BR, pt_PT).</p>
