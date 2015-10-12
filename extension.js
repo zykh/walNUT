@@ -2018,23 +2018,17 @@ const	CredDialog = new Lang.Class({
 		});
 
 		// Username/password table
-		let table = new St.Table({ style_class: 'walnut-cred-dialog-table' });
+		let table = new St.BoxLayout({ style_class: 'walnut-cred-dialog-table' });
 		textBox.add(table);
 
 		// Username label
 		let userLabel = new St.Label({
 			// TRANSLATORS: Username @ credentials dialog
 			text: _("Username:"),
-			style_class: 'prompt-dialog-password-label'
-		});
-		table.add(userLabel, {
-			row: 0,
-			col: 0,
-			x_expand: false,
-			x_fill: true,
-			x_align: St.Align.START,
-			y_fill: false,
-			y_align: St.Align.MIDDLE
+			style_class: 'prompt-dialog-password-label',
+			x_align: Clutter.ActorAlign.START,
+			y_align: Clutter.ActorAlign.CENTER,
+			y_expand: true
 		});
 
 		// Username entry
@@ -2047,13 +2041,6 @@ const	CredDialog = new Lang.Class({
 
 		// Username right-click menu
 		ShellEntry.addContextMenu(this.user, { isPassword: false });
-		table.add(this.user, {
-			row: 0,
-			col: 1,
-			x_expand: true,
-			x_fill: true,
-			y_align: St.Align.END
-		});
 
 		// user_valid tells us whether a username is set or not
 		this.user_valid = user ? true : false;
@@ -2074,16 +2061,10 @@ const	CredDialog = new Lang.Class({
 		let pwLabel = new St.Label({
 			// TRANSLATORS: Password @ credentials dialog
 			text: _("Password:"),
-			style_class: 'prompt-dialog-password-label'
-		});
-		table.add(pwLabel, {
-			row: 1,
-			col: 0,
-			x_expand: false,
-			x_fill: true,
-			x_align: St.Align.START,
-			y_fill: false,
-			y_align: St.Align.MIDDLE
+			style_class: 'prompt-dialog-password-label',
+			x_align: Clutter.ActorAlign.START,
+			y_align: Clutter.ActorAlign.CENTER,
+			y_expand: true
 		});
 
 		// Password entry
@@ -2099,13 +2080,6 @@ const	CredDialog = new Lang.Class({
 
 		// Password visual appearance (hidden)
 		this.pw.clutter_text.set_password_char('\u25cf');
-		table.add(this.pw, {
-			row: 1,
-			col: 1,
-			x_expand: true,
-			x_fill: true,
-			y_align: St.Align.END
-		});
 
 		// pw_valid tells us whether a password is set or not
 		this.pw_valid = pw ? true : false;
@@ -2121,6 +2095,22 @@ const	CredDialog = new Lang.Class({
 			if (errorBox.visible)
 				errorBox.hide();
 		}));
+
+		// Put user/password together
+		let labelColumn = new St.BoxLayout({
+			style_class: 'walnut-cred-dialog-table-column',
+			vertical: true
+		});
+		labelColumn.add(userLabel);
+		labelColumn.add(pwLabel);
+		let entryColumn = new St.BoxLayout({
+			style_class: 'walnut-cred-dialog-table-column',
+			vertical: true
+		});
+		entryColumn.add(this.user);
+		entryColumn.add(this.pw);
+		table.add(labelColumn);
+		table.add(entryColumn, { expand: true });
 
 		// Error box
 		let errorBox = new St.BoxLayout({ style_class: 'walnut-cred-dialog-error-box' });

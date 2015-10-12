@@ -34,8 +34,11 @@
 }
 
 .walnut-cred-dialog-table {
-	spacing-rows: 1em;
-	spacing-columns: 1em;
+	spacing: 1em;
+}
+
+.walnut-cred-dialog-table-column {
+	spacing: .5em;
 }
 
 .walnut-cred-dialog-error-box {
