@@ -2094,10 +2094,7 @@ const	CredDialog = new Lang.Class({
 		this.user.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.user_valid = this.user.get_text().length > 0;
 			this._updateOkButton({ error: false });
-		}));
-
-		// Hide errorBox, if visible, when selected
-		this.user.clutter_text.connect('button-press-event', Lang.bind(this, function() {
+			// Hide errorBox, if visible
 			if (errorBox.visible)
 				errorBox.hide();
 		}));
@@ -2133,10 +2130,7 @@ const	CredDialog = new Lang.Class({
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, function() {
 			this.pw_valid = this.pw.get_text().length > 0;
 			this._updateOkButton({ error: false });
-		}));
-
-		// Hide errorBox, if visible, when selected
-		this.pw.clutter_text.connect('button-press-event', Lang.bind(this, function() {
+			// Hide errorBox, if visible
 			if (errorBox.visible)
 				errorBox.hide();
 		}));
