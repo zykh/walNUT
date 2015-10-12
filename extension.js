@@ -2206,6 +2206,9 @@ const	CredDialog = new Lang.Class({
 
 		this._updateOkButton({ error: error });
 
+		// Set initial key-focus to the user entry
+		this.setInitialKeyFocus(this.user);
+
 	},
 
 	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0) and if args.*error* isn't true
