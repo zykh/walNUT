@@ -3027,6 +3027,15 @@ const	UpsCmdList = new Lang.Class({
 		this.actor.remove_child(expander);
 		expander.destroy();
 
+		// If *status* label (used here to show 'extradata') is not available (it has been dropped in GNOME Shell 3.18), create it and put it before the triangle
+		if (!this.status) {
+			this.status = new St.Label({
+				style_class: 'popup-status-menu-item',
+				y_align: Clutter.ActorAlign.CENTER,
+				y_expand: true
+			});
+			this.actor.insert_child_below(this.status, this._triangleBin);
+		}
 		// TRANSLATORS: Extradata's label @ Device commands submenu
 		this.status.text = _("extradata:");
 		this.status.add_style_class_name('walnut-cmd-extradata-label');
