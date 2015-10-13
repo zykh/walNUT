@@ -31,6 +31,7 @@ const	Atk = imports.gi.Atk,
 	ShellEntry = imports.ui.shellEntry,
 	Slider = imports.ui.slider,
 	St = imports.gi.St,
+	Tweener = imports.ui.tweener,
 	Util = imports.misc.util;
 
 // Gettext
@@ -1425,15 +1426,8 @@ const	walNUT = new Lang.Class({
 			// TRANSLATORS: Accessible name of 'Credentials' button
 			accessibleName: _("Credentials"),
 			callback: Lang.bind(this, function() {
-
-				// Close, if open, {add,del}Box and if credBox is visible, close it, otherwise, open it
-
-				this.menu.addBox.close();
-
-				this.menu.delBox.close();
-
+				// If credBox is visible, close it, otherwise, open it
 				this.menu.credBox.toggle();
-
 			})
 		});
 
@@ -1443,15 +1437,8 @@ const	walNUT = new Lang.Class({
 			// TRANSLATORS: Accessible name of 'Find new devices' button
 			accessibleName: _("Find new devices"),
 			callback: Lang.bind(this, function() {
-
-				// Close, if open, {cred,del}Box and if addBox is visible, close it, otherwise, open it
-
-				this.menu.credBox.close();
-
-				this.menu.delBox.close();
-
+				// If addBox is visible, close it, otherwise, open it
 				this.menu.addBox.toggle();
-
 			})
 		});
 
@@ -1461,15 +1448,8 @@ const	walNUT = new Lang.Class({
 			// TRANSLATORS: Accessible name of 'Delete device' button
 			accessibleName: _("Delete device"),
 			callback: Lang.bind(this, function() {
-
-				// Close, if open, {add,cred}Box and if delBox is visible, close it, otherwise, open it
-
-				this.menu.addBox.close();
-
-				this.menu.credBox.close();
-
+				// If delBox is visible, close it, otherwise, open it
 				this.menu.delBox.toggle();
-
 			})
 		});
 
@@ -2336,134 +2316,111 @@ const	CredDialogSetvar = new Lang.Class({
 	}
 });
 
-// DelBox: a box used to delete UPSes from devices list
-const	DelBox = new Lang.Class({
-	Name: 'DelBox',
-	Extends: PopupMenu.PopupBaseMenuItem,
+// YesNoSubMenu: a submenu used to show data which require an interaction with the user (yes/no)
+const	YesNoSubMenu = new Lang.Class({
+	Name: 'YesNoSubMenu',
+	Extends: PopupMenu.PopupMenuSection,
 
-	_init: function() {
+	// args = {
+	//	title: title of the submenu
+	//	icon_name: name of the icon to be placed next to the *title*
+	// }
+	_init: function(args) {
 
-		this.parent({
-			reactive: true,
+		this.parent();
+		this.actor.clip_to_allocation = true;
+		this.actor.add_style_class_name('popup-sub-menu');
+
+		// Title row (icon/label)
+		let titleRow = new PopupMenu.PopupBaseMenuItem({
 			activate: false,
 			hover: false,
 			can_focus: false
 		});
-
-		let container = new St.Table();
-
-		// Icon
-		let icon = new St.Icon({
-			icon_name: 'imported-user-trash-symbolic',
-			style_class: 'walnut-delbox-icon'
+		let titleIcon = new St.Icon({
+			icon_name: args.icon_name,
+			style_class: 'popup-menu-icon'
 		});
-		container.add(icon, {
-			row: 0,
-			col: 0,
-			row_span: 3
+		titleRow.actor.add(titleIcon);
+		let titleLabel = new St.Label({
+			text: args.title,
+			style_class: 'walnut-yesnosubmenu-title',
+			y_expand: true,
+			y_align: Clutter.ActorAlign.CENTER
 		});
+		titleRow.actor.add(titleLabel, { expand: true });
+		titleRow.actor.label_actor = titleLabel;
+		titleRow.actor.add_style_pseudo_class('checked');
+		this.addMenuItem(titleRow);
 
-		// Description
-		let desc = new St.Label({
-			// TRANSLATORS: Label @ delete device box
-			text: _("Delete UPS"),
-			style_class: 'walnut-delbox-desc'
+		// Data row
+		let dataRow = new PopupMenu.PopupBaseMenuItem({
+			activate: false,
+			hover: false,
+			can_focus: false
 		});
-		container.add(desc, {
-			row: 0,
-			col: 1
-		});
+		this.addMenuItem(dataRow);
 
-		// Text
-		let text = new St.Label({
-			// TRANSLATORS: Description @ delete device box
-			text: Utilities.parseText(_("Do you really want to delete the current UPS from the list?"), 30),
-			style_class: 'walnut-delbox-text'
-		});
-		container.add(text, {
-			row: 1,
-			col: 1
-		});
-
-		// Delete/Go buttons
-		let del = new Button({
-			icon: 'imported-window-close',
-			// TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
-			accessibleName: _("Don't delete"),
-			callback: Lang.bind(this, function() {
-
-				this.hide();
-
-				// Give back focus to our 'submenu-toggle button'
-				walnut._del_btn.actor.grab_key_focus();
-
-			}),
-			size: 'small'
-		});
-
-		let go = new Button({
-			icon: 'imported-emblem-ok',
-			// TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
-			accessibleName: _("Delete"),
-			callback: Lang.bind(this, function() {
-
-				Utilities.deleteUPS();
-
-				this.hide();
-
-				// Give back focus to our 'submenu-toggle button'
-				walnut._del_btn.actor.grab_key_focus();
-
-				// Make the menu close itself to force an update
-				this.emit('activate', null);
-
-			}),
-			size: 'small'
-		});
-
-		// Put buttons together
-		let btns = new St.BoxLayout({
+		// Container of box-specific data
+		this.container = new St.BoxLayout({
 			vertical: false,
-			style_class: 'walnut-delbox-buttons-box'
+			x_expand: true
 		});
-		btns.add(del.actor, {
+		dataRow.actor.add(this.container, { expand: true });
+
+		// Cancel/Confirm buttons
+		this.del = new Button({
+			icon: 'imported-window-close',
+			// TRANSLATORS: Accessible name of 'Cancel' button @ Yes/No submenus
+			accessibleName: _("Cancel"),
+			size: 'small'
+		});
+		this.go = new Button({
+			icon: 'imported-emblem-ok',
+			// TRANSLATORS: Accessible name of 'Confirm' button @ Yes/No submenus
+			accessibleName: _("Confirm"),
+			size: 'small'
+		});
+
+		// Buttons container
+		let buttons = new St.BoxLayout({
+			vertical: false,
+			style_class: 'walnut-yesnosubmenu-buttons-box'
+		});
+		buttons.add(this.del.actor, {
 			x_fill: false,
 			y_fill: false
 		});
-		btns.add(go.actor, {
+		buttons.add(this.go.actor, {
 			x_fill: false,
 			y_fill: false
 		});
+		dataRow.actor.add(buttons);
 
-		// Right-align buttons in table
-		let btnsBox = new St.Bin({ x_align: St.Align.END });
-		btnsBox.add_actor(btns);
+		this.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
 
-		container.add(btnsBox, {
-			row: 2,
-			col: 1
-		});
-
-		this.actor.add(container, {
-			expand: true,
-			x_fill: false
-		});
+		this.isOpen = false;
+		this.actor.hide();
 
 	},
 
-	close: function() {
+	_subMenuOpenStateChanged: function(menu, open) {
 
-		if (this.actor.visible)
-			this.hide();
+		if (open) {
+			this.actor.add_style_pseudo_class('open');
+			this._getTopMenu()._setOpenedSubMenu(this);
+			this.actor.add_accessible_state(Atk.StateType.EXPANDED);
+		} else {
+			this.actor.remove_style_pseudo_class('open');
+			this._getTopMenu()._setOpenedSubMenu(null);
+			this.actor.remove_accessible_state(Atk.StateType.EXPANDED);
+		}
 
 	},
 
-	toggle: function() {
+	show: function() {
 
-		if (this.actor.visible)
-			this.hide();
-		else
-			this.show();
+		this.actor.show();
 
 	},
 
@@ -2473,9 +2430,87 @@ const	DelBox = new Lang.Class({
 
 	},
 
-	show: function() {
+	open: function() {
 
+		if (this.isOpen)
+			return;
+		if (this.isEmpty())
+			return;
+		this.isOpen = true;
+		if (this.actor.visible)
+			return;
+		this.emit('open-state-changed', true);
 		this.actor.show();
+		let [ minHeight, naturalHeight ] = this.actor.get_preferred_height(-1);
+		this.actor.height = 0;
+		Tweener.addTween(this.actor, {
+			height: naturalHeight,
+			time: 0.25,
+			onCompleteScope: this,
+			onComplete: function() {
+				this.actor.set_height(-1);
+			}
+		});
+
+	},
+
+	close: function() {
+
+		if (!this.isOpen)
+			return;
+		this.isOpen = false;
+		if (!this.actor.visible)
+			return;
+		this.emit('open-state-changed', false);
+		if (this._activeMenuItem)
+			this._activeMenuItem.setActive(false);
+		Tweener.addTween(this.actor, {
+			height: 0,
+			time: 0.25,
+			onCompleteScope: this,
+			onComplete: function() {
+				this.actor.hide();
+				this.actor.set_height(-1);
+			},
+		});
+
+	}
+});
+
+// DelBox: a box used to delete UPSes from devices list
+const	DelBox = new Lang.Class({
+	Name: 'DelBox',
+	Extends: YesNoSubMenu,
+
+	_init: function() {
+
+		this.parent({
+			// TRANSLATORS: Title of delete device box
+			title: _("Delete UPS"),
+			icon_name: 'imported-user-trash-symbolic'
+		});
+
+		// Text
+		let text = new St.Label({
+			// TRANSLATORS: Description @ delete device box
+			text: Utilities.parseText(_("Do you really want to delete the current UPS from the list?"), 30)
+		});
+		this.container.add(text, { expand: true });
+
+		// Set callback functions for cancel/confirm buttons
+		this.del.setCallback(Lang.bind(this, function() {
+			this.close();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._del_btn.actor.grab_key_focus();
+		}));
+		this.go.setCallback(Lang.bind(this, function() {
+			Utilities.deleteUPS();
+			this.close();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._del_btn.actor.grab_key_focus();
+			// Make the menu close itself to force an update
+			this.itemActivated();
+		}));
 
 	}
 });
@@ -2483,40 +2518,14 @@ const	DelBox = new Lang.Class({
 // CredBox: a box used to set UPS credentials (user/password)
 const	CredBox = new Lang.Class({
 	Name: 'CredBox',
-	Extends: PopupMenu.PopupBaseMenuItem,
+	Extends: YesNoSubMenu,
 
 	_init: function() {
 
 		this.parent({
-			reactive: true,
-			activate: false,
-			hover: false,
-			can_focus: false
-		});
-
-		let container = new St.Table();
-
-		// Icon
-		let icon = new St.Icon({
-			icon_name: 'imported-dialog-password-symbolic',
-			style_class: 'walnut-credbox-icon'
-		});
-		container.add(icon, {
-			row: 0,
-			col: 0,
-			row_span: 3
-		});
-
-		// Description
-		let desc = new St.Label({
-			// TRANSLATORS: Label @ credentials box
-			text: _("UPS Credentials"),
-			style_class: 'walnut-credbox-desc'
-		});
-		container.add(desc, {
-			row: 0,
-			col: 1,
-			col_span: 2
+			// TRANSLATORS: Title of credentials box
+			title: _("UPS Credentials"),
+			icon_name: 'imported-dialog-password-symbolic'
 		});
 
 		// Username
@@ -2527,10 +2536,7 @@ const	CredBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-credbox-username'
 		});
-		container.add(this.user, {
-			row: 1,
-			col: 1
-		});
+		this.container.add(this.user, { expand: true });
 
 		// Password
 		this.pw = new St.Entry({
@@ -2540,69 +2546,25 @@ const	CredBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-credbox-password'
 		});
-		container.add(this.pw, {
-			row: 1,
-			col: 2
-		});
 		this.pw.clutter_text.connect('text-changed', Lang.bind(this, this._updatePwAppearance));
+		this.container.add(this.pw, { expand: true });
 
-		// Delete/Go buttons
-		let del = new Button({
-			icon: 'imported-window-close',
-			// TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
-			accessibleName: _("Undo and close"),
-			callback: Lang.bind(this, function() {
-
-				this._undoAndClose();
-
-				// Give back focus to our 'submenu-toggle button'
-				walnut._cred_btn.actor.grab_key_focus();
-
-			}),
-			size: 'small'
-		});
-
-		let go = new Button({
-			icon: 'imported-emblem-ok',
-			// TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
-			accessibleName: _("Save credentials"),
-			callback: Lang.bind(this, this._credUpdate),
-			size: 'small'
-		});
-
-		// Put buttons together
-		let btns = new St.BoxLayout({
-			vertical: false,
-			style_class: 'walnut-credbox-buttons-box'
-		});
-		btns.add(del.actor, {
-			x_fill: false,
-			y_fill: false
-		});
-		btns.add(go.actor, {
-			x_fill: false,
-			y_fill: false
-		});
-
-		// Right-align buttons in table
-		let btnsBox = new St.Bin({ x_align: St.Align.END });
-		btnsBox.add_actor(btns);
-
-		container.add(btnsBox, {
-			row: 2,
-			col: 1,
-			col_span: 2
-		});
-
-		this.actor.add(container, {
-			expand: true,
-			x_fill: false
-		});
+		// Set callback functions for cancel/confirm buttons
+		this.del.setCallback(Lang.bind(this, function() {
+			this._undoAndClose();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._cred_btn.actor.grab_key_focus();
+		}));
+		this.go.setCallback(Lang.bind(this, function() {
+			this._credUpdateAndClose();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._cred_btn.actor.grab_key_focus();
+		}));
 
 	},
 
-	// Update credentials: if empty user or password is given it'll be removed from the UPS's properties
-	_credUpdate: function() {
+	// Update credentials and close CredBox: if empty user or password is given it'll be removed from the UPS's properties
+	_credUpdateAndClose: function() {
 
 		let user = this.user.get_text();
 		let pw = this.pw.get_text();
@@ -2611,6 +2573,8 @@ const	CredBox = new Lang.Class({
 			username: user,
 			password: pw
 		});
+
+		this.close();
 
 	},
 
@@ -2624,13 +2588,13 @@ const	CredBox = new Lang.Class({
 
 	},
 
-	// Undo changes and hide CredBox
+	// Undo changes and close CredBox
 	_undoAndClose: function() {
 
 		let device = upscMonitor.getList()[0];
 		this.update({ device: device });
 
-		this.hide();
+		this.close();
 
 	},
 
@@ -2650,74 +2614,20 @@ const	CredBox = new Lang.Class({
 
 		this._updatePwAppearance();
 
-	},
-
-	close: function() {
-
-		if (this.actor.visible)
-			this.hide();
-
-	},
-
-	toggle: function() {
-
-		if (this.actor.visible)
-			this.hide();
-		else
-			this.show();
-
-	},
-
-	hide: function() {
-
-		this.actor.hide();
-
-	},
-
-	show: function() {
-
-		this.actor.show();
-
 	}
 });
 
 // AddBox: box used to find new UPSes
 const	AddBox = new Lang.Class({
 	Name: 'AddBox',
-	Extends: PopupMenu.PopupBaseMenuItem,
+	Extends: YesNoSubMenu,
 
 	_init: function() {
 
 		this.parent({
-			reactive: true,
-			activate: false,
-			hover: false,
-			can_focus: false
-		});
-
-		let container = new St.Table();
-
-		// Icon
-		let icon = new St.Icon({
-			icon_name: 'imported-edit-find-symbolic',
-			style_class: 'walnut-addbox-icon'
-		});
-		container.add(icon, {
-			row: 0,
-			col: 0,
-			row_span: 3
-		});
-
-		// Description
-		let desc = new St.Label({
-			// TRANSLATORS: Label @ find new devices box
-			text: _("Find new UPSes"),
-			style_class: 'walnut-addbox-desc'
-		});
-		container.add(desc, {
-			row: 0,
-			col: 1,
-			col_span: 2
+			// TRANSLATORS: Title of find new devices box
+			title: _("Find new UPSes"),
+			icon_name: 'imported-edit-find-symbolic'
 		});
 
 		// Hostname
@@ -2727,10 +2637,7 @@ const	AddBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-addbox-host'
 		});
-		container.add(this.hostname, {
-			row: 1,
-			col: 1
-		});
+		this.container.add(this.hostname, { expand: true });
 
 		// Port
 		this.port = new St.Entry({
@@ -2739,63 +2646,19 @@ const	AddBox = new Lang.Class({
 			can_focus: true,
 			style_class: 'walnut-addbox-port'
 		});
-		container.add(this.port, {
-			row: 1,
-			col: 2
-		});
+		this.container.add(this.port, { expand: true });
 
-		// Delete/Go buttons
-		let del = new Button({
-			icon: 'imported-window-close',
-			// TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
-			accessibleName: _("Undo and close"),
-			callback: Lang.bind(this, function() {
-
-				this._undoAndClose();
-
-				// Give back focus to our 'submenu-toggle button'
-				walnut._add_btn.actor.grab_key_focus();
-
-			}),
-			size: 'small'
-		});
-
-		let go = new Button({
-			icon: 'imported-emblem-ok',
-			// TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
-			accessibleName: _("Start search"),
-			callback: Lang.bind(this, this._addUps),
-			size: 'small'
-		});
-
-		// Put buttons together
-		let btns = new St.BoxLayout({
-			vertical: false,
-			style_class: 'walnut-addbox-buttons-box'
-		});
-		btns.add(del.actor, {
-			x_fill: false,
-			y_fill: false
-		});
-		btns.add(go.actor, {
-			x_fill: false,
-			y_fill: false
-		});
-
-		// Right-align buttons in table
-		let btnsBox = new St.Bin({ x_align: St.Align.END });
-		btnsBox.add_actor(btns);
-
-		container.add(btnsBox, {
-			row: 2,
-			col: 1,
-			col_span: 2
-		});
-
-		this.actor.add(container, {
-			expand: true,
-			x_fill: false
-		});
+		// Set callback functions for cancel/confirm buttons
+		this.del.setCallback(Lang.bind(this, function() {
+			this._undoAndClose();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._add_btn.actor.grab_key_focus();
+		}));
+		this.go.setCallback(Lang.bind(this, function() {
+			this._addUps();
+			// Give back focus to our 'submenu-toggle button'
+			walnut._add_btn.actor.grab_key_focus();
+		}));
 
 	},
 
@@ -2823,35 +2686,7 @@ const	AddBox = new Lang.Class({
 		this.hostname.text = '';
 		this.port.text = '';
 
-		this.hide();
-
-	},
-
-	close: function() {
-
-		if (this.actor.visible)
-			this.hide();
-
-	},
-
-	toggle: function() {
-
-		if (this.actor.visible)
-			this.hide();
-		else
-			this.show();
-
-	},
-
-	hide: function() {
-
-		this.actor.hide();
-
-	},
-
-	show: function() {
-
-		this.actor.show();
+		this.close();
 
 	}
 });
@@ -5208,11 +5043,8 @@ const	walNUTMenu = new Lang.Class({
 
 		// Box for bottom buttons functions
 		this.credBox = new CredBox();
-		this.credBox.hide();
 		this.addBox = new AddBox(this);
-		this.addBox.hide();
 		this.delBox = new DelBox();
-		this.delBox.hide();
 
 		// Bottom buttons
 		this.controls = new BottomControls();

@@ -54,54 +54,16 @@
 	font-size: .818em;
 }
 
-/* Delete Device Box */
-.walnut-delbox-icon {
-	icon-size: 4.35em;
-}
-
-.walnut-delbox-icon:ltr {
-	padding: 0 .666em 0 0;
-}
-
-.walnut-delbox-icon:rtl {
-	padding: 0 0 0 .666em;
-}
-
-.walnut-delbox-desc {
+/* Yes/No submenus */
+.walnut-yesnosubmenu-title {
 	font-weight: bold;
-	padding: .333em;
-	text-align: right;
 }
 
-.walnut-delbox-text {
-	padding: .333em;
-	text-align: right;
-}
-
-.walnut-delbox-buttons-box {
+.walnut-yesnosubmenu-buttons-box {
 	spacing: .333em;
-	padding: .333em;
 }
 
 /* Credentials Box */
-.walnut-credbox-icon {
-	icon-size: 4.35em;
-}
-
-.walnut-credbox-icon:ltr {
-	padding: 0 .666em 0 0;
-}
-
-.walnut-credbox-icon:rtl {
-	padding: 0 0 0 .666em;
-}
-
-.walnut-credbox-desc {
-	font-weight: bold;
-	padding: .333em;
-	text-align: right;
-}
-
 .walnut-credbox-username {
 	width: 5.333em;
 	padding: 0 .333em;
@@ -112,30 +74,7 @@
 	padding: 0 .333em;
 }
 
-.walnut-credbox-buttons-box {
-	spacing: .333em;
-	padding: .333em;
-}
-
 /* Add Device Box*/
-.walnut-addbox-icon {
-	icon-size: 4.35em;
-}
-
-.walnut-addbox-icon:ltr {
-	padding: 0 .666em 0 0;
-}
-
-.walnut-addbox-icon:rtl {
-	padding: 0 0 0 .666em;
-}
-
-.walnut-addbox-desc {
-	font-weight: bold;
-	padding: .333em;
-	text-align: right;
-}
-
 .walnut-addbox-host {
 	width: 7.33em;
 	padding: 0 .333em;
@@ -144,11 +83,6 @@
 .walnut-addbox-port {
 	width: 3.333em;
 	padding: 0 .333em;
-}
-
-.walnut-addbox-buttons-box {
-	spacing: .333em;
-	padding: .333em;
 }
 
 /* Buttons */
