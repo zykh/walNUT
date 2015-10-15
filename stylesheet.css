@@ -17,22 +17,6 @@
 }
 
 /* Credentials Dialog */
-.walnut-cred-dialog {
-	min-width: 33.34em;
-}
-
-.walnut-cred-dialog-icon {
-	icon-size: 5.44em;
-}
-
-.walnut-cred-dialog-headline {
-	text-align: right;
-}
-
-.walnut-cred-dialog-description {
-	text-align: right;
-}
-
 .walnut-cred-dialog-table {
 	spacing: 1em;
 }

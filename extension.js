@@ -27,6 +27,7 @@ const	Atk = imports.gi.Atk,
 	Mainloop = imports.mainloop,
 	ModalDialog = imports.ui.modalDialog,
 	PanelMenu = imports.ui.panelMenu,
+	Pango = imports.gi.Pango,
 	PopupMenu = imports.ui.popupMenu,
 	ShellEntry = imports.ui.shellEntry,
 	Slider = imports.ui.slider,
@@ -1989,7 +1990,7 @@ const	CredDialog = new Lang.Class({
 		let pw = args.password;
 		let error = args.error;
 
-		this.parent({ styleClass: 'walnut-cred-dialog' });
+		this.parent({ styleClass: 'prompt-dialog' });
 
 		// Main container
 		let container = new St.BoxLayout({
@@ -2002,15 +2003,12 @@ const	CredDialog = new Lang.Class({
 		});
 
 		// Icon
-		let icon = new St.Icon({
-			icon_name: 'imported-dialog-password-symbolic',
-			style_class: 'walnut-cred-dialog-icon'
-		});
+		let icon = new St.Icon({ icon_name: 'imported-dialog-password-symbolic' });
 		container.add(icon, {
 			x_fill: true,
 			y_fill: false,
 			x_align: St.Align.END,
-			y_align: St.Align.MIDDLE
+			y_align: St.Align.START
 		});
 
 		// Container for messages and username and password entries
@@ -2024,7 +2022,7 @@ const	CredDialog = new Lang.Class({
 		let label = new St.Label({
 			// TRANSLATORS: Label of credentials dialog
 			text: _("UPS Credentials"),
-			style_class: 'prompt-dialog-headline walnut-cred-dialog-headline'
+			style_class: 'prompt-dialog-headline headline'
 		});
 		textBox.add(label, {
 			y_fill: false,
@@ -2034,8 +2032,11 @@ const	CredDialog = new Lang.Class({
 		// Description
 		this.desc = new St.Label({
 			text: '',
-			style_class: 'prompt-dialog-description walnut-cred-dialog-description'
+			style_class: 'prompt-dialog-description'
 		});
+		this.desc.clutter_text.line_wrap = true;
+		this.desc.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+		this.desc.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 		textBox.add(this.desc, {
 			y_fill: true,
 			y_align: St.Align.START,
@@ -2050,7 +2051,6 @@ const	CredDialog = new Lang.Class({
 		let userLabel = new St.Label({
 			// TRANSLATORS: Username @ credentials dialog
 			text: _("Username:"),
-			style_class: 'prompt-dialog-password-label',
 			x_align: Clutter.ActorAlign.START,
 			y_align: Clutter.ActorAlign.CENTER,
 			y_expand: true
@@ -2060,8 +2060,7 @@ const	CredDialog = new Lang.Class({
 		this.user = new St.Entry({
 			text: user || '',
 			can_focus: true,
-			reactive: true,
-			style_class: 'walnut-add-entry'
+			reactive: true
 		});
 
 		// Username right-click menu
@@ -2083,7 +2082,6 @@ const	CredDialog = new Lang.Class({
 		let pwLabel = new St.Label({
 			// TRANSLATORS: Password @ credentials dialog
 			text: _("Password:"),
-			style_class: 'prompt-dialog-password-label',
 			x_align: Clutter.ActorAlign.START,
 			y_align: Clutter.ActorAlign.CENTER,
 			y_expand: true
@@ -2093,8 +2091,7 @@ const	CredDialog = new Lang.Class({
 		this.pw = new St.Entry({
 			text: pw || '',
 			can_focus: true,
-			reactive: true,
-			style_class: 'prompt-dialog-password-entry'
+			reactive: true
 		});
 
 		// Password right-click menu
@@ -2251,7 +2248,7 @@ const	CredDialogCmd = new Lang.Class({
 			cmdExtraDesc = this._cmd;
 
 		// TRANSLATORS: Description @ credentials dialog for instant commands
-		this.desc.text = Utilities.parseText(_("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port), Lengths.CRED_DIALOG);
+		this.desc.text = _("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port);
 
 	},
 
@@ -2297,7 +2294,7 @@ const	CredDialogSetvar = new Lang.Class({
 		this._varValue = args.varValue;
 
 		// TRANSLATORS: Description @ credentials dialog for setvars
-		this.desc.text = Utilities.parseText(_("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port), Lengths.CRED_DIALOG);
+		this.desc.text = _("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port);
 
 	},
 
