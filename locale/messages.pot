@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Daniele Pezzini
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the walNUT package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: walNUT 0.2\n"
+"Project-Id-Version: walNUT 0.3\n"
 "Report-Msgid-Bugs-To: hyouko@gmail.com\n"
-"POT-Creation-Date: 2014-01-15 22:39+0100\n"
+"POT-Creation-Date: 2015-10-15 22:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,315 +18,283 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. TRANSLATORS: Notify title/description for error while searching new devices
-#: ../extension.js:438 ../extension.js:546
+#: ../extension.js:460 ../extension.js:564
 msgid "NUT: Error!"
 msgstr ""
 
-#: ../extension.js:439 ../extension.js:547
+#: ../extension.js:461 ../extension.js:565
 msgid "Unable to find new devices at host %s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description on every new device found
-#: ../extension.js:519
+#: ../extension.js:537
 msgid "NUT: new device found"
 msgstr ""
 
-#: ../extension.js:520
+#: ../extension.js:538
 msgid "Found device %s at host %s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description on new devices found (more than one)
-#: ../extension.js:538
+#: ../extension.js:556
 msgid "NUT: new devices found"
 msgstr ""
 
-#: ../extension.js:539
+#: ../extension.js:557
 msgid "Found %d devices at host %s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description on command successfully sent
-#: ../extension.js:1070
+#: ../extension.js:1109
 msgid "NUT: command handled"
 msgstr ""
 
-#: ../extension.js:1071
+#: ../extension.js:1110
 msgid "Successfully sent command %s to device %s@%s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description for error on command sent
-#: ../extension.js:1082
+#: ../extension.js:1121
 msgid "NUT: error while handling command"
 msgstr ""
 
-#: ../extension.js:1083
+#: ../extension.js:1122
 msgid "Unable to send command %s to device %s@%s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description on setvar successfully sent
-#: ../extension.js:1293
+#: ../extension.js:1357
 msgid "NUT: setvar handled"
 msgstr ""
 
-#: ../extension.js:1294
+#: ../extension.js:1358
 msgid "Successfully set %s to %s in device %s@%s:%s"
 msgstr ""
 
 #. TRANSLATORS: Notify title/description for error on setvar sent
-#: ../extension.js:1305
+#: ../extension.js:1369
 msgid "NUT: error while handling setvar"
 msgstr ""
 
-#: ../extension.js:1306
+#: ../extension.js:1370
 msgid "Unable to set %s to %s in device %s@%s:%s"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Preferences' button
-#: ../extension.js:1352
+#: ../extension.js:1416
 msgid "Preferences"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Credentials' button
-#: ../extension.js:1370
+#: ../extension.js:1428
 msgid "Credentials"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Find new devices' button
-#: ../extension.js:1388
+#: ../extension.js:1439
 msgid "Find new devices"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Delete device' button
-#: ../extension.js:1406
+#: ../extension.js:1450
 msgid "Delete device"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Help' button
-#: ../extension.js:1424
+#: ../extension.js:1461
 msgid "Help"
 msgstr ""
 
 #. TRANSLATORS: Panel text for battery charge
-#: ../extension.js:1692
+#: ../extension.js:1723
 msgid "C: %d%"
 msgstr ""
 
 #. TRANSLATORS: Panel text between battery charge and device load
-#: ../extension.js:1700
+#: ../extension.js:1731
 msgid ", "
 msgstr ""
 
 #. TRANSLATORS: Panel text for device load
-#: ../extension.js:1703
+#: ../extension.js:1734
 msgid "L: %d%"
 msgstr ""
 
 #. TRANSLATORS: Label of credentials dialog
-#. TRANSLATORS: Label @ credentials box
-#: ../extension.js:2112 ../extension.js:2582
+#. TRANSLATORS: Title of credentials box
+#: ../extension.js:2024 ../extension.js:2524
 msgid "UPS Credentials"
 msgstr ""
 
 #. TRANSLATORS: Username @ credentials dialog
-#: ../extension.js:2138
+#: ../extension.js:2053
 msgid "Username:"
 msgstr ""
 
 #. TRANSLATORS: Password @ credentials dialog
-#: ../extension.js:2187
+#: ../extension.js:2084
 msgid "Password:"
 msgstr ""
 
 #. TRANSLATORS: Error message @ credentials dialog
-#: ../extension.js:2256
+#: ../extension.js:2151
 msgid "Wrong username or password"
 msgstr ""
 
 #. TRANSLATORS: Execute button @ credentials dialog
-#: ../extension.js:2268
+#: ../extension.js:2163
 msgid "Execute"
 msgstr ""
 
 #. TRANSLATORS: Cancel button @ credentials dialog
-#: ../extension.js:2276
+#. TRANSLATORS: Accessible name of 'Cancel' button @ Yes/No submenus
+#: ../extension.js:2171 ../extension.js:2372
 msgid "Cancel"
 msgstr ""
 
 #. TRANSLATORS: Description @ credentials dialog for instant commands
-#: ../extension.js:2353
+#: ../extension.js:2251
 msgid "To execute the command %s on device %s@%s:%s, please insert a valid username and password"
 msgstr ""
 
 #. TRANSLATORS: Description @ credentials dialog for setvars
-#: ../extension.js:2399
+#: ../extension.js:2297
 msgid "To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password"
 msgstr ""
 
-#. TRANSLATORS: Label @ delete device box
-#: ../extension.js:2446
+#. TRANSLATORS: Accessible name of 'Confirm' button @ Yes/No submenus
+#: ../extension.js:2378
+msgid "Confirm"
+msgstr ""
+
+#. TRANSLATORS: Title of delete device box
+#: ../extension.js:2486
 msgid "Delete UPS"
 msgstr ""
 
 #. TRANSLATORS: Description @ delete device box
-#: ../extension.js:2457
+#: ../extension.js:2493
 msgid "Do you really want to delete the current UPS from the list?"
 msgstr ""
 
-#. TRANSLATORS: Accessible name of 'Don't delete' button @ Delete device box
-#: ../extension.js:2469
-msgid "Don't delete"
-msgstr ""
-
-#. TRANSLATORS: Accessible name of 'Delete' button @ Delete device box
-#: ../extension.js:2484
-msgid "Delete"
-msgstr ""
-
 #. TRANSLATORS: Username hint @ credentials box
-#: ../extension.js:2595
+#: ../extension.js:2532
 msgid "username"
 msgstr ""
 
 #. TRANSLATORS: Password hint @ credentials box
-#: ../extension.js:2613
+#: ../extension.js:2542
 msgid "password"
 msgstr ""
 
-#. TRANSLATORS: Accessible name of 'Undo and close' button @ Credentials box
-#. TRANSLATORS: Accessible name of 'Undo and close' button @ Find new devices box
-#. TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
-#: ../extension.js:2632 ../extension.js:2854 ../extension.js:3526
-#: ../extension.js:4013
-msgid "Undo and close"
-msgstr ""
-
-#. TRANSLATORS: Accessible name of 'Save credentials' button @ Credentials box
-#: ../extension.js:2647
-msgid "Save credentials"
-msgstr ""
-
-#. TRANSLATORS: Label @ find new devices box
-#: ../extension.js:2785
+#. TRANSLATORS: Title of find new devices box
+#: ../extension.js:2626
 msgid "Find new UPSes"
 msgstr ""
 
 #. TRANSLATORS: Hostname hint @ find new devices box
-#: ../extension.js:2808
+#: ../extension.js:2633
 msgid "hostname"
 msgstr ""
 
 #. TRANSLATORS: Port hint @ find new devices box
-#: ../extension.js:2836
+#: ../extension.js:2642
 msgid "port"
 msgstr ""
 
-#. TRANSLATORS: Accessible name of 'Start search' button @ Find new devices box
-#: ../extension.js:2869
-msgid "Start search"
-msgstr ""
-
 #. TRANSLATORS: Label of UPS commands sub menu
-#: ../extension.js:3158
+#: ../extension.js:2835
 msgid "UPS Commands"
 msgstr ""
 
 #. TRANSLATORS: Extradata's label @ Device commands submenu
-#: ../extension.js:3186
+#: ../extension.js:2872
 msgid "extradata:"
 msgstr ""
 
 #. TRANSLATORS: Error @ UPS commands submenu
-#: ../extension.js:3254
+#: ../extension.js:2941
 msgid "Error while retrieving UPS commands"
 msgstr ""
 
 #. TRANSLATORS: Error @ UPS commands submenu
-#: ../extension.js:3306
+#: ../extension.js:3011
 msgid "No UPS command available"
 msgstr ""
 
+#. TRANSLATORS: Range interval @ Setvar box
+#: ../extension.js:3132
+msgid "%s - %s"
+msgstr ""
+
 #. TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
-#: ../extension.js:3490
+#: ../extension.js:3249
 msgid "Decrement by one"
 msgstr ""
 
 #. TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
-#: ../extension.js:3508
+#: ../extension.js:3271
 msgid "Increment by one"
 msgstr ""
 
+#. TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
+#: ../extension.js:3293 ../extension.js:3835
+msgid "Undo and close"
+msgstr ""
+
 #. TRANSLATORS: Accessible name of 'Set' button @ setvar
-#: ../extension.js:3545 ../extension.js:4032
+#: ../extension.js:3312 ../extension.js:3854
 msgid "Set"
 msgstr ""
 
-#. TRANSLATORS: Range interval @ Setvar box
-#: ../extension.js:3615
-msgid "%s - %s"
-msgstr ""
-
 #. TRANSLATORS: Error message @ string setvar
-#: ../extension.js:3975
+#: ../extension.js:3797
 msgid "String too long"
 msgstr ""
 
 #. TRANSLATORS: Hint text @ string setvar
-#: ../extension.js:3989
+#: ../extension.js:3811
 msgid "set this variable to.."
 msgstr ""
 
 #. TRANSLATORS: Label of raw data submenu
-#: ../extension.js:4328
+#: ../extension.js:4219
 msgid "Raw Data"
 msgstr ""
 
-#. TRANSLATORS: Label of battery charge @ data table
-#: ../extension.js:4543
-msgid "Charge"
-msgstr ""
-
-#. TRANSLATORS: Label of device load @ data table
-#: ../extension.js:4550
-msgid "Load"
-msgstr ""
-
-#. TRANSLATORS: Label of estimated backup time @ data table
-#. TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
-#: ../extension.js:4558 ../extension.js:4766
-msgid "Backup Time"
-msgstr ""
-
-#. TRANSLATORS: Label of device temperature @ data table
-#. TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
-#: ../extension.js:4566 ../extension.js:4774
-msgid "Temperature"
-msgstr ""
-
-#. TRANSLATORS: Battery charge level @ data table
-#. TRANSLATORS: Device load level @ data table
-#. TRANSLATORS: Battery charge level @ alternative, less noisy, data table
-#. TRANSLATORS: Device load level @ alternative, less noisy, data table
-#: ../extension.js:4663 ../extension.js:4670 ../extension.js:4816
-#: ../extension.js:4823
-msgid "%s %"
-msgstr ""
-
 #. TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
-#: ../extension.js:4751
+#: ../extension.js:4434
 msgid "Battery Charge"
 msgstr ""
 
 #. TRANSLATORS: Label of device load @ alternative, less noisy, data table
-#: ../extension.js:4758
+#: ../extension.js:4441
 msgid "Device Load"
 msgstr ""
 
+#. TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
+#: ../extension.js:4449
+msgid "Backup Time"
+msgstr ""
+
+#. TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
+#: ../extension.js:4457
+msgid "Temperature"
+msgstr ""
+
+#. TRANSLATORS: Battery charge level @ alternative, less noisy, data table
+#. TRANSLATORS: Device load level @ alternative, less noisy, data table
+#: ../extension.js:4496 ../extension.js:4503
+msgid "%s %"
+msgstr ""
+
 #. TRANSLATORS: Label of device alarm box
-#: ../extension.js:4970
+#: ../extension.js:4652
 msgid "Alarm!"
 msgstr ""
 
 #. TRANSLATORS: Device not available @ devices list
-#: ../extension.js:5145
+#: ../extension.js:4820
 msgid " (N/A)"
 msgstr ""
 
@@ -341,7 +309,7 @@ msgid "walNUT can't find NUT's executable, please check your installation"
 msgstr ""
 
 #. TRANSLATORS: Error label NO UPS @ main menu
-#: ../extension.js:5299
+#: ../extension.js:4969
 msgid "Error! No UPS found"
 msgstr ""
 
@@ -351,12 +319,12 @@ msgid "walNUT can't find any UPS, please add one hostname:port to search in"
 msgstr ""
 
 #. TRANSLATORS: Error label UPS NOT AVAILABLE @ main menu
-#: ../extension.js:5308
+#: ../extension.js:4978
 msgid "Error! UPS not available"
 msgstr ""
 
 #. TRANSLATORS: Error description UPS NOT AVAILABLE @ main menu
-#: ../extension.js:5311
+#: ../extension.js:4981
 msgid "walNUT can't communicate to chosen UPS, please select or add another one or check your installation"
 msgstr ""
 
@@ -422,131 +390,121 @@ msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
 #: ../prefs.js:127
-msgid "Use a less noisy style for the menu"
-msgstr ""
-
-#. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:129
-msgid "Whether the extension should use a less noisy, more in line with Gnome Shell's own, style or not for the panel menu. (default: ON)"
-msgstr ""
-
-#. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:136
 msgid "Display not available devices"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:138
+#: ../prefs.js:129
 msgid "Display also not available devices in the submenu in panel menu (chosen device will be always displayed, also if not available, in spite of this option). (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:145
+#: ../prefs.js:136
 msgid "Display device model"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:147
+#: ../prefs.js:138
 msgid "Show also device model ('manufacturer - model'), if available, in the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:154
+#: ../prefs.js:145
 msgid "Display battery charge"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:156
+#: ../prefs.js:147
 msgid "Show also battery charge, if available, in the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:162
+#: ../prefs.js:153
 msgid "Display load level"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:164
+#: ../prefs.js:155
 msgid "Show also load level, if available, in the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:170
+#: ../prefs.js:161
 msgid "Display backup time"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:172
+#: ../prefs.js:163
 msgid "Show also backup time, if available, in the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:178
+#: ../prefs.js:169
 msgid "Display device temperature"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:180
+#: ../prefs.js:171
 msgid "Show also device temperature, if available, in the panel menu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:187
+#: ../prefs.js:178
 msgid "Display raw data"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:189
+#: ../prefs.js:180
 msgid "Show also raw data in a submenu. (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:196
+#: ../prefs.js:187
 msgid "Display device commands"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:198
+#: ../prefs.js:189
 msgid "Display available device commands. Requires upsd user and password to execute them. (default: OFF)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:209
+#: ../prefs.js:200
 msgid "Hide password at credentials box"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:211
+#: ../prefs.js:202
 msgid "Whether the password at credentials box should be hidden or not. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Label of setting @ preferences
-#: ../prefs.js:222
+#: ../prefs.js:213
 msgid "Display description of device commands"
 msgstr ""
 
 #. TRANSLATORS: Hint text of setting @ preferences
-#: ../prefs.js:224
+#: ../prefs.js:215
 msgid "Display also a localized description of available device commands in the submenu. (default: ON)"
 msgstr ""
 
 #. TRANSLATORS: Tab's label @ preferences widget
-#: ../prefs.js:246
+#: ../prefs.js:237
 msgid "General/Panel"
 msgstr ""
 
 #. TRANSLATORS: Label @ preferences widget
-#: ../prefs.js:271
+#: ../prefs.js:262
 msgid "General options"
 msgstr ""
 
 #. TRANSLATORS: Label @ preferences widget
-#: ../prefs.js:297
+#: ../prefs.js:288
 msgid "Panel options"
 msgstr ""
 
 #. TRANSLATORS: Tab's label @ preferences widget
-#: ../prefs.js:321
+#: ../prefs.js:312
 msgid "Menu"
 msgstr ""
 
