@@ -3722,8 +3722,8 @@ const	SetvarBoxString = new Lang.Class({
 		this.actor.add(this._errorBox);
 
 		// Spacer
-		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
-		this._errorBox.add(spacer);
+		let errorSpacer = new St.Label({ style_class: 'popup-menu-ornament' });
+		this._errorBox.add(errorSpacer);
 
 		// Error Icon
 		let errorIcon = new St.Icon({
