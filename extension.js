@@ -598,7 +598,9 @@ const	UpscMonitor = new Lang.Class({
 	// _checkAll: Check which stored UPS is available
 	_checkAll: function() {
 
-		for each (let item in this._devices) {
+		for (let i = 0; i < this._devices.length; i++) {
+
+			let item = this._devices[i];
 
 			// Just in case we lose the UPS..
 			item.av = 0;
@@ -668,7 +670,9 @@ const	UpscMonitor = new Lang.Class({
 
 		let updateNeeded = true;
 
-		for each (let prev in this._prevDevices) {
+		for (let i = 0; i < this._prevDevices.length; i++) {
+
+			let prev = this._prevDevices[i];
 
 			if (prev.name != ups.name)
 				continue;
@@ -684,6 +688,7 @@ const	UpscMonitor = new Lang.Class({
 
 			// Don't update the displayed list of devices if nothing changes
 			updateNeeded = false;
+			break;
 
 		}
 
@@ -3568,7 +3573,8 @@ const	SetvarBoxRanges = new Lang.Class({
 			// Ranges only support ints
 			this._actualValueNumeric = parseInt(this._actualValue);
 
-			for each (let range in this._ranges) {
+			for (let i = 0; i < this._ranges.length; i++) {
+				let range = this._ranges[i];
 				if (!(this._actualValueNumeric >= range.min && this._actualValueNumeric <= range.max))
 					continue;
 				rangeAct.min = range.min;
@@ -3580,7 +3586,8 @@ const	SetvarBoxRanges = new Lang.Class({
 			if (rangeAct.min == null || rangeAct.max == null) {
 				if (this._ranges.length > 1) {
 					let delta;
-					for each (let range in this._ranges) {
+					for (let i = 0; i < this._ranges.length; i++) {
+						let range = this._ranges[i];
 						let localDelta;
 						// Less than minimum
 						if (this._actualValueNumeric < range.min)
