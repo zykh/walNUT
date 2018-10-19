@@ -589,7 +589,9 @@ const	UpscMonitor = new Lang.Class({
 	// _checkAll: Check which stored UPS is available
 	_checkAll: function() {
 
-		for each (let item in this._devices) {
+		for (let i = 0; i < this._devices.length; i++) {
+
+			let item = this._devices[i];
 
 			// Just in case we lose the UPS..
 			item.av = 0;
@@ -637,7 +639,9 @@ const	UpscMonitor = new Lang.Class({
 
 		let updateNeeded = true;
 
-		for each (let prev in this._prevDevices) {
+		for (let i = 0; i < this._prevDevices.length; i++) {
+
+			let prev = this._prevDevices[i];
 
 			if (prev.name != ups.name)
 				continue;
@@ -653,6 +657,7 @@ const	UpscMonitor = new Lang.Class({
 
 			// Don't update the displayed list of devices if nothing changes
 			updateNeeded = false;
+			break;
 
 		}
 
@@ -2914,7 +2919,9 @@ const	UpsCmdList = new Lang.Class({
 		if (commands.length > 0) {
 
 			// List UPS commands in submenu
-			for each (let item in commands) {
+			for (let i = 0; i < commands.length; i++) {
+
+				let item = commands[i];
 
 				let cmd = new PopupMenu.PopupMenuItem(gsettings.get_boolean('display-cmd-desc') ? '%s\n%s'.format(item.cmd, Utilities.parseText(Utilities.cmdI18n(item).desc, Lengths.CMD)) : item.cmd);
 				let command = item.cmd;
@@ -3509,7 +3516,8 @@ const	SetvarBoxRanges = new Lang.Class({
 			// Ranges only support ints
 			this._actualValueNumeric = parseInt(this._actualValue);
 
-			for each (let range in this._ranges) {
+			for (let i = 0; i < this._ranges.length; i++) {
+				let range = this._ranges[i];
 				if (!(this._actualValueNumeric >= range.min && this._actualValueNumeric <= range.max))
 					continue;
 				rangeAct.min = range.min;
@@ -3521,7 +3529,8 @@ const	SetvarBoxRanges = new Lang.Class({
 			if (rangeAct.min == null || rangeAct.max == null) {
 				if (this._ranges.length > 1) {
 					let delta;
-					for each (let range in this._ranges) {
+					for (let i = 0; i < this._ranges.length; i++) {
+						let range = this._ranges[i];
 						let localDelta;
 						// Less than minimum
 						if (this._actualValueNumeric < range.min)
@@ -4200,7 +4209,9 @@ const	UpsRawDataList = new Lang.Class({
 		//	},
 		//		...
 		// ]
-		for each (let item in this._vars) {
+		for (let i = 0; i < this._vars.length; i++) {
+
+			let item = this._vars[i];
 
 			// Submenu has children and the current var is one of them
 			if (actual && stored[item.var]) {
@@ -4257,8 +4268,9 @@ const	UpsRawDataList = new Lang.Class({
 		}
 
 		// Destroy all children still stored in 'stored' obj
-		for each (let item in stored) {
-			actual[item].destroy();
+		for (let item in stored) {
+			let i = stored[item];
+			actual[i].destroy();
 		}
 
 	},
