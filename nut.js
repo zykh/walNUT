@@ -328,7 +328,7 @@ const	TCPClientDo = new Lang.Class({
 // - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
 // - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 // - 'ERR UNKNOWN' - unknown errors
-const	NUTClient = new Lang.Class({
+var	NUTClient = new Lang.Class({
 	Name: 'NUTClient',
 
 	// args = {
@@ -1614,7 +1614,7 @@ const	NUTClient = new Lang.Class({
 // - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 // - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 // - 'ERR UNKNOWN' - unknown errors
-const	NUTHelper = new Lang.Class({
+var	NUTHelper = new Lang.Class({
 	Name: 'NUTHelper',
 
 	// args = {
