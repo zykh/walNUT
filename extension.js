@@ -273,7 +273,7 @@ const	UpscMonitor = new Lang.Class({
 	_init: function() {
 
 		// Actual status
-		this._state |= ErrorType.NO_UPS | ErrorType.UPS_NA;
+		this._state = ErrorType.NO_UPS | ErrorType.UPS_NA;
 
 		// Device list
 		this._devices = [];
