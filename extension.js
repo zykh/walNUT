@@ -1762,81 +1762,34 @@ const	walNUT = new Lang.Class({
 				this.menu.upsTopDataList.hide({ type: 'A' });
 
 			// UpsDataTable
-
-			if (forceRefresh) {
-				this.menu.upsDataTableAlt.clean();
-				this.menu.upsDataTableAlt.hide();
-			}
-
-			let count = 0;
-
-			// UPS charge
-			if (this._display_battery_charge && vars['battery.charge']) {
-
-				count++;
-
-				if (forceRefresh)
-					this.menu.upsDataTableAlt.addData({ type: 'C' });
-
-				this.menu.upsDataTableAlt.update({
-					type: 'C',
+			if (this._display_battery_charge && vars['battery.charge'])
+				this.menu.upsDataTableAlt.show({
+					type: 'battery.charge',
 					value: vars['battery.charge']
 				});
-
-			}
-
-			// UPS load
-			if (this._display_load_level && vars['ups.load']) {
-
-				count++;
-
-				if (forceRefresh)
-					this.menu.upsDataTableAlt.addData({ type: 'L' });
-
-				this.menu.upsDataTableAlt.update({
-					type: 'L',
+			else
+				this.menu.upsDataTableAlt.hide({ type: 'battery.charge' });
+			if (this._display_load_level && vars['ups.load'])
+				this.menu.upsDataTableAlt.show({
+					type: 'ups.load',
 					value: vars['ups.load']
 				});
-
-			}
-
-			// UPS remaining time
-			if (this._display_backup_time && vars['battery.runtime']) {
-
-				count++;
-
-				if (forceRefresh)
-					this.menu.upsDataTableAlt.addData({ type: 'R' });
-
-				this.menu.upsDataTableAlt.update({
-					type: 'R',
+			else
+				this.menu.upsDataTableAlt.hide({ type: 'ups.load' });
+			if (this._display_backup_time && vars['battery.runtime'])
+				this.menu.upsDataTableAlt.show({
+					type: 'battery.runtime',
 					value: vars['battery.runtime']
 				});
-
-			}
-
-			// UPS temperature
-			if (this._display_device_temperature && vars['ups.temperature']) {
-
-				count++;
-
-				if (forceRefresh)
-					this.menu.upsDataTableAlt.addData({ type: 'T' });
-
-				this.menu.upsDataTableAlt.update({
-					type: 'T',
+			else
+				this.menu.upsDataTableAlt.hide({ type: 'battery.runtime' });
+			if (this._display_device_temperature && vars['ups.temperature'])
+				this.menu.upsDataTableAlt.show({
+					type: 'ups.temperature',
 					value: vars['ups.temperature']
 				});
-
-			}
-
-			// Don't show table if no data is available
-			if (count) {
-				this.menu.upsDataTableAlt.show();
-			} else if (this.menu.upsDataTableAlt.actor.visible) {
-				this.menu.upsDataTableAlt.clean();
-				this.menu.upsDataTableAlt.hide();
-			}
+			else
+				this.menu.upsDataTableAlt.hide({ type: 'ups.temperature' });
 
 			// Separator
 			if (this._display_raw || this._display_cmd) {
@@ -1882,10 +1835,8 @@ const	walNUT = new Lang.Class({
 			if (this.menu.upsTopDataList.actor.visible)
 				this.menu.upsTopDataList.hide();
 
-			if (this.menu.upsDataTableAlt.actor.visible) {
-				this.menu.upsDataTableAlt.clean();
+			if (this.menu.upsDataTableAlt.actor.visible)
 				this.menu.upsDataTableAlt.hide();
-			}
 
 			if (this.menu.separator.actor.visible)
 				this.menu.separator.actor.hide();
@@ -4358,137 +4309,110 @@ const	UpsDataTableAlt = new Lang.Class({
 
 	_init: function() {
 
+		// Supported data format: {
+		//	'<data identifier #1> (also used to name the child UpsDataTableAltItem representing this type of data)': {
+		//		label: label to be shown in panel menu
+		//		icon: name of the icon (sans the '-symbolic' suffix) to be shown in panel menu, if static,
+		//		      or function that will be called with the actual value of data and shall return the icon name
+		//		value: function that will be called with the actual value of data and shall return the string to be shown in panel menu
+		//	},
+		//	'<data identifier #2>': {
+		//		...
+		//	},
+		//	...
+		// }
+		this._data = {
+			'battery.charge': {	// Battery Charge
+				// TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
+				label: _("Battery Charge"),
+				icon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
+				// TRANSLATORS: Battery charge level @ alternative, less noisy, data table
+				value: function(value) { return _("%s %").format(value); }
+			},
+			'ups.load': {		// Device Load
+				// TRANSLATORS: Label of device load @ alternative, less noisy, data table
+				label: _("Device Load"),
+				icon: 'imported-system-run',
+				// TRANSLATORS: Device load level @ alternative, less noisy, data table
+				value: function(value) { return _("%s %").format(value); }
+			},
+			'battery.runtime': {	// Backup Time
+				// TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
+				label: _("Backup Time"),
+				icon: 'imported-preferences-system-time',
+				value: function(value) { return Utilities.parseTime(value); }
+			},
+			'ups.temperature': {	// Device Temperature
+				// TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
+				label: _("Temperature"),
+				icon: 'nut-thermometer',
+				value: function(value) { return Utilities.formatTemp(value); }
+			}
+		};
+
 		this.parent();
 
-	},
+		for (let data in this._data) {
 
-	// args = {
-	//	type: type of the data to add {'C','L','R','T'}
-	// }
-	addData: function(args) {
+			let item = this._data[data];
 
-		let cell = {};
+			// Create item
+			this['_' + data] = new UpsDataTableAltItem();
 
-		switch (args.type)
-		{
-		case 'C':	// Battery Charge
+			// Populate item
+			this['_' + data].setLabel(item.label);
+			if (!(item.icon instanceof Function))
+				this['_' + data].setIcon(item.icon + '-symbolic');
 
-			cell.type = 'batteryCharge';
-			// TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
-			cell.label = _("Battery Charge");
-			break;
-
-		case 'L':	// Device Load
-
-			cell.type = 'deviceLoad';
-			// TRANSLATORS: Label of device load @ alternative, less noisy, data table
-			cell.label = _("Device Load");
-			cell.icon = 'imported-system-run';
-			break;
-
-		case 'R':	// Backup Time
-
-			cell.type = 'backupTime';
-			// TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
-			cell.label = _("Backup Time");
-			cell.icon = 'imported-preferences-system-time';
-			break;
-
-		case 'T':	// Device Temperature
-
-			cell.type = 'deviceTemp';
-			// TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
-			cell.label = _("Temperature");
-			cell.icon = 'nut-thermometer';
-			break;
-
-		default:
-
-			break;
+			// Add item
+			this.addMenuItem(this['_' + data]);
 
 		}
 
-		// Create item
-		this[cell.type] = new UpsDataTableAltItem();
-
-		// Populate item
-		this[cell.type].setLabel(cell.label);
-		if (cell.icon)
-			this[cell.type].setIcon(cell.icon + '-symbolic');
-
-		// Add item
-		this.addMenuItem(this[cell.type]);
-
 	},
 
-	// update: update table's data/icons
+	// hide: hide an item or the whole table (if type is not specified)
 	// args = {
-	//	type: type of the data to update {'C','L','R','T'}
-	//	value: actual value of this type of data
+	//	type: type of the data to hide
 	// }
-	update: function(args) {
+	hide: function(args) {
 
-		let cell = {};
-
-		switch (args.type)
-		{
-		case 'C':	// Battery Charge
-
-			cell.type = 'batteryCharge';
-			cell.icon = BatteryIcon['B' + Utilities.parseBatteryLevel(args.value)];
-			// TRANSLATORS: Battery charge level @ alternative, less noisy, data table
-			cell.value = _("%s %").format(args.value);
-			break;
-
-		case 'L':	// Device Load
-
-			cell.type = 'deviceLoad';
-			// TRANSLATORS: Device load level @ alternative, less noisy, data table
-			cell.value = _("%s %").format(args.value);
-			break;
-
-		case 'R':	// Backup Time
-
-			cell.type = 'backupTime';
-			cell.value = Utilities.parseTime(args.value);
-			break;
-
-		case 'T':	// Device Temperature
-
-			cell.type = 'deviceTemp';
-			cell.value = Utilities.formatTemp(args.value);
-			break;
-
-		default:
-
-			break;
-
+		if (!args || !args.type) {
+			this.actor.hide();
+			return;
 		}
 
-		if (cell.icon)
-			this[cell.type].setIcon(cell.icon + '-symbolic');
+		let data = args.type;
+		this['_' + data].hide();
 
-		this[cell.type].setValue(cell.value);
-
-	},
-
-	// clean: destroy table's children, if any
-	clean: function() {
-
-		if (this.actor.get_children().length > 0)
-			this.actor.destroy_all_children();
-
-	},
-
-	hide: function() {
-
+		// If nothing else is visible, also hide the whole thing
+		for (data in this._data)
+			if (this['_' + data].actor.visible)
+				return;
 		this.actor.hide();
 
 	},
 
-	show: function() {
+	// show: show item/table and update table's data/icons
+	// args = {
+	//	type: type of the data to update
+	//	value: actual value of this type of data
+	// }
+	show: function(args) {
 
 		this.actor.show();
+
+		let data = args.type;
+		let value = args.value;
+
+		let item = this._data[data];
+
+		if (item.icon instanceof Function)
+			this['_' + data].setIcon(item.icon(value) + '-symbolic');
+
+		this['_' + data].setValue(item.value(value));
+
+		this['_' + data].show();
 
 	}
 });
@@ -4541,6 +4465,18 @@ const	UpsDataTableAltItem = new Lang.Class({
 	setValue: function(value) {
 
 		this.value.text = value;
+
+	},
+
+	hide: function() {
+
+		this.actor.hide();
+
+	},
+
+	show: function() {
+
+		this.actor.show();
 
 	}
 });
