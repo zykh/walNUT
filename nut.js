@@ -40,6 +40,8 @@ const	TCPClient = new Lang.Class({
 
 		this._port = args.port;
 
+		this._isConnected = false;
+
 	},
 
 	// Start connection
