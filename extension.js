@@ -3089,7 +3089,7 @@ const	SetvarBox = new Lang.Class({
 	// }
 	show: function(args) {
 
-		if (args.actualValue != this._actualValue)
+		if (this._actualValue == undefined || args.actualValue != this._actualValue)
 			this._resetTo(args.actualValue);
 
 		this.actor.show();
@@ -3112,8 +3112,7 @@ const	SetvarBox = new Lang.Class({
 	// _resetTo: reset setvar box to *value*
 	_resetTo: function(value) {
 
-		if (this._actualValue != value)
-			this._actualValue = value;
+		this._actualValue = value;
 
 	}
 });
@@ -3691,7 +3690,7 @@ const	SetvarBoxEnums = new Lang.Class({
 	// _resetTo: reset setvar box to *value*
 	_resetTo: function(value) {
 
-		if (this._actualValue == value)
+		if (this._actualValue != undefined && this._actualValue == value)
 			return;
 
 		// Update actual value
