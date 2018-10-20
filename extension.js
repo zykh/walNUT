@@ -1954,7 +1954,7 @@ const	CredDialog = new Lang.Class({
 
 		// Main container
 		let container = new St.BoxLayout({
-			style_class: 'prompt-dialog-main-layout',
+			style_class: 'prompt-dialog-main-layout message-dialog-main-layout',
 			vertical: false
 		});
 		this.contentLayout.add(container, {
@@ -1963,7 +1963,10 @@ const	CredDialog = new Lang.Class({
 		});
 
 		// Icon
-		let icon = new St.Icon({ icon_name: 'imported-dialog-password-symbolic' });
+		let icon = new St.Icon({
+			icon_name: 'imported-dialog-password-symbolic',
+			style_class: 'message-dialog-icon'
+		});
 		container.add(icon, {
 			x_fill: true,
 			y_fill: false,
@@ -1973,7 +1976,7 @@ const	CredDialog = new Lang.Class({
 
 		// Container for messages and username and password entries
 		let textBox = new St.BoxLayout({
-			style_class: 'prompt-dialog-message-layout',
+			style_class: 'prompt-dialog-message-layout message-dialog-content',
 			vertical: true
 		});
 		container.add(textBox, { y_align: St.Align.START });
@@ -1982,7 +1985,7 @@ const	CredDialog = new Lang.Class({
 		let label = new St.Label({
 			// TRANSLATORS: Label of credentials dialog
 			text: _("UPS Credentials"),
-			style_class: 'prompt-dialog-headline headline'
+			style_class: 'prompt-dialog-headline message-dialog-title headline'
 		});
 		textBox.add(label, {
 			y_fill: false,
@@ -1992,7 +1995,7 @@ const	CredDialog = new Lang.Class({
 		// Description
 		this.desc = new St.Label({
 			text: '',
-			style_class: 'prompt-dialog-description'
+			style_class: 'prompt-dialog-description message-dialog-body'
 		});
 		this.desc.clutter_text.line_wrap = true;
 		this.desc.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
