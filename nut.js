@@ -246,9 +246,18 @@ const	TCPClientDo = new Lang.Class({
 	// Finish the writing and call the read function
 	_writeCallback: function(source_object, result) {
 
+		let error, size;
+
 		try {
-			this._client.output.write_finish(result);
-		} catch (error) {
+			size = this._client.output.write_finish(result);
+		} catch (e) {
+			error = e;
+		}
+
+		if (!error && !size)
+			error = "no data";
+
+		if (error) {
 			this._returnData.push('ERR WRITE-ERROR (%s)'.format(error));
 			this._callback();
 			return;
@@ -272,11 +281,18 @@ const	TCPClientDo = new Lang.Class({
 	// Finish reading the line, then call the callback function or read the next line
 	_readLineCallback: function(source_object, result) {
 
-		let line, lineSize;
+		let error, line, lineSize;
 
 		try {
 			[ line, lineSize ] = this._client.input.read_line_finish_utf8(result);
-		} catch (error) {
+		} catch (e) {
+			error = e;
+		}
+
+		if (!error && (!line || !lineSize))
+			error = "no data";
+
+		if (error) {
 			// Reinitialize *this._returnData*, in case this isn't the first line
 			this._returnData = [];
 			this._returnData.push('ERR READ-ERROR (%s)'.format(error));
