@@ -265,6 +265,53 @@ const RawDataButtonOrnament = {
 	CLOSED:	2
 };
 
+// Data table items
+// Supported data format: {
+//	'<data identifier #1>': {
+//		label: label to be shown in panel menu
+//		icon: name of the icon (sans the '-symbolic' suffix) to be shown in panel menu, if static,
+//		      or function that will be called with the actual value of data and shall return the icon name
+//		value: function that will be called with the actual value of data and shall return the string to be shown in panel menu
+//		gsetting: name of the gsetting that toggles the view of this type of data
+//	},
+//	'<data identifier #2>': {
+//		...
+//	},
+//	...
+// }
+const	DataTableItems = {
+	'battery.charge': {	// Battery charge
+		// TRANSLATORS: Label of battery charge @ data table
+		label: _("Battery Charge"),
+		icon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
+		// TRANSLATORS: Battery charge level @ data table
+		value: function(value) { return _("%s %").format(value); },
+		gsetting: 'display-battery-charge'
+	},
+	'ups.load': {		// Device load
+		// TRANSLATORS: Label of device load @ data table
+		label: _("Device Load"),
+		icon: 'imported-system-run',
+		// TRANSLATORS: Device load level @ data table
+		value: function(value) { return _("%s %").format(value); },
+		gsetting: 'display-load-level'
+	},
+	'battery.runtime': {	// Backup time
+		// TRANSLATORS: Label of estimated backup time @ data table
+		label: _("Backup Time"),
+		icon: 'imported-preferences-system-time',
+		value: function(value) { return Utilities.parseTime(value); },
+		gsetting: 'display-backup-time'
+	},
+	'ups.temperature': {	// Device temperature
+		// TRANSLATORS: Label of device temperature @ data table
+		label: _("Temperature"),
+		icon: 'nut-thermometer',
+		value: function(value) { return Utilities.formatTemp(value); },
+		gsetting: 'display-device-temperature'
+	}
+};
+
 // UpscMonitor: exec upsc at a given interval and deliver infos
 const	UpscMonitor = new Lang.Class({
 	Name: 'UpscMonitor',
@@ -1547,18 +1594,8 @@ const	walNUT = new Lang.Class({
 		this._display_device_model = gsettings.get_boolean('display-device-model');
 
 		// Info displayed in 'DataTable'
-
-		// Battery charge
-		this._display_battery_charge = gsettings.get_boolean('display-battery-charge');
-
-		// Load level
-		this._display_load_level = gsettings.get_boolean('display-load-level');
-
-		// Backup time
-		this._display_backup_time = gsettings.get_boolean('display-backup-time');
-
-		// Device temperature
-		this._display_device_temperature = gsettings.get_boolean('display-device-temperature');
+		for (let data in DataTableItems)
+			this['_display_' + data] = gsettings.get_boolean(DataTableItems[data].gsetting);
 
 		// Raw Data
 
@@ -1762,34 +1799,15 @@ const	walNUT = new Lang.Class({
 				this.menu.upsTopDataList.hide({ type: 'A' });
 
 			// UpsDataTable
-			if (this._display_battery_charge && vars['battery.charge'])
-				this.menu.upsDataTableAlt.show({
-					type: 'battery.charge',
-					value: vars['battery.charge']
-				});
-			else
-				this.menu.upsDataTableAlt.hide({ type: 'battery.charge' });
-			if (this._display_load_level && vars['ups.load'])
-				this.menu.upsDataTableAlt.show({
-					type: 'ups.load',
-					value: vars['ups.load']
-				});
-			else
-				this.menu.upsDataTableAlt.hide({ type: 'ups.load' });
-			if (this._display_backup_time && vars['battery.runtime'])
-				this.menu.upsDataTableAlt.show({
-					type: 'battery.runtime',
-					value: vars['battery.runtime']
-				});
-			else
-				this.menu.upsDataTableAlt.hide({ type: 'battery.runtime' });
-			if (this._display_device_temperature && vars['ups.temperature'])
-				this.menu.upsDataTableAlt.show({
-					type: 'ups.temperature',
-					value: vars['ups.temperature']
-				});
-			else
-				this.menu.upsDataTableAlt.hide({ type: 'ups.temperature' });
+			for (let data in DataTableItems) {
+				if (this['_display_' + data] && vars[data])
+					this.menu.upsDataTableAlt.show({
+						type: data,
+						value: vars[data]
+					});
+				else
+					this.menu.upsDataTableAlt.hide({ type: data });
+			}
 
 			// Separator
 			if (this._display_raw || this._display_cmd) {
@@ -4309,52 +4327,11 @@ const	UpsDataTableAlt = new Lang.Class({
 
 	_init: function() {
 
-		// Supported data format: {
-		//	'<data identifier #1> (also used to name the child UpsDataTableAltItem representing this type of data)': {
-		//		label: label to be shown in panel menu
-		//		icon: name of the icon (sans the '-symbolic' suffix) to be shown in panel menu, if static,
-		//		      or function that will be called with the actual value of data and shall return the icon name
-		//		value: function that will be called with the actual value of data and shall return the string to be shown in panel menu
-		//	},
-		//	'<data identifier #2>': {
-		//		...
-		//	},
-		//	...
-		// }
-		this._data = {
-			'battery.charge': {	// Battery Charge
-				// TRANSLATORS: Label of battery charge @ alternative, less noisy, data table
-				label: _("Battery Charge"),
-				icon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
-				// TRANSLATORS: Battery charge level @ alternative, less noisy, data table
-				value: function(value) { return _("%s %").format(value); }
-			},
-			'ups.load': {		// Device Load
-				// TRANSLATORS: Label of device load @ alternative, less noisy, data table
-				label: _("Device Load"),
-				icon: 'imported-system-run',
-				// TRANSLATORS: Device load level @ alternative, less noisy, data table
-				value: function(value) { return _("%s %").format(value); }
-			},
-			'battery.runtime': {	// Backup Time
-				// TRANSLATORS: Label of estimated backup time @ alternative, less noisy, data table
-				label: _("Backup Time"),
-				icon: 'imported-preferences-system-time',
-				value: function(value) { return Utilities.parseTime(value); }
-			},
-			'ups.temperature': {	// Device Temperature
-				// TRANSLATORS: Label of device temperature @ alternative, less noisy, data table
-				label: _("Temperature"),
-				icon: 'nut-thermometer',
-				value: function(value) { return Utilities.formatTemp(value); }
-			}
-		};
-
 		this.parent();
 
-		for (let data in this._data) {
+		for (let data in DataTableItems) {
 
-			let item = this._data[data];
+			let item = DataTableItems[data];
 
 			// Create item
 			this['_' + data] = new UpsDataTableAltItem();
@@ -4386,7 +4363,7 @@ const	UpsDataTableAlt = new Lang.Class({
 		this['_' + data].hide();
 
 		// If nothing else is visible, also hide the whole thing
-		for (data in this._data)
+		for (data in DataTableItems)
 			if (this['_' + data].actor.visible)
 				return;
 		this.actor.hide();
@@ -4405,7 +4382,7 @@ const	UpsDataTableAlt = new Lang.Class({
 		let data = args.type;
 		let value = args.value;
 
-		let item = this._data[data];
+		let item = DataTableItems[data];
 
 		if (item.icon instanceof Function)
 			this['_' + data].setIcon(item.icon(value) + '-symbolic');
