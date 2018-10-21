@@ -269,7 +269,7 @@ const RawDataButtonOrnament = {
 // Data table items
 // Supported data format: {
 //	'<data identifier #1>': {
-//		label: label to be shown in panel menu
+//		label: function that shall return the label to be shown in panel menu
 //		icon: name of the icon (sans the '-symbolic' suffix) to be shown in panel menu, if static,
 //		      or function that will be called with the actual value of data and shall return the icon name
 //		value: function that will be called with the actual value of data and shall return the string to be shown in panel menu
@@ -283,7 +283,7 @@ const RawDataButtonOrnament = {
 const	DataTableItems = {
 	'battery.charge': {	// Battery charge
 		// TRANSLATORS: Label of battery charge @ data table
-		label: _("Battery Charge"),
+		label: function() { return _("Battery Charge"); },
 		icon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
 		// TRANSLATORS: Battery charge level @ data table
 		value: function(value) { return _("%s %").format(value); },
@@ -291,7 +291,7 @@ const	DataTableItems = {
 	},
 	'ups.load': {		// Device load
 		// TRANSLATORS: Label of device load @ data table
-		label: _("Device Load"),
+		label: function() { return _("Device Load"); },
 		icon: 'imported-system-run',
 		// TRANSLATORS: Device load level @ data table
 		value: function(value) { return _("%s %").format(value); },
@@ -299,14 +299,14 @@ const	DataTableItems = {
 	},
 	'battery.runtime': {	// Backup time
 		// TRANSLATORS: Label of estimated backup time @ data table
-		label: _("Backup Time"),
+		label: function() { return _("Backup Time"); },
 		icon: 'imported-preferences-system-time',
 		value: function(value) { return Utilities.parseTime(value); },
 		gsetting: 'display-backup-time'
 	},
 	'ups.temperature': {	// Device temperature
 		// TRANSLATORS: Label of device temperature @ data table
-		label: _("Temperature"),
+		label: function() { return _("Temperature"); },
 		icon: 'nut-thermometer',
 		value: function(value) { return Utilities.formatTemp(value); },
 		gsetting: 'display-device-temperature'
@@ -4402,7 +4402,7 @@ const	UpsDataTableAlt = new Lang.Class({
 			this['_' + data] = new UpsDataTableAltItem();
 
 			// Populate item
-			this['_' + data].setLabel(item.label);
+			this['_' + data].setLabel(item.label());
 			if (!(item.icon instanceof Function))
 				this['_' + data].setIcon(item.icon + '-symbolic');
 
