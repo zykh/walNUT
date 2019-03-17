@@ -22,6 +22,7 @@
 const	Atk = imports.gi.Atk,
 	Clutter = imports.gi.Clutter,
 	Config = imports.misc.config,
+	GObject = imports.gi.GObject,
 	Lang = imports.lang,
 	Main = imports.ui.main,
 	Mainloop = imports.mainloop,
@@ -314,10 +315,9 @@ const	DataTableItems = {
 };
 
 // UpscMonitor: get vars from NUT at a given interval and deliver infos
-const	UpscMonitor = new Lang.Class({
-	Name: 'UpscMonitor',
+const	UpscMonitor = class {
 
-	_init: function() {
+	constructor() {
 
 		// Actual status
 		this._state = ErrorType.NO_UPS | ErrorType.UPS_NA;
@@ -358,9 +358,9 @@ const	UpscMonitor = new Lang.Class({
 
 		this._updateTimer();
 
-	},
+	}
 
-	// getDevices: Get available devices
+	// Get available devices
 	// if a host:port is given call a function to check whether new UPSes are found there and add them to the already listed ones
 	// otherwise, get stored UPSes or if there's no stored UPS try to find new ones at localhost:3493
 	// args = {
@@ -368,7 +368,7 @@ const	UpscMonitor = new Lang.Class({
 	//	port: port,
 	//	notify: whether we have to notify new devices found/not found or not
 	// }
-	getDevices: function(args) {
+	getDevices(args) {
 
 		let host, port, notify;
 
@@ -437,9 +437,9 @@ const	UpscMonitor = new Lang.Class({
 
 		this._state &= ~ErrorType.NO_UPS;
 
-	},
+	}
 
-	// _postGetDevices: process the result of the *NUTHelper.listUPS()* function called by *this.getDevices()* and save found devices in schema and in *this._devices* as an array of objects:
+	// Process the result of the *NUTHelper.listUPS()* function called by *this.getDevices()* and save found devices in schema and in *this._devices* as an array of objects:
 	//  {
 	//	name: upsname,
 	//	host: upshostname,
@@ -469,7 +469,7 @@ const	UpscMonitor = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_postGetDevices: function(args) {
+	_postGetDevices(args) {
 
 		let notify = args.opts[0];
 		let host = args.host;
@@ -640,10 +640,10 @@ const	UpscMonitor = new Lang.Class({
 
 		this._state &= ~ErrorType.NO_UPS;
 
-	},
+	}
 
-	// _checkAll: Check which stored UPS is available
-	_checkAll: function() {
+	// Check which stored UPS is available
+	_checkAll() {
 
 		for (let i = 0; i < this._devices.length; i++) {
 
@@ -666,9 +666,9 @@ const	UpscMonitor = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// _checkUps: callback function to tell whether a given UPS is available or not
+	// Callback function to tell whether a given UPS is available or not
 	// The currently processed UPS will get added to its properties its availability:
 	// - if available -> av = 1:
 	//   e.g. {
@@ -705,7 +705,7 @@ const	UpscMonitor = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_checkUps: function(args) {
+	_checkUps(args) {
 
 		// The UPS we're checking
 		let ups = args.opts[0];
@@ -746,10 +746,10 @@ const	UpscMonitor = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// _getVars: Retrieve chosen UPS's variables
-	_getVars: function() {
+	// Retrieve chosen UPS's variables
+	_getVars() {
 
 		// Reset status
 		this._state |= ErrorType.UPS_NA;
@@ -764,9 +764,9 @@ const	UpscMonitor = new Lang.Class({
 			callback: Lang.bind(this, this._processVars)
 		});
 
-	},
+	}
 
-	// _processVars: callback function for *this._getVars()* - update status and vars
+	// Callback function for *this._getVars()* - update status and vars
 	// args = {
 	//	host: hostname we tried to connect to,
 	//	port: port used to connect,
@@ -788,7 +788,7 @@ const	UpscMonitor = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_processVars: function(args) {
+	_processVars(args) {
 
 		let hasChanged = false;
 
@@ -853,10 +853,10 @@ const	UpscMonitor = new Lang.Class({
 		// Save actually processed device
 		this._prevChosen = JSON.parse(JSON.stringify(act));
 
-	},
+	}
 
-	// _updateTimer: update infos at a given interval
-	_updateTimer: function() {
+	// Update infos at a given interval
+	_updateTimer() {
 
 		this.update();
 
@@ -878,13 +878,13 @@ const	UpscMonitor = new Lang.Class({
 
 		}));
 
-	},
+	}
 
-	// update: Search for available devices and then for the first one's variables
+	// Search for available devices and then for the first one's variables
 	// args = {
 	//	forceRefresh: whether to do a refresh also if INTERVAL time isn't elapsed
 	// }
-	update: function(args) {
+	update(args) {
 
 		let forceRefresh = args ? args.forceRefresh : false;
 
@@ -909,36 +909,36 @@ const	UpscMonitor = new Lang.Class({
 
 		this._getVars();
 
-	},
+	}
 
-	// getState: return actual UpscMonitor status (ErrorType.{NO_UPS, ..})
-	getState: function() {
+	// Return actual UpscMonitor status (ErrorType.{NO_UPS, ..})
+	getState() {
 
 		return this._state;
 
-	},
+	}
 
-	// getList: return actual device list and their availability
-	getList: function() {
+	// Return actual device list and their availability
+	getList() {
 
 		return this._devices;
 
-	},
+	}
 
-	// getVars: return actual chosen device's variables in an Object where keys are variables' names
+	// Return actual chosen device's variables in an Object where keys are variables' names
 	// (e.g.: {
 	//	'battery.charge': '100',
 	//	'ups.status': 'OL',
 	//		...
 	// })
-	getVars: function() {
+	getVars() {
 
 		return this._vars;
 
-	},
+	}
 
-	// destroy: remove timer and disconnect signals
-	destroy: function() {
+	// Remove timer and disconnect signals
+	destroy() {
 
 		// Remove timers
 		if (this._timer)
@@ -951,21 +951,20 @@ const	UpscMonitor = new Lang.Class({
 		gsettings.disconnect(this._settingsChangedId);
 
 	}
-});
+};
 
 // UpscmdDo: handle instant commands
-const	UpscmdDo = new Lang.Class({
-	Name: 'UpscmdDo',
+const	UpscmdDo = class {
 
-	_init: function() {
+	constructor() {
 
 		this._hasCmds = false;
 
 		this._cmds = [];
 
-	},
+	}
 
-	update: function() {
+	update() {
 
 		// Reset status
 		this._hasCmds = false;
@@ -979,10 +978,10 @@ const	UpscmdDo = new Lang.Class({
 
 		this._retrieveCmds();
 
-	},
+	}
 
-	// _retrieveCmds: get instant commands from the UPS
-	_retrieveCmds: function() {
+	// Get instant commands from the UPS
+	_retrieveCmds() {
 
 		let client = new Nut.NUTHelper({
 			host: this._device.host,
@@ -994,9 +993,9 @@ const	UpscmdDo = new Lang.Class({
 			callback: Lang.bind(this, this._processRetrievedCmds)
 		});
 
-	},
+	}
 
-	// _processRetrievedCmds: callback function for _retrieveCmds()
+	// Callback function for _retrieveCmds()
 	// args = {
 	//	host: hostname we tried to connect to,
 	//	port: port used to connect,
@@ -1019,7 +1018,7 @@ const	UpscmdDo = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_processRetrievedCmds: function(args) {
+	_processRetrievedCmds(args) {
 
 		// The actually chosen device
 		let act = upscMonitor.getList()[0] || { name: '' };
@@ -1038,21 +1037,21 @@ const	UpscmdDo = new Lang.Class({
 
 		this._hasCmds = true;
 
-	},
+	}
 
-	hasCmds: function() {
+	hasCmds() {
 
 		return this._hasCmds;
 
-	},
+	}
 
-	getCmds: function() {
+	getCmds() {
 
 		return this._cmds;
 
-	},
+	}
 
-	// cmdExec: try to exec a NUT instant command
+	// Try to exec a NUT instant command
 	// args = {
 	//	username: username to use to authenticate
 	//	password: password to use to authenticate
@@ -1060,7 +1059,7 @@ const	UpscmdDo = new Lang.Class({
 	//	command: command name
 	//	extradata: extradata to pass to the command
 	// }
-	cmdExec: function(args) {
+	cmdExec(args) {
 
 		let user = args.username;
 		let pw = args.password;
@@ -1103,9 +1102,9 @@ const	UpscmdDo = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// _processExecutedCmd: callback function for *this.cmdExec()* - process the result of the executed instant command
+	// Callback function for *this.cmdExec()* - process the result of the executed instant command
 	// args = {
 	//	host: hostname we tried to connect to,
 	//	port: port used to connect,
@@ -1128,7 +1127,7 @@ const	UpscmdDo = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_processExecutedCmd: function(args) {
+	_processExecutedCmd(args) {
 
 		let device = args.opts[0];
 
@@ -1177,21 +1176,20 @@ const	UpscmdDo = new Lang.Class({
 		}
 
 	}
-});
+};
 
 // UpsrwDo: handle rw variables
-const	UpsrwDo = new Lang.Class({
-	Name: 'UpsrwDo',
+const	UpsrwDo = class{
 
-	_init: function() {
+	constructor() {
 
 		this._hasSetVars = false;
 
 		this._setVar = {};
 
-	},
+	}
 
-	update: function() {
+	update() {
 
 		// Reset status
 		this._hasSetVars = false;
@@ -1205,10 +1203,10 @@ const	UpsrwDo = new Lang.Class({
 
 		this._retrieveSetVars();
 
-	},
+	}
 
 	// _retrieveSetVars: get settable vars and their boundaries from the UPS
-	_retrieveSetVars: function() {
+	_retrieveSetVars() {
 
 		let client = new Nut.NUTHelper({
 			host: this._device.host,
@@ -1220,7 +1218,7 @@ const	UpsrwDo = new Lang.Class({
 			callback: Lang.bind(this, this._processRetrievedSetVars)
 		});
 
-	},
+	}
 
 	// _processRetrievedSetVars: callback function for _retrieveSetVars()
 	// args = {
@@ -1271,7 +1269,7 @@ const	UpsrwDo = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_processRetrievedSetVars: function(args) {
+	_processRetrievedSetVars(args) {
 
 		// The actual 'chosen' device
 		let act = upscMonitor.getList()[0] || { name: '' };
@@ -1289,19 +1287,19 @@ const	UpsrwDo = new Lang.Class({
 
 		this._hasSetVars = true;
 
-	},
+	}
 
-	hasSetVars: function() {
+	hasSetVars() {
 
 		return this._hasSetVars;
 
-	},
+	}
 
-	getSetVars: function() {
+	getSetVars() {
 
 		return this._setVar;
 
-	},
+	}
 
 	// setVar: try to set args.*varName* to args.*varValue* in args.*device*
 	// args = {
@@ -1311,7 +1309,7 @@ const	UpsrwDo = new Lang.Class({
 	//	varName: variable's name
 	//	varValue: variable's value
 	// }
-	setVar: function(args) {
+	setVar(args) {
 
 		let device = args.device;
 		let user = args.username;
@@ -1358,7 +1356,7 @@ const	UpsrwDo = new Lang.Class({
 
 		}
 
-	},
+	}
 
 	// _processSetVar: callback function for *this.setVar()*
 	// args = {
@@ -1383,7 +1381,7 @@ const	UpsrwDo = new Lang.Class({
 	// - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 	// - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 	// - 'ERR UNKNOWN' - unknown errors
-	_processSetVar: function(args) {
+	_processSetVar(args) {
 
 		let device = args.opts[0];
 
@@ -1425,16 +1423,15 @@ const	UpsrwDo = new Lang.Class({
 		}
 
 	}
-});
+};
 
 // walNUT: Panel button/menu
-const	walNUT = new Lang.Class({
-	Name: 'walNUT',
-	Extends: PanelMenu.Button,
+const	walNUT = GObject.registerClass(
+class	walNUT extends PanelMenu.Button {
 
-	_init: function() {
+	_init() {
 
-		this.parent(0.0, 'walNUT');
+		super._init(0.0, 'walNUT');
 
 		this._monitor = upscMonitor;
 		this._state = this._monitor.getState();
@@ -1621,24 +1618,24 @@ const	walNUT = new Lang.Class({
 		this.refreshPanel();
 		this.refreshMenu({ forceRefresh: true });
 
-	},
+	}
 
 	// Hide panel button
-	hide: function() {
+	hide() {
 
 		this.actor.hide();
 
-	},
+	}
 
 	// Show panel button
-	show: function() {
+	show() {
 
 		this.actor.show();
 
-	},
+	}
 
 	// Update Options
-	_updateOptions: function() {
+	_updateOptions() {
 
 		// Retrieve values stored in schema
 
@@ -1670,12 +1667,12 @@ const	walNUT = new Lang.Class({
 		// Display battery charge in panel label
 		this._panel_text_display_charge = gsettings.get_boolean('panel-text-display-charge');
 
-	},
+	}
 
-	// _onOpenStateChanged: close the boxes and update the menu when it's opened
-	_onOpenStateChanged: function(menu, open) {
+	// Close the boxes and update the menu when it's opened
+	_onOpenStateChanged(menu, open) {
 
-		this.parent(menu, open);
+		super._onOpenStateChanged(menu, open);
 
 		// open -> update
 		if (open) {
@@ -1695,20 +1692,20 @@ const	walNUT = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// refreshPanel: Update panel icon and text
-	refreshPanel: function() {
+	// Update panel icon and text
+	refreshPanel() {
 
 		this._state = this._monitor.getState();
 
 		this._updatePanelIcon();
 		this._updatePanelText();
 
-	},
+	}
 
-	// _updatePanelIcon: Update icon displayed in panel
-	_updatePanelIcon: function() {
+	// Update icon displayed in panel
+	_updatePanelIcon() {
 
 		// Errors!
 		if (this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA)) {
@@ -1743,10 +1740,10 @@ const	walNUT = new Lang.Class({
 
 		this._icon.icon_name = Icons[icon] + '-symbolic';
 
-	},
+	}
 
-	// _updatePanelText: Update infos displayed in panel
-	_updatePanelText: function() {
+	// Update infos displayed in panel
+	_updatePanelText() {
 
 		// Errors!
 		if (this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA)) {
@@ -1782,13 +1779,13 @@ const	walNUT = new Lang.Class({
 
 		this._status.text = text;
 
-	},
+	}
 
-	// refreshMenu: Update menu
+	// Update menu
 	// args = {
 	//	forceRefresh: whether the menu has to be forcedly refreshed, e.g. if the chosen device has changed
 	// }
-	refreshMenu: function(args) {
+	refreshMenu(args) {
 
 		let forceRefresh = args ? args.forceRefresh : false;
 
@@ -1935,9 +1932,9 @@ const	walNUT = new Lang.Class({
 			status: !(this._state & ErrorType.NO_UPS) ? 'active' : 'inactive'
 		});
 
-	},
+	}
 
-	refreshList: function() {
+	refreshList() {
 
 		let devices = this._monitor.getList();
 
@@ -1947,9 +1944,7 @@ const	walNUT = new Lang.Class({
 });
 
 // CredDialog: prompt user for valid credentials (username and password)
-const	CredDialog = new Lang.Class({
-	Name: 'CredDialog',
-	Extends: ModalDialog.ModalDialog,
+const	CredDialog = class extends ModalDialog.ModalDialog {
 
 	// args = {
 	//	device: device for which authenticate
@@ -1957,14 +1952,14 @@ const	CredDialog = new Lang.Class({
 	//	password: password to use to authenticate
 	//	error: whether to show error 'Wrong username/password' or not
 	// }
-	_init: function(args) {
+	constructor(args) {
+
+		super({ styleClass: 'prompt-dialog' });
 
 		this._device = args.device;
 		let user = args.username;
 		let pw = args.password;
 		let error = args.error;
-
-		this.parent({ styleClass: 'prompt-dialog' });
 
 		// Main container
 		let container = new St.BoxLayout({
@@ -2157,13 +2152,13 @@ const	CredDialog = new Lang.Class({
 		// Set initial key-focus to the user entry
 		this.setInitialKeyFocus(this.user);
 
-	},
+	}
 
-	// _updateOkButton: The Execute button will be reactive only if both username and password are set (length > 0) and if args.*error* isn't true
+	// Update the Execute button so that it's reactive only if both username and password are set (length > 0) and if args.*error* isn't true
 	// args = {
 	//	error: whether username/password proved to be wrong
 	// }
-	_updateOkButton: function(args) {
+	_updateOkButton(args) {
 
 		let error = args.error;
 		let valid = false;
@@ -2173,27 +2168,25 @@ const	CredDialog = new Lang.Class({
 		this.ok.button.reactive = valid && !error;
 		this.ok.button.can_focus = valid && !error;
 
-	},
+	}
 
-	// _onOk: actions to do when Execute button is pressed
-	_onOk: function() {
-
-		this.close(global.get_current_time());
-
-	},
-
-	// cancel: actions to do when Cancel button is pressed
-	_onCancel: function() {
+	// Actions to do when Execute button is pressed
+	_onOk() {
 
 		this.close(global.get_current_time());
 
 	}
-});
+
+	// Actions to do when Cancel button is pressed
+	_onCancel() {
+
+		this.close(global.get_current_time());
+
+	}
+};
 
 // CredDialogCmd: credential dialog for instant commands
-const	CredDialogCmd = new Lang.Class({
-	Name: 'CredDialogCmd',
-	Extends: CredDialog,
+const	CredDialogCmd = class extends CredDialog {
 
 	// args = {
 	//	device: device which should get args.*command*
@@ -2203,9 +2196,9 @@ const	CredDialogCmd = new Lang.Class({
 	//	extradata: extradata to pass to args.*command*
 	//	error: whether username/password proved to be wrong
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent({
+		super({
 			device: args.device,
 			username: args.username,
 			password: args.password,
@@ -2227,9 +2220,9 @@ const	CredDialogCmd = new Lang.Class({
 		// TRANSLATORS: Description @ credentials dialog for instant commands
 		this.desc.text = _("To execute the command %s on device %s@%s:%s, please insert a valid username and password").format(cmdExtraDesc, this._device.name, this._device.host, this._device.port);
 
-	},
+	}
 
-	_onOk: function() {
+	_onOk() {
 
 		upscmdDo.cmdExec({
 			username: this.user.get_text(),
@@ -2239,15 +2232,13 @@ const	CredDialogCmd = new Lang.Class({
 			extradata: this._extra
 		});
 
-		this.parent();
+		super._onOk();
 
 	}
-});
+};
 
 // CredDialogSetvar: credential dialog for setvars
-const	CredDialogSetvar = new Lang.Class({
-	Name: 'CredDialogSetvar',
-	Extends: CredDialog,
+const	CredDialogSetvar = class extends CredDialog {
 
 	// args = {
 	//	device: device in which set args.*varName*
@@ -2257,9 +2248,9 @@ const	CredDialogSetvar = new Lang.Class({
 	//	varValue: value to set args.*varName* to
 	//	error: whether username/password proved to be wrong
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent({
+		super({
 			device: args.device,
 			username: args.username,
 			password: args.password,
@@ -2273,9 +2264,9 @@ const	CredDialogSetvar = new Lang.Class({
 		// TRANSLATORS: Description @ credentials dialog for setvars
 		this.desc.text = _("To set the variable %s to %s on device %s@%s:%s, please insert a valid username and password").format(this._varName, this._varValue, this._device.name, this._device.host, this._device.port);
 
-	},
+	}
 
-	_onOk: function() {
+	_onOk() {
 
 		upsrwDo.setVar({
 			username: this.user.get_text(),
@@ -2285,23 +2276,21 @@ const	CredDialogSetvar = new Lang.Class({
 			varValue: this._varValue
 		});
 
-		this.parent();
+		super._onOk();
 
 	}
-});
+};
 
 // YesNoSubMenu: a submenu used to show data which require an interaction with the user (yes/no)
-const	YesNoSubMenu = new Lang.Class({
-	Name: 'YesNoSubMenu',
-	Extends: PopupMenu.PopupMenuSection,
+const	YesNoSubMenu = class extends PopupMenu.PopupMenuSection {
 
 	// args = {
 	//	title: title of the submenu
 	//	icon_name: name of the icon to be placed next to the *title*
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent();
+		super();
 		this.actor.clip_to_allocation = true;
 		this.actor.add_style_class_name('popup-sub-menu');
 
@@ -2376,9 +2365,9 @@ const	YesNoSubMenu = new Lang.Class({
 		this.isOpen = false;
 		this.actor.hide();
 
-	},
+	}
 
-	_subMenuOpenStateChanged: function(menu, open) {
+	_subMenuOpenStateChanged(menu, open) {
 
 		if (open) {
 			this.actor.add_style_pseudo_class('open');
@@ -2390,21 +2379,21 @@ const	YesNoSubMenu = new Lang.Class({
 			this.actor.remove_accessible_state(Atk.StateType.EXPANDED);
 		}
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		this.actor.hide();
 
-	},
+	}
 
-	open: function() {
+	open() {
 
 		if (this.isOpen)
 			return;
@@ -2426,9 +2415,9 @@ const	YesNoSubMenu = new Lang.Class({
 			}
 		});
 
-	},
+	}
 
-	close: function() {
+	close() {
 
 		if (!this.isOpen)
 			return;
@@ -2445,20 +2434,18 @@ const	YesNoSubMenu = new Lang.Class({
 			onComplete: function() {
 				this.actor.hide();
 				this.actor.set_height(-1);
-			},
+			}
 		});
 
 	}
-});
+};
 
 // DelBox: a box used to delete UPSes from devices list
-const	DelBox = new Lang.Class({
-	Name: 'DelBox',
-	Extends: YesNoSubMenu,
+const	DelBox = class extends YesNoSubMenu {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			// TRANSLATORS: Title of delete device box
 			title: _("Delete UPS"),
 			icon_name: 'imported-user-trash-symbolic'
@@ -2487,16 +2474,14 @@ const	DelBox = new Lang.Class({
 		}));
 
 	}
-});
+};
 
 // CredBox: a box used to set UPS credentials (user/password)
-const	CredBox = new Lang.Class({
-	Name: 'CredBox',
-	Extends: YesNoSubMenu,
+const	CredBox = class extends YesNoSubMenu {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			// TRANSLATORS: Title of credentials box
 			title: _("UPS Credentials"),
 			icon_name: 'imported-dialog-password-symbolic'
@@ -2535,10 +2520,10 @@ const	CredBox = new Lang.Class({
 			walnut._cred_btn.actor.grab_key_focus();
 		}));
 
-	},
+	}
 
 	// Update credentials and close CredBox: if empty user or password is given it'll be removed from the UPS's properties
-	_credUpdateAndClose: function() {
+	_credUpdateAndClose() {
 
 		let user = this.user.get_text();
 		let pw = this.pw.get_text();
@@ -2550,33 +2535,33 @@ const	CredBox = new Lang.Class({
 
 		this.close();
 
-	},
+	}
 
 	// Update password visual appearance (hidden or not)
-	_updatePwAppearance: function() {
+	_updatePwAppearance() {
 
 		if (this.pw.get_text().length > 0 && this._hide_pw)
 			this.pw.clutter_text.set_password_char('\u25cf');
 		else
 			this.pw.clutter_text.set_password_char('');
 
-	},
+	}
 
 	// Undo changes and close CredBox
-	_undoAndClose: function() {
+	_undoAndClose() {
 
 		let device = upscMonitor.getList()[0];
 		this.update({ device: device });
 
 		this.close();
 
-	},
+	}
 
 	// Update username and password
 	// args = {
 	//	device: device whose user/password should be taken into account
 	// }
-	update: function(args) {
+	update(args) {
 
 		let device = args.device;
 
@@ -2589,16 +2574,14 @@ const	CredBox = new Lang.Class({
 		this._updatePwAppearance();
 
 	}
-});
+};
 
 // AddBox: box used to find new UPSes
-const	AddBox = new Lang.Class({
-	Name: 'AddBox',
-	Extends: YesNoSubMenu,
+const	AddBox = class extends YesNoSubMenu {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			// TRANSLATORS: Title of find new devices box
 			title: _("Find new UPSes"),
 			icon_name: 'imported-edit-find-symbolic'
@@ -2634,10 +2617,10 @@ const	AddBox = new Lang.Class({
 			walnut._add_btn.actor.grab_key_focus();
 		}));
 
-	},
+	}
 
 	// Search new UPSes at a given host:port, if not given it'll search at localhost:3493
-	_addUps: function() {
+	_addUps() {
 
 		let host = this.hostname.get_text();
 		let port = this.port.get_text();
@@ -2652,10 +2635,10 @@ const	AddBox = new Lang.Class({
 		// Clear and close AddBox
 		this._undoAndClose();
 
-	},
+	}
 
 	// Undo changes and hide AddBox
-	_undoAndClose: function() {
+	_undoAndClose() {
 
 		this.hostname.text = '';
 		this.port.text = '';
@@ -2663,11 +2646,10 @@ const	AddBox = new Lang.Class({
 		this.close();
 
 	}
-});
+};
 
 // Button: Buttons with callback
-const	Button = new Lang.Class({
-	Name: 'Button',
+const	Button = class {
 
 	// args = {
 	//	icon: name of the icon to use
@@ -2675,7 +2657,7 @@ const	Button = new Lang.Class({
 	//	callback: function to call when the button gets clicked
 	//	size: size of the button {small,big}
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		let size = args.size;
 
@@ -2699,36 +2681,34 @@ const	Button = new Lang.Class({
 		if (args.callback)
 			this.actor.connect('clicked', args.callback);
 
-	},
+	}
 
-	// setCallback: set the callback function
-	setCallback: function(cb) {
+	// Set the callback function
+	setCallback(cb) {
 
 		this.actor.connect('clicked', cb);
 
 	}
-});
+};
 
 // BottomControls: container of bottom buttons
-const	BottomControls = new Lang.Class({
-	Name: 'BottomControls',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	BottomControls = class extends PopupMenu.PopupBaseMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			reactive: false,
 			can_focus: false
 		});
 
-	},
+	}
 
-	// addControl: add a button to buttons box
+	// Add a button to buttons box
 	// args = {
 	//	button: button to add to the buttons box
 	//	status: status of the button {active,inactive}
 	// }
-	addControl: function(args) {
+	addControl(args) {
 
 		this.actor.add(args.button.actor, {
 			expand: true,
@@ -2738,14 +2718,14 @@ const	BottomControls = new Lang.Class({
 
 		this.setControl(args);
 
-	},
+	}
 
-	// setControl: set the buttons' reactivity
+	// Set the buttons' reactivity
 	// args = {
 	//	button: button whose status is to set
 	//	status: status of the button {active,inactive}
 	// }
-	setControl: function(args) {
+	setControl(args) {
 
 		let active = true;
 
@@ -2758,27 +2738,25 @@ const	BottomControls = new Lang.Class({
 			args.button.actor.reactive = false;
 
 	}
-});
+};
 
 // CmdPopupSubMenu: a PopupSubMenu for UpsCmdList: we need this so that we can update the submenu (= populate the PopupSubMenu) only and every time the menu is opened
-const	CmdPopupSubMenu = new Lang.Class({
-	Name: 'CmdPopupSubMenu',
-	Extends: PopupMenu.PopupSubMenu,
+const	CmdPopupSubMenu = class extends PopupMenu.PopupSubMenu {
 
 	// args = {
 	//	parent: this submenu's parent
 	//	sourceActor: args.*parent*'s actor
 	//	sourceArrow: args.*parent*'s spinning triangle
 	// }
-	_init: function(args) {
+	constructor(args) {
+
+		super(args.sourceActor, args.sourceArrow);
 
 		this._delegate = args.parent;
 
-		this.parent(args.sourceActor, args.sourceArrow);
+	}
 
-	},
-
-	open: function(animate) {
+	open(animate) {
 
 		if (this.isOpen)
 			return;
@@ -2796,20 +2774,18 @@ const	CmdPopupSubMenu = new Lang.Class({
 
 		}
 
-		this.parent(animate);
+		super.open(animate);
 
 	}
-});
+};
 
 // UpsCmdList: a submenu listing UPS commands
-const	UpsCmdList = new Lang.Class({
-	Name: 'UpsCmdList',
-	Extends: PopupMenu.PopupSubMenuMenuItem,
+const	UpsCmdList = class extends PopupMenu.PopupSubMenuMenuItem {
 
-	_init: function() {
+	constructor() {
 
 		// TRANSLATORS: Label of UPS commands sub menu
-		this.parent(_("UPS Commands"));
+		super(_("UPS Commands"));
 
 		// Command's extradata
 
@@ -2883,10 +2859,10 @@ const	UpsCmdList = new Lang.Class({
 		// Reconnect SubMenuMenuItem standard function
 		this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
 
-	},
+	}
 
-	// _extradataToggle: toggle extradata's view
-	_extradataToggle: function(menu, open) {
+	// Toggle extradata's view
+	_extradataToggle(menu, open) {
 
 		if (open) {
 
@@ -2904,10 +2880,10 @@ const	UpsCmdList = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// _buildInfo: build submenu
-	_buildInfo: function() {
+	// Build submenu
+	_buildInfo() {
 
 		// Error!
 		if (!upscmdDo.hasCmds()) {
@@ -2995,18 +2971,18 @@ const	UpsCmdList = new Lang.Class({
 			)
 		);
 
-	},
+	}
 
-	// clean: remove submenu's children, if any
-	clean: function() {
+	// Remove submenu's children, if any
+	clean() {
 
 		if (!this.menu.isEmpty())
 			this.menu.removeAll();
 
-	},
+	}
 
-	// update: update submenu
-	update: function() {
+	// Update submenu
+	update() {
 
 		this._device = upscMonitor.getList()[0];
 
@@ -3016,36 +2992,34 @@ const	UpsCmdList = new Lang.Class({
 
 		this.show();
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		// If the submenu is not empty, destroy all children
 		this.clean();
 
 		this.actor.hide();
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
 	}
-});
+};
 
 // SetvarBox: box used to handle setvars
-const	SetvarBox = new Lang.Class({
-	Name: 'SetvarBox',
-	Extends: PopupMenu.PopupMenuSection,
+const	SetvarBox = class extends PopupMenu.PopupMenuSection {
 
 	// args = {
 	//	varName: name of the settable variable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent();
+		super();
 
 		// Variable's name
 		this._varName = args.varName;
@@ -3053,46 +3027,44 @@ const	SetvarBox = new Lang.Class({
 		// Our toggle-button
 		this._scrollView = args.scrollView;
 
-	},
+	}
 
-	// show: open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
+	// Open SetvarBox and if actual value is not equal to the previous value, update the SetvarBox
 	// args = {
 	//	actualValue: actual value of the settable variable
 	// }
-	show: function(args) {
+	show(args) {
 
 		if (this._actualValue == undefined || args.actualValue != this._actualValue)
 			this._resetTo(args.actualValue);
 
 		this.actor.show();
 
-	},
+	}
 
-	// hide: Hide SetvarBox
-	hide: function() {
+	// Hide SetvarBox
+	hide() {
 
 		this.actor.hide();
 
-	},
+	}
 
-	isClosed: function() {
+	isClosed() {
 
 		return !this.actor.visible;
 
-	},
+	}
 
-	// _resetTo: reset setvar box to *value*
-	_resetTo: function(value) {
+	// Reset setvar box to *value*
+	_resetTo(value) {
 
 		this._actualValue = value;
 
 	}
-});
+};
 
 // SetvarRangeItem: one of the available ranges displayed in SetvarBoxRanges
-const	SetvarRangeItem = new Lang.Class({
-	Name: 'SetvarRangeItem',
-	Extends: PopupMenu.PopupMenuItem,
+const	SetvarRangeItem = class extends PopupMenu.PopupMenuItem {
 
 	// args = {
 	//	range: {
@@ -3101,28 +3073,29 @@ const	SetvarRangeItem = new Lang.Class({
 	//	},
 	//	callback: function to call, passing to it *range*, when activated; if not set, the item is treated (and represented) as the actual range
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this._range = args.range;
 		// TRANSLATORS: Range interval @ Setvar box
-		let rangeLabel = _("%s - %s").format(this._range.min, this._range.max);
+		let rangeLabel = _("%s - %s").format(args.range.min, args.range.max);
 
-		this._callback = args.callback;
-		if (this._callback != null) {
-			this.parent(rangeLabel);
+		if (args.callback != null) {
+			super(rangeLabel);
 		} else {
-			this.parent(rangeLabel, { activate: false });
+			super(rangeLabel, { activate: false });
 			// Set the item as checked if it represents actual range
 			this.setOrnament(PopupMenu.Ornament.DOT);
 		}
+
+		this._range = args.range;
+		this._callback = args.callback;
 
 		// Spacer
 		let spacer = new St.Label({ style_class: 'popup-menu-ornament' });
 		this.actor.insert_child_below(spacer, this._ornamentLabel)
 
-	},
+	}
 
-	activate: function(event) {
+	activate(event) {
 
 		if (this._callback != null)
 			this._callback(this._range);
@@ -3130,12 +3103,10 @@ const	SetvarRangeItem = new Lang.Class({
 		this._parent.focusSlider();
 
 	}
-});
+};
 
 // SetvarBoxRanges: box to set r/w variables with ranges
-const	SetvarBoxRanges = new Lang.Class({
-	Name: 'SetvarBoxRanges',
-	Extends: SetvarBox,
+const	SetvarBoxRanges = class extends SetvarBox {
 
 	// args = {
 	//	varName: name of the settable variable
@@ -3143,9 +3114,9 @@ const	SetvarBoxRanges = new Lang.Class({
 	//	actualValue: actual value of the settable variable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent({
+		super({
 			varName: args.varName,
 			scrollView: args.scrollView
 		});
@@ -3380,10 +3351,10 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		this.hide();
 
-	},
+	}
 
-	// _minusAction: actions to execute when 'minus' button gets activated
-	_minusAction: function() {
+	// Actions to execute when 'minus' button gets activated
+	_minusAction() {
 
 		if (this._valueToSet <= this._rangeAct.min)
 			this._valueToSet = this._rangeAct.min
@@ -3406,10 +3377,10 @@ const	SetvarBoxRanges = new Lang.Class({
 		// Update buttons' clickability
 		this._updateButtons();
 
-	},
+	}
 
-	// _plusAction: actions to execute when 'plus' button gets activated
-	_plusAction: function() {
+	// Actions to execute when 'plus' button gets activated
+	_plusAction() {
 
 		if (this._valueToSet < this._rangeAct.min)
 			this._valueToSet = this._rangeAct.min
@@ -3432,14 +3403,14 @@ const	SetvarBoxRanges = new Lang.Class({
 		// Update buttons' clickability
 		this._updateButtons();
 
-	},
+	}
 
-	// _changeRangeTo: change actual range to the one whose maximum and minimum settable value are args.*max* and args.*min*
+	// Change actual range to the one whose maximum and minimum settable value are args.*max* and args.*min*
 	// args = {
 	//	min: lower limit of the range
 	//	max: upper limit of the range
 	// }
-	_changeRangeTo: function(args) {
+	_changeRangeTo(args) {
 
 		// Update actual range
 		// - min
@@ -3496,10 +3467,10 @@ const	SetvarBoxRanges = new Lang.Class({
 				}));
 			}
 
-	},
+	}
 
-	// _updateButtons: 'Set' button is usable only when this._valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
-	_updateButtons: function() {
+	// 'Set' button is usable only when this._valueToSet != actual value; +/- buttons are usable only when value is in the range and not the respective range limit
+	_updateButtons() {
 
 		if (
 			this._actualValueNumeric == undefined ||
@@ -3528,10 +3499,10 @@ const	SetvarBoxRanges = new Lang.Class({
 			this._plus.actor.can_focus = false;
 		}
 
-	},
+	}
 
-	// _resetTo: reset setvar box to *value*
-	_resetTo: function(value) {
+	// Reset setvar box to *value*
+	_resetTo(value) {
 
 		this._actualValue = value;
 		this._actualValueNumeric = Number(this._actualValue);
@@ -3589,32 +3560,30 @@ const	SetvarBoxRanges = new Lang.Class({
 
 		this._changeRangeTo(rangeAct);
 
-	},
+	}
 
-	// focusSlider: move key focus to the slider
-	focusSlider: function() {
+	// Move key focus to the slider
+	focusSlider() {
 
 		this._slider.actor.get_parent().grab_key_focus();
 
 	}
-});
+};
 
 // SetvarEnumItem: one of the enumerated values displayed in SetvarBoxEnums
-const	SetvarEnumItem = new Lang.Class({
-	Name: 'SetvarEnumItem',
-	Extends: PopupMenu.PopupMenuItem,
+const	SetvarEnumItem = class extends PopupMenu.PopupMenuItem {
 
 	// args = {
 	//	enumValue: enumerated value this item represents
 	//	callback: function to call when activated; if not set, the item is treated (and represented) as the actually chosen one
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		if (args.callback != null) {
-			this.parent(args.enumValue);
+			super(args.enumValue);
 			this.connect('activate', args.callback);
 		} else {
-			this.parent(args.enumValue, { activate: false });
+			super(args.enumValue, { activate: false });
 			// Set the item as checked if it represents actual value
 			this.setOrnament(PopupMenu.Ornament.DOT);
 		}
@@ -3624,12 +3593,10 @@ const	SetvarEnumItem = new Lang.Class({
 		this.actor.insert_child_below(spacer, this._ornamentLabel)
 
 	}
-});
+};
 
 // SetvarBoxEnums: box to set r/w variables with enumerated values
-const	SetvarBoxEnums = new Lang.Class({
-	Name: 'SetvarBoxEnums',
-	Extends: SetvarBox,
+const	SetvarBoxEnums = class extends SetvarBox {
 
 	// args = {
 	//	varName: name of the settable variable
@@ -3637,9 +3604,9 @@ const	SetvarBoxEnums = new Lang.Class({
 	//	actualValue: actual value of the settable variable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent({
+		super({
 			varName: args.varName,
 			scrollView: args.scrollView
 		});
@@ -3657,10 +3624,10 @@ const	SetvarBoxEnums = new Lang.Class({
 
 		this.hide();
 
-	},
+	}
 
-	// _resetTo: reset setvar box to *value*
-	_resetTo: function(value) {
+	// Reset setvar box to *value*
+	_resetTo(value) {
 
 		if (this._actualValue != undefined && this._actualValue == value)
 			return;
@@ -3713,12 +3680,10 @@ const	SetvarBoxEnums = new Lang.Class({
 		}
 
 	}
-});
+};
 
 // SetvarBoxString: box to set r/w string variables
-const	SetvarBoxString = new Lang.Class({
-	Name: 'SetvarBoxString',
-	Extends: SetvarBox,
+const	SetvarBoxString = class extends SetvarBox {
 
 	// args = {
 	//	varName: name of the settable variable
@@ -3726,9 +3691,9 @@ const	SetvarBoxString = new Lang.Class({
 	//	actualValue: actual value of the settable variable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent({
+		super({
 			varName: args.varName,
 			scrollView: args.scrollView
 		});
@@ -3884,10 +3849,10 @@ const	SetvarBoxString = new Lang.Class({
 
 		this.hide();
 
-	},
+	}
 
-	// _updateOkButton: 'Set' button is usable only when this._valueToSet != actual value
-	_updateOkButton: function() {
+	// 'Set' button is usable only when this._valueToSet != actual value
+	_updateOkButton() {
 
 		let len = this._valueToSet.trim().length;
 
@@ -3899,10 +3864,10 @@ const	SetvarBoxString = new Lang.Class({
 			this._go.actor.can_focus = false;
 		}
 
-	},
+	}
 
-	// _resetTo: reset setvar box to *value*
-	_resetTo: function(value) {
+	// Reset setvar box to *value*
+	_resetTo(value) {
 
 		this._actualValue = value;
 
@@ -3915,12 +3880,10 @@ const	SetvarBoxString = new Lang.Class({
 		this._updateOkButton();
 
 	}
-});
+};
 
 // RawDataButton: expander/name/value
-const	RawDataButton = new Lang.Class({
-	Name: 'RawDataButton',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	RawDataButton = class extends PopupMenu.PopupBaseMenuItem {
 
 	// args = {
 	//	varName: name of the variable
@@ -3928,16 +3891,17 @@ const	RawDataButton = new Lang.Class({
 	//	setvarBox: child setvar box; if not set, the item won't be activatable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this._setvarBox = args.setvarBox;
-		if (this._setvarBox != null) {
-			this.parent();
+		if (args.setvarBox != null) {
+			super();
 			this.actor.add_accessible_state(Atk.StateType.EXPANDABLE);
 			this.setOrnament(RawDataButtonOrnament.CLOSED);
 		} else {
-			this.parent({ activate: false });
+			super({ activate: false });
 		}
+
+		this._setvarBox = args.setvarBox;
 
 		// Variable's name
 		this._varName = new St.Label({
@@ -3966,9 +3930,9 @@ const	RawDataButton = new Lang.Class({
 			Util.ensureActorVisibleInScrollView(this._scrollView, self);
 		}));
 
-	},
+	}
 
-	_toggle: function() {
+	_toggle() {
 
 		if (this._setvarBox == null)
 			return;
@@ -3981,9 +3945,9 @@ const	RawDataButton = new Lang.Class({
 			this.setOrnament(RawDataButtonOrnament.CLOSED);
 		}
 
-	},
+	}
 
-	close: function() {
+	close() {
 
 		if (this._setvarBox == null)
 			return;
@@ -3994,16 +3958,16 @@ const	RawDataButton = new Lang.Class({
 		this._setvarBox.hide();
 		this.setOrnament(RawDataButtonOrnament.CLOSED);
 
-	},
+	}
 
-	activate: function(event) {
+	activate(event) {
 
 		if (this._setvarBox != null)
 			this._toggle();
 
-	},
+	}
 
-	setOrnament: function(ornament) {
+	setOrnament(ornament) {
 
 		if (ornament == this._ornament)
 			return;
@@ -4021,46 +3985,44 @@ const	RawDataButton = new Lang.Class({
 			this.actor.remove_accessible_state(Atk.StateType.EXPANDED);
 		}
 
-	},
+	}
 
 	get varName() {
 
 		return this._varName.get_clutter_text().text;
 
-	},
+	}
 
 	set varName(name) {
 
 		this._varName.text = Utilities.parseText(name, Lengths.RAW_VAR, '.');
 
-	},
+	}
 
 	get varValue() {
 
 		return this._varValue.get_clutter_text().text;
 
-	},
+	}
 
 	set varValue(value) {
 
 		this._varValue.text = Utilities.parseText(value, Lengths.RAW_VALUE);
 
 	}
-});
+};
 
 // UpsRawDataItem: each item of the raw data submenu
-const	UpsRawDataItem = new Lang.Class({
-	Name: 'UpsRawDataItem',
-	Extends: PopupMenu.PopupMenuSection,
+const	UpsRawDataItem = class extends PopupMenu.PopupMenuSection {
 
 	// args = {
 	//	varName: name of the variable
 	//	varValue: actual value of the variable
 	//	scrollView: container that should be scrolled to ensure visibility of elements
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent();
+		super();
 
 		// Variable's name/value
 		this._varName = args.varName;
@@ -4077,36 +4039,36 @@ const	UpsRawDataItem = new Lang.Class({
 		});
 		this.addMenuItem(this._button);
 
-	},
+	}
 
 	get varName() {
 
 		return this._varName;
 
-	},
+	}
 
 	set varName(name) {
 
 		this._varName = name;
 		this._button.varName = name;
 
-	},
+	}
 
 	get varValue() {
 
 		return this._varValue;
 
-	},
+	}
 
 	set varValue(value) {
 
 		this._varValue = value;
 		this._button.varValue = value;
 
-	},
+	}
 
-	// _addSetvarBox: common function for adding a SetvarBox
-	_addSetvarBox: function() {
+	// Common function for adding a SetvarBox
+	_addSetvarBox() {
 
 		// Expander/name/value container
 		let button = new RawDataButton({
@@ -4121,14 +4083,14 @@ const	UpsRawDataItem = new Lang.Class({
 
 		this.addMenuItem(this.setvarBox);
 
-	},
+	}
 
-	// setVarRange: add a SetvarBox for ranges
+	// Add a SetvarBox for ranges
 	// args = {
 	//	ranges: available ranges of the settable variable
 	//	actualValue: actual value of the settable variable
 	// }
-	setVarRange: function(args) {
+	setVarRange(args) {
 
 		this.setvarBox = new SetvarBoxRanges({
 			varName: this.varName,
@@ -4139,14 +4101,14 @@ const	UpsRawDataItem = new Lang.Class({
 
 		this._addSetvarBox();
 
-	},
+	}
 
-	// setVarEnum: add a SetvarBox for enumerated values
+	// Add a SetvarBox for enumerated values
 	// args = {
 	//	enums: available enumerated values of the settable variable
 	//	actualValue: actual value of the settable variable
 	// }
-	setVarEnum: function(args) {
+	setVarEnum(args) {
 
 		this.setvarBox = new SetvarBoxEnums({
 			varName: this.varName,
@@ -4157,14 +4119,14 @@ const	UpsRawDataItem = new Lang.Class({
 
 		this._addSetvarBox();
 
-	},
+	}
 
-	// setVarString: add a SetvarBox for strings
+	// Add a SetvarBox for strings
 	// args = {
 	//	len: maximum length of the settable string
 	//	actualValue: actual value of the settable variable
 	// }
-	setVarString: function(args) {
+	setVarString(args) {
 
 		this.setvarBox = new SetvarBoxString({
 			varName: this.varName,
@@ -4175,30 +4137,28 @@ const	UpsRawDataItem = new Lang.Class({
 
 		this._addSetvarBox();
 
-	},
+	}
 
 	// fold: close the setvarBox, change button ornament
-	fold: function() {
+	fold() {
 
 		if (this._button != null)
 			this._button.close();
 
 	}
-});
+};
 
 // UpsRawDataList: list UPS's raw data in a submenu
-const	UpsRawDataList = new Lang.Class({
-	Name: 'UpsRawDataList',
-	Extends: PopupMenu.PopupSubMenuMenuItem,
+const	UpsRawDataList = class extends PopupMenu.PopupSubMenuMenuItem {
 
-	_init: function() {
+	constructor() {
 
 		// TRANSLATORS: Label of raw data submenu
-		this.parent(_("Raw Data"));
+		super(_("Raw Data"));
 
-	},
+	}
 
-	_buildInfo: function() {
+	_buildInfo() {
 
 		// Actual submenu children (children of this.menu.box of type PopupMenuSection or PopupBaseMenuItem -> our own UpsRawDataItem)
 		let actual;
@@ -4309,10 +4269,10 @@ const	UpsRawDataList = new Lang.Class({
 			actual[item].destroy();
 		}
 
-	},
+	}
 
-	// _handleSetVar: If we have setvars and item is one of them, add its SetvarBox
-	_handleSetVar: function(item) {
+	// If we have setvars and item is one of them, add its SetvarBox
+	_handleSetVar(item) {
 
 		// No setvars
 		if (!upsrwDo.hasSetVars())
@@ -4346,14 +4306,14 @@ const	UpsRawDataList = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// update: Update variables and show the menu if not already visible
+	// Update variables and show the menu if not already visible
 	// args = {
 	//	vars: device's variables
 	//	forceRefresh: boolean, whether to destroy the menu and rebuild it or not
 	// }
-	update: function(args) {
+	update(args) {
 
 		if (args.forceRefresh && !this.menu.isEmpty())
 			this.menu.removeAll();
@@ -4365,10 +4325,10 @@ const	UpsRawDataList = new Lang.Class({
 
 		this._buildInfo();
 
-	},
+	}
 
-	// hide: Hide the menu and, if it's not empty, destroy all children
-	hide: function() {
+	// Hide the menu and, if it's not empty, destroy all children
+	hide() {
 
 		// If the submenu is not empty (e.g. we don't want anymore to display Raw Var submenu in panel menu), destroy all children
 		if (!this.menu.isEmpty())
@@ -4376,23 +4336,21 @@ const	UpsRawDataList = new Lang.Class({
 
 		this.actor.hide();
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
 	}
-});
+};
 
 // UpsDataTableAlt: Alternative, less noisy, data table
-const	UpsDataTableAlt = new Lang.Class({
-	Name: 'UpsDataTableAlt',
-	Extends: PopupMenu.PopupMenuSection,
+const	UpsDataTableAlt = class extends PopupMenu.PopupMenuSection {
 
-	_init: function() {
+	constructor() {
 
-		this.parent();
+		super();
 
 		for (let data in DataTableItems) {
 
@@ -4411,13 +4369,13 @@ const	UpsDataTableAlt = new Lang.Class({
 
 		}
 
-	},
+	}
 
-	// hide: hide an item or the whole table (if type is not specified)
+	// Hide an item or the whole table (if type is not specified)
 	// args = {
 	//	type: type of the data to hide
 	// }
-	hide: function(args) {
+	hide(args) {
 
 		if (!args || !args.type) {
 			this.actor.hide();
@@ -4433,14 +4391,14 @@ const	UpsDataTableAlt = new Lang.Class({
 				return;
 		this.actor.hide();
 
-	},
+	}
 
-	// show: show item/table and update table's data/icons
+	// Show item/table and update table's data/icons
 	// args = {
 	//	type: type of the data to update
 	//	value: actual value of this type of data
 	// }
-	show: function(args) {
+	show(args) {
 
 		this.actor.show();
 
@@ -4457,16 +4415,14 @@ const	UpsDataTableAlt = new Lang.Class({
 		this['_' + data].show();
 
 	}
-});
+};
 
 // UpsDataTableAltItem: Alternative, less noisy, data table - item
-const	UpsDataTableAltItem = new Lang.Class({
-	Name: 'UpsDataTableAltItem',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	UpsDataTableAltItem = class extends PopupMenu.PopupBaseMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({ activate: false });
+		super({ activate: false });
 
 		// Icon
 		this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
@@ -4490,47 +4446,45 @@ const	UpsDataTableAltItem = new Lang.Class({
 		});
 		this.actor.add(this.value);
 
-	},
+	}
 
-	setIcon: function(icon) {
+	setIcon(icon) {
 
 		this.icon.icon_name = icon;
 
-	},
+	}
 
-	setLabel: function(label) {
+	setLabel(label) {
 
 		this.label.text = label;
 
-	},
+	}
 
-	setValue: function(value) {
+	setValue(value) {
 
 		this.value.text = value;
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		this.actor.hide();
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
 	}
-});
+};
 
 // UpsTopDataList: List (if available/any) ups.{status,alarm}
-const	UpsTopDataList = new Lang.Class({
-	Name: 'UpsTopDataList',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	UpsTopDataList = class extends PopupMenu.PopupBaseMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			reactive: true,
 			activate: false,
 			hover: false,
@@ -4592,14 +4546,14 @@ const	UpsTopDataList = new Lang.Class({
 
 		this.actor.add(container);
 
-	},
+	}
 
-	// update: update displayed data
+	// Update displayed data
 	// args = {
 	//	type: type of the data to update {'S','A'}
 	//	value: actual value of this type of data
 	// }
-	update: function(args) {
+	update(args) {
 
 		switch (args.type)
 		{
@@ -4629,12 +4583,12 @@ const	UpsTopDataList = new Lang.Class({
 
 		}
 
-	},
+	}
 
 	// args = {
 	//	type: type of the data to hide {'S','A'}
 	// }
-	hide: function(args) {
+	hide(args) {
 
 		// All UpsTopDataList
 		if (!args || !args.type) {
@@ -4648,23 +4602,21 @@ const	UpsTopDataList = new Lang.Class({
 			this.alarmBox.hide();
 		}
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
 	}
-});
+};
 
 // UpsModel: List chosen UPS's model/manufacturer (if available)
-const	UpsModel = new Lang.Class({
-	Name: 'UpsModel',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	UpsModel = class extends PopupMenu.PopupBaseMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			reactive: true,
 			activate: false,
 			hover: false,
@@ -4675,21 +4627,21 @@ const	UpsModel = new Lang.Class({
 
 		this.actor.add(this.label, { expand: true });
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		this.label.text = '';
 
 		this.actor.hide();
 
-	},
+	}
 
 	// args = {
 	//	manufacturer: UPS manufacturer
 	//	model: UPS model
 	// }
-	show: function(args) {
+	show(args) {
 
 		let mfr = args.manufacturer;
 		let model = args.model;
@@ -4710,20 +4662,18 @@ const	UpsModel = new Lang.Class({
 		this.actor.show();
 
 	}
-});
+};
 
 // UpsList: a submenu listing available UPSes in a upsc-like way (i.e. ups@hostname:port)
-const	UpsList = new Lang.Class({
-	Name: 'UpsList',
-	Extends: PopupMenu.PopupSubMenuMenuItem,
+const	UpsList = class extends PopupMenu.PopupSubMenuMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent('');
+		super('');
 
-	},
+	}
 
-	_buildInfo: function() {
+	_buildInfo() {
 
 		// Counter used to decide whether the submenu will be sensitive or not: only 1 entry -> not sensitive, 2+ entries -> sensitive
 		let count = 0;
@@ -4784,13 +4734,13 @@ const	UpsList = new Lang.Class({
 		else
 			this.setSensitive(true);
 
-	},
+	}
 
-	// update: Empty the submenu and update it with the new device list
+	// Empty the submenu and update it with the new device list
 	// args = {
 	//	devices: available devices
 	// }
-	update: function(args) {
+	update(args) {
 
 		// Update device list
 		this._devices = args.devices;
@@ -4807,9 +4757,9 @@ const	UpsList = new Lang.Class({
 		// Rebuild submenu
 		this._buildInfo();
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		// If the submenu is not empty, destroy all children
 		if (!this.menu.isEmpty())
@@ -4817,23 +4767,21 @@ const	UpsList = new Lang.Class({
 
 		this.actor.hide();
 
-	},
+	}
 
-	show: function() {
+	show() {
 
 		this.actor.show();
 
 	}
-});
+};
 
 // ErrorBox: a box to display errors (if any)
-const	ErrorBox = new Lang.Class({
-	Name: 'ErrorBox',
-	Extends: PopupMenu.PopupBaseMenuItem,
+const	ErrorBox = class extends PopupMenu.PopupBaseMenuItem {
 
-	_init: function() {
+	constructor() {
 
-		this.parent({
+		super({
 			reactive: true,
 			activate: false,
 			hover: false,
@@ -4869,18 +4817,18 @@ const	ErrorBox = new Lang.Class({
 
 		this.actor.add(eBox, { expand: true });
 
-	},
+	}
 
-	hide: function() {
+	hide() {
 
 		this.label.text = '';
 		this.desc.text = '';
 
 		this.actor.hide();
 
-	},
+	}
 
-	show: function(type) {
+	show(type) {
 
 		let label, desc;
 
@@ -4910,19 +4858,17 @@ const	ErrorBox = new Lang.Class({
 		this.actor.show();
 
 	}
-});
+};
 
 // Panel menu
-const	walNUTMenu = new Lang.Class({
-	Name: 'walNUTMenu',
-	Extends: PopupMenu.PopupMenu,
+const	walNUTMenu = class extends PopupMenu.PopupMenu {
 
 	// args = {
 	//	sourceActor: actor of the menu's parent
 	// }
-	_init: function(args) {
+	constructor(args) {
 
-		this.parent(args.sourceActor, 0.0, St.Side.TOP);
+		super(args.sourceActor, 0.0, St.Side.TOP);
 
 		// Override base style
 		this.actor.add_style_class_name('walnut-menu');
@@ -4994,7 +4940,7 @@ const	walNUTMenu = new Lang.Class({
 		this.addMenuItem(this.controls);
 
 	}
-});
+};
 
 // Start!
 let	gsettings,

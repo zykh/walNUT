@@ -27,14 +27,12 @@ const	Gio = imports.gi.Gio,
 // NOTE:
 // - the connection is created when *connect()* method is called
 // - the connection gets closed when *destroy()* method is called
-const	TCPClient = new Lang.Class({
-	Name: 'TCPClient',
-
+const	TCPClient = class {
 	// args = {
 	//	host: hostname to connect to,
 	//	port: port to use for connection,
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		this._host = args.host;
 
@@ -42,13 +40,13 @@ const	TCPClient = new Lang.Class({
 
 		this._isConnected = false;
 
-	},
+	}
 
 	// Start connection
 	// args = {
 	//	callback: optional, function to call when the connection is ready or in case of errors,
 	// }
-	connect: function(args) {
+	connect(args) {
 
 		if (args && args.callback)
 			this._callback = args.callback;
@@ -71,10 +69,10 @@ const	TCPClient = new Lang.Class({
 			Lang.bind(this, this._connectCallback)
 		);
 
-	},
+	}
 
 	// Get connection & input/output streams
-	_connectCallback: function(client, result) {
+	_connectCallback(client, result) {
 
 		// Connection cancelled
 		if (this._cancellable.is_cancelled()) {
@@ -111,10 +109,10 @@ const	TCPClient = new Lang.Class({
 		if (this._callback)
 			this._callback();
 
-	},
+	}
 
 	// Start disconnection
-	_disconnect: function() {
+	_disconnect() {
 
 		if (this._isConnected) {
 			this._connection.close_async(
@@ -129,40 +127,40 @@ const	TCPClient = new Lang.Class({
 		if (this._cancellable)
 			this._cancellable.cancel();
 
-	},
+	}
 
 	// End disconnection
-	_disconnectCallback: function(source_object, result) {
+	_disconnectCallback(source_object, result) {
 
 		this._connection.close_finish(result);
 
-	},
+	}
 
 	// Call, if set, *this._callback* passing to it *error*
-	_raiseError: function(error) {
+	_raiseError(error) {
 
 		if (this._callback)
 			this._callback({ error: 'ERR ' + error });
 
-	},
+	}
 
 	// Whether the client is connected or not
-	isConnected: function() {
+	isConnected() {
 
 		if (!this._isConnected)
 			return this._isConnected;
 
 		return this._connection.is_connected();
 
-	},
+	}
 
 	// Disconnect the client
-	destroy: function() {
+	destroy() {
 
 		this._disconnect();
 
 	}
-});
+};
 
 // TCPClientDo: handle actions with TCPClient, i.e. write something to it and pass to a callback function what we got back
 // NOTE: callback function will get:
@@ -177,17 +175,15 @@ const	TCPClient = new Lang.Class({
 //		...
 //		'Line #n'
 //	],
-//	opts: 'Whatever you passed to *_init(args.opts)*'
+//	opts: 'Whatever you passed to *constructor(args.opts)*'
 //  }
 //  e.g., upon errors: {
 //	data: [
 //		'ERR CONNECTION-ERROR'
 //	],
-//	opts: 'Whatever you passed to *_init(args.opts)*'
+//	opts: 'Whatever you passed to *constructor(args.opts)*'
 //  }
-const	TCPClientDo = new Lang.Class({
-	Name: 'TCPClientDo',
-
+const	TCPClientDo = class {
 	// If the client is not yet connected, connect it, pass to it args.*data* and try to read from it.
 	// If the client is already connected, pass to it args.*data* and try to read from it.
 	// args = {
@@ -197,7 +193,7 @@ const	TCPClientDo = new Lang.Class({
 	//	data: data to write to the output stream,
 	//	upto: optional, string that will stop the reading from client - if unset, only one line will be read
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		this._client = args.client;
 
@@ -220,13 +216,13 @@ const	TCPClientDo = new Lang.Class({
 
 		this._write();
 
-	},
+	}
 
 	// Write *this._data* to the output stream, then try to read from the input stream just one line or all up to *this._upto*
 	// args = {
-	//	error: set by *this._client.connect()* method called (if the client is not already connected) in *this._init()* upon problems in the connection
+	//	error: set by *this._client.connect()* method called (if the client is not already connected) in *this.constructor()* upon problems in the connection
 	// }
-	_write: function(args) {
+	_write(args) {
 
 		if (args && args.error) {
 			this._returnData.push(args.error);
@@ -241,10 +237,10 @@ const	TCPClientDo = new Lang.Class({
 			Lang.bind(this, this._writeCallback)
 		);
 
-	},
+	}
 
 	// Finish the writing and call the read function
-	_writeCallback: function(source_object, result) {
+	_writeCallback(source_object, result) {
 
 		let error, size;
 
@@ -265,10 +261,10 @@ const	TCPClientDo = new Lang.Class({
 
 		this._readLine();
 
-	},
+	}
 
 	// Read something from the input stream, one line at a time
-	_readLine: function() {
+	_readLine() {
 
 		this._client.input.read_line_async(
 			GLib.PRIORITY_DEFAULT,
@@ -276,10 +272,10 @@ const	TCPClientDo = new Lang.Class({
 			Lang.bind(this, this._readLineCallback)
 		);
 
-	},
+	}
 
 	// Finish reading the line, then call the callback function or read the next line
-	_readLineCallback: function(source_object, result) {
+	_readLineCallback(source_object, result) {
 
 		let error, line, lineSize;
 
@@ -310,10 +306,10 @@ const	TCPClientDo = new Lang.Class({
 
 		this._readLine();
 
-	},
+	}
 
 	// Execute callback function
-	_callback: function() {
+	_callback() {
 
 		this._callbackFunction({
 			data: this._returnData,
@@ -321,7 +317,7 @@ const	TCPClientDo = new Lang.Class({
 		});
 
 	}
-});
+};
 
 // NUTClient: create a new TCPClient and map NUT's net protocol
 // NOTE: all the net protocol-related methods take this argument:
@@ -346,20 +342,18 @@ const	TCPClientDo = new Lang.Class({
 // - 'ERR WRITE-ERROR (<error>)' upon errors writing to the TCPClient
 // - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 // - 'ERR UNKNOWN' - unknown errors
-var	NUTClient = new Lang.Class({
-	Name: 'NUTClient',
-
+var	NUTClient = class {
 	// args = {
 	//	host: hostname to connect to,
 	//	port: port to use for connection,
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		this._client = new TCPClient(args);
 
 		this._isBusy = false;
 
-	},
+	}
 
 	// If busy return error 'ERR CLIENT-BUSY', otherwise set parameters:
 	// args = {
@@ -367,7 +361,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// (other properties, i.e. args.*, are used by the calling method)
-	_checkIfBusy: function(args) {
+	_checkIfBusy(args) {
 
 		if (this._isBusy)
 			return {
@@ -382,7 +376,7 @@ var	NUTClient = new Lang.Class({
 		this._callback = args.callback;
 
 		return false;
-	},
+	}
 
 	// Get the number of clients which have done *LOGIN* for the UPS
 	// args = {
@@ -391,7 +385,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = number of logged clients (e.g. '3')
-	getNumLogins: function(args) {
+	getNumLogins(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -406,10 +400,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getNumLoginsCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getNumLogins()* method
-	_getNumLoginsCallback: function(args) {
+	_getNumLoginsCallback(args) {
 
 		// > GET NUMLOGINS <upsname>
 		// < NUMLOGINS <upsname> <value>
@@ -431,7 +425,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get UPS's descriptions as set in ups.conf or 'Unavailable' if 'desc' is not set
 	// args = {
@@ -440,7 +434,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = UPS's description (e.g. 'My little precious UPS')
-	getUPSDesc: function(args) {
+	getUPSDesc(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -455,10 +449,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getUPSDescCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getUPSDesc()* method
-	_getUPSDescCallback: function(args) {
+	_getUPSDescCallback(args) {
 
 		// > GET UPSDESC <upsname>
 		// < UPSDESC <upsname> "<description>"
@@ -480,7 +474,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the value of a variable
 	// args = {
@@ -490,7 +484,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's value (e.g. '230.4')
-	getVar: function(args) {
+	getVar(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -505,10 +499,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getVarCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getVar()* method
-	_getVarCallback: function(args) {
+	_getVarCallback(args) {
 
 		// > GET VAR <upsname> <varname>
 		// < VAR <upsname> <varname> "<value>"
@@ -530,7 +524,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the type of a variable
 	// Type can be several values, and multiple words may be returned:
@@ -545,7 +539,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's type (e.g. 'RW STRING:32')
-	getType: function(args) {
+	getType(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -560,10 +554,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getTypeCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getType()* method
-	_getTypeCallback: function(args) {
+	_getTypeCallback(args) {
 
 		// > GET TYPE <upsname> <varname>
 		// < TYPE <upsname> <varname> <type>...
@@ -591,7 +585,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the description of a variable (or 'Unavailable', if the description is not available)
 	// args = {
@@ -601,7 +595,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's description (e.g. 'Input voltage (V)')
-	getDesc: function(args) {
+	getDesc(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -616,10 +610,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getDescCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getDesc()* method
-	_getDescCallback: function(args) {
+	_getDescCallback(args) {
 
 		// > GET DESC <upsname> <varname>
 		// < DESC <upsname> <varname> "<description>"
@@ -641,7 +635,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the description of a command (or 'Unavailable', if the description is not available)
 	// args = {
@@ -651,7 +645,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = command's description (e.g. 'Turn off the load and return when power is back')
-	getCmdDesc: function(args) {
+	getCmdDesc(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -666,10 +660,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._getCmdDescCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.getCmdDesc()* method
-	_getCmdDescCallback: function(args) {
+	_getCmdDescCallback(args) {
 
 		// > GET CMDDESC <upsname> <cmdname>
 		// < CMDDESC <upsname> <cmdname> "<description>"
@@ -691,9 +685,9 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
-	// Get the list of UPSes available at *this._host:this._port* (as set in *_init()* method, i.e. _init()'s args.{*host*,*port*})
+	// Get the list of UPSes available at *this._host:this._port* (as set in *constructor()* method, i.e. constructor()'s args.{*host*,*port*})
 	// args = {
 	//	callback: function to call upon success/errors,
 	//	opts: optional data to pass to the callback function
@@ -707,7 +701,7 @@ var	NUTClient = new Lang.Class({
 	//	'mlpu': 'My little precious UPS',
 	//	'mbbu': 'My big bad UPS'
 	// }
-	listUPS: function(args) {
+	listUPS(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -723,10 +717,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listUPSCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listUPS()* method
-	_listUPSCallback: function(args) {
+	_listUPSCallback(args) {
 
 		// > LIST UPS
 		// < BEGIN LIST UPS
@@ -775,7 +769,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of a UPS's available variables
 	// args = {
@@ -792,7 +786,7 @@ var	NUTClient = new Lang.Class({
 	//	'input.voltage': '228.2',
 	//	'ups.status': 'OL CHRG'
 	// }
-	listVar: function(args) {
+	listVar(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -808,10 +802,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listVarCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listVar()* method
-	_listVarCallback: function(args) {
+	_listVarCallback(args) {
 
 		// > LIST VAR <upsname>
 		// < BEGIN LIST VAR <upsname>
@@ -860,7 +854,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of RW variables available for a UPS
 	// args = {
@@ -877,7 +871,7 @@ var	NUTClient = new Lang.Class({
 	//	'battery.protection': 'yes',
 	//	'ups.delay.shutdown': '180'
 	// }
-	listRW: function(args) {
+	listRW(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -893,10 +887,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listRWCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listRW()* method
-	_listRWCallback: function(args) {
+	_listRWCallback(args) {
 
 		// > LIST RW <upsname>
 		// < BEGIN LIST RW <upsname>
@@ -945,7 +939,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of commands available for a UPS
 	// args = {
@@ -962,7 +956,7 @@ var	NUTClient = new Lang.Class({
 	//	'test.battery.start',
 	//	'shutdown.return'
 	// ]
-	listCmd: function(args) {
+	listCmd(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -978,10 +972,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listCmdCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listCmd()* method
-	_listCmdCallback: function(args) {
+	_listCmdCallback(args) {
 
 		// > LIST CMD <upsname>
 		// < BEGIN LIST CMD <upsname>
@@ -1028,7 +1022,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of enumerated values available for a variable
 	// args = {
@@ -1046,7 +1040,7 @@ var	NUTClient = new Lang.Class({
 	//	'120',
 	//	'240'
 	// ]
-	listEnum: function(args) {
+	listEnum(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1062,10 +1056,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listEnumCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listEnum()* method
-	_listEnumCallback: function(args) {
+	_listEnumCallback(args) {
 
 		// > LIST ENUM <upsname> <varname>
 		// < BEGIN LIST ENUM <upsname> <varname>
@@ -1112,7 +1106,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of ranges available for a variable
 	// args = {
@@ -1142,7 +1136,7 @@ var	NUTClient = new Lang.Class({
 	//		max: '90'
 	//	}
 	// ]
-	listRange: function(args) {
+	listRange(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1161,10 +1155,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listRangeCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listRange()* method
-	_listRangeCallback: function(args) {
+	_listRangeCallback(args) {
 
 		// > LIST RANGE <upsname> <varname>
 		// < BEGIN LIST RANGE <upsname> <varname>
@@ -1218,7 +1212,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Get the list of clients connected to a UPS
 	// args = {
@@ -1235,7 +1229,7 @@ var	NUTClient = new Lang.Class({
 	//	'::1',
 	//	'192.168.1.2'
 	// ]
-	listClient: function(args) {
+	listClient(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1251,10 +1245,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._listClientCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listClient()* method
-	_listClientCallback: function(args) {
+	_listClientCallback(args) {
 
 		// > LIST CLIENT <device_name>
 		// < BEGIN LIST CLIENT <device_name>
@@ -1301,7 +1295,7 @@ var	NUTClient = new Lang.Class({
 			opts: this._opts
 		});
 
-	},
+	}
 
 	// Set the value of a RW variable
 	// args = {
@@ -1311,7 +1305,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	setVar: function(args) {
+	setVar(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1326,10 +1320,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._setVarCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.setVar()* method
-	_setVarCallback: function(args) {
+	_setVarCallback(args) {
 
 		// > SET VAR <upsname> <varname> "<value>"
 		// < OK
@@ -1358,7 +1352,7 @@ var	NUTClient = new Lang.Class({
 				opts: this._opts
 			});
 
-	},
+	}
 
 	// Execute instant command
 	// args = {
@@ -1369,7 +1363,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	instCmd: function(args) {
+	instCmd(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1393,10 +1387,10 @@ var	NUTClient = new Lang.Class({
 				callback: Lang.bind(this, this._instCmdCallback)
 			});
 
-	},
+	}
 
 	// Callback function for *this.instCmd()* method
-	_instCmdCallback: function(args) {
+	_instCmdCallback(args) {
 
 		// > INSTCMD <upsname> <cmdname> "<value>"
 		// < OK
@@ -1425,7 +1419,7 @@ var	NUTClient = new Lang.Class({
 				opts: this._opts
 			});
 
-	},
+	}
 
 	// Set the password for the current connection
 	// args = {
@@ -1434,7 +1428,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	password: function(args) {
+	password(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1449,10 +1443,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._passwordCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.password()* method
-	_passwordCallback: function(args) {
+	_passwordCallback(args) {
 
 		// > PASSWORD <password>
 		// < OK
@@ -1481,7 +1475,7 @@ var	NUTClient = new Lang.Class({
 				opts: this._opts
 			});
 
-	},
+	}
 
 	// Set the username for the current connection
 	// args = {
@@ -1490,7 +1484,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	username: function(args) {
+	username(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1505,10 +1499,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._usernameCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.username()* method
-	_usernameCallback: function(args) {
+	_usernameCallback(args) {
 
 		// > USERNAME <username>
 		// < OK
@@ -1537,7 +1531,7 @@ var	NUTClient = new Lang.Class({
 				opts: this._opts
 			});
 
-	},
+	}
 
 	// Tell upsd to switch to TLS mode internally, so all future communications will be encrypted.
 	// You must also change to TLS mode in the client after receiving the OK, or the connection will be useless.
@@ -1546,7 +1540,7 @@ var	NUTClient = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	startTLS: function(args) {
+	startTLS(args) {
 
 		let isBusy = this._checkIfBusy(args);
 
@@ -1561,10 +1555,10 @@ var	NUTClient = new Lang.Class({
 			callback: Lang.bind(this, this._startTLSCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.startTLS()* method
-	_startTLSCallback: function(args) {
+	_startTLSCallback(args) {
 
 		// > STARTTLS
 		// < OK STARTTLS
@@ -1593,15 +1587,15 @@ var	NUTClient = new Lang.Class({
 				opts: this._opts
 			});
 
-	},
+	}
 
 	// Destroy the TCPClient
-	destroy: function() {
+	destroy() {
 
 		this._client.destroy();
 
 	}
-});
+};
 
 // NUTHelper: facilitate communications with NUT
 // NOTE: all the public methods take this argument:
@@ -1616,8 +1610,8 @@ var	NUTClient = new Lang.Class({
 //  args = {
 //	data: data got from client, parsed - NOTE: either *data* or *error* is passed to callback function, not both,
 //	error: errors got from client - NOTE: either *data* or *error* is passed to callback function, not both,
-//	host: hostname used by the client, set in the *_init()* method
-//	port: port used by the client, set in the *_init()* method
+//	host: hostname used by the client, set in the *constructor()* method
+//	port: port used by the client, set in the *constructor()* method
 //	opts: optional data to pass to the callback function - i.e. *method(args.opts)*,
 //		...
 //	all the method-specific options requested by *method()*
@@ -1632,14 +1626,12 @@ var	NUTClient = new Lang.Class({
 // - 'ERR READ-ERROR (<error>)' upon errors reading from the TCPClient
 // - 'ERR TOO-FEW-ARGUMENTS' if you called a method without all the required data
 // - 'ERR UNKNOWN' - unknown errors
-var	NUTHelper = new Lang.Class({
-	Name: 'NUTHelper',
-
+var	NUTHelper = class {
 	// args = {
 	//	host: hostname to connect to,
 	//	port: port to use for connection,
 	// }
-	_init: function(args) {
+	constructor(args) {
 
 		this._host = args.host;
 
@@ -1653,7 +1645,7 @@ var	NUTHelper = new Lang.Class({
 
 		this._client = new NUTClient(args);
 
-	},
+	}
 
 	// Check if all the required data is passed to a method and then register it and also the optional data as properties of *this* (private, dashed) and of *this._returnData*
 	// args = {
@@ -1661,7 +1653,7 @@ var	NUTHelper = new Lang.Class({
 	//	optional: optional data, as an array of names
 	//	source: object whose properties are to check against args.*required* and args.*optional*
 	// }
-	_setData: function(args) {
+	_setData(args) {
 
 		let source = args.source || {};
 		let required = args.required;
@@ -1711,10 +1703,10 @@ var	NUTHelper = new Lang.Class({
 
 		return true;
 
-	},
+	}
 
 	// Standard callback function for methods
-	_standardCallback: function(args) {
+	_standardCallback(args) {
 
 		this._client.destroy();
 
@@ -1725,7 +1717,7 @@ var	NUTHelper = new Lang.Class({
 
 		this._callback(this._returnData);
 
-	},
+	}
 
 	// Get the value of a variable
 	// args = {
@@ -1735,7 +1727,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's value (e.g. '230.4')
-	getVar: function(args) {
+	getVar(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1756,7 +1748,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get UPS's descriptions as set in ups.conf or 'Unavailable' if 'desc' is not set
 	// args = {
@@ -1765,7 +1757,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = UPS's description (e.g. 'My little precious UPS')
-	getUPSDesc: function(args) {
+	getUPSDesc(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1784,7 +1776,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the description of a variable (or 'Unavailable', if the description is not available)
 	// args = {
@@ -1794,7 +1786,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's description (e.g. 'Input voltage (V)')
-	getDesc: function(args) {
+	getDesc(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1815,7 +1807,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the description of a command (or 'Unavailable', if the description is not available)
 	// args = {
@@ -1825,7 +1817,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = command's description (e.g. 'Turn off the load and return when power is back')
-	getCmdDesc: function(args) {
+	getCmdDesc(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1846,7 +1838,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the type of a variable
 	// Type can be several values, and multiple words may be returned:
@@ -1861,7 +1853,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = var's type (e.g. 'RW STRING:32')
-	getType: function(args) {
+	getType(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1882,9 +1874,9 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
-	// Get the list of UPSes available at *this._host:this._port* (as set in *_init()* method, i.e. _init()'s args.{*host*,*port*})
+	// Get the list of UPSes available at *this._host:this._port* (as set in *constructor()* method, i.e. constructor()'s args.{*host*,*port*})
 	// args = {
 	//	callback: function to call upon success/errors,
 	//	opts: optional data to pass to the callback function
@@ -1898,7 +1890,7 @@ var	NUTHelper = new Lang.Class({
 	//	'mlpu': 'My little precious UPS',
 	//	'mbbu': 'My big bad UPS'
 	// }
-	listUPS: function(args) {
+	listUPS(args) {
 
 		let isOk = this._setData({
 			required: [ 'callback' ],
@@ -1911,7 +1903,7 @@ var	NUTHelper = new Lang.Class({
 
 		this._client.listUPS({ callback: Lang.bind(this, this._standardCallback) });
 
-	},
+	}
 
 	// Get the list of variables available for a UPS
 	// args = {
@@ -1928,7 +1920,7 @@ var	NUTHelper = new Lang.Class({
 	//	'input.voltage': '228.2',
 	//	'ups.status': 'OL CHRG'
 	// }
-	listVars: function(args) {
+	listVars(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1947,7 +1939,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of clients connected to a UPS
 	// args = {
@@ -1964,7 +1956,7 @@ var	NUTHelper = new Lang.Class({
 	//	'::1',
 	//	'192.168.1.2'
 	// ]
-	listClients: function(args) {
+	listClients(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -1983,7 +1975,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of RW variables available for a UPS
 	// args = {
@@ -2000,7 +1992,7 @@ var	NUTHelper = new Lang.Class({
 	//	'battery.protection': 'yes',
 	//	'ups.delay.shutdown': '180'
 	// }
-	listRW: function(args) {
+	listRW(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2019,7 +2011,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of enumerated values available for a variable
 	// args = {
@@ -2037,7 +2029,7 @@ var	NUTHelper = new Lang.Class({
 	//	'120',
 	//	'240'
 	// ]
-	listEnum: function(args) {
+	listEnum(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2058,7 +2050,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of ranges available for a variable
 	// args = {
@@ -2088,7 +2080,7 @@ var	NUTHelper = new Lang.Class({
 	//		max: '90'
 	//	}
 	// ]
-	listRange: function(args) {
+	listRange(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2109,7 +2101,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of RW variables available for a UPS and their type and boundaries
 	// args = {
@@ -2149,7 +2141,7 @@ var	NUTHelper = new Lang.Class({
 	//		...
 	//	]
 	// - if type = STRING -> maximum length of the string
-	listRWs: function(args) {
+	listRWs(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2168,13 +2160,13 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._listRWsCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listRWs()* method:
 	// - check for errors
 	// - prepare vars
 	// - start the loop through all the vars
-	_listRWsCallback: function(args) {
+	_listRWsCallback(args) {
 
 		if (args.error) {
 			this._client.destroy();
@@ -2203,10 +2195,10 @@ var	NUTHelper = new Lang.Class({
 		// Get data
 		this._listRWsGetType();
 
-	},
+	}
 
 	// Try to get the actual type of a variable (the first one in *this._rwsToDo* array)
-	_listRWsGetType: function() {
+	_listRWsGetType() {
 
 		this._varName = this._rwsToDo[0];
 
@@ -2216,12 +2208,12 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._listRWsGetTypeCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this._listRWsGetType()* method:
 	// - determine the type of a variable according to the answer got from TCPClient
 	// - try to get the variable's boundaries
-	_listRWsGetTypeCallback: function(args) {
+	_listRWsGetTypeCallback(args) {
 
 		if (args.error) {
 			this._rws[this._varName].type = 'UNKNOWN';
@@ -2265,10 +2257,10 @@ var	NUTHelper = new Lang.Class({
 
 		this._listRWsGoNext();
 
-	},
+	}
 
 	// Set a variable's boundaries, then go to the next var
-	_listRWsSetOptsCallback: function(args) {
+	_listRWsSetOptsCallback(args) {
 
 		if (args.error) {
 			this._listRWsGoNext();
@@ -2279,10 +2271,10 @@ var	NUTHelper = new Lang.Class({
 
 		this._listRWsGoNext();
 
-	},
+	}
 
 	// Loop through the vars whose type is to check
-	_listRWsGoNext: function() {
+	_listRWsGoNext() {
 
 		this._rwsToDo.shift();
 
@@ -2295,7 +2287,7 @@ var	NUTHelper = new Lang.Class({
 
 		this._listRWsGetType();
 
-	},
+	}
 
 	// Get the list of commands available for a UPS
 	// args = {
@@ -2312,7 +2304,7 @@ var	NUTHelper = new Lang.Class({
 	//	'test.battery.start',
 	//	'shutdown.return'
 	// ]
-	listCmd: function(args) {
+	listCmd(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2331,7 +2323,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Get the list of commands available for a UPS and their description
 	// args = {
@@ -2349,7 +2341,7 @@ var	NUTHelper = new Lang.Class({
 	//	'test.battery.start': 'Start a battery test',
 	//	'shutdown.return': 'Turn off the load and return when power is back'
 	// }
-	listCmds: function(args) {
+	listCmds(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2368,13 +2360,13 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._listCmdsCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this.listCmds()* method
 	// - check for errors
 	// - prepare commands list
 	// - start the loop through all the commands
-	_listCmdsCallback: function(args) {
+	_listCmdsCallback(args) {
 
 		if (args.error) {
 			this._client.destroy();
@@ -2390,10 +2382,10 @@ var	NUTHelper = new Lang.Class({
 		// Get data
 		this._listCmdsGetDesc();
 
-	},
+	}
 
 	// Try to get the description of a command (the first one in *this._cmdsToDo* array)
-	_listCmdsGetDesc: function() {
+	_listCmdsGetDesc() {
 
 		this._cmd = this._cmdsToDo[0];
 
@@ -2403,19 +2395,19 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._listCmdsGetDescCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this._listCmdsGetDesc()* method
-	_listCmdsGetDescCallback: function(args) {
+	_listCmdsGetDescCallback(args) {
 
 		this._cmds[this._cmd] = args.data || 'Unavailable';
 
 		this._listCmdsGoNext(args);
 
-	},
+	}
 
 	// Loop through the commands whose description is to get
-	_listCmdsGoNext: function(args) {
+	_listCmdsGoNext(args) {
 
 		this._cmdsToDo.shift();
 
@@ -2428,14 +2420,14 @@ var	NUTHelper = new Lang.Class({
 
 		this._listCmdsGetDesc();
 
-	},
+	}
 
 	// Set username and password (as set in *this._username* and *this._password*) for the current connection
 	// args = {
 	//	callback: function to call upon success/errors
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	_authenticate: function(args) {
+	_authenticate(args) {
 
 		this._authCallback = args.callback;
 
@@ -2444,12 +2436,12 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._authenticateUserCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this._authenticate()* method:
 	// - check if there were errors setting username
 	// - if there weren't errors, try to set password
-	_authenticateUserCallback: function(args) {
+	_authenticateUserCallback(args) {
 
 		if (args.error) {
 			this._authCallback({ error: args.error });
@@ -2461,12 +2453,12 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._authenticatePwCallback)
 		});
 
-	},
+	}
 
 	// Callback function for *this._authenticate()* method, through *this._authenticateUserCallback()* method
 	// - check if there were errors setting password
 	// - if there weren't errors, call the callback function *this._authCallback()* (i.e. *this._authenticate()*'s args.*callback*)
-	_authenticatePwCallback: function(args) {
+	_authenticatePwCallback(args) {
 
 		if (args.error) {
 			this._authCallback({ error: args.error });
@@ -2475,7 +2467,7 @@ var	NUTHelper = new Lang.Class({
 
 		this._authCallback({ data: args.data });
 
-	},
+	}
 
 	// Set the value of a RW variable
 	// args = {
@@ -2488,7 +2480,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	setVar: function(args) {
+	setVar(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2508,10 +2500,10 @@ var	NUTHelper = new Lang.Class({
 
 		this._authenticate({ callback: Lang.bind(this, this._setVarAuthenticateCallback) });
 
-	},
+	}
 
 	// Callback function for *this.setVar()* method's authentication
-	_setVarAuthenticateCallback: function(args) {
+	_setVarAuthenticateCallback(args) {
 
 		if (args.error) {
 			this._client.destroy();
@@ -2527,7 +2519,7 @@ var	NUTHelper = new Lang.Class({
 			callback: Lang.bind(this, this._standardCallback)
 		});
 
-	},
+	}
 
 	// Execute instant command
 	// args = {
@@ -2540,7 +2532,7 @@ var	NUTHelper = new Lang.Class({
 	//	opts: optional data to pass to the callback function
 	// }
 	// callback's args.*data* = 'OK' (in case of success)
-	instCmd: function(args) {
+	instCmd(args) {
 
 		let isOk = this._setData({
 			required: [
@@ -2562,10 +2554,10 @@ var	NUTHelper = new Lang.Class({
 
 		this._authenticate({ callback: Lang.bind(this, this._instCmdAuthenticateCallback) });
 
-	},
+	}
 
 	// Callback function for *this.instCmd()* method's authentication
-	_instCmdAuthenticateCallback: function(args) {
+	_instCmdAuthenticateCallback(args) {
 
 		if (args.error) {
 			this._client.destroy();
@@ -2582,7 +2574,7 @@ var	NUTHelper = new Lang.Class({
 		});
 
 	}
-});
+};
 
 // Support functions
 
