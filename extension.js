@@ -22,6 +22,7 @@
 const	Atk = imports.gi.Atk,
 	Clutter = imports.gi.Clutter,
 	Config = imports.misc.config,
+	Gio = imports.gi.Gio,
 	GObject = imports.gi.GObject,
 	Lang = imports.lang,
 	Main = imports.ui.main,
@@ -48,9 +49,9 @@ const	Me = imports.misc.extensionUtils.getCurrentExtension(),
 	Utilities = Me.imports.utilities;
 
 // Panel Icons
-const	Icons = {
+const	PanelIcons = {
 	// Error = E
-	E:	'nut-error',
+	E:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-error-symbolic.svg'),
 
 	// Battery	| Load
 	// full = 2	| full = 23
@@ -63,180 +64,199 @@ const	Icons = {
 
 	// status = OB (-> B) - no caution
 	// no battery/no load -> 1
-	B1:	'nut-ghost-ob',
+	B1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ob-symbolic.svg'),
 	//	battery full -> 2
-	B2:	'nut-battery-full',
-	B46:	'nut-battery-full-load-full',
-	B34:	'nut-battery-full-load-good',
-	B26:	'nut-battery-full-load-low',
-	B22:	'nut-battery-full-load-empty',
+	B2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-symbolic.svg'),
+	B46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-symbolic.svg'),
+	B34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-symbolic.svg'),
+	B26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-symbolic.svg'),
+	B22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-symbolic.svg'),
 	//	battery good -> 3
-	B3:	'nut-battery-good',
-	B69:	'nut-battery-good-load-full',
-	B51:	'nut-battery-good-load-good',
-	B39:	'nut-battery-good-load-low',
-	B33:	'nut-battery-good-load-empty',
+	B3:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-symbolic.svg'),
+	B69:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-full-symbolic.svg'),
+	B51:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-good-symbolic.svg'),
+	B39:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-low-symbolic.svg'),
+	B33:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-empty-symbolic.svg'),
 	//	battery low -> 5
-	B5:	'nut-battery-low',
-	B115:	'nut-battery-low-load-full',
-	B85:	'nut-battery-low-load-good',
-	B65:	'nut-battery-low-load-low',
-	B55:	'nut-battery-low-load-empty',
+	B5:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-symbolic.svg'),
+	B115:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-full-symbolic.svg'),
+	B85:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-good-symbolic.svg'),
+	B65:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-low-symbolic.svg'),
+	B55:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-empty-symbolic.svg'),
 	//	battery empty -> 7
-	B7:	'nut-battery-empty',
-	B161:	'nut-battery-empty-load-full',
-	B119:	'nut-battery-empty-load-good',
-	B91:	'nut-battery-empty-load-low',
-	B77:	'nut-battery-empty',
+	B7:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-symbolic.svg'),
+	B161:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-full-symbolic.svg'),
+	B119:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-good-symbolic.svg'),
+	B91:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-low-symbolic.svg'),
+	B77:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-symbolic.svg'),
 	// just load
 	//	load full -> 23
-	B23:	'nut-battery-na-load-full',
+	B23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-symbolic.svg'),
 	//	load good -> 17
-	B17:	'nut-battery-na-load-good',
+	B17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-symbolic.svg'),
 	//	load low -> 13
-	B13:	'nut-battery-na-load-low',
+	B13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-symbolic.svg'),
 	//	load empty -> 11
-	B11:	'nut-battery-na-load-empty',
+	B11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-symbolic.svg'),
 
 	// status = OB (->B) - caution (->A)
 	// no battery/no load -> 1
-	BA1:	'nut-ghost-ob-caution',
+	BA1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ob-caution-symbolic.svg'),
 	//	battery full -> 2
-	BA2:	'nut-battery-full-caution',
-	BA46:	'nut-battery-full-load-full-caution',
-	BA34:	'nut-battery-full-load-good-caution',
-	BA26:	'nut-battery-full-load-low-caution',
-	BA22:	'nut-battery-full-load-empty-caution',
+	BA2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-caution-symbolic.svg'),
+	BA46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-caution-symbolic.svg'),
+	BA34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-caution-symbolic.svg'),
+	BA26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-caution-symbolic.svg'),
+	BA22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-caution-symbolic.svg'),
 	//	battery good -> 3
-	BA3:	'nut-battery-good-caution',
-	BA69:	'nut-battery-good-load-full-caution',
-	BA51:	'nut-battery-good-load-good-caution',
-	BA39:	'nut-battery-good-load-low-caution',
-	BA33:	'nut-battery-good-load-empty-caution',
+	BA3:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-caution-symbolic.svg'),
+	BA69:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-full-caution-symbolic.svg'),
+	BA51:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-good-caution-symbolic.svg'),
+	BA39:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-low-caution-symbolic.svg'),
+	BA33:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-empty-caution-symbolic.svg'),
 	//	battery low -> 5
-	BA5:	'nut-battery-low-caution',
-	BA115:	'nut-battery-low-load-full-caution',
-	BA85:	'nut-battery-low-load-good-caution',
-	BA65:	'nut-battery-low-load-low-caution',
-	BA55:	'nut-battery-low-load-empty-caution',
+	BA5:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-caution-symbolic.svg'),
+	BA115:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-full-caution-symbolic.svg'),
+	BA85:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-good-caution-symbolic.svg'),
+	BA65:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-low-caution-symbolic.svg'),
+	BA55:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-empty-caution-symbolic.svg'),
 	//	battery empty -> 7
-	BA7:	'nut-battery-empty-caution',
-	BA161:	'nut-battery-empty-load-full-caution',
-	BA119:	'nut-battery-empty-load-good-caution',
-	BA91:	'nut-battery-empty-load-low-caution',
-	BA77:	'nut-battery-empty-caution',
+	BA7:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-caution-symbolic.svg'),
+	BA161:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-full-caution-symbolic.svg'),
+	BA119:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-good-caution-symbolic.svg'),
+	BA91:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-low-caution-symbolic.svg'),
+	BA77:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-caution-symbolic.svg'),
 	// just load
 	//	load full -> 23
-	BA23:	'nut-battery-na-load-full-caution',
+	BA23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-caution-symbolic.svg'),
 	//	load good -> 17
-	BA17:	'nut-battery-na-load-good-caution',
+	BA17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-caution-symbolic.svg'),
 	//	load low -> 13
-	BA13:	'nut-battery-na-load-low-caution',
+	BA13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-caution-symbolic.svg'),
 	//	load empty -> 11
-	BA11:	'nut-battery-na-load-empty-caution',
+	BA11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-caution-symbolic.svg'),
 
 	// status = OL (->O[+C])
 	// no battery/no load -> 1
-	OC1:	'nut-ghost-ol-charged',
-	O1:	'nut-ghost-ol-charging',
+	OC1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ol-charged-symbolic.svg'),
+	O1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ol-charging-symbolic.svg'),
 	//	battery full -> 2
-	OC2:	'nut-battery-full-charged',
-	O2:	'nut-battery-full-charging',
-	OC46:	'nut-battery-full-load-full-charged',
-	O46:	'nut-battery-full-load-full-charging',
-	OC34:	'nut-battery-full-load-good-charged',
-	O34:	'nut-battery-full-load-good-charging',
-	OC26:	'nut-battery-full-load-low-charged',
-	O26:	'nut-battery-full-load-low-charging',
-	OC22:	'nut-battery-full-load-empty-charged',
-	O22:	'nut-battery-full-load-empty-charging',
+	OC2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-charged-symbolic.svg'),
+	O2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-charging-symbolic.svg'),
+	OC46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-charged-symbolic.svg'),
+	O46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-charging-symbolic.svg'),
+	OC34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-charged-symbolic.svg'),
+	O34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-charging-symbolic.svg'),
+	OC26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-charged-symbolic.svg'),
+	O26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-charging-symbolic.svg'),
+	OC22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-charged-symbolic.svg'),
+	O22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-charging-symbolic.svg'),
 	//	battery good -> 3
-	O3:	'nut-battery-good-charging',
-	O69:	'nut-battery-good-load-full-charging',
-	O51:	'nut-battery-good-load-good-charging',
-	O39:	'nut-battery-good-load-low-charging',
-	O33:	'nut-battery-good-load-empty-charging',
+	O3:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-charging-symbolic.svg'),
+	O69:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-full-charging-symbolic.svg'),
+	O51:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-good-charging-symbolic.svg'),
+	O39:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-low-charging-symbolic.svg'),
+	O33:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-empty-charging-symbolic.svg'),
 	//	battery low -> 5
-	O5:	'nut-battery-low-charging',
-	O115:	'nut-battery-low-load-full-charging',
-	O85:	'nut-battery-low-load-good-charging',
-	O65:	'nut-battery-low-load-low-charging',
-	O55:	'nut-battery-low-load-empty-charging',
+	O5:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-charging-symbolic.svg'),
+	O115:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-full-charging-symbolic.svg'),
+	O85:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-good-charging-symbolic.svg'),
+	O65:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-low-charging-symbolic.svg'),
+	O55:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-empty-charging-symbolic.svg'),
 	//	battery empty -> 7
-	O7:	'nut-battery-empty-charging',
-	O161:	'nut-battery-empty-load-full-charging',
-	O119:	'nut-battery-empty-load-good-charging',
-	O91:	'nut-battery-empty-load-low-charging',
-	O77:	'nut-battery-empty-charging',
+	O7:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-charging-symbolic.svg'),
+	O161:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-full-charging-symbolic.svg'),
+	O119:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-good-charging-symbolic.svg'),
+	O91:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-low-charging-symbolic.svg'),
+	O77:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-charging-symbolic.svg'),
 	// just load
 	//	load full -> 23
-	OC23:	'nut-battery-na-load-full-charged',
-	O23:	'nut-battery-na-load-full-charging',
+	OC23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-charged-symbolic.svg'),
+	O23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-charging-symbolic.svg'),
 	//	load good -> 17
-	OC17:	'nut-battery-na-load-good-charged',
-	O17:	'nut-battery-na-load-good-charging',
+	OC17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-charged-symbolic.svg'),
+	O17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-charging-symbolic.svg'),
 	//	load low -> 13
-	OC13:	'nut-battery-na-load-low-charged',
-	O13:	'nut-battery-na-load-low-charging',
+	OC13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-charged-symbolic.svg'),
+	O13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-charging-symbolic.svg'),
 	//	load empty -> 11
-	OC11:	'nut-battery-na-load-empty-charged',
-	O11:	'nut-battery-na-load-empty-charging',
+	OC11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-charged-symbolic.svg'),
+	O11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-charging-symbolic.svg'),
 
 	// status = OL (->O[+C]) - caution (->A)
 	// no battery/no load ->
-	OAC1:	'nut-ghost-ol-caution-charged',
-	OA1:	'nut-ghost-ol-caution-charging',
+	OAC1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ol-caution-charged-symbolic.svg'),
+	OA1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-ghost-ol-caution-charging-symbolic.svg'),
 	//	battery full -> 2
-	OAC2:	'nut-battery-full-caution-charged',
-	OA2:	'nut-battery-full-caution-charging',
-	OAC46:	'nut-battery-full-load-full-caution-charged',
-	OA46:	'nut-battery-full-load-full-caution-charging',
-	OAC34:	'nut-battery-full-load-good-caution-charged',
-	OA34:	'nut-battery-full-load-good-caution-charging',
-	OAC26:	'nut-battery-full-load-low-caution-charged',
-	OA26:	'nut-battery-full-load-low-caution-charging',
-	OAC22:	'nut-battery-full-load-empty-caution-charged',
-	OA22:	'nut-battery-full-load-empty-caution-charging',
+	OAC2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-caution-charged-symbolic.svg'),
+	OA2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-caution-charging-symbolic.svg'),
+	OAC46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-caution-charged-symbolic.svg'),
+	OA46:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-full-caution-charging-symbolic.svg'),
+	OAC34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-caution-charged-symbolic.svg'),
+	OA34:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-good-caution-charging-symbolic.svg'),
+	OAC26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-caution-charged-symbolic.svg'),
+	OA26:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-low-caution-charging-symbolic.svg'),
+	OAC22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-caution-charged-symbolic.svg'),
+	OA22:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-full-load-empty-caution-charging-symbolic.svg'),
 	//	battery good -> 3
-	OA3:	'nut-battery-good-caution-charging',
-	OA69:	'nut-battery-good-load-full-caution-charging',
-	OA51:	'nut-battery-good-load-good-caution-charging',
-	OA39:	'nut-battery-good-load-low-caution-charging',
-	OA33:	'nut-battery-good-load-empty-caution-charging',
+	OA3:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-caution-charging-symbolic.svg'),
+	OA69:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-full-caution-charging-symbolic.svg'),
+	OA51:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-good-caution-charging-symbolic.svg'),
+	OA39:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-low-caution-charging-symbolic.svg'),
+	OA33:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-good-load-empty-caution-charging-symbolic.svg'),
 	//	battery low -> 5
-	OA5:	'nut-battery-low-caution-charging',
-	OA115:	'nut-battery-low-load-full-caution-charging',
-	OA85:	'nut-battery-low-load-good-caution-charging',
-	OA65:	'nut-battery-low-load-low-caution-charging',
-	OA55:	'nut-battery-low-load-empty-caution-charging',
+	OA5:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-caution-charging-symbolic.svg'),
+	OA115:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-full-caution-charging-symbolic.svg'),
+	OA85:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-good-caution-charging-symbolic.svg'),
+	OA65:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-low-caution-charging-symbolic.svg'),
+	OA55:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-low-load-empty-caution-charging-symbolic.svg'),
 	//	battery empty -> 7
-	OA7:	'nut-battery-empty-caution-charging',
-	OA161:	'nut-battery-empty-load-full-caution-charging',
-	OA119:	'nut-battery-empty-load-good-caution-charging',
-	OA91:	'nut-battery-empty-load-low-caution-charging',
-	OA77:	'nut-battery-empty-caution-charging',
+	OA7:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-caution-charging-symbolic.svg'),
+	OA161:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-full-caution-charging-symbolic.svg'),
+	OA119:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-good-caution-charging-symbolic.svg'),
+	OA91:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-load-low-caution-charging-symbolic.svg'),
+	OA77:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-empty-caution-charging-symbolic.svg'),
 	// just load
 	//	load full -> 23
-	OAC23:	'nut-battery-na-load-full-caution-charged',
-	OA23:	'nut-battery-na-load-full-caution-charging',
+	OAC23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-caution-charged-symbolic.svg'),
+	OA23:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-full-caution-charging-symbolic.svg'),
 	//	load good -> 17
-	OAC17:	'nut-battery-na-load-good-caution-charged',
-	OA17:	'nut-battery-na-load-good-caution-charging',
+	OAC17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-caution-charged-symbolic.svg'),
+	OA17:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-good-caution-charging-symbolic.svg'),
 	//	load low -> 13
-	OAC13:	'nut-battery-na-load-low-caution-charged',
-	OA13:	'nut-battery-na-load-low-caution-charging',
+	OAC13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-caution-charged-symbolic.svg'),
+	OA13:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-low-caution-charging-symbolic.svg'),
 	//	load empty -> 11
-	OAC11:	'nut-battery-na-load-empty-caution-charged',
-	OA11:	'nut-battery-na-load-empty-caution-charging'
+	OAC11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-caution-charged-symbolic.svg'),
+	OA11:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/nut-battery-na-load-empty-caution-charging-symbolic.svg')
 }
 
 // Battery icon @ menu
 const	BatteryIcon = {
-	B1:	'imported-battery-missing',
-	B2:	'imported-battery-full',
-	B3:	'imported-battery-good',
-	B5:	'imported-battery-low',
-	B7:	'imported-battery-empty'
+	B1:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-battery-missing-symbolic.svg'),
+	B2:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-battery-full-symbolic.svg'),
+	B3:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-battery-good-symbolic.svg'),
+	B5:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-battery-low-symbolic.svg'),
+	B7:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-battery-empty-symbolic.svg')
+}
+
+// Other icons
+const	MiscIcons = {
+	Error:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-dialog-error-symbolic.svg'),
+	OK:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/actions/imported-emblem-ok-symbolic.svg'),
+	Cancel:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/actions/imported-window-close-symbolic.svg'),
+	Plus:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/actions/imported-list-add-symbolic.svg'),
+	Minus:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/actions/imported-list-remove-symbolic.svg'),
+	Preferences:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/categories/imported-preferences-system-symbolic.svg'),
+	Credentials:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/categories/imported-dialog-password-symbolic.svg'),
+	FindDevices:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/categories/imported-edit-find-symbolic.svg'),
+	DeleteDevice:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/categories/imported-user-trash-symbolic.svg'),
+	Help:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/categories/imported-help-browser-symbolic.svg'),
+	DeviceStatus:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/emblems/imported-utilities-system-monitor-symbolic.svg'),
+	Alarm:		Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/status/imported-dialog-warning-symbolic.svg'),
+	DeviceLoad:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/emblems/imported-system-run-symbolic.svg'),
+	BackupTime:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/emblems/imported-preferences-system-time-symbolic.svg'),
+	DeviceTemp:	Gio.icon_new_for_string(Me.path + '/icons/gnome/scalable/emblems/nut-thermometer-symbolic.svg')
 }
 
 // Errors
@@ -271,8 +291,8 @@ const RawDataButtonOrnament = {
 // Supported data format: {
 //	'<data identifier #1>': {
 //		label: function that shall return the label to be shown in panel menu
-//		icon: name of the icon (sans the '-symbolic' suffix) to be shown in panel menu, if static,
-//		      or function that will be called with the actual value of data and shall return the icon name
+//		gicon: GIcon of the icon to be shown in panel menu, if static,
+//		       or function that will be called with the actual value of data and shall return the GIcon
 //		value: function that will be called with the actual value of data and shall return the string to be shown in panel menu
 //		gsetting: name of the gsetting that toggles the view of this type of data
 //	},
@@ -285,7 +305,7 @@ const	DataTableItems = {
 	'battery.charge': {	// Battery charge
 		// TRANSLATORS: Label of battery charge @ data table
 		label: function() { return _("Battery Charge"); },
-		icon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
+		gicon: function(value) { return BatteryIcon['B' + Utilities.parseBatteryLevel(value)]; },
 		// TRANSLATORS: Battery charge level @ data table
 		value: function(value) { return _("%s %").format(value); },
 		gsetting: 'display-battery-charge'
@@ -293,7 +313,7 @@ const	DataTableItems = {
 	'ups.load': {		// Device load
 		// TRANSLATORS: Label of device load @ data table
 		label: function() { return _("Device Load"); },
-		icon: 'imported-system-run',
+		gicon: MiscIcons.DeviceLoad,
 		// TRANSLATORS: Device load level @ data table
 		value: function(value) { return _("%s %").format(value); },
 		gsetting: 'display-load-level'
@@ -301,14 +321,14 @@ const	DataTableItems = {
 	'battery.runtime': {	// Backup time
 		// TRANSLATORS: Label of estimated backup time @ data table
 		label: function() { return _("Backup Time"); },
-		icon: 'imported-preferences-system-time',
+		gicon: MiscIcons.BackupTime,
 		value: function(value) { return Utilities.parseTime(value); },
 		gsetting: 'display-backup-time'
 	},
 	'ups.temperature': {	// Device temperature
 		// TRANSLATORS: Label of device temperature @ data table
 		label: function() { return _("Temperature"); },
-		icon: 'nut-thermometer',
+		gicon: MiscIcons.DeviceTemp,
 		value: function(value) { return Utilities.formatTemp(value); },
 		gsetting: 'display-device-temperature'
 	}
@@ -1440,7 +1460,7 @@ class	walNUT extends PanelMenu.Button {
 		let _btnBox = new St.BoxLayout();
 		// Panel icon
 		this._icon = new St.Icon({
-			icon_name: Icons.E + '-symbolic',
+			gicon: PanelIcons.E,
 			style_class: 'system-status-icon'
 		});
 		// Panel label for battery charge and device load
@@ -1460,7 +1480,7 @@ class	walNUT extends PanelMenu.Button {
 
 		// Settings button
 		this._pref_btn = new Button({
-			icon: 'imported-preferences-system',
+			gicon: MiscIcons.Preferences,
 			// TRANSLATORS: Accessible name of 'Preferences' button
 			accessibleName: _("Preferences"),
 			callback: function() {
@@ -1472,7 +1492,7 @@ class	walNUT extends PanelMenu.Button {
 
 		// Credentials button
 		this._cred_btn = new Button({
-			icon: 'imported-dialog-password',
+			gicon: MiscIcons.Credentials,
 			// TRANSLATORS: Accessible name of 'Credentials' button
 			accessibleName: _("Credentials"),
 			callback: Lang.bind(this, function() {
@@ -1483,7 +1503,7 @@ class	walNUT extends PanelMenu.Button {
 
 		// Add UPS button
 		this._add_btn = new Button({
-			icon: 'imported-edit-find',
+			gicon: MiscIcons.FindDevices,
 			// TRANSLATORS: Accessible name of 'Find new devices' button
 			accessibleName: _("Find new devices"),
 			callback: Lang.bind(this, function() {
@@ -1494,7 +1514,7 @@ class	walNUT extends PanelMenu.Button {
 
 		// Delete UPS from devices list button
 		this._del_btn = new Button({
-			icon: 'imported-user-trash',
+			gicon: MiscIcons.DeleteDevice,
 			// TRANSLATORS: Accessible name of 'Delete device' button
 			accessibleName: _("Delete device"),
 			callback: Lang.bind(this, function() {
@@ -1505,7 +1525,7 @@ class	walNUT extends PanelMenu.Button {
 
 		// Help button
 		this._help_btn = new Button({
-			icon: 'imported-help-browser',
+			gicon: MiscIcons.Help,
 			// TRANSLATORS: Accessible name of 'Help' button
 			accessibleName: _("Help"),
 			callback: function() {
@@ -1710,7 +1730,7 @@ class	walNUT extends PanelMenu.Button {
 		// Errors!
 		if (this._state & (ErrorType.NO_UPS | ErrorType.UPS_NA)) {
 			// Set panel icon
-			this._icon.icon_name = Icons.E + '-symbolic';
+			this._icon.gicon = PanelIcons.E;
 			// ..and return
 			return;
 		}
@@ -1738,7 +1758,7 @@ class	walNUT extends PanelMenu.Button {
 
 		icon = status.line + (status.alarm || '') + ((status.line == 'O') && charged ? 'C' : '') + battery_level * load_level;
 
-		this._icon.icon_name = Icons[icon] + '-symbolic';
+		this._icon.gicon = PanelIcons[icon];
 
 	}
 
@@ -1973,7 +1993,7 @@ const	CredDialog = class extends ModalDialog.ModalDialog {
 
 		// Icon
 		let icon = new St.Icon({
-			icon_name: 'imported-dialog-password-symbolic',
+			gicon: MiscIcons.Credentials,
 			style_class: 'message-dialog-icon'
 		});
 		container.add(icon, {
@@ -2112,7 +2132,7 @@ const	CredDialog = class extends ModalDialog.ModalDialog {
 
 		// Error Icon
 		let errorIcon = new St.Icon({
-			icon_name: 'imported-dialog-error-symbolic',
+			gicon: MiscIcons.Error,
 			style_class: 'walnut-cred-dialog-error-icon'
 		});
 		errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
@@ -2286,7 +2306,7 @@ const	YesNoSubMenu = class extends PopupMenu.PopupMenuSection {
 
 	// args = {
 	//	title: title of the submenu
-	//	icon_name: name of the icon to be placed next to the *title*
+	//	gicon: GIcon of the icon to be placed next to the *title*
 	// }
 	constructor(args) {
 
@@ -2301,7 +2321,7 @@ const	YesNoSubMenu = class extends PopupMenu.PopupMenuSection {
 			can_focus: false
 		});
 		let titleIcon = new St.Icon({
-			icon_name: args.icon_name,
+			gicon: args.gicon,
 			style_class: 'popup-menu-icon'
 		});
 		titleRow.actor.add(titleIcon);
@@ -2333,13 +2353,13 @@ const	YesNoSubMenu = class extends PopupMenu.PopupMenuSection {
 
 		// Cancel/Confirm buttons
 		this.del = new Button({
-			icon: 'imported-window-close',
+			gicon: MiscIcons.Cancel,
 			// TRANSLATORS: Accessible name of 'Cancel' button @ Yes/No submenus
 			accessibleName: _("Cancel"),
 			size: 'small'
 		});
 		this.go = new Button({
-			icon: 'imported-emblem-ok',
+			gicon: MiscIcons.OK,
 			// TRANSLATORS: Accessible name of 'Confirm' button @ Yes/No submenus
 			accessibleName: _("Confirm"),
 			size: 'small'
@@ -2448,7 +2468,7 @@ const	DelBox = class extends YesNoSubMenu {
 		super({
 			// TRANSLATORS: Title of delete device box
 			title: _("Delete UPS"),
-			icon_name: 'imported-user-trash-symbolic'
+			gicon: MiscIcons.DeleteDevice
 		});
 
 		// Text
@@ -2484,7 +2504,7 @@ const	CredBox = class extends YesNoSubMenu {
 		super({
 			// TRANSLATORS: Title of credentials box
 			title: _("UPS Credentials"),
-			icon_name: 'imported-dialog-password-symbolic'
+			gicon: MiscIcons.Credentials
 		});
 
 		// Username
@@ -2584,7 +2604,7 @@ const	AddBox = class extends YesNoSubMenu {
 		super({
 			// TRANSLATORS: Title of find new devices box
 			title: _("Find new UPSes"),
-			icon_name: 'imported-edit-find-symbolic'
+			gicon: MiscIcons.FindDevices
 		});
 
 		// Hostname
@@ -2652,7 +2672,7 @@ const	AddBox = class extends YesNoSubMenu {
 const	Button = class {
 
 	// args = {
-	//	icon: name of the icon to use
+	//	gicon: GIcon of the icon to use
 	//	accessibleName: accessible name of the button
 	//	callback: function to call when the button gets clicked
 	//	size: size of the button {small,big}
@@ -2665,7 +2685,7 @@ const	Button = class {
 			size = 'big';
 
 		// Icon
-		let button_icon = new St.Icon({ icon_name: args.icon + '-symbolic' });
+		let button_icon = new St.Icon({ gicon: args.gicon });
 
 		// Button
 		this.actor = new St.Button({
@@ -3191,7 +3211,7 @@ const	SetvarBoxRanges = class extends SetvarBox {
 
 		// Buttons
 		this._minus = new Button({
-			icon: 'imported-list-remove',
+			gicon: MiscIcons.Minus,
 			// TRANSLATORS: Accessible name of 'Decrement' button @ setvar ranges
 			accessibleName: _("Decrement by one"),
 			size: 'small'
@@ -3213,7 +3233,7 @@ const	SetvarBoxRanges = class extends SetvarBox {
 		}));
 
 		this._plus = new Button({
-			icon: 'imported-list-add',
+			gicon: MiscIcons.Plus,
 			// TRANSLATORS: Accessible name of 'Increment' button @ setvar ranges
 			accessibleName: _("Increment by one"),
 			size: 'small'
@@ -3235,7 +3255,7 @@ const	SetvarBoxRanges = class extends SetvarBox {
 		}));
 
 		let del = new Button({
-			icon: 'imported-window-close',
+			gicon: MiscIcons.Cancel,
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
 			accessibleName: _("Undo and close"),
 			callback: Lang.bind(this, function() {
@@ -3254,7 +3274,7 @@ const	SetvarBoxRanges = class extends SetvarBox {
 		});
 
 		this._go = new Button({
-			icon: 'imported-emblem-ok',
+			gicon: MiscIcons.OK,
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
 			accessibleName: _("Set"),
 			callback: Lang.bind(this, function() {
@@ -3729,7 +3749,7 @@ const	SetvarBoxString = class extends SetvarBox {
 
 		// Error Icon
 		let errorIcon = new St.Icon({
-			icon_name: 'imported-dialog-error-symbolic',
+			gicon: MiscIcons.Error,
 			style_class: 'walnut-setvar-string-error-icon'
 		});
 		this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
@@ -3773,7 +3793,7 @@ const	SetvarBoxString = class extends SetvarBox {
 
 		// Buttons
 		let del = new Button({
-			icon: 'imported-window-close',
+			gicon: MiscIcons.Cancel,
 			// TRANSLATORS: Accessible name of 'Undo and close' button @ setvar
 			accessibleName: _("Undo and close"),
 			callback: Lang.bind(this, function() {
@@ -3792,7 +3812,7 @@ const	SetvarBoxString = class extends SetvarBox {
 		});
 
 		this._go = new Button({
-			icon: 'imported-emblem-ok',
+			gicon: MiscIcons.OK,
 			// TRANSLATORS: Accessible name of 'Set' button @ setvar
 			accessibleName: _("Set"),
 			callback: Lang.bind(this, function() {
@@ -4361,8 +4381,8 @@ const	UpsDataTableAlt = class extends PopupMenu.PopupMenuSection {
 
 			// Populate item
 			this['_' + data].setLabel(item.label());
-			if (!(item.icon instanceof Function))
-				this['_' + data].setIcon(item.icon + '-symbolic');
+			if (!(item.gicon instanceof Function))
+				this['_' + data].setIcon(item.gicon);
 
 			// Add item
 			this.addMenuItem(this['_' + data]);
@@ -4407,8 +4427,8 @@ const	UpsDataTableAlt = class extends PopupMenu.PopupMenuSection {
 
 		let item = DataTableItems[data];
 
-		if (item.icon instanceof Function)
-			this['_' + data].setIcon(item.icon(value) + '-symbolic');
+		if (item.gicon instanceof Function)
+			this['_' + data].setIcon(item.gicon(value));
 
 		this['_' + data].setValue(item.value(value));
 
@@ -4448,9 +4468,9 @@ const	UpsDataTableAltItem = class extends PopupMenu.PopupBaseMenuItem {
 
 	}
 
-	setIcon(icon) {
+	setIcon(gicon) {
 
-		this.icon.icon_name = icon;
+		this.icon.gicon = gicon;
 
 	}
 
@@ -4502,7 +4522,7 @@ const	UpsTopDataList = class extends PopupMenu.PopupBaseMenuItem {
 
 		// Device status
 		this.statusIcon = new St.Icon({
-			icon_name: 'imported-utilities-system-monitor-symbolic',
+			gicon: MiscIcons.DeviceStatus,
 			style_class: 'walnut-ups-top-data-icon'
 		});
 		this.statusLabel = new St.Label({ style_class: 'walnut-ups-top-data-label' });
@@ -4520,7 +4540,7 @@ const	UpsTopDataList = class extends PopupMenu.PopupBaseMenuItem {
 
 		// Alarm
 		this.alarmIcon = new St.Icon({
-			icon_name: 'imported-dialog-warning-symbolic',
+			gicon: MiscIcons.Alarm,
 			style_class: 'walnut-ups-top-data-icon'
 		});
 		let alarmLabel = new St.Label({
@@ -4795,7 +4815,7 @@ const	ErrorBox = class extends PopupMenu.PopupBaseMenuItem {
 
 		// Icon
 		let icon = new St.Icon({
-			icon_name: 'imported-dialog-error-symbolic',
+			gicon: MiscIcons.Error,
 			style_class: 'walnut-error-icon'
 		});
 		eBox.add(icon, {
@@ -4954,10 +4974,6 @@ function init(extensionMeta) {
 
 	gsettings = Convenience.getSettings();
 	Convenience.initTranslations();
-
-	// Import icons
-	let theme = imports.gi.Gtk.IconTheme.get_default();
-	theme.append_search_path(extensionMeta.path + '/icons');
 
 }
 
